@@ -5,26 +5,17 @@ import { Badge } from "~/components/ui/badge";
 import type { Department, DepartmentCategory } from "~/data/departments";
 import { DEPARTMENT_CATEGORIES } from "~/data/departments";
 
-const categoryColors: Record<DepartmentCategory, string> = {
-  administrative: "bg-brand-navy/10 text-brand-navy border border-brand-navy/15",
-  courts: "bg-brand-courts/10 text-brand-courts border border-brand-courts/15",
-  "public-safety": "bg-brand-safety/10 text-brand-safety border border-brand-safety/15",
-  finance: "bg-brand-sage/10 text-brand-sage border border-brand-sage/15",
-  operations: "bg-brand-brass/10 text-brand-brass border border-brand-brass/15",
-  community: "bg-brand-community/10 text-brand-community border border-brand-community/15",
-};
-
-const categoryBgColors: Record<DepartmentCategory, string> = {
-  administrative: "from-brand-navy/8 to-brand-navy/3",
-  courts: "from-brand-courts/8 to-brand-courts/3",
-  "public-safety": "from-brand-safety/8 to-brand-safety/3",
-  finance: "from-brand-sage/8 to-brand-sage/3",
-  operations: "from-brand-brass/8 to-brand-brass/3",
-  community: "from-brand-community/8 to-brand-community/3",
+const categoryBadgeColors: Record<DepartmentCategory, string> = {
+  administrative: "bg-white/15 text-white/90 border border-white/20",
+  courts: "bg-brand-courts/20 text-brand-courts border border-brand-courts/20",
+  "public-safety": "bg-brand-safety/20 text-brand-safety border border-brand-safety/20",
+  finance: "bg-brand-sage/20 text-brand-sage border border-brand-sage/20",
+  operations: "bg-brand-brass/20 text-brand-brass border border-brand-brass/20",
+  community: "bg-brand-community/20 text-brand-community border border-brand-community/20",
 };
 
 const categoryAccentColors: Record<DepartmentCategory, string> = {
-  administrative: "bg-brand-navy",
+  administrative: "bg-brand-brass",
   courts: "bg-brand-courts",
   "public-safety": "bg-brand-safety",
   finance: "bg-brand-sage",
@@ -53,49 +44,42 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
 
   return (
     <>
-      {/* Category-tinted header banner with gradient */}
-      <div
-        className={`bg-gradient-to-b ${categoryBgColors[department.category]} border-b border-brand-surface`}
-      >
-        <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 sm:py-16 lg:px-8">
+      {/* Navy header banner */}
+      <div className="relative bg-brand-navy overflow-hidden">
+        {/* Topo texture */}
+        <div className="absolute inset-0 bg-topo-pattern opacity-100 pointer-events-none" />
+        {/* Category accent bar at top */}
+        <div className={`h-1 ${categoryAccentColors[department.category]}`} />
+
+        <div className="relative z-10 mx-auto max-w-7xl px-4 pt-8 pb-14 sm:px-6 sm:pb-20 lg:px-8">
           <Link
             to="/departments"
-            className="inline-flex items-center gap-1.5 font-body text-sm font-medium text-brand-copper hover:text-brand-copper-light transition-colors mb-6"
+            className="inline-flex items-center gap-1.5 font-body text-sm font-medium text-brand-brass hover:text-brand-brass/80 transition-colors mb-6"
           >
             <ArrowLeft className="size-4" />
             All Departments
           </Link>
-          <div className="flex flex-wrap items-center gap-4">
-            <h1 className="font-display text-3xl font-bold text-brand-navy sm:text-4xl lg:text-5xl">
-              {department.name}
-            </h1>
+          <div className="flex flex-wrap items-center gap-3 mb-4">
             <Badge
-              className={`rounded-sm font-body text-xs ${categoryColors[department.category]}`}
+              className={`rounded-sm font-body text-[11px] tracking-wide ${categoryBadgeColors[department.category]}`}
             >
               {categoryMeta.label}
             </Badge>
           </div>
-          <div
-            className={`mt-5 h-1 w-16 rounded-full ${categoryAccentColors[department.category]}`}
-          />
+          <h1 className="font-display text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
+            {department.name}
+          </h1>
+          <p className="mt-4 max-w-2xl font-body text-base leading-relaxed text-brand-cream/60">
+            {department.description}
+          </p>
         </div>
       </div>
 
-      {/* Main content */}
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        {/* Two-column layout */}
-        <div className="flex flex-col-reverse gap-10 lg:flex-row">
+      {/* Main content — contact card pulls up into the banner */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex flex-col-reverse gap-8 lg:flex-row lg:-mt-8">
           {/* Main content */}
-          <div className="flex-1">
-            {/* About */}
-            <section>
-              <SectionHeading>About</SectionHeading>
-              <p className="font-body leading-relaxed text-brand-slate">{department.description}</p>
-            </section>
-
-            {/* Heritage divider */}
-            <div className="my-10 divider-heritage opacity-20" />
-
+          <div className="flex-1 py-10">
             {/* Services */}
             <section>
               <SectionHeading>Services</SectionHeading>
@@ -124,7 +108,6 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
                         key={office.name}
                         className="group relative rounded-sm border border-brand-surface bg-white p-6 overflow-hidden"
                       >
-                        {/* Top accent bar */}
                         <div className="absolute top-0 left-0 right-0 h-0.5 bg-brand-copper scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
                         <h3 className="font-display text-base font-bold text-brand-navy mb-3">
                           {office.name}
@@ -246,8 +229,8 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
             )}
           </div>
 
-          {/* Sidebar — Contact Card */}
-          <div className="lg:w-80 lg:shrink-0">
+          {/* Sidebar — Contact Card overlaps banner */}
+          <div className="lg:w-80 lg:shrink-0 lg:-mt-16">
             <div className="lg:sticky lg:top-24">
               <ContactCard
                 head={department.head}
