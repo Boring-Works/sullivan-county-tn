@@ -17,7 +17,7 @@ function StatItem({
   const { ref, display } = useCountUp({ end, suffix, duration: 2200 });
   return (
     <div className="flex flex-col items-center gap-1 sm:flex-row sm:gap-3">
-      <span className="text-brand-brass/80">{icon}</span>
+      <span className="text-white/60">{icon}</span>
       <div className="text-center sm:text-left">
         <div
           ref={ref}
@@ -108,7 +108,7 @@ export function HeroBanner() {
             >
               Sullivan
               <br />
-              <span className="text-brand-brass">County</span>
+              <span className="text-[#d4b85a]">County</span>
             </h1>
 
             {/* Divider */}
@@ -181,7 +181,7 @@ export function HeroBanner() {
       </div>
 
       {/* Stat bar — floating above mountain divider */}
-      <div className="absolute bottom-[80px] sm:bottom-[100px] lg:bottom-[120px] left-0 right-0 z-30">
+      <div className="absolute bottom-[50px] sm:bottom-[65px] lg:bottom-[80px] left-0 right-0 z-30">
         <div
           className="mx-auto max-w-3xl px-6 opacity-0 animate-fade-up"
           style={{ animationDelay: "0.95s" }}

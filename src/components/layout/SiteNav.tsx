@@ -78,10 +78,15 @@ export function SiteNav() {
                 "flex h-10 w-10 items-center justify-center rounded-sm transition-all duration-300",
                 solid
                   ? "bg-brand-navy border border-brand-brass/20"
-                  : "bg-brand-brass/15 border border-brand-brass/40 backdrop-blur-sm",
+                  : "bg-white border border-white/80",
               )}
             >
-              <span className="font-display text-sm font-bold text-brand-brass tracking-tight">
+              <span
+                className={cn(
+                  "font-display text-sm font-bold tracking-tight transition-colors duration-300",
+                  solid ? "text-brand-brass" : "text-brand-navy",
+                )}
+              >
                 SC
               </span>
             </div>
