@@ -33,6 +33,33 @@ export interface ExternalLink {
   url: string;
 }
 
+export interface KeyDocument {
+  name: string;
+  url?: string;
+  description?: string;
+}
+
+export interface MeetingSchedule {
+  name: string;
+  schedule: string;
+  location?: string;
+}
+
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+export interface BidThreshold {
+  range: string;
+  process: string;
+}
+
+export interface Publication {
+  name: string;
+  url?: string;
+}
+
 export interface Department {
   slug: string;
   name: string;
@@ -44,6 +71,12 @@ export interface Department {
   additionalOffices?: Office[];
   staff?: StaffMember[];
   externalLinks?: ExternalLink[];
+  keyDocuments?: KeyDocument[];
+  meetingSchedule?: MeetingSchedule[];
+  faqItems?: FaqItem[];
+  bidThresholds?: BidThreshold[];
+  importantNotes?: string[];
+  publications?: Publication[];
 }
 
 export const departments: Department[] = [
@@ -138,6 +171,16 @@ export const departments: Department[] = [
     externalLinks: [
       { label: "County Clerk Website", url: "https://www.sullivancountyclerktn.com/" },
       { label: "Facebook", url: "https://www.facebook.com/JacobsforClerk" },
+    ],
+    keyDocuments: [
+      {
+        name: "Business Tax Notice #23-08",
+        description: "Filing threshold increased to $100,000",
+      },
+      {
+        name: "Hotel/Motel Tax Notice",
+        description: "Hotel/motel tax requirements and filing information",
+      },
     ],
   },
 
@@ -317,6 +360,23 @@ export const departments: Department[] = [
       { label: "National Weather Service (Morristown)", url: "https://www.weather.gov/mrx/" },
       { label: "Ready.gov", url: "https://www.ready.gov/" },
     ],
+    meetingSchedule: [
+      {
+        name: "LEPC (Local Emergency Preparedness Council)",
+        schedule: "3rd Wednesday of each month at 7:30 AM (except December)",
+        location: "Blountville office",
+      },
+    ],
+    keyDocuments: [
+      {
+        name: "Sullivan Hazard Mitigation Plan",
+        description: "Multi-jurisdictional plan with Bluff City, Bristol, and Kingsport",
+      },
+      {
+        name: "Sullivan LEPC By-Laws",
+        description: "Governing by-laws for the Local Emergency Preparedness Council",
+      },
+    ],
   },
   {
     slug: "ems",
@@ -446,6 +506,22 @@ export const departments: Department[] = [
         url: "https://www.assessment.cot.tn.gov/",
       },
     ],
+    faqItems: [
+      {
+        question: "Does the Property Assessor set tax rates?",
+        answer: "No. The Assessor does not set tax rates, send tax bills, or collect property taxes. Those functions are handled by other offices.",
+      },
+      {
+        question: "When is the next reappraisal?",
+        answer: "The next statewide reappraisal is scheduled for 2025.",
+      },
+    ],
+    importantNotes: [
+      "The Property Assessor does NOT set tax rates",
+      "The Property Assessor does NOT send tax bills",
+      "The Property Assessor does NOT collect property taxes",
+      "Educational videos on property assessments and tax rates are available through the State Board of Equalization",
+    ],
   },
   {
     slug: "register-of-deeds",
@@ -572,6 +648,19 @@ export const departments: Department[] = [
       "Floodplain permits",
       "Driveway connection permits",
     ],
+    keyDocuments: [
+      { name: "Zoning Code 2025" },
+      { name: "Zoning Title and Index 2025" },
+      { name: "Subdivision Regulations 2024" },
+      { name: "Appendices 2024" },
+      { name: "Permit Form (August 2024)" },
+    ],
+    importantNotes: [
+      "Sullivan County adopted zoning in 1988",
+      "2018 International Residential Code and 2018 Energy Code adopted effective April 1, 2018",
+      "Electrical permits are issued by the State of Tennessee via the CORE online system",
+      "Board meetings are held at the Historic Courthouse Commission Room (2nd floor) and are open to the public",
+    ],
   },
   {
     slug: "purchasing",
@@ -612,6 +701,20 @@ export const departments: Department[] = [
         label: "BidNet (Current Solicitations)",
         url: "https://www.bidnetdirect.com/tennessee/sullivancountytn",
       },
+    ],
+    bidThresholds: [
+      { range: "$0 – $9,999.99 (Micro)", process: "Open market, quote/receipt submission" },
+      { range: "$10,000 – $19,999.99 (Small)", process: "One quote + two informal quotes" },
+      { range: "$20,000 – $49,999.99 (Mid-range)", process: "Minimum 3 competitive formal quotes" },
+      { range: "$50,000+ (Large)", process: "Written, sealed competitive proposals; advertised in newspaper 5 days prior; public opening" },
+    ],
+    importantNotes: [
+      "All vendors must register before purchase order issuance",
+      "Records retained minimum 10 years (infinite for construction projects)",
+      "Awards based on 'lowest and best bidder' considering quality, specs, suitability, and delivery",
+      "Splitting requisitions to avoid competitive bidding thresholds is prohibited",
+      "Department heads must authorize all requisitions",
+      "Solicitations transitioned from Vendor Registry to BidNet effective September 1, 2025",
     ],
   },
   {
@@ -674,6 +777,12 @@ export const departments: Department[] = [
       "Northeast Tennessee historic site coordination",
     ],
     externalLinks: [{ label: "Historic Sullivan", url: "https://www.historicsullivan.com/" }],
+    importantNotes: [
+      "The Old Deery Inn in Blountville features 18 rooms, 2 attics, 3 cellars, and 10 outbuildings",
+      "The inn was home to Mrs. Virginia Byers Caldwell and Judge Joseph Anderson Caldwell",
+      "The Sunnyside Trail offers walking access to Northeast Tennessee historic sites",
+      "The department describes the region as 'a Museum of Masterpieces, both old and new'",
+    ],
   },
   {
     slug: "election-office",
@@ -737,6 +846,14 @@ export const departments: Department[] = [
       },
       { label: "USDA NRCS Tennessee", url: "https://www.nrcs.usda.gov/tennessee" },
       { label: "Tennessee Department of Agriculture", url: "https://www.tn.gov/agriculture.html" },
+    ],
+    publications: [
+      { name: "SCSWCD Brochure" },
+      { name: "FY 2025 Annual Report" },
+    ],
+    importantNotes: [
+      "Best Management Practices include: cover crops, filter strips, stream buffers, sediment control, exclusion fencing, and grazing systems",
+      "NASDA Foundation EPA Gulf of America Farmer-to-Farmer Grants available",
     ],
   },
   {
