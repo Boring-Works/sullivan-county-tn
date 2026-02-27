@@ -5,6 +5,7 @@ import {
   type DepartmentCategory,
   getDepartmentsByCategory,
 } from "~/data/departments";
+import { useScrollReveal } from "~/hooks/useScrollReveal";
 
 const CATEGORY_ORDER: DepartmentCategory[] = [
   "administrative",
@@ -25,14 +26,16 @@ const CATEGORY_ACCENTS: Record<DepartmentCategory, string> = {
 };
 
 export function DepartmentCategories() {
+  const containerRef = useScrollReveal<HTMLDivElement>();
+
   return (
     <section className="relative bg-brand-parchment py-20 sm:py-24">
       {/* Subtle top border */}
       <div className="absolute top-0 left-0 right-0 divider-heritage opacity-30" />
 
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div ref={containerRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Heading — centered editorial */}
-        <div className="mb-14 text-center">
+        <div className="mb-14 text-center" data-reveal>
           <h2 className="font-display text-3xl font-bold text-brand-navy sm:text-4xl">
             County Departments
           </h2>
@@ -44,7 +47,7 @@ export function DepartmentCategories() {
 
         {/* Grid — 3-col with left border accent */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {CATEGORY_ORDER.map((key) => {
+          {CATEGORY_ORDER.map((key, index) => {
             const category = DEPARTMENT_CATEGORIES[key];
             const deptCount = getDepartmentsByCategory(key).length;
 
@@ -53,7 +56,9 @@ export function DepartmentCategories() {
                 key={key}
                 to="/departments"
                 search={{ category: key }}
-                className={`group card-lift flex flex-col rounded-sm border-l-4 border-l-brand-surface bg-white p-7 transition-all duration-300 ${CATEGORY_ACCENTS[key]}`}
+                data-reveal
+                data-reveal-delay={index * 60}
+                className={`group card-lift flex flex-col rounded-sm border-l-[5px] border-l-brand-surface bg-white p-8 transition-all duration-300 hover:shadow-lg ${CATEGORY_ACCENTS[key]}`}
               >
                 <div className="flex items-start justify-between">
                   <h3 className="font-display text-lg font-bold text-brand-slate group-hover:text-brand-navy transition-colors">
