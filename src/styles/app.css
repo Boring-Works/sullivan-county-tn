@@ -64,6 +64,14 @@
   --color-brand-slate-light: #5c6370;
   --color-brand-warm-gray: #9a9590;
 
+  /* Department category accents */
+  --color-brand-courts: #6b4c8a;
+  --color-brand-safety: #a63d3d;
+  --color-brand-community: #3d7a7a;
+
+  /* Deeper navy for footer differentiation */
+  --color-brand-navy-deep: #081624;
+
   /* Backward-compat aliases */
   --color-brand-orange: var(--color-brand-copper);
   --color-brand-orange-light: var(--color-brand-copper-light);

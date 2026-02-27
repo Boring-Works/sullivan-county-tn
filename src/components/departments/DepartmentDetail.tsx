@@ -7,20 +7,20 @@ import { DEPARTMENT_CATEGORIES } from "~/data/departments";
 
 const categoryColors: Record<DepartmentCategory, string> = {
   administrative: "bg-brand-navy/10 text-brand-navy border border-brand-navy/15",
-  courts: "bg-[#6b4c8a]/10 text-[#6b4c8a] border border-[#6b4c8a]/15",
-  "public-safety": "bg-[#a63d3d]/10 text-[#a63d3d] border border-[#a63d3d]/15",
+  courts: "bg-brand-courts/10 text-brand-courts border border-brand-courts/15",
+  "public-safety": "bg-brand-safety/10 text-brand-safety border border-brand-safety/15",
   finance: "bg-brand-sage/10 text-brand-sage border border-brand-sage/15",
   operations: "bg-brand-brass/10 text-brand-brass border border-brand-brass/15",
-  community: "bg-[#3d7a7a]/10 text-[#3d7a7a] border border-[#3d7a7a]/15",
+  community: "bg-brand-community/10 text-brand-community border border-brand-community/15",
 };
 
 const categoryBgColors: Record<DepartmentCategory, string> = {
   administrative: "bg-brand-navy/5",
-  courts: "bg-[#6b4c8a]/5",
-  "public-safety": "bg-[#a63d3d]/5",
+  courts: "bg-brand-courts/5",
+  "public-safety": "bg-brand-safety/5",
   finance: "bg-brand-sage/5",
   operations: "bg-brand-brass/5",
-  community: "bg-[#3d7a7a]/5",
+  community: "bg-brand-community/5",
 };
 
 interface DepartmentDetailProps {

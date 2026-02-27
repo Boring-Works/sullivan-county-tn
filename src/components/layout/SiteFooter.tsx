@@ -18,8 +18,8 @@ const EXTERNAL_RESOURCES = [
 
 export function SiteFooter() {
   return (
-    <footer className="relative bg-brand-navy text-brand-cream/70">
-      <MountainDividerInverted fill="var(--color-brand-navy)" />
+    <footer className="relative bg-brand-navy-deep text-brand-cream/70">
+      <MountainDividerInverted fill="var(--color-brand-navy-deep)" />
 
       {/* Top accent */}
       <div className="divider-heritage" />
@@ -120,11 +120,15 @@ export function SiteFooter() {
               <span className="inline-block h-2 w-2 rotate-45 bg-brand-brass/60" />
               <div className="h-px flex-1 bg-brand-cream/10" />
             </div>
-            <p className="font-body text-sm leading-relaxed text-brand-cream/50">
-              Established in 1779, Sullivan County is the second oldest county in Tennessee. Named
-              after General John Sullivan, our county covers 430 square miles of the Appalachian
-              Highlands.
-            </p>
+            <blockquote className="border-l-2 border-brand-brass/40 pl-4">
+              <p className="font-accent text-base italic leading-relaxed text-brand-cream/60">
+                Established in 1779, Sullivan County is the second oldest county in Tennessee.
+              </p>
+              <p className="mt-3 font-body text-sm leading-relaxed text-brand-cream/40">
+                Named after General John Sullivan, our county covers 430 square miles of the
+                Appalachian Highlands.
+              </p>
+            </blockquote>
           </div>
         </div>
       </div>

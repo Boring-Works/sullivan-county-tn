@@ -11,7 +11,7 @@ export function CommissionerCard({ commissioner }: CommissionerCardProps) {
       {/* Accent on hover */}
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-brand-brass scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
 
-      <div className="p-5">
+      <div className="p-6">
         <h3 className="font-display text-base font-bold text-brand-navy mb-2">
           {commissioner.name}
         </h3>

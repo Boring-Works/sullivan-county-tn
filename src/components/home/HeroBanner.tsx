@@ -78,7 +78,7 @@ export function HeroBanner() {
       </picture>
 
       {/* Dark overlay — gradient from bottom */}
-      <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/75 to-brand-navy/35" />
+      <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/55 to-brand-navy/20" />
 
       {/* Topo texture overlay */}
       <div className="absolute inset-0 bg-topo-pattern" />
@@ -95,7 +95,7 @@ export function HeroBanner() {
           <div className="max-w-3xl">
             {/* Established badge */}
             <div className="mb-8 opacity-0 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-              <span className="inline-flex items-center gap-2 border border-brand-brass/30 rounded-full px-5 py-2 text-xs font-medium tracking-widest uppercase text-brand-brass backdrop-blur-sm">
+              <span className="inline-flex items-center gap-2 border border-brand-brass/50 rounded-full px-5 py-2 text-xs font-medium tracking-widest uppercase text-brand-brass backdrop-blur-sm">
                 <span className="block h-1.5 w-1.5 rounded-full bg-brand-brass" />
                 Established 1779
               </span>
@@ -205,7 +205,7 @@ export function HeroBanner() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth={1.5}
+                  strokeWidth={2}
                 >
                   <title>Residents</title>
                   <path
@@ -225,7 +225,7 @@ export function HeroBanner() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth={1.5}
+                  strokeWidth={2}
                 >
                   <title>Area</title>
                   <path
@@ -245,7 +245,7 @@ export function HeroBanner() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth={1.5}
+                  strokeWidth={2}
                 >
                   <title>Departments</title>
                   <path
@@ -265,7 +265,7 @@ export function HeroBanner() {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth={1.5}
+                  strokeWidth={2}
                 >
                   <title>Established</title>
                   <path
