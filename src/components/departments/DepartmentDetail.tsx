@@ -51,7 +51,7 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
         {/* Category accent bar at top */}
         <div className={`h-1 ${categoryAccentColors[department.category]}`} />
 
-        <div className="relative z-10 mx-auto max-w-7xl px-4 pt-8 pb-14 sm:px-6 sm:pb-20 lg:px-8">
+        <div className="relative z-10 mx-auto max-w-7xl px-4 pt-24 pb-14 sm:px-6 sm:pb-20 lg:px-8">
           <Link
             to="/departments"
             className="inline-flex items-center gap-1.5 font-body text-sm font-medium text-brand-brass hover:text-brand-brass/80 transition-colors mb-6"
@@ -69,7 +69,7 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
           <h1 className="font-display text-3xl font-bold text-white sm:text-4xl lg:text-5xl">
             {department.name}
           </h1>
-          <p className="mt-4 max-w-2xl font-body text-base leading-relaxed text-brand-cream/60">
+          <p className="mt-4 max-w-2xl font-body text-base leading-relaxed text-brand-cream/80">
             {department.description}
           </p>
         </div>
@@ -79,7 +79,7 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col-reverse gap-8 lg:flex-row lg:-mt-8">
           {/* Main content */}
-          <div className="flex-1 py-10">
+          <div className="flex-1 py-8">
             {/* Services */}
             <section>
               <SectionHeading>Services</SectionHeading>

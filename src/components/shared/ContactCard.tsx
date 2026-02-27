@@ -18,7 +18,7 @@ interface ContactCardProps {
 
 export function ContactCard({ head, contact, category }: ContactCardProps) {
   return (
-    <div className="rounded-sm border border-brand-surface bg-white overflow-hidden shadow-sm">
+    <div className="rounded-sm border border-brand-surface bg-white overflow-hidden shadow-md ring-1 ring-black/5">
       {/* Category accent line */}
       {category && <div className={`h-1 ${categoryAccents[category]}`} />}
 

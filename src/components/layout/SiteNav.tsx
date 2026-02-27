@@ -66,16 +66,33 @@ export function SiteNav() {
         <div className="flex h-16 items-center justify-between lg:h-18">
           {/* Left: Logo + Branding — serif treatment */}
           <Link to="/" className="flex items-center gap-3 shrink-0" onClick={closeMobile}>
-            <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-brand-navy border border-brand-brass/20">
+            <div
+              className={cn(
+                "flex h-10 w-10 items-center justify-center rounded-sm transition-all duration-300",
+                scrolled
+                  ? "bg-brand-navy border border-brand-brass/20"
+                  : "bg-brand-brass/15 border border-brand-brass/40 backdrop-blur-sm",
+              )}
+            >
               <span className="font-display text-sm font-bold text-brand-brass tracking-tight">
                 SC
               </span>
             </div>
             <div className="hidden sm:block">
-              <div className="font-display text-sm font-bold tracking-wide text-brand-navy leading-tight">
+              <div
+                className={cn(
+                  "font-display text-sm font-bold tracking-wide leading-tight transition-colors duration-300",
+                  scrolled ? "text-brand-navy" : "text-white",
+                )}
+              >
                 Sullivan County
               </div>
-              <div className="font-body text-[11px] font-light tracking-widest uppercase text-brand-stone leading-tight">
+              <div
+                className={cn(
+                  "font-body text-[11px] font-light tracking-widest uppercase leading-tight transition-colors duration-300",
+                  scrolled ? "text-brand-stone" : "text-white/50",
+                )}
+              >
                 Tennessee
               </div>
             </div>
