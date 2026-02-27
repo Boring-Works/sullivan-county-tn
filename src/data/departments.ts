@@ -57,7 +57,8 @@ export const departments: Department[] = [
       phone: "(423) 323-6417",
       fax: "(423) 279-2897",
       email: "mayor@sullivancountytn.gov",
-      address: "Financial Administration Building, 155 School Ave. Suite 233, Blountville, TN 37617",
+      address:
+        "Financial Administration Building, 155 School Ave. Suite 233, Blountville, TN 37617",
       hours: "Monday-Friday, 8am-5pm (excluding designated holidays)",
     },
     description:
@@ -174,9 +175,7 @@ export const departments: Department[] = [
         fax: "(423) 224-1736",
       },
     ],
-    externalLinks: [
-      { label: "Chancery Court Website", url: "https://sullivantnchancery.com/" },
-    ],
+    externalLinks: [{ label: "Chancery Court Website", url: "https://sullivantnchancery.com/" }],
   },
   {
     slug: "circuit-court",
@@ -186,8 +185,7 @@ export const departments: Department[] = [
     contact: {
       phone: "(423) 279-2752",
       fax: "(423) 323-3741",
-      address:
-        "Sullivan County Justice Center, 140 Blountville Bypass, Blountville, TN 37617",
+      address: "Sullivan County Justice Center, 140 Blountville Bypass, Blountville, TN 37617",
       hours: "Monday-Friday, 8am-5pm (excluding designated holidays)",
     },
     description:
@@ -241,9 +239,7 @@ export const departments: Department[] = [
       "Law enforcement collaboration",
       "Victim advocacy coordination",
     ],
-    externalLinks: [
-      { label: "District Attorney Website", url: "https://sullivancountyda.com/" },
-    ],
+    externalLinks: [{ label: "District Attorney Website", url: "https://sullivancountyda.com/" }],
   },
   {
     slug: "public-defender",
@@ -288,9 +284,7 @@ export const departments: Department[] = [
       "Warrant service",
       "Emergency response (911)",
     ],
-    externalLinks: [
-      { label: "Sheriff's Office Website", url: "https://www.scsotn.com/" },
-    ],
+    externalLinks: [{ label: "Sheriff's Office Website", url: "https://www.scsotn.com/" }],
   },
   {
     slug: "emergency-management",
@@ -343,9 +337,7 @@ export const departments: Department[] = [
       "Transportation of the ill and injured",
       "24/7 emergency dispatch",
     ],
-    externalLinks: [
-      { label: "Pay Ambulance Bill", url: "https://sullivan.payambulance.com/" },
-    ],
+    externalLinks: [{ label: "Pay Ambulance Bill", url: "https://sullivan.payambulance.com/" }],
   },
   {
     slug: "medical-examiner",
@@ -681,9 +673,7 @@ export const departments: Department[] = [
       "Sunnyside Trail management",
       "Northeast Tennessee historic site coordination",
     ],
-    externalLinks: [
-      { label: "Historic Sullivan", url: "https://www.historicsullivan.com/" },
-    ],
+    externalLinks: [{ label: "Historic Sullivan", url: "https://www.historicsullivan.com/" }],
   },
   {
     slug: "election-office",

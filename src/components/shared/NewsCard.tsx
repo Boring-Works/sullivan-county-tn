@@ -1,7 +1,7 @@
 import { FileDown } from "lucide-react";
-import type { NewsItem } from "~/data/news";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import type { NewsItem } from "~/data/news";
 
 interface NewsCardProps {
   item: NewsItem;

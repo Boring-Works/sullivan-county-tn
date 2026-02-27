@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import {
-  type DepartmentCategory,
   DEPARTMENT_CATEGORIES,
+  type DepartmentCategory,
   getDepartmentsByCategory,
 } from "~/data/departments";
 

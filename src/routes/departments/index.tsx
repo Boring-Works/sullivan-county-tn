@@ -1,10 +1,10 @@
 import { createFileRoute, Link, useSearch } from "@tanstack/react-router";
 import { DepartmentCard } from "~/components/departments/DepartmentCard";
 import {
-  departments,
-  getDepartmentsByCategory,
   DEPARTMENT_CATEGORIES,
   type DepartmentCategory,
+  departments,
+  getDepartmentsByCategory,
 } from "~/data/departments";
 
 export const Route = createFileRoute("/departments/")({
@@ -27,12 +27,9 @@ function DepartmentsPage() {
     <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
       {/* Page heading */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-brand-blue sm:text-4xl">
-          County Departments
-        </h1>
+        <h1 className="text-3xl font-bold text-brand-blue sm:text-4xl">County Departments</h1>
         <p className="mt-2 text-lg text-brand-slate">
-          Find contact information, services, and resources for all Sullivan
-          County departments
+          Find contact information, services, and resources for all Sullivan County departments
         </p>
       </div>
 

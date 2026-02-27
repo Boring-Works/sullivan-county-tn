@@ -22,13 +22,9 @@ export function DepartmentCard({ department }: DepartmentCardProps) {
   const categoryMeta = DEPARTMENT_CATEGORIES[department.category];
 
   return (
-    <Card
-      className="group transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5"
-    >
+    <Card className="group transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5">
       <CardHeader>
-        <Badge className={categoryColors[department.category]}>
-          {categoryMeta.label}
-        </Badge>
+        <Badge className={categoryColors[department.category]}>{categoryMeta.label}</Badge>
         <CardTitle className="text-lg">
           <Link
             to="/departments/$slug"

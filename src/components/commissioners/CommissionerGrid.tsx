@@ -1,9 +1,7 @@
 import { commissioners, getCommissionersByDistrict } from "~/data/commissioners";
 import { CommissionerCard } from "./CommissionerCard";
 
-const DISTRICTS = Array.from(
-  new Set(commissioners.map((c) => c.district))
-).sort((a, b) => a - b);
+const DISTRICTS = Array.from(new Set(commissioners.map((c) => c.district))).sort((a, b) => a - b);
 
 export function CommissionerGrid() {
   return (
@@ -25,9 +23,7 @@ export function CommissionerGrid() {
                 <CommissionerCard key={commissioner.name} commissioner={commissioner} />
               ))}
             </div>
-            {district !== DISTRICTS[DISTRICTS.length - 1] && (
-              <hr className="mt-10 border-border" />
-            )}
+            {district !== DISTRICTS[DISTRICTS.length - 1] && <hr className="mt-10 border-border" />}
           </section>
         );
       })}

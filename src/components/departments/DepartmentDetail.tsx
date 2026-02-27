@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, ExternalLink, MapPin, Phone } from "lucide-react";
+import { ContactCard } from "~/components/shared/ContactCard";
 import { Badge } from "~/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
-import { ContactCard } from "~/components/shared/ContactCard";
 import type { Department, DepartmentCategory } from "~/data/departments";
 import { DEPARTMENT_CATEGORIES } from "~/data/departments";
 
@@ -21,11 +21,9 @@ interface DepartmentDetailProps {
 
 export function DepartmentDetail({ department }: DepartmentDetailProps) {
   const categoryMeta = DEPARTMENT_CATEGORIES[department.category];
-  const hasOffices =
-    department.additionalOffices && department.additionalOffices.length > 0;
+  const hasOffices = department.additionalOffices && department.additionalOffices.length > 0;
   const hasStaff = department.staff && department.staff.length > 0;
-  const hasLinks =
-    department.externalLinks && department.externalLinks.length > 0;
+  const hasLinks = department.externalLinks && department.externalLinks.length > 0;
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
@@ -39,12 +37,8 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
           All Departments
         </Link>
         <div className="flex flex-wrap items-center gap-3">
-          <h1 className="text-3xl font-bold text-brand-blue sm:text-4xl">
-            {department.name}
-          </h1>
-          <Badge className={categoryColors[department.category]}>
-            {categoryMeta.label}
-          </Badge>
+          <h1 className="text-3xl font-bold text-brand-blue sm:text-4xl">{department.name}</h1>
+          <Badge className={categoryColors[department.category]}>{categoryMeta.label}</Badge>
         </div>
       </div>
 
@@ -54,19 +48,13 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
         <div className="flex-1 space-y-10">
           {/* About */}
           <section>
-            <h2 className="mb-3 text-xl font-semibold text-brand-blue">
-              About
-            </h2>
-            <p className="leading-relaxed text-brand-slate">
-              {department.description}
-            </p>
+            <h2 className="mb-3 text-xl font-semibold text-brand-blue">About</h2>
+            <p className="leading-relaxed text-brand-slate">{department.description}</p>
           </section>
 
           {/* Services */}
           <section>
-            <h2 className="mb-3 text-xl font-semibold text-brand-blue">
-              Services
-            </h2>
+            <h2 className="mb-3 text-xl font-semibold text-brand-blue">Services</h2>
             <ul className="space-y-2">
               {department.services.map((service) => (
                 <li key={service} className="flex items-start gap-2">
@@ -80,16 +68,12 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
           {/* Additional Offices */}
           {hasOffices && (
             <section>
-              <h2 className="mb-4 text-xl font-semibold text-brand-blue">
-                Other Locations
-              </h2>
+              <h2 className="mb-4 text-xl font-semibold text-brand-blue">Other Locations</h2>
               <div className="grid gap-4 sm:grid-cols-2">
-                {department.additionalOffices!.map((office) => (
+                {department.additionalOffices?.map((office) => (
                   <Card key={office.name}>
                     <CardHeader>
-                      <CardTitle className="text-base text-brand-blue">
-                        {office.name}
-                      </CardTitle>
+                      <CardTitle className="text-base text-brand-blue">{office.name}</CardTitle>
                     </CardHeader>
                     <CardContent className="flex flex-col gap-2 text-sm">
                       <div className="flex items-start gap-2">
@@ -115,39 +99,25 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
           {/* Staff Directory */}
           {hasStaff && (
             <section>
-              <h2 className="mb-4 text-xl font-semibold text-brand-blue">
-                Staff Directory
-              </h2>
+              <h2 className="mb-4 text-xl font-semibold text-brand-blue">Staff Directory</h2>
               <div className="overflow-x-auto rounded-lg border">
                 <table className="w-full text-sm">
                   <thead>
                     <tr className="border-b bg-brand-surface">
-                      <th className="px-4 py-3 text-left font-semibold text-brand-blue">
-                        Name
-                      </th>
-                      <th className="px-4 py-3 text-left font-semibold text-brand-blue">
-                        Title
-                      </th>
-                      <th className="px-4 py-3 text-left font-semibold text-brand-blue">
-                        Phone
-                      </th>
-                      <th className="px-4 py-3 text-left font-semibold text-brand-blue">
-                        Email
-                      </th>
+                      <th className="px-4 py-3 text-left font-semibold text-brand-blue">Name</th>
+                      <th className="px-4 py-3 text-left font-semibold text-brand-blue">Title</th>
+                      <th className="px-4 py-3 text-left font-semibold text-brand-blue">Phone</th>
+                      <th className="px-4 py-3 text-left font-semibold text-brand-blue">Email</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {department.staff!.map((member) => (
+                    {department.staff?.map((member) => (
                       <tr
                         key={`${member.name}-${member.title}`}
                         className="border-b last:border-b-0 hover:bg-brand-surface/50 transition-colors"
                       >
-                        <td className="px-4 py-3 font-medium text-brand-slate">
-                          {member.name}
-                        </td>
-                        <td className="px-4 py-3 text-muted-foreground">
-                          {member.title}
-                        </td>
+                        <td className="px-4 py-3 font-medium text-brand-slate">{member.name}</td>
+                        <td className="px-4 py-3 text-muted-foreground">{member.title}</td>
                         <td className="px-4 py-3">
                           {member.phone ? (
                             <a
@@ -183,11 +153,9 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
           {/* Resources / External Links */}
           {hasLinks && (
             <section>
-              <h2 className="mb-3 text-xl font-semibold text-brand-blue">
-                Resources
-              </h2>
+              <h2 className="mb-3 text-xl font-semibold text-brand-blue">Resources</h2>
               <ul className="space-y-2">
-                {department.externalLinks!.map((link) => (
+                {department.externalLinks?.map((link) => (
                   <li key={link.url}>
                     <a
                       href={link.url}

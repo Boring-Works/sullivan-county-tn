@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { getDepartmentBySlug } from "~/data/departments";
 import { DepartmentDetail } from "~/components/departments/DepartmentDetail";
+import { getDepartmentBySlug } from "~/data/departments";
 
 export const Route = createFileRoute("/departments/$slug")({
   component: DepartmentPage,
@@ -13,9 +13,7 @@ function DepartmentPage() {
   if (!department) {
     return (
       <main className="mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 lg:px-8">
-        <h1 className="text-2xl font-bold text-brand-blue">
-          Department not found
-        </h1>
+        <h1 className="text-2xl font-bold text-brand-blue">Department not found</h1>
         <p className="mt-2 text-brand-slate">
           The department you're looking for doesn't exist or may have been moved.
         </p>

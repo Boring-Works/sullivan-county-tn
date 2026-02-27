@@ -1,13 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { news } from "~/data/news";
 import { NewsCard } from "~/components/shared/NewsCard";
+import { news } from "~/data/news";
 
 export const Route = createFileRoute("/news")({
   component: NewsPage,
 });
 
 const sortedNews = [...news].sort(
-  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
 );
 
 function NewsPage() {

@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { news } from "~/data/news";
 import { NewsCard } from "~/components/shared/NewsCard";
+import { news } from "~/data/news";
 
 export function NewsSection() {
   const latestNews = [...news]

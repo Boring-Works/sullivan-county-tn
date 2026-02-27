@@ -1,6 +1,6 @@
 import { Mail, MapPin, Phone } from "lucide-react";
-import type { Commissioner } from "~/data/commissioners";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import type { Commissioner } from "~/data/commissioners";
 
 interface CommissionerCardProps {
   commissioner: Commissioner;
@@ -20,10 +20,7 @@ export function CommissionerCard({ commissioner }: CommissionerCardProps) {
         {commissioner.phone && (
           <div className="flex items-center gap-2">
             <Phone className="size-3.5 shrink-0 text-brand-blue" />
-            <a
-              href={`tel:${commissioner.phone}`}
-              className="hover:text-brand-blue hover:underline"
-            >
+            <a href={`tel:${commissioner.phone}`} className="hover:text-brand-blue hover:underline">
               {commissioner.phone}
             </a>
           </div>

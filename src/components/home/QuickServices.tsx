@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import type { LucideIcon } from "lucide-react";
 import {
   ArrowRight,
   Building2,
@@ -11,7 +12,6 @@ import {
   Siren,
   Vote,
 } from "lucide-react";
-import type { LucideIcon } from "lucide-react";
 import { quickServices } from "~/data/quick-services";
 
 const ICON_MAP: Record<string, LucideIcon> = {

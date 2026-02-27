@@ -1,6 +1,6 @@
 import { Clock, Mail, MapPin, Phone, Printer } from "lucide-react";
-import type { ContactInfo } from "~/data/departments";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
+import type { ContactInfo } from "~/data/departments";
 
 interface ContactCardProps {
   head: { name: string; title: string };
