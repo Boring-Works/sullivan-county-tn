@@ -28,10 +28,7 @@ export function SiteFooter() {
             <address className="not-italic space-y-2 text-sm leading-relaxed">
               <p>3411 TN-126, Blountville, TN 37617</p>
               <p>
-                <a
-                  href="tel:+14233236417"
-                  className="hover:text-brand-cream transition-colors"
-                >
+                <a href="tel:+14233236417" className="hover:text-brand-cream transition-colors">
                   (423) 323-6417
                 </a>
               </p>
@@ -45,10 +42,7 @@ export function SiteFooter() {
             <ul className="space-y-2">
               {QUICK_LINKS.map((link) => (
                 <li key={link.href}>
-                  <Link
-                    to={link.href}
-                    className="text-sm hover:text-brand-cream transition-colors"
-                  >
+                  <Link to={link.href} className="text-sm hover:text-brand-cream transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -70,12 +64,14 @@ export function SiteFooter() {
                   >
                     {resource.label}
                     <svg
+                      aria-hidden="true"
                       className="h-3 w-3 opacity-50"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                       strokeWidth={2}
                     >
+                      <title>External link</title>
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"

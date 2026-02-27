@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
-  type DepartmentCategory,
   DEPARTMENT_CATEGORIES,
+  type DepartmentCategory,
   getDepartmentsByCategory,
 } from "~/data/departments";
 import { cn } from "~/lib/utils";
@@ -57,7 +57,7 @@ export function SiteNav() {
     <nav
       className={cn(
         "fixed top-0 left-0 right-0 z-50 bg-white transition-shadow duration-200",
-        scrolled && "shadow-md"
+        scrolled && "shadow-md",
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -78,6 +78,7 @@ export function SiteNav() {
           {/* Center: Desktop Nav */}
           <div className="hidden lg:flex items-center gap-1">
             {/* Departments Dropdown */}
+            {/* biome-ignore lint/a11y/noStaticElementInteractions: dropdown container requires mouse handlers for hover interaction */}
             <div
               className="relative"
               onMouseEnter={() => setMegaMenuOpen(true)}
@@ -88,7 +89,7 @@ export function SiteNav() {
                 className={cn(
                   "flex items-center gap-1 px-3 py-2 text-sm font-medium text-brand-slate",
                   "rounded-md hover:bg-brand-surface hover:text-brand-blue transition-colors",
-                  megaMenuOpen && "bg-brand-surface text-brand-blue"
+                  megaMenuOpen && "bg-brand-surface text-brand-blue",
                 )}
                 onClick={() => setMegaMenuOpen(!megaMenuOpen)}
                 aria-expanded={megaMenuOpen}
@@ -96,15 +97,17 @@ export function SiteNav() {
               >
                 Departments
                 <svg
+                  aria-hidden="true"
                   className={cn(
                     "h-4 w-4 transition-transform duration-200",
-                    megaMenuOpen && "rotate-180"
+                    megaMenuOpen && "rotate-180",
                   )}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                   strokeWidth={2}
                 >
+                  <title>Toggle dropdown</title>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
@@ -189,11 +192,27 @@ export function SiteNav() {
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
             >
               {mobileOpen ? (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg
+                  aria-hidden="true"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <title>Close menu</title>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                 </svg>
               ) : (
-                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <svg
+                  aria-hidden="true"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <title>Open menu</title>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
                 </svg>
               )}
@@ -215,15 +234,17 @@ export function SiteNav() {
               >
                 <span>Departments</span>
                 <svg
+                  aria-hidden="true"
                   className={cn(
                     "h-5 w-5 transition-transform duration-200",
-                    expandedCategory === "all" && "rotate-180"
+                    expandedCategory === "all" && "rotate-180",
                   )}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
                   strokeWidth={2}
                 >
+                  <title>Toggle section</title>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
                 </svg>
               </button>
@@ -233,7 +254,7 @@ export function SiteNav() {
                   {CATEGORY_ORDER.map((catKey) => {
                     const category = DEPARTMENT_CATEGORIES[catKey];
                     const depts = getDepartmentsByCategory(catKey);
-                    const isExpanded = expandedCategory === "all";
+                    const _isExpanded = expandedCategory === "all";
                     return (
                       <div key={catKey}>
                         <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-brand-slate-light px-3">
