@@ -1,0 +1,15 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "sullivan-county-tn",
+  "compatibility_date": "2026-02-06",
+  "compatibility_flags": ["nodejs_compat"],
+  "main": "@tanstack/react-start/server-entry",
+  "observability": {
+    "enabled": true
+  },
+  "env": {
+    "preview": {
+      "name": "sullivan-county-tn-preview"
+    }
+  }
+}
