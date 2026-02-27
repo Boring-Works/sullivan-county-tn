@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { MountainDividerInverted } from "~/components/shared/MountainDivider";
 
 const QUICK_LINKS = [
   { label: "Departments", href: "/departments" },
@@ -18,6 +19,8 @@ const EXTERNAL_RESOURCES = [
 export function SiteFooter() {
   return (
     <footer className="relative bg-brand-navy text-brand-cream/70">
+      <MountainDividerInverted fill="var(--color-brand-navy)" />
+
       {/* Top accent */}
       <div className="divider-heritage" />
 
@@ -109,9 +112,14 @@ export function SiteFooter() {
 
           {/* Column 4: Heritage Note */}
           <div>
-            <h3 className="font-display text-sm font-bold text-brand-cream mb-5 tracking-wide">
+            <h3 className="font-display text-sm font-bold text-brand-cream mb-3 tracking-wide">
               Our Heritage
             </h3>
+            <div className="mb-5 flex items-center gap-3">
+              <div className="h-px flex-1 bg-brand-cream/10" />
+              <span className="inline-block h-2 w-2 rotate-45 bg-brand-brass/60" />
+              <div className="h-px flex-1 bg-brand-cream/10" />
+            </div>
             <p className="font-body text-sm leading-relaxed text-brand-cream/50">
               Established in 1779, Sullivan County is the second oldest county in Tennessee. Named
               after General John Sullivan, our county covers 430 square miles of the Appalachian
