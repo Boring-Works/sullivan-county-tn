@@ -1,22 +1,35 @@
 import { Clock, Mail, MapPin, Phone, Printer } from "lucide-react";
-import type { ContactInfo } from "~/data/departments";
+import type { ContactInfo, DepartmentCategory } from "~/data/departments";
+
+const categoryAccents: Record<DepartmentCategory, string> = {
+  administrative: "bg-brand-navy",
+  courts: "bg-brand-courts",
+  "public-safety": "bg-brand-safety",
+  finance: "bg-brand-sage",
+  operations: "bg-brand-brass",
+  community: "bg-brand-community",
+};
 
 interface ContactCardProps {
   head: { name: string; title: string };
   contact: ContactInfo;
+  category?: DepartmentCategory;
 }
 
-export function ContactCard({ head, contact }: ContactCardProps) {
+export function ContactCard({ head, contact, category }: ContactCardProps) {
   return (
-    <div className="rounded-sm border border-brand-surface bg-white overflow-hidden">
+    <div className="rounded-sm border border-brand-surface bg-white overflow-hidden shadow-sm">
+      {/* Category accent line */}
+      {category && <div className={`h-1 ${categoryAccents[category]}`} />}
+
       {/* Header with navy bg */}
-      <div className="bg-brand-navy px-5 py-4">
+      <div className="bg-brand-navy px-6 py-5">
         <h3 className="font-display text-base font-bold text-brand-cream">{head.name}</h3>
         <p className="font-body text-sm text-brand-cream/60">{head.title}</p>
       </div>
 
       {/* Contact details */}
-      <div className="p-5 flex flex-col gap-3.5 font-body text-sm">
+      <div className="p-6 flex flex-col gap-4 font-body text-sm">
         <div className="flex items-start gap-2.5">
           <Phone className="mt-0.5 size-4 shrink-0 text-brand-copper" />
           <a href={`tel:${contact.phone}`} className="hover:text-brand-navy hover:underline">
