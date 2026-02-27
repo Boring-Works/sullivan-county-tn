@@ -24,24 +24,27 @@ function DepartmentsPage() {
   const categoryKeys = Object.keys(DEPARTMENT_CATEGORIES) as DepartmentCategory[];
 
   return (
-    <main className="mx-auto max-w-7xl px-4 py-10 sm:px-6 lg:px-8">
+    <main className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
       {/* Page heading */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-brand-blue sm:text-4xl">County Departments</h1>
-        <p className="mt-2 text-lg text-brand-slate">
+      <div className="mb-10">
+        <div className="mb-4 h-px w-12 bg-brand-copper" />
+        <h1 className="font-display text-4xl font-bold text-brand-navy sm:text-5xl">
+          County Departments
+        </h1>
+        <p className="mt-3 font-body text-lg text-brand-slate-light leading-relaxed">
           Find contact information, services, and resources for all Sullivan County departments
         </p>
       </div>
 
-      {/* Category filter buttons */}
-      <div className="mb-8 flex flex-wrap gap-2">
+      {/* Category filter — pill buttons */}
+      <div className="mb-10 flex flex-wrap gap-2">
         <Link
           to="/departments"
           search={{}}
-          className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+          className={`rounded-sm px-4 py-2 font-body text-sm font-medium transition-all duration-200 ${
             !category
-              ? "bg-brand-blue text-white"
-              : "border border-brand-blue/30 text-brand-blue hover:bg-brand-blue/10"
+              ? "bg-brand-navy text-white"
+              : "border border-brand-navy/20 text-brand-navy hover:bg-brand-navy/5"
           }`}
         >
           All
@@ -51,10 +54,10 @@ function DepartmentsPage() {
             key={key}
             to="/departments"
             search={{ category: key }}
-            className={`rounded-full px-4 py-2 text-sm font-medium transition-colors ${
+            className={`rounded-sm px-4 py-2 font-body text-sm font-medium transition-all duration-200 ${
               category === key
-                ? "bg-brand-blue text-white"
-                : "border border-brand-blue/30 text-brand-blue hover:bg-brand-blue/10"
+                ? "bg-brand-navy text-white"
+                : "border border-brand-navy/20 text-brand-navy hover:bg-brand-navy/5"
             }`}
           >
             {DEPARTMENT_CATEGORIES[key].label}
@@ -63,14 +66,14 @@ function DepartmentsPage() {
       </div>
 
       {/* Department grid */}
-      <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {filtered.map((dept) => (
           <DepartmentCard key={dept.slug} department={dept} />
         ))}
       </div>
 
       {filtered.length === 0 && (
-        <p className="mt-8 text-center text-muted-foreground">
+        <p className="mt-10 text-center font-body text-brand-slate-light">
           No departments found for this category.
         </p>
       )}

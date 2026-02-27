@@ -12,10 +12,13 @@ const sortedNews = [...news].sort(
 
 function NewsPage() {
   return (
-    <main className="py-12">
-      <div className="container mx-auto px-6">
-        <h1 className="text-4xl font-bold text-brand-blue mb-4">County News</h1>
-        <p className="text-brand-slate-light mb-12 max-w-2xl">
+    <main className="py-14">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-4 h-px w-12 bg-brand-copper" />
+        <h1 className="font-display text-4xl font-bold text-brand-navy mb-4 sm:text-5xl">
+          County News
+        </h1>
+        <p className="font-body text-brand-slate-light mb-14 max-w-2xl leading-relaxed">
           Stay up to date with the latest announcements, events, and public notices from Sullivan
           County government.
         </p>

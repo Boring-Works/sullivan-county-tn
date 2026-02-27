@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ExternalLink, FileText } from "lucide-react";
-import { Card, CardContent } from "~/components/ui/card";
 
 export const Route = createFileRoute("/documents")({
   component: DocumentsPage,
@@ -28,46 +27,45 @@ const documentCategories = [
 
 function DocumentsPage() {
   return (
-    <main className="py-12">
-      <div className="container mx-auto px-6">
-        <h1 className="text-4xl font-bold text-brand-blue mb-4">Document Library</h1>
-        <p className="text-brand-slate-light mb-12 max-w-2xl">
+    <main className="py-14">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="mb-4 h-px w-12 bg-brand-copper" />
+        <h1 className="font-display text-4xl font-bold text-brand-navy mb-4 sm:text-5xl">
+          Document Library
+        </h1>
+        <p className="font-body text-brand-slate-light mb-14 max-w-2xl leading-relaxed">
           Access county documents, forms, and public records. Documents are hosted on the Sullivan
           County document management system.
         </p>
 
         {/* Document category grid */}
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {documentCategories.map((category) => (
             <a
               key={category}
               href={DOCUMENT_LIBRARY_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="group"
+              className="card-lift group flex items-center gap-3 rounded-sm border border-brand-surface bg-white p-4 transition-colors hover:border-brand-copper/30"
             >
-              <Card className="h-full transition-colors group-hover:border-brand-blue/40">
-                <CardContent className="flex items-center gap-3 p-4">
-                  <FileText className="size-5 shrink-0 text-brand-blue" />
-                  <span className="text-sm font-medium group-hover:text-brand-blue">
-                    {category}
-                  </span>
-                  <ExternalLink className="ml-auto size-4 shrink-0 text-muted-foreground opacity-0 transition-opacity group-hover:opacity-100" />
-                </CardContent>
-              </Card>
+              <FileText className="size-5 shrink-0 text-brand-navy/60 group-hover:text-brand-copper transition-colors" />
+              <span className="font-body text-sm font-medium text-brand-slate group-hover:text-brand-navy transition-colors">
+                {category}
+              </span>
+              <ExternalLink className="ml-auto size-3.5 shrink-0 text-brand-warm-gray opacity-0 transition-opacity group-hover:opacity-100" />
             </a>
           ))}
         </div>
 
         {/* Footer note */}
-        <div className="mt-12 text-center">
-          <p className="text-sm text-brand-slate">
+        <div className="mt-14 text-center">
+          <p className="font-body text-sm text-brand-slate-light">
             Visit the{" "}
             <a
               href={DOCUMENT_LIBRARY_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-brand-blue hover:underline font-medium"
+              className="text-brand-copper hover:text-brand-copper-light hover:underline font-medium"
             >
               full document library
             </a>{" "}

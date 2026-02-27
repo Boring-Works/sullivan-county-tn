@@ -10,6 +10,7 @@ import { cn } from "~/lib/utils";
 const NAV_LINKS = [
   { label: "Commissioners", href: "/commissioners" },
   { label: "News", href: "/news" },
+  { label: "Documents", href: "/documents" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
@@ -36,7 +37,6 @@ export function SiteNav() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (mobileOpen) {
       document.body.style.overflow = "hidden";
@@ -56,27 +56,33 @@ export function SiteNav() {
   return (
     <nav
       className={cn(
-        "fixed top-0 left-0 right-0 z-50 bg-white transition-shadow duration-200",
-        scrolled && "shadow-md",
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+        scrolled
+          ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-brand-surface"
+          : "bg-transparent",
       )}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          {/* Left: Logo + Branding */}
+        <div className="flex h-16 items-center justify-between lg:h-18">
+          {/* Left: Logo + Branding — serif treatment */}
           <Link to="/" className="flex items-center gap-3 shrink-0" onClick={closeMobile}>
-            <div className="flex h-9 w-9 items-center justify-center rounded bg-brand-blue">
-              <span className="text-sm font-bold text-white tracking-tight">SC</span>
+            <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-brand-navy border border-brand-brass/20">
+              <span className="font-display text-sm font-bold text-brand-brass tracking-tight">
+                SC
+              </span>
             </div>
             <div className="hidden sm:block">
-              <div className="text-sm font-semibold tracking-wide text-brand-blue uppercase leading-tight">
+              <div className="font-display text-sm font-bold tracking-wide text-brand-navy leading-tight">
                 Sullivan County
               </div>
-              <div className="text-xs text-brand-slate-light leading-tight">Tennessee</div>
+              <div className="font-body text-[11px] font-light tracking-widest uppercase text-brand-stone leading-tight">
+                Tennessee
+              </div>
             </div>
           </Link>
 
           {/* Center: Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-0.5">
             {/* Departments Dropdown */}
             {/* biome-ignore lint/a11y/noStaticElementInteractions: dropdown container requires mouse handlers for hover interaction */}
             <div
@@ -87,9 +93,12 @@ export function SiteNav() {
               <button
                 type="button"
                 className={cn(
-                  "flex items-center gap-1 px-3 py-2 text-sm font-medium text-brand-slate",
-                  "rounded-md hover:bg-brand-surface hover:text-brand-blue transition-colors",
-                  megaMenuOpen && "bg-brand-surface text-brand-blue",
+                  "flex items-center gap-1.5 px-3.5 py-2 font-body text-sm font-medium",
+                  "rounded-sm transition-all duration-200",
+                  scrolled ? "text-brand-slate" : "text-white/90",
+                  megaMenuOpen &&
+                    (scrolled ? "bg-brand-surface text-brand-navy" : "bg-white/10 text-white"),
+                  !megaMenuOpen && (scrolled ? "hover:text-brand-navy" : "hover:text-white"),
                 )}
                 onClick={() => setMegaMenuOpen(!megaMenuOpen)}
                 aria-expanded={megaMenuOpen}
@@ -99,7 +108,7 @@ export function SiteNav() {
                 <svg
                   aria-hidden="true"
                   className={cn(
-                    "h-4 w-4 transition-transform duration-200",
+                    "h-3.5 w-3.5 transition-transform duration-200",
                     megaMenuOpen && "rotate-180",
                   )}
                   fill="none"
@@ -112,38 +121,42 @@ export function SiteNav() {
                 </svg>
               </button>
 
-              {/* Mega Menu */}
+              {/* Mega Menu — refined with category accents */}
               {megaMenuOpen && (
-                <div className="absolute left-1/2 -translate-x-1/2 top-full pt-2">
-                  <div className="w-[900px] rounded-lg border border-gray-200 bg-white p-6 shadow-xl">
-                    <div className="mb-4 flex items-center justify-between">
-                      <h3 className="text-sm font-semibold text-brand-blue uppercase tracking-wide">
+                <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3">
+                  <div className="w-[920px] rounded-md border border-brand-surface bg-white p-8 shadow-2xl shadow-brand-navy/8">
+                    <div className="mb-5 flex items-center justify-between border-b border-brand-surface pb-4">
+                      <h3 className="font-display text-base font-bold text-brand-navy">
                         County Departments
                       </h3>
                       <Link
                         to="/departments"
-                        className="text-xs font-medium text-brand-orange hover:text-brand-orange-light transition-colors"
+                        className="font-body text-xs font-semibold tracking-wide uppercase text-brand-copper hover:text-brand-copper-light transition-colors"
                         onClick={() => setMegaMenuOpen(false)}
                       >
-                        View All Departments &rarr;
+                        View All &rarr;
                       </Link>
                     </div>
-                    <div className="grid grid-cols-3 gap-6">
+                    <div className="grid grid-cols-3 gap-8">
                       {CATEGORY_ORDER.map((catKey) => {
                         const category = DEPARTMENT_CATEGORIES[catKey];
                         const depts = getDepartmentsByCategory(catKey);
                         return (
                           <div key={catKey}>
-                            <div className="mb-2 text-xs font-semibold uppercase tracking-wider text-brand-slate-light">
-                              {category.label}
+                            <div className="mb-2.5 flex items-center gap-2">
+                              <div className="h-px flex-1 bg-brand-surface" />
+                              <span className="font-body text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-stone">
+                                {category.label}
+                              </span>
+                              <div className="h-px flex-1 bg-brand-surface" />
                             </div>
-                            <ul className="space-y-1">
+                            <ul className="space-y-0.5">
                               {depts.map((dept) => (
                                 <li key={dept.slug}>
                                   <Link
                                     to="/departments/$slug"
                                     params={{ slug: dept.slug }}
-                                    className="block rounded px-2 py-1 text-sm text-brand-slate hover:bg-brand-surface hover:text-brand-blue transition-colors"
+                                    className="block rounded-sm px-2.5 py-1.5 font-body text-sm text-brand-slate hover:bg-brand-parchment hover:text-brand-navy transition-colors"
                                     onClick={() => setMegaMenuOpen(false)}
                                   >
                                     {dept.name}
@@ -165,7 +178,12 @@ export function SiteNav() {
               <Link
                 key={link.href}
                 to={link.href}
-                className="px-3 py-2 text-sm font-medium text-brand-slate rounded-md hover:bg-brand-surface hover:text-brand-blue transition-colors"
+                className={cn(
+                  "px-3.5 py-2 font-body text-sm font-medium rounded-sm transition-all duration-200",
+                  scrolled
+                    ? "text-brand-slate hover:text-brand-navy"
+                    : "text-white/90 hover:text-white",
+                )}
               >
                 {link.label}
               </Link>
@@ -178,7 +196,12 @@ export function SiteNav() {
               href="https://sullivantntrustee.gov/property-tax/"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden sm:inline-flex items-center rounded-md bg-brand-orange px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-brand-orange-light transition-colors"
+              className={cn(
+                "hidden sm:inline-flex items-center rounded-sm px-5 py-2 font-body text-sm font-semibold tracking-wide transition-all duration-300",
+                scrolled
+                  ? "bg-brand-copper text-white hover:bg-brand-copper-light shadow-sm"
+                  : "bg-white/10 text-white border border-white/20 hover:bg-white/20 backdrop-blur-sm",
+              )}
             >
               Pay Taxes
             </a>
@@ -186,7 +209,12 @@ export function SiteNav() {
             {/* Mobile Hamburger */}
             <button
               type="button"
-              className="lg:hidden inline-flex items-center justify-center rounded-md p-2 text-brand-slate hover:bg-brand-surface hover:text-brand-blue transition-colors"
+              className={cn(
+                "lg:hidden inline-flex items-center justify-center rounded-sm p-2 transition-colors",
+                scrolled
+                  ? "text-brand-slate hover:bg-brand-surface hover:text-brand-navy"
+                  : "text-white/90 hover:text-white hover:bg-white/10",
+              )}
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-expanded={mobileOpen}
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
@@ -224,12 +252,12 @@ export function SiteNav() {
       {/* Mobile Menu */}
       {mobileOpen && (
         <div className="lg:hidden fixed inset-0 top-16 z-40 bg-white overflow-y-auto">
-          <div className="px-4 py-6 space-y-2">
+          <div className="px-4 py-6 space-y-1">
             {/* Departments Collapsible */}
             <div>
               <button
                 type="button"
-                className="flex w-full items-center justify-between rounded-md px-3 py-3 text-base font-medium text-brand-slate hover:bg-brand-surface transition-colors"
+                className="flex w-full items-center justify-between rounded-sm px-3 py-3.5 font-body text-base font-medium text-brand-slate hover:bg-brand-parchment transition-colors"
                 onClick={() => setExpandedCategory(expandedCategory === "all" ? null : "all")}
               >
                 <span>Departments</span>
@@ -250,14 +278,13 @@ export function SiteNav() {
               </button>
 
               {expandedCategory === "all" && (
-                <div className="mt-2 space-y-4 pl-3">
+                <div className="mt-2 space-y-5 pl-3">
                   {CATEGORY_ORDER.map((catKey) => {
                     const category = DEPARTMENT_CATEGORIES[catKey];
                     const depts = getDepartmentsByCategory(catKey);
-                    const _isExpanded = expandedCategory === "all";
                     return (
                       <div key={catKey}>
-                        <div className="mb-1 text-xs font-semibold uppercase tracking-wider text-brand-slate-light px-3">
+                        <div className="mb-1.5 font-body text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-stone px-3">
                           {category.label}
                         </div>
                         <ul className="space-y-0.5">
@@ -266,7 +293,7 @@ export function SiteNav() {
                               <Link
                                 to="/departments/$slug"
                                 params={{ slug: dept.slug }}
-                                className="block rounded-md px-3 py-2 text-sm text-brand-slate hover:bg-brand-surface hover:text-brand-blue transition-colors"
+                                className="block rounded-sm px-3 py-2 font-body text-sm text-brand-slate hover:bg-brand-parchment hover:text-brand-navy transition-colors"
                                 onClick={closeMobile}
                               >
                                 {dept.name}
@@ -279,7 +306,7 @@ export function SiteNav() {
                   })}
                   <Link
                     to="/departments"
-                    className="block rounded-md px-3 py-2 text-sm font-medium text-brand-orange hover:text-brand-orange-light transition-colors"
+                    className="block rounded-sm px-3 py-2 font-body text-sm font-semibold text-brand-copper hover:text-brand-copper-light transition-colors"
                     onClick={closeMobile}
                   >
                     View All Departments &rarr;
@@ -293,7 +320,7 @@ export function SiteNav() {
               <Link
                 key={link.href}
                 to={link.href}
-                className="block rounded-md px-3 py-3 text-base font-medium text-brand-slate hover:bg-brand-surface hover:text-brand-blue transition-colors"
+                className="block rounded-sm px-3 py-3.5 font-body text-base font-medium text-brand-slate hover:bg-brand-parchment hover:text-brand-navy transition-colors"
                 onClick={closeMobile}
               >
                 {link.label}
@@ -301,12 +328,12 @@ export function SiteNav() {
             ))}
 
             {/* Pay Taxes (Mobile) */}
-            <div className="pt-4 border-t border-gray-200">
+            <div className="pt-5 mt-3 border-t border-brand-surface">
               <a
                 href="https://sullivantntrustee.gov/property-tax/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex w-full items-center justify-center rounded-md bg-brand-orange px-4 py-3 text-base font-semibold text-white shadow-sm hover:bg-brand-orange-light transition-colors"
+                className="flex w-full items-center justify-center rounded-sm bg-brand-copper px-4 py-3.5 font-body text-base font-semibold text-white transition-colors hover:bg-brand-copper-light"
               >
                 Pay Taxes
               </a>

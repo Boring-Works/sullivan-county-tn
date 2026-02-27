@@ -1,6 +1,5 @@
 import { FileDown } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
-import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import type { NewsItem } from "~/data/news";
 
 interface NewsCardProps {
@@ -19,31 +18,45 @@ function formatDate(dateStr: string): string {
 
 export function NewsCard({ item }: NewsCardProps) {
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="text-lg">
+    <div className="card-lift group relative flex flex-col rounded-sm border border-brand-surface bg-white overflow-hidden">
+      {/* Accent bar */}
+      <div className="h-0.5 bg-brand-copper scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
+
+      <div className="p-6 flex-1 flex flex-col">
+        {/* Date + Author */}
+        <p className="font-body text-xs text-brand-stone mb-2.5 tracking-wide">
+          {formatDate(item.date)} &middot; {item.author}
+        </p>
+
+        {/* Title */}
+        <h3 className="font-display text-lg font-bold mb-3">
           {item.url ? (
             <a
               href={item.url}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-brand-blue hover:text-brand-blue-light hover:underline"
+              className="text-brand-navy hover:text-brand-blue-light transition-colors"
             >
               {item.title}
             </a>
           ) : (
-            <span className="text-brand-blue">{item.title}</span>
+            <span className="text-brand-navy">{item.title}</span>
           )}
-        </CardTitle>
-        <p className="text-sm text-muted-foreground">
-          {formatDate(item.date)} &middot; {item.author}
+        </h3>
+
+        {/* Summary */}
+        <p className="font-body text-sm leading-relaxed text-brand-slate-light flex-1">
+          {item.summary}
         </p>
-      </CardHeader>
-      <CardContent className="flex flex-col gap-3">
-        <p className="text-sm leading-relaxed">{item.summary}</p>
+
+        {/* PDF download */}
         {item.pdfUrl && (
-          <div>
-            <Badge asChild variant="secondary">
+          <div className="mt-4">
+            <Badge
+              asChild
+              variant="secondary"
+              className="rounded-sm bg-brand-parchment text-brand-navy font-body"
+            >
               <a href={item.pdfUrl} target="_blank" rel="noopener noreferrer">
                 <FileDown className="size-3" />
                 Download PDF
@@ -51,7 +64,7 @@ export function NewsCard({ item }: NewsCardProps) {
             </Badge>
           </div>
         )}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

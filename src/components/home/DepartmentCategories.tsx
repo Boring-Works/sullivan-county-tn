@@ -15,22 +15,34 @@ const CATEGORY_ORDER: DepartmentCategory[] = [
   "community",
 ];
 
+const CATEGORY_ACCENTS: Record<DepartmentCategory, string> = {
+  administrative: "group-hover:border-l-brand-navy",
+  courts: "group-hover:border-l-[#6b4c8a]",
+  "public-safety": "group-hover:border-l-[#a63d3d]",
+  finance: "group-hover:border-l-brand-sage",
+  operations: "group-hover:border-l-brand-brass",
+  community: "group-hover:border-l-[#3d7a7a]",
+};
+
 export function DepartmentCategories() {
   return (
-    <section className="bg-brand-surface py-16 sm:py-20">
+    <section className="relative bg-brand-parchment py-20 sm:py-24">
+      {/* Subtle top border */}
+      <div className="absolute top-0 left-0 right-0 divider-heritage opacity-30" />
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Heading */}
-        <div className="mb-10 text-center">
-          <h2 className="font-display text-3xl font-bold text-brand-blue sm:text-4xl">
+        {/* Heading — centered editorial */}
+        <div className="mb-14 text-center">
+          <h2 className="font-display text-3xl font-bold text-brand-navy sm:text-4xl">
             County Departments
           </h2>
-          <p className="mt-3 text-base text-brand-slate-light sm:text-lg">
+          <p className="mx-auto mt-4 max-w-xl font-body text-base text-brand-slate-light leading-relaxed sm:text-lg">
             Sullivan County government is organized into six service areas to better serve our
             community
           </p>
         </div>
 
-        {/* Grid */}
+        {/* Grid — 3-col with left border accent */}
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {CATEGORY_ORDER.map((key) => {
             const category = DEPARTMENT_CATEGORIES[key];
@@ -41,22 +53,22 @@ export function DepartmentCategories() {
                 key={key}
                 to="/departments"
                 search={{ category: key }}
-                className="group flex flex-col rounded-lg border-l-4 border-l-brand-blue bg-white p-6 shadow-sm transition-all duration-200 hover:shadow-md"
+                className={`group card-lift flex flex-col rounded-sm border-l-4 border-l-brand-surface bg-white p-7 transition-all duration-300 ${CATEGORY_ACCENTS[key]}`}
               >
                 <div className="flex items-start justify-between">
-                  <h3 className="font-display text-lg font-semibold text-brand-slate group-hover:text-brand-blue">
+                  <h3 className="font-display text-lg font-bold text-brand-slate group-hover:text-brand-navy transition-colors">
                     {category.label}
                   </h3>
-                  <span className="inline-flex items-center rounded-full bg-brand-blue/10 px-2.5 py-0.5 text-xs font-medium text-brand-blue">
-                    {deptCount} {deptCount === 1 ? "dept" : "depts"}
+                  <span className="inline-flex items-center rounded-sm bg-brand-navy/5 px-2.5 py-1 font-body text-xs font-medium text-brand-navy">
+                    {deptCount}
                   </span>
                 </div>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-brand-slate-light">
+                <p className="mt-3 flex-1 font-body text-sm leading-relaxed text-brand-slate-light">
                   {category.description}
                 </p>
-                <div className="mt-4 flex items-center text-sm font-medium text-brand-orange transition-colors group-hover:text-brand-orange-light">
+                <div className="mt-5 flex items-center font-body text-sm font-semibold text-brand-copper transition-colors group-hover:text-brand-copper-light">
                   <span>Browse departments</span>
-                  <ArrowRight className="ml-1.5 h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </div>
               </Link>
             );

@@ -44,30 +44,48 @@
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
 
-  /* Sullivan County Brand System */
+  /* Sullivan County Brand System — Appalachian Civic Heritage */
+  --color-brand-navy: #0c1e33;
+  --color-brand-navy-light: #162d4a;
   --color-brand-blue: #1e3a5f;
-  --color-brand-blue-light: #2a4f7f;
+  --color-brand-blue-light: #2a5080;
   --color-brand-blue-dark: #0f2440;
-  --color-brand-orange: #c45427;
-  --color-brand-orange-light: #d4703f;
-  --color-brand-orange-muted: rgba(196, 84, 39, 0.12);
-  --color-brand-green: #2d7a4f;
-  --color-brand-cream: #fafaf8;
-  --color-brand-surface: #f5f5f3;
-  --color-brand-slate: #334155;
-  --color-brand-slate-light: #64748b;
-  --font-display: "Inter", "Helvetica Neue", sans-serif;
-  --font-body: "Inter", "Helvetica Neue", sans-serif;
+  --color-brand-copper: #b5542e;
+  --color-brand-copper-light: #cf6e3e;
+  --color-brand-copper-muted: rgba(181, 84, 46, 0.1);
+  --color-brand-brass: #a08050;
+  --color-brand-sage: #3d6b56;
+  --color-brand-sage-light: #5a9477;
+  --color-brand-stone: #8b8070;
+  --color-brand-cream: #faf8f5;
+  --color-brand-parchment: #f3efe9;
+  --color-brand-surface: #f0ece5;
+  --color-brand-slate: #2d3038;
+  --color-brand-slate-light: #5c6370;
+  --color-brand-warm-gray: #9a9590;
+
+  /* Backward-compat aliases */
+  --color-brand-orange: var(--color-brand-copper);
+  --color-brand-orange-light: var(--color-brand-copper-light);
+  --color-brand-orange-muted: var(--color-brand-copper-muted);
+  --color-brand-green: var(--color-brand-sage);
+
+  /* Typography */
+  --font-display: "Libre Caslon Text", "Georgia", serif;
+  --font-body: "Outfit", "Helvetica Neue", sans-serif;
+  --font-accent: "Libre Caslon Text", "Georgia", serif;
 
   /* Animations */
-  --animate-fade-up: fadeUp 0.8s ease-out forwards;
-  --animate-fade-in: fadeIn 0.6s ease-out forwards;
-  --animate-line-grow: lineGrow 0.8s ease-out forwards;
+  --animate-fade-up: fadeUp 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  --animate-fade-in: fadeIn 0.5s ease-out forwards;
+  --animate-line-grow: lineGrow 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  --animate-slide-in-right: slideInRight 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  --animate-scale-in: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 
   @keyframes fadeUp {
     from {
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(28px);
     }
     to {
       opacity: 1;
@@ -88,6 +106,26 @@
     }
     to {
       transform: scaleX(1);
+    }
+  }
+  @keyframes slideInRight {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+  @keyframes scaleIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
     }
   }
 }
@@ -167,5 +205,53 @@
   }
   body {
     @apply bg-brand-cream text-brand-slate font-body;
+    font-feature-settings:
+      "kern" 1,
+      "liga" 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+}
+
+/* Topographic texture pattern (SVG data URI) */
+.bg-topo-pattern {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cpath d='M150 0c20 30 60 50 80 90s-10 70-30 100-60 40-100 40-70-20-90-50S-10 110 10 80 70 20 90 10s40-10 60-10z' fill='none' stroke='%23ffffff' stroke-width='0.5' opacity='0.06'/%3E%3Cpath d='M50 150c30 10 50 40 70 70s10 60-10 80-50 20-80 10-40-30-50-60 0-60 20-80 30-20 50-20z' fill='none' stroke='%23ffffff' stroke-width='0.5' opacity='0.04'/%3E%3Cpath d='M200 50c15 25 40 35 50 65s-5 55-25 75-45 25-75 25-55-15-65-40-5-55 10-75 30-30 45-35 40-5 60-15z' fill='none' stroke='%23ffffff' stroke-width='0.5' opacity='0.05'/%3E%3C/svg%3E");
+  background-size: 300px 300px;
+}
+
+/* Noise grain overlay */
+.bg-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.025;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Decorative divider */
+.divider-heritage {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-brand-brass) 20%,
+    var(--color-brand-copper) 50%,
+    var(--color-brand-brass) 80%,
+    transparent 100%
+  );
+}
+
+/* Card hover lift */
+.card-lift {
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.card-lift:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 12px 40px rgba(12, 30, 51, 0.08),
+    0 4px 12px rgba(12, 30, 51, 0.04);
 }

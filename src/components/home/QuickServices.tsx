@@ -27,38 +27,42 @@ const ICON_MAP: Record<string, LucideIcon> = {
 
 export function QuickServices() {
   return (
-    <section className="bg-white py-16 sm:py-20">
+    <section className="relative bg-brand-cream py-20 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Heading */}
-        <div className="mb-10 text-center">
-          <h2 className="font-display text-3xl font-bold text-brand-blue sm:text-4xl">
+        {/* Heading — editorial left-aligned with decorative line */}
+        <div className="mb-14 max-w-2xl">
+          <div className="mb-4 h-px w-12 bg-brand-copper" />
+          <h2 className="font-display text-3xl font-bold text-brand-navy sm:text-4xl">
             Quick Services
           </h2>
-          <p className="mt-3 text-base text-brand-slate-light sm:text-lg">
+          <p className="mt-3 font-body text-base text-brand-slate-light leading-relaxed sm:text-lg">
             Access the most-used Sullivan County services and resources
           </p>
         </div>
 
-        {/* Grid */}
+        {/* Grid — refined card treatment */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {quickServices.map((service) => {
             const Icon = ICON_MAP[service.icon];
             const content = (
-              <div className="group flex h-full flex-col rounded-lg border border-gray-200 bg-white p-5 transition-all duration-200 hover:border-l-brand-orange hover:border-l-4 hover:shadow-md">
-                <div className="mb-3 flex items-start justify-between">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-brand-blue/5 text-brand-blue transition-colors group-hover:bg-brand-orange/10 group-hover:text-brand-orange">
+              <div className="card-lift group relative flex h-full flex-col rounded-sm border border-brand-surface bg-white p-6 overflow-hidden">
+                {/* Accent top border on hover */}
+                <div className="absolute top-0 left-0 right-0 h-0.5 bg-brand-copper scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
+
+                <div className="mb-4 flex items-start justify-between">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-sm bg-brand-navy/5 text-brand-navy transition-colors duration-300 group-hover:bg-brand-copper/10 group-hover:text-brand-copper">
                     {Icon ? <Icon className="h-5 w-5" /> : null}
                   </div>
                   {service.external ? (
-                    <ExternalLink className="h-3.5 w-3.5 text-brand-slate-light/60" />
+                    <ExternalLink className="h-3.5 w-3.5 text-brand-warm-gray/60" />
                   ) : (
-                    <ArrowRight className="h-4 w-4 text-brand-slate-light/40 transition-transform group-hover:translate-x-1 group-hover:text-brand-orange" />
+                    <ArrowRight className="h-4 w-4 text-brand-warm-gray/30 transition-all duration-300 group-hover:translate-x-1 group-hover:text-brand-copper" />
                   )}
                 </div>
-                <h3 className="text-sm font-semibold text-brand-slate group-hover:text-brand-blue">
+                <h3 className="font-display text-sm font-bold text-brand-slate group-hover:text-brand-navy transition-colors">
                   {service.title}
                 </h3>
-                <p className="mt-1 text-xs leading-relaxed text-brand-slate-light">
+                <p className="mt-1.5 font-body text-xs leading-relaxed text-brand-slate-light">
                   {service.description}
                 </p>
               </div>

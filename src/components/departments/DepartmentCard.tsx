@@ -1,17 +1,16 @@
 import { Link } from "@tanstack/react-router";
-import { Phone } from "lucide-react";
+import { ArrowRight, Phone } from "lucide-react";
 import { Badge } from "~/components/ui/badge";
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "~/components/ui/card";
 import type { Department, DepartmentCategory } from "~/data/departments";
 import { DEPARTMENT_CATEGORIES } from "~/data/departments";
 
 const categoryColors: Record<DepartmentCategory, string> = {
-  administrative: "bg-blue-100 text-blue-800",
-  courts: "bg-purple-100 text-purple-800",
-  "public-safety": "bg-red-100 text-red-800",
-  finance: "bg-green-100 text-green-800",
-  operations: "bg-amber-100 text-amber-800",
-  community: "bg-teal-100 text-teal-800",
+  administrative: "bg-brand-navy/10 text-brand-navy",
+  courts: "bg-[#6b4c8a]/10 text-[#6b4c8a]",
+  "public-safety": "bg-[#a63d3d]/10 text-[#a63d3d]",
+  finance: "bg-brand-sage/10 text-brand-sage",
+  operations: "bg-brand-brass/10 text-brand-brass",
+  community: "bg-[#3d7a7a]/10 text-[#3d7a7a]",
 };
 
 interface DepartmentCardProps {
@@ -22,44 +21,54 @@ export function DepartmentCard({ department }: DepartmentCardProps) {
   const categoryMeta = DEPARTMENT_CATEGORIES[department.category];
 
   return (
-    <Card className="group transition-all duration-200 hover:shadow-lg hover:-translate-y-0.5">
-      <CardHeader>
-        <Badge className={categoryColors[department.category]}>{categoryMeta.label}</Badge>
-        <CardTitle className="text-lg">
+    <div className="card-lift group relative flex flex-col rounded-sm border border-brand-surface bg-white overflow-hidden">
+      {/* Top accent bar */}
+      <div className="h-0.5 bg-brand-copper scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
+
+      <div className="p-6 flex-1 flex flex-col">
+        <div className="mb-3">
+          <Badge
+            className={`rounded-sm font-body text-[10px] font-medium ${categoryColors[department.category]}`}
+          >
+            {categoryMeta.label}
+          </Badge>
+        </div>
+
+        <h3 className="font-display text-lg font-bold mb-1">
           <Link
             to="/departments/$slug"
             params={{ slug: department.slug }}
-            className="text-brand-blue hover:text-brand-blue-light transition-colors"
+            className="text-brand-navy hover:text-brand-blue-light transition-colors"
           >
             {department.name}
           </Link>
-        </CardTitle>
-        <p className="text-sm text-muted-foreground">
+        </h3>
+
+        <p className="font-body text-sm text-brand-slate-light mb-4">
           {department.head.name} &mdash; {department.head.title}
         </p>
-      </CardHeader>
 
-      <CardContent>
-        <div className="flex items-center gap-2 text-sm text-brand-slate">
-          <Phone className="size-4 shrink-0 text-brand-blue" />
-          <a
-            href={`tel:${department.contact.phone}`}
-            className="hover:text-brand-blue hover:underline"
+        <div className="mt-auto flex items-center justify-between">
+          <div className="flex items-center gap-2 font-body text-sm text-brand-slate">
+            <Phone className="size-3.5 shrink-0 text-brand-navy/50" />
+            <a
+              href={`tel:${department.contact.phone}`}
+              className="hover:text-brand-navy hover:underline"
+            >
+              {department.contact.phone}
+            </a>
+          </div>
+
+          <Link
+            to="/departments/$slug"
+            params={{ slug: department.slug }}
+            className="inline-flex items-center gap-1 font-body text-sm font-semibold text-brand-copper hover:text-brand-copper-light transition-colors"
           >
-            {department.contact.phone}
-          </a>
+            Details
+            <ArrowRight className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+          </Link>
         </div>
-      </CardContent>
-
-      <CardFooter>
-        <Link
-          to="/departments/$slug"
-          params={{ slug: department.slug }}
-          className="text-sm font-medium text-brand-orange hover:text-brand-orange-light transition-colors"
-        >
-          View Details &rarr;
-        </Link>
-      </CardFooter>
-    </Card>
+      </div>
+    </div>
   );
 }
