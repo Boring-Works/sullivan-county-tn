@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { AboutSection } from "~/components/home/AboutSection";
 import { DepartmentCategories } from "~/components/home/DepartmentCategories";
 import { HeroBanner } from "~/components/home/HeroBanner";
 import { NewsSection } from "~/components/home/NewsSection";
@@ -13,6 +14,7 @@ function HomePage() {
   return (
     <main>
       <HeroBanner />
+      <AboutSection />
       <QuickServices />
       <MountainDivider fill="var(--color-brand-parchment)" />
       <DepartmentCategories />
