@@ -9,17 +9,30 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as NewsRouteImport } from './routes/news'
+import { Route as EmployeeServicesRouteImport } from './routes/employee-services'
 import { Route as DocumentsRouteImport } from './routes/documents'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CommissionersRouteImport } from './routes/commissioners'
+import { Route as AdaComplianceRouteImport } from './routes/ada-compliance'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DepartmentsIndexRouteImport } from './routes/departments/index'
 import { Route as DepartmentsSlugRouteImport } from './routes/departments/$slug'
 
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NewsRoute = NewsRouteImport.update({
   id: '/news',
   path: '/news',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EmployeeServicesRoute = EmployeeServicesRouteImport.update({
+  id: '/employee-services',
+  path: '/employee-services',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DocumentsRoute = DocumentsRouteImport.update({
@@ -35,6 +48,11 @@ const ContactRoute = ContactRouteImport.update({
 const CommissionersRoute = CommissionersRouteImport.update({
   id: '/commissioners',
   path: '/commissioners',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdaComplianceRoute = AdaComplianceRouteImport.update({
+  id: '/ada-compliance',
+  path: '/ada-compliance',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -55,29 +73,38 @@ const DepartmentsSlugRoute = DepartmentsSlugRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/ada-compliance': typeof AdaComplianceRoute
   '/commissioners': typeof CommissionersRoute
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
+  '/employee-services': typeof EmployeeServicesRoute
   '/news': typeof NewsRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/departments/$slug': typeof DepartmentsSlugRoute
   '/departments/': typeof DepartmentsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/ada-compliance': typeof AdaComplianceRoute
   '/commissioners': typeof CommissionersRoute
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
+  '/employee-services': typeof EmployeeServicesRoute
   '/news': typeof NewsRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/departments/$slug': typeof DepartmentsSlugRoute
   '/departments': typeof DepartmentsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/ada-compliance': typeof AdaComplianceRoute
   '/commissioners': typeof CommissionersRoute
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
+  '/employee-services': typeof EmployeeServicesRoute
   '/news': typeof NewsRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/departments/$slug': typeof DepartmentsSlugRoute
   '/departments/': typeof DepartmentsIndexRoute
 }
@@ -85,49 +112,75 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/ada-compliance'
     | '/commissioners'
     | '/contact'
     | '/documents'
+    | '/employee-services'
     | '/news'
+    | '/privacy-policy'
     | '/departments/$slug'
     | '/departments/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/ada-compliance'
     | '/commissioners'
     | '/contact'
     | '/documents'
+    | '/employee-services'
     | '/news'
+    | '/privacy-policy'
     | '/departments/$slug'
     | '/departments'
   id:
     | '__root__'
     | '/'
+    | '/ada-compliance'
     | '/commissioners'
     | '/contact'
     | '/documents'
+    | '/employee-services'
     | '/news'
+    | '/privacy-policy'
     | '/departments/$slug'
     | '/departments/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdaComplianceRoute: typeof AdaComplianceRoute
   CommissionersRoute: typeof CommissionersRoute
   ContactRoute: typeof ContactRoute
   DocumentsRoute: typeof DocumentsRoute
+  EmployeeServicesRoute: typeof EmployeeServicesRoute
   NewsRoute: typeof NewsRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   DepartmentsSlugRoute: typeof DepartmentsSlugRoute
   DepartmentsIndexRoute: typeof DepartmentsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/news': {
       id: '/news'
       path: '/news'
       fullPath: '/news'
       preLoaderRoute: typeof NewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/employee-services': {
+      id: '/employee-services'
+      path: '/employee-services'
+      fullPath: '/employee-services'
+      preLoaderRoute: typeof EmployeeServicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/documents': {
@@ -149,6 +202,13 @@ declare module '@tanstack/react-router' {
       path: '/commissioners'
       fullPath: '/commissioners'
       preLoaderRoute: typeof CommissionersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/ada-compliance': {
+      id: '/ada-compliance'
+      path: '/ada-compliance'
+      fullPath: '/ada-compliance'
+      preLoaderRoute: typeof AdaComplianceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -177,10 +237,13 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdaComplianceRoute: AdaComplianceRoute,
   CommissionersRoute: CommissionersRoute,
   ContactRoute: ContactRoute,
   DocumentsRoute: DocumentsRoute,
+  EmployeeServicesRoute: EmployeeServicesRoute,
   NewsRoute: NewsRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
   DepartmentsSlugRoute: DepartmentsSlugRoute,
   DepartmentsIndexRoute: DepartmentsIndexRoute,
 }

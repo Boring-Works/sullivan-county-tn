@@ -24,7 +24,9 @@ function CommissionersPage() {
           </h2>
           <div className="grid gap-4 sm:grid-cols-2">
             <div className="space-y-2.5 font-body text-sm text-brand-slate">
-              <h3 className="font-display text-base font-bold text-brand-navy">Meeting Information</h3>
+              <h3 className="font-display text-base font-bold text-brand-navy">
+                Meeting Information
+              </h3>
               <p>Current agendas and meeting packets are published before each session.</p>
               <p>Previous minutes are available through the Sullivan County Clerk.</p>
               <p>Commission meetings are streamed live on YouTube.</p>

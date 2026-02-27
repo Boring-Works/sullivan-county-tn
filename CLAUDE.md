@@ -31,6 +31,9 @@ Citizen services portal for Sullivan County, Tennessee.
 | `/news` | `routes/news.tsx` | County news feed |
 | `/contact` | `routes/contact.tsx` | General county contact info |
 | `/documents` | `routes/documents.tsx` | Document library categories (links to existing system) |
+| `/ada-compliance` | `routes/ada-compliance.tsx` | ADA compliance info, legal framework, coordinators |
+| `/privacy-policy` | `routes/privacy-policy.tsx` | Privacy policy, cookies, data retention, user rights |
+| `/employee-services` | `routes/employee-services.tsx` | Employee portals (Skyward, Edison, Mark III), benefits |
 
 ## Data Files
 | File | Content |

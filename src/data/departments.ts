@@ -509,7 +509,8 @@ export const departments: Department[] = [
     faqItems: [
       {
         question: "Does the Property Assessor set tax rates?",
-        answer: "No. The Assessor does not set tax rates, send tax bills, or collect property taxes. Those functions are handled by other offices.",
+        answer:
+          "No. The Assessor does not set tax rates, send tax bills, or collect property taxes. Those functions are handled by other offices.",
       },
       {
         question: "When is the next reappraisal?",
@@ -706,7 +707,11 @@ export const departments: Department[] = [
       { range: "$0 – $9,999.99 (Micro)", process: "Open market, quote/receipt submission" },
       { range: "$10,000 – $19,999.99 (Small)", process: "One quote + two informal quotes" },
       { range: "$20,000 – $49,999.99 (Mid-range)", process: "Minimum 3 competitive formal quotes" },
-      { range: "$50,000+ (Large)", process: "Written, sealed competitive proposals; advertised in newspaper 5 days prior; public opening" },
+      {
+        range: "$50,000+ (Large)",
+        process:
+          "Written, sealed competitive proposals; advertised in newspaper 5 days prior; public opening",
+      },
     ],
     importantNotes: [
       "All vendors must register before purchase order issuance",
@@ -847,10 +852,7 @@ export const departments: Department[] = [
       { label: "USDA NRCS Tennessee", url: "https://www.nrcs.usda.gov/tennessee" },
       { label: "Tennessee Department of Agriculture", url: "https://www.tn.gov/agriculture.html" },
     ],
-    publications: [
-      { name: "SCSWCD Brochure" },
-      { name: "FY 2025 Annual Report" },
-    ],
+    publications: [{ name: "SCSWCD Brochure" }, { name: "FY 2025 Annual Report" }],
     importantNotes: [
       "Best Management Practices include: cover crops, filter strips, stream buffers, sediment control, exclusion fencing, and grazing systems",
       "NASDA Foundation EPA Gulf of America Farmer-to-Farmer Grants available",

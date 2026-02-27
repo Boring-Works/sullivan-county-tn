@@ -1,5 +1,14 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, Calendar, Check, Download, ExternalLink, FileText, MapPin, Phone } from "lucide-react";
+import {
+  ArrowLeft,
+  Calendar,
+  Check,
+  Download,
+  ExternalLink,
+  FileText,
+  MapPin,
+  Phone,
+} from "lucide-react";
 import { ContactCard } from "~/components/shared/ContactCard";
 import { Badge } from "~/components/ui/badge";
 import type { Department, DepartmentCategory } from "~/data/departments";
@@ -142,9 +151,7 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
                           <td className="px-5 py-3.5 font-medium text-brand-slate whitespace-nowrap">
                             {threshold.range}
                           </td>
-                          <td className="px-5 py-3.5 text-brand-slate">
-                            {threshold.process}
-                          </td>
+                          <td className="px-5 py-3.5 text-brand-slate">{threshold.process}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -174,9 +181,7 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
                             {doc.name}
                           </a>
                         ) : (
-                          <span className="font-body font-medium text-brand-slate">
-                            {doc.name}
-                          </span>
+                          <span className="font-body font-medium text-brand-slate">{doc.name}</span>
                         )}
                         {doc.description && (
                           <p className="mt-0.5 font-body text-sm text-brand-slate-light">
