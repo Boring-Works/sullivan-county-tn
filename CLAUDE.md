@@ -43,21 +43,29 @@ Citizen services portal for Sullivan County, Tennessee.
 ## Key Components
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| SiteNav | `components/layout/SiteNav.tsx` | Top nav with department mega-menu |
-| SiteFooter | `components/layout/SiteFooter.tsx` | Footer with county info + links |
-| HeroBanner | `components/home/HeroBanner.tsx` | Homepage hero banner |
-| QuickServices | `components/home/QuickServices.tsx` | 8-card service grid |
-| DepartmentCategories | `components/home/DepartmentCategories.tsx` | 6 category cards |
-| DepartmentDetail | `components/departments/DepartmentDetail.tsx` | Full department page layout |
+| SiteNav | `components/layout/SiteNav.tsx` | Glass-morphism nav with department mega-menu |
+| SiteFooter | `components/layout/SiteFooter.tsx` | Footer with mountain silhouette + heritage ornament |
+| HeroBanner | `components/home/HeroBanner.tsx` | Cinematic hero with photo parallax + stat counters |
+| QuickServices | `components/home/QuickServices.tsx` | 8-card service grid with scroll reveals |
+| DepartmentCategories | `components/home/DepartmentCategories.tsx` | 6 category cards with scroll reveals |
+| NewsSection | `components/home/NewsSection.tsx` | Editorial news layout with featured first item |
+| DepartmentDetail | `components/departments/DepartmentDetail.tsx` | Department page with category-tinted banner |
 | ContactCard | `components/shared/ContactCard.tsx` | Reusable contact info card |
-| CommissionerGrid | `components/commissioners/CommissionerGrid.tsx` | District-grouped commissioner list |
+| CommissionerGrid | `components/commissioners/CommissionerGrid.tsx` | District grid with alternating backgrounds |
+| MountainDivider | `components/shared/MountainDivider.tsx` | SVG mountain ridge section dividers |
+| useScrollReveal | `hooks/useScrollReveal.ts` | Intersection Observer scroll-reveal system |
+| useCountUp | `hooks/useCountUp.ts` | Animated stat counter hook |
 
-## Brand Tokens
-- `brand-blue` (#1e3a5f) — primary, headers, nav
-- `brand-orange` (#c45427) — CTAs, accents
-- `brand-green` (#2d7a4f) — success states
-- `brand-cream` (#fafaf8) — page background
-- `brand-slate` (#334155) — body text
+## Brand Tokens (Appalachian Civic Heritage)
+- `brand-navy` (#0c1e33) — primary, headers, nav, hero
+- `brand-copper` (#b5542e) — CTAs, accents, hover states
+- `brand-brass` (#a08050) — decorative elements, "County" text
+- `brand-sage` (#3d6b56) — finance category, success
+- `brand-stone` (#8b8070) — secondary text, labels
+- `brand-cream` (#faf8f5) — page background
+- `brand-parchment` (#f3efe9) — alternating section backgrounds
+- `brand-slate` (#2d3038) — body text
+- **Typography:** Libre Caslon Text (display/serif) + Outfit (body/sans)
 
 ## Deployment
 - **Platform:** Cloudflare Workers
@@ -71,3 +79,5 @@ Citizen services portal for Sullivan County, Tennessee.
 | Multi-page with file-based routing | Departments, commissioners, services each get own routes | 2026-02-27 |
 | Static data files, no database | County info is relatively static, no D1 needed | 2026-02-27 |
 | Blue/orange/green brand system | Blue=trust/government, orange=Tennessee energy, green=Appalachian heritage | 2026-02-27 |
+| Appalachian Civic Heritage design v1 | Libre Caslon Text + Outfit fonts, navy/copper/brass palette, editorial layouts | 2026-02-27 |
+| Appalachian Editorial design v2 | Cinematic hero with photo parallax, scroll reveals, mountain dividers, glass nav, stat counters | 2026-02-27 |
