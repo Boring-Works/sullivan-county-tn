@@ -6,11 +6,11 @@ import { useCountUp } from "~/hooks/useCountUp";
 function StatCounter({ end, suffix, label }: { end: number; suffix?: string; label: string }) {
   const { ref, display } = useCountUp({ end, suffix, duration: 2200 });
   return (
-    <div className="text-center">
-      <div ref={ref} className="font-display text-3xl font-bold text-white sm:text-4xl">
+    <div className="px-5 py-3 sm:px-7 sm:py-4 text-center">
+      <div ref={ref} className="font-display text-2xl font-bold text-white sm:text-3xl">
         {display}
       </div>
-      <div className="mt-1 font-body text-xs font-medium tracking-widest uppercase text-white/50">
+      <div className="mt-1 font-body text-[10px] font-medium tracking-widest uppercase text-white/50">
         {label}
       </div>
     </div>
@@ -89,13 +89,13 @@ export function HeroBanner() {
 
           {/* Divider */}
           <div
-            className="mt-8 h-px w-32 origin-left bg-gradient-to-r from-brand-copper to-brand-brass/40 opacity-0 animate-line-grow"
+            className="mt-6 h-px w-32 origin-left bg-gradient-to-r from-brand-copper to-brand-brass/40 opacity-0 animate-line-grow"
             style={{ animationDelay: "0.45s" }}
           />
 
           {/* Tagline */}
           <p
-            className="mt-8 max-w-xl text-lg leading-relaxed text-white/70 opacity-0 animate-fade-up sm:text-xl"
+            className="mt-6 max-w-xl text-lg leading-relaxed text-white/70 opacity-0 animate-fade-up sm:text-xl"
             style={{ animationDelay: "0.55s" }}
           >
             Second oldest county in Tennessee. Serving the Appalachian Highlands.
@@ -103,7 +103,7 @@ export function HeroBanner() {
 
           {/* CTAs */}
           <div
-            className="mt-12 flex flex-col gap-4 opacity-0 animate-fade-up sm:flex-row sm:gap-5"
+            className="mt-10 flex flex-col gap-4 opacity-0 animate-fade-up sm:flex-row sm:gap-5"
             style={{ animationDelay: "0.7s" }}
           >
             <Link
@@ -138,6 +138,16 @@ export function HeroBanner() {
               Contact Us
             </Link>
           </div>
+
+          {/* Stat counters — in flow, below CTAs */}
+          <div className="mt-14 opacity-0 animate-fade-up" style={{ animationDelay: "0.9s" }}>
+            <div className="inline-flex rounded-sm border border-white/10 backdrop-blur-sm bg-white/5 divide-x divide-white/10">
+              <StatCounter end={156000} suffix="+" label="Residents" />
+              <StatCounter end={430} label="Square Miles" />
+              <StatCounter end={27} label="Departments" />
+              <StatCounter end={1779} label="Established" />
+            </div>
+          </div>
         </div>
 
         {/* Vertical text */}
@@ -149,21 +159,6 @@ export function HeroBanner() {
             <span className="text-xs font-body font-light tracking-[0.4em] uppercase text-white/15">
               Appalachian Highlands
             </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Stat counters */}
-      <div className="absolute bottom-32 sm:bottom-36 left-0 right-0 z-10">
-        <div className="mx-auto max-w-3xl px-6">
-          <div
-            className="grid grid-cols-2 gap-6 sm:grid-cols-4 opacity-0 animate-fade-up"
-            style={{ animationDelay: "0.9s" }}
-          >
-            <StatCounter end={156000} suffix="+" label="Residents" />
-            <StatCounter end={430} label="Square Miles" />
-            <StatCounter end={27} label="Departments" />
-            <StatCounter end={1779} label="Established" />
           </div>
         </div>
       </div>
