@@ -135,12 +135,12 @@ export function HeroBanner() {
 
             {/* CTAs */}
             <div
-              className="mt-10 flex flex-col gap-4 opacity-0 animate-fade-up sm:flex-row sm:gap-5"
+              className="mt-10 grid grid-cols-2 gap-3 opacity-0 animate-fade-up sm:flex sm:flex-row sm:gap-5"
               style={{ animationDelay: "0.7s" }}
             >
               <Link
                 to="/departments"
-                className="group inline-flex items-center gap-3 rounded-sm bg-brand-copper px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:bg-brand-copper-light hover:shadow-lg hover:shadow-brand-copper/20"
+                className="group col-span-2 inline-flex items-center justify-center gap-3 rounded-sm bg-brand-copper px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:bg-brand-copper-light hover:shadow-lg hover:shadow-brand-copper/20 sm:justify-start"
               >
                 Find a Department
                 <svg
@@ -159,13 +159,13 @@ export function HeroBanner() {
                 href="https://sullivantntrustee.gov/property-tax/"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-sm border border-white/20 px-8 py-3.5 font-body text-sm font-medium tracking-wide text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-brand-brass/50 hover:text-brand-brass hover:bg-white/5"
+                className="inline-flex items-center justify-center rounded-sm border border-white/20 px-6 py-3 font-body text-sm font-medium tracking-wide text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-brand-brass/50 hover:text-brand-brass hover:bg-white/5 sm:px-8 sm:py-3.5"
               >
-                Pay Property Taxes
+                Pay Taxes
               </a>
               <Link
                 to="/contact"
-                className="inline-flex items-center justify-center rounded-sm border border-white/20 px-8 py-3.5 font-body text-sm font-medium tracking-wide text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-brand-brass/50 hover:text-brand-brass hover:bg-white/5"
+                className="inline-flex items-center justify-center rounded-sm border border-white/20 px-6 py-3 font-body text-sm font-medium tracking-wide text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-brand-brass/50 hover:text-brand-brass hover:bg-white/5 sm:px-8 sm:py-3.5"
               >
                 Contact Us
               </Link>
@@ -192,7 +192,7 @@ export function HeroBanner() {
           className="mx-auto max-w-4xl px-6 opacity-0 animate-fade-up"
           style={{ animationDelay: "0.95s" }}
         >
-          <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 lg:gap-14 py-4 px-6 rounded-sm backdrop-blur-md bg-brand-navy/40 border border-white/8">
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-8 lg:gap-12 py-4 px-6 rounded-sm backdrop-blur-md bg-brand-navy/40 border border-white/8 justify-items-center">
             <StatItem
               end={156000}
               suffix="+"
