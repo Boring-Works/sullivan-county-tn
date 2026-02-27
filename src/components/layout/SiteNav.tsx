@@ -8,10 +8,11 @@ import {
 import { cn } from "~/lib/utils";
 
 const NAV_LINKS = [
-  { label: "Commissioners", href: "/commissioners" },
-  { label: "News", href: "/news" },
-  { label: "Documents", href: "/documents" },
-  { label: "Contact", href: "/contact" },
+	{ label: "Commissioners", href: "/commissioners" },
+	{ label: "News", href: "/news" },
+	{ label: "Documents", href: "/documents" },
+	{ label: "Employee Services", href: "/employee-services" },
+	{ label: "Contact", href: "/contact" },
 ] as const;
 
 const CATEGORY_ORDER: DepartmentCategory[] = [

@@ -30,22 +30,20 @@ const quickContacts = [
 ];
 
 const externalResources = [
-  {
-    label: "Trustee (Tax Payments)",
-    url: "https://www.sullivancountytrustee.com/",
-  },
-  {
-    label: "Sullivan County Schools",
-    url: "https://www.sullivank12.net/",
-  },
-  {
-    label: "Kingsport Public Library",
-    url: "https://www.kingsportlibrary.org/",
-  },
-  {
-    label: "Sullivan County Animal Shelter",
-    url: "https://www.scanimalshelter.org/",
-  },
+	{ label: "Sullivan County Trustee (Tax Payments)", url: "https://sullivantntrustee.gov/" },
+	{ label: "Animal Shelter", url: "https://animalshelter-sullivancounty.org/" },
+	{ label: "Sullivan County Schools (K-12)", url: "http://www.sullivank12.net/" },
+	{ label: "Sullivan County Public Library", url: "https://www.scpltn.org/" },
+	{ label: "Sheriff's Office", url: "https://www.scsotn.com/" },
+	{ label: "County Clerk Records", url: "https://www.sullivancountyclerktn.com/" },
+	{ label: "Chancery Court", url: "https://sullivantnchancery.com/" },
+	{ label: "District Attorney", url: "https://sullivancountyda.com/" },
+	{ label: "Election Office", url: "https://www.scelect.org/" },
+	{ label: "Historic Sullivan (Archives/Tourism)", url: "https://www.historicsullivan.com/" },
+	{ label: "Register of Deeds Records", url: "https://ustitlesearch.net/" },
+	{ label: "BidNet (Purchasing Bids)", url: "https://www.bidnetdirect.com/tennessee/sullivancountytn" },
+	{ label: "State of Tennessee", url: "https://www.tn.gov/" },
+	{ label: "County Technical Assistance Service", url: "http://www.ctas.tennessee.edu/" },
 ];
 
 function ContactPage() {
@@ -139,9 +137,9 @@ function ContactPage() {
         {/* External resources */}
         <div className="rounded-sm border border-brand-surface bg-brand-parchment p-7">
           <h2 className="font-display text-xl font-bold text-brand-navy mb-5">
-            External Resources
+            Community Resources
           </h2>
-          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {externalResources.map((resource) => (
               <li key={resource.label}>
                 <a
