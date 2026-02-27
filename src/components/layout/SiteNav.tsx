@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useRouterState } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
   DEPARTMENT_CATEGORIES,
@@ -29,6 +29,12 @@ export function SiteNav() {
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
 
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  // Only show transparent nav on pages with dark backgrounds at the top
+  const hasDarkHeader = pathname === "/" || /^\/departments\/[^/]+/.test(pathname);
+  // On light pages, always render the solid/scrolled nav appearance
+  const solid = !hasDarkHeader || scrolled;
+
   useEffect(() => {
     function handleScroll() {
       setScrolled(window.scrollY > 8);
@@ -57,7 +63,7 @@ export function SiteNav() {
     <nav
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled
+        solid
           ? "bg-white/80 backdrop-blur-lg shadow-sm border-b border-brand-surface"
           : "bg-transparent",
       )}
@@ -69,7 +75,7 @@ export function SiteNav() {
             <div
               className={cn(
                 "flex h-10 w-10 items-center justify-center rounded-sm transition-all duration-300",
-                scrolled
+                solid
                   ? "bg-brand-navy border border-brand-brass/20"
                   : "bg-brand-brass/15 border border-brand-brass/40 backdrop-blur-sm",
               )}
@@ -82,7 +88,7 @@ export function SiteNav() {
               <div
                 className={cn(
                   "font-display text-sm font-bold tracking-wide leading-tight transition-colors duration-300",
-                  scrolled ? "text-brand-navy" : "text-white",
+                  solid ? "text-brand-navy" : "text-white",
                 )}
               >
                 Sullivan County
@@ -90,7 +96,7 @@ export function SiteNav() {
               <div
                 className={cn(
                   "font-body text-[11px] font-light tracking-widest uppercase leading-tight transition-colors duration-300",
-                  scrolled ? "text-brand-stone" : "text-white/50",
+                  solid ? "text-brand-stone" : "text-white/50",
                 )}
               >
                 Tennessee
@@ -112,10 +118,10 @@ export function SiteNav() {
                 className={cn(
                   "flex items-center gap-1.5 px-3.5 py-2 font-body text-sm font-medium",
                   "rounded-sm transition-all duration-200",
-                  scrolled ? "text-brand-slate" : "text-white/90",
+                  solid ? "text-brand-slate" : "text-white/90",
                   megaMenuOpen &&
-                    (scrolled ? "bg-brand-surface text-brand-navy" : "bg-white/10 text-white"),
-                  !megaMenuOpen && (scrolled ? "hover:text-brand-navy" : "hover:text-white"),
+                    (solid ? "bg-brand-surface text-brand-navy" : "bg-white/10 text-white"),
+                  !megaMenuOpen && (solid ? "hover:text-brand-navy" : "hover:text-white"),
                 )}
                 onClick={() => setMegaMenuOpen(!megaMenuOpen)}
                 aria-expanded={megaMenuOpen}
@@ -197,7 +203,7 @@ export function SiteNav() {
                 to={link.href}
                 className={cn(
                   "px-3.5 py-2 font-body text-sm font-medium rounded-sm transition-all duration-200",
-                  scrolled
+                  solid
                     ? "text-brand-slate hover:text-brand-navy"
                     : "text-white/90 hover:text-white",
                 )}
@@ -215,7 +221,7 @@ export function SiteNav() {
               rel="noopener noreferrer"
               className={cn(
                 "hidden sm:inline-flex items-center rounded-sm px-5 py-2 font-body text-sm font-semibold tracking-wide transition-all duration-300",
-                scrolled
+                solid
                   ? "bg-brand-copper text-white hover:bg-brand-copper-light shadow-sm"
                   : "bg-white/10 text-white border border-white/20 hover:bg-white/20 backdrop-blur-sm",
               )}
@@ -228,7 +234,7 @@ export function SiteNav() {
               type="button"
               className={cn(
                 "lg:hidden inline-flex items-center justify-center rounded-sm p-2 transition-colors",
-                scrolled
+                solid
                   ? "text-brand-slate hover:bg-brand-surface hover:text-brand-navy"
                   : "text-white/90 hover:text-white hover:bg-white/10",
               )}
