@@ -13,6 +13,7 @@ import {
   Vote,
 } from "lucide-react";
 import { quickServices } from "~/data/quick-services";
+import { useScrollReveal } from "~/hooks/useScrollReveal";
 
 const ICON_MAP: Record<string, LucideIcon> = {
   DollarSign,
@@ -26,11 +27,13 @@ const ICON_MAP: Record<string, LucideIcon> = {
 };
 
 export function QuickServices() {
+  const containerRef = useScrollReveal<HTMLDivElement>();
+
   return (
     <section className="relative bg-brand-cream py-20 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div ref={containerRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Heading — editorial left-aligned with decorative line */}
-        <div className="mb-14 max-w-2xl">
+        <div className="mb-14 max-w-2xl" data-reveal>
           <div className="mb-4 h-px w-12 bg-brand-copper" />
           <h2 className="font-display text-3xl font-bold text-brand-navy sm:text-4xl">
             Quick Services
@@ -42,7 +45,7 @@ export function QuickServices() {
 
         {/* Grid — refined card treatment */}
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {quickServices.map((service) => {
+          {quickServices.map((service, index) => {
             const Icon = ICON_MAP[service.icon];
             const content = (
               <div className="card-lift group relative flex h-full flex-col rounded-sm border border-brand-surface bg-white p-6 overflow-hidden">
@@ -75,6 +78,8 @@ export function QuickServices() {
                   href={service.href}
                   target="_blank"
                   rel="noopener noreferrer"
+                  data-reveal
+                  data-reveal-delay={index * 60}
                 >
                   {content}
                 </a>
@@ -82,7 +87,12 @@ export function QuickServices() {
             }
 
             return (
-              <Link key={service.title} to={service.href}>
+              <Link
+                key={service.title}
+                to={service.href}
+                data-reveal
+                data-reveal-delay={index * 60}
+              >
                 {content}
               </Link>
             );
