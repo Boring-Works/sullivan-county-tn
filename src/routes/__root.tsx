@@ -2,6 +2,8 @@
 
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { SiteFooter } from "~/components/layout/SiteFooter";
+import { SiteNav } from "~/components/layout/SiteNav";
 import appCss from "~/styles/app.css?url";
 
 export const Route = createRootRoute({
@@ -30,7 +32,9 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <RootDocument>
+      <SiteNav />
       <Outlet />
+      <SiteFooter />
     </RootDocument>
   );
 }
