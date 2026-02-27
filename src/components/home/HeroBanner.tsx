@@ -16,16 +16,16 @@ function StatItem({
 }) {
   const { ref, display } = useCountUp({ end, suffix, duration: 2200 });
   return (
-    <div className="flex items-center gap-2.5 sm:gap-3">
-      <span className="text-brand-brass/70">{icon}</span>
-      <div>
+    <div className="flex flex-col items-center gap-1 sm:flex-row sm:gap-3">
+      <span className="text-brand-brass/80">{icon}</span>
+      <div className="text-center sm:text-left">
         <div
           ref={ref}
-          className="font-display text-lg font-bold text-white sm:text-xl leading-none"
+          className="font-display text-base font-bold text-white sm:text-xl leading-none"
         >
           {display}
         </div>
-        <div className="font-body text-[10px] font-medium tracking-widest uppercase text-white/40">
+        <div className="font-body text-[9px] font-medium tracking-widest uppercase text-white/40 sm:text-[10px]">
           {label}
         </div>
       </div>
@@ -77,8 +77,8 @@ export function HeroBanner() {
         />
       </picture>
 
-      {/* Dark overlay — gradient from bottom */}
-      <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/55 to-brand-navy/20" />
+      {/* Dark overlay — stronger mid-zone for text readability */}
+      <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/70 to-brand-navy/25" />
 
       {/* Topo texture overlay */}
       <div className="absolute inset-0 bg-topo-pattern" />
@@ -90,12 +90,12 @@ export function HeroBanner() {
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-brand-brass to-transparent opacity-40" />
 
       {/* Main content — left-aligned asymmetric */}
-      <div className="relative z-10 flex-1 flex items-center px-6 pt-24 pb-48 sm:px-8 sm:pb-56 lg:px-12">
+      <div className="relative z-10 flex-1 flex items-center px-6 pt-24 pb-40 sm:px-8 sm:pb-48 lg:px-12">
         <div className="mx-auto w-full max-w-7xl">
           <div className="max-w-3xl">
             {/* Established badge */}
-            <div className="mb-8 opacity-0 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-              <span className="inline-flex items-center gap-2 border border-brand-brass/50 rounded-full px-5 py-2 text-xs font-medium tracking-widest uppercase text-brand-brass backdrop-blur-sm">
+            <div className="mb-6 opacity-0 animate-fade-up" style={{ animationDelay: "0.1s" }}>
+              <span className="inline-flex items-center gap-2 border border-brand-brass/50 rounded-full px-4 py-1.5 text-[11px] font-medium tracking-widest uppercase text-brand-brass backdrop-blur-sm">
                 <span className="block h-1.5 w-1.5 rounded-full bg-brand-brass" />
                 Established 1779
               </span>
@@ -103,17 +103,17 @@ export function HeroBanner() {
 
             {/* County name */}
             <h1
-              className="font-display text-6xl font-bold tracking-tight text-white leading-[1.05] opacity-0 animate-fade-up sm:text-7xl lg:text-[8rem]"
+              className="font-display text-5xl font-bold tracking-tight text-white leading-[1.05] opacity-0 animate-fade-up sm:text-7xl lg:text-[8rem]"
               style={{ animationDelay: "0.2s" }}
             >
               Sullivan
               <br />
-              <span className="text-brand-brass/90">County</span>
+              <span className="text-brand-brass">County</span>
             </h1>
 
             {/* Location */}
             <p
-              className="mt-4 font-body text-sm font-light tracking-[0.3em] uppercase text-white/50 opacity-0 animate-fade-up sm:text-base"
+              className="mt-3 font-body text-xs font-light tracking-[0.3em] uppercase text-white/50 opacity-0 animate-fade-up sm:text-sm"
               style={{ animationDelay: "0.35s" }}
             >
               Blountville, Tennessee
@@ -121,26 +121,23 @@ export function HeroBanner() {
 
             {/* Divider */}
             <div
-              className="mt-6 h-px w-32 origin-left bg-gradient-to-r from-brand-copper to-brand-brass/40 opacity-0 animate-line-grow"
+              className="mt-5 h-px w-24 origin-left bg-gradient-to-r from-brand-copper to-brand-brass/40 opacity-0 animate-line-grow sm:w-32"
               style={{ animationDelay: "0.45s" }}
             />
 
             {/* Tagline — italic editorial */}
             <p
-              className="mt-6 max-w-xl font-accent text-lg italic leading-relaxed text-white/60 opacity-0 animate-fade-up sm:text-xl"
+              className="mt-5 max-w-xl font-accent text-base italic leading-relaxed text-white/70 opacity-0 animate-fade-up sm:text-xl"
               style={{ animationDelay: "0.55s" }}
             >
               Second oldest county in Tennessee. Serving the Appalachian Highlands.
             </p>
 
-            {/* CTAs */}
-            <div
-              className="mt-10 grid grid-cols-2 gap-3 opacity-0 animate-fade-up sm:flex sm:flex-row sm:gap-5"
-              style={{ animationDelay: "0.7s" }}
-            >
+            {/* CTA — primary button + text links */}
+            <div className="mt-8 opacity-0 animate-fade-up" style={{ animationDelay: "0.7s" }}>
               <Link
                 to="/departments"
-                className="group col-span-2 inline-flex items-center justify-center gap-3 rounded-sm bg-brand-copper px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:bg-brand-copper-light hover:shadow-lg hover:shadow-brand-copper/20 sm:justify-start"
+                className="group inline-flex items-center gap-3 rounded-sm bg-brand-copper px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:bg-brand-copper-light hover:shadow-lg hover:shadow-brand-copper/20"
               >
                 Find a Department
                 <svg
@@ -155,22 +152,25 @@ export function HeroBanner() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                 </svg>
               </Link>
-              <a
-                href="https://sullivantntrustee.gov/property-tax/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-sm border border-white/20 px-6 py-3 font-body text-sm font-medium tracking-wide text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-brand-brass/50 hover:text-brand-brass hover:bg-white/5 sm:px-8 sm:py-3.5"
-              >
-                Pay Taxes
-              </a>
-              <a
-                href="https://wheretennesseebegan.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center rounded-sm border border-white/20 px-6 py-3 font-body text-sm font-medium tracking-wide text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-brand-brass/50 hover:text-brand-brass hover:bg-white/5 sm:px-8 sm:py-3.5"
-              >
-                Where Tennessee Began
-              </a>
+              <div className="mt-4 flex items-center gap-6 font-body text-sm">
+                <a
+                  href="https://sullivantntrustee.gov/property-tax/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/60 underline underline-offset-4 decoration-white/20 transition-colors hover:text-brand-brass hover:decoration-brand-brass/40"
+                >
+                  Pay Property Taxes
+                </a>
+                <span className="text-white/20">|</span>
+                <a
+                  href="https://wheretennesseebegan.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/60 underline underline-offset-4 decoration-white/20 transition-colors hover:text-brand-brass hover:decoration-brand-brass/40"
+                >
+                  Where Tennessee Began
+                </a>
+              </div>
             </div>
           </div>
 
@@ -188,20 +188,20 @@ export function HeroBanner() {
         </div>
       </div>
 
-      {/* Stat bar — pinned at bottom above mountain divider */}
+      {/* Stat bar — floating above mountain divider, no container */}
       <div className="absolute bottom-[80px] sm:bottom-[100px] lg:bottom-[120px] left-0 right-0 z-30">
         <div
-          className="mx-auto max-w-4xl px-6 opacity-0 animate-fade-up"
+          className="mx-auto max-w-3xl px-6 opacity-0 animate-fade-up"
           style={{ animationDelay: "0.95s" }}
         >
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 sm:gap-8 lg:gap-12 py-4 px-6 rounded-sm backdrop-blur-md bg-brand-navy/40 border border-white/8 justify-items-center">
+          <div className="grid grid-cols-4 gap-2 sm:gap-6 lg:gap-10 justify-items-center">
             <StatItem
               end={156000}
               suffix="+"
               label="Residents"
               icon={
                 <svg
-                  className="h-5 w-5"
+                  className="hidden sm:block h-5 w-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -221,7 +221,7 @@ export function HeroBanner() {
               label="Square Miles"
               icon={
                 <svg
-                  className="h-5 w-5"
+                  className="hidden sm:block h-5 w-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -241,7 +241,7 @@ export function HeroBanner() {
               label="Departments"
               icon={
                 <svg
-                  className="h-5 w-5"
+                  className="hidden sm:block h-5 w-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -261,7 +261,7 @@ export function HeroBanner() {
               label="Established"
               icon={
                 <svg
-                  className="h-5 w-5"
+                  className="hidden sm:block h-5 w-5"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
@@ -280,9 +280,9 @@ export function HeroBanner() {
         </div>
       </div>
 
-      {/* Mountain silhouette divider */}
+      {/* Mountain silhouette divider — cream to match About section bg */}
       <div className="absolute bottom-0 left-0 right-0 z-20">
-        <MountainDivider fill="var(--color-brand-cream)" />
+        <MountainDivider fill="#ffffff" />
       </div>
     </section>
   );
