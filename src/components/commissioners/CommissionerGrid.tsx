@@ -1,16 +1,25 @@
 import { commissioners, getCommissionersByDistrict } from "~/data/commissioners";
+import { useScrollReveal } from "~/hooks/useScrollReveal";
 import { CommissionerCard } from "./CommissionerCard";
 
 const DISTRICTS = Array.from(new Set(commissioners.map((c) => c.district))).sort((a, b) => a - b);
 
 export function CommissionerGrid() {
+  const containerRef = useScrollReveal<HTMLDivElement>();
+
   return (
-    <div className="flex flex-col gap-12">
-      {DISTRICTS.map((district) => {
+    <div ref={containerRef} className="flex flex-col gap-0">
+      {DISTRICTS.map((district, districtIndex) => {
         const members = getCommissionersByDistrict(district);
+        const isEven = districtIndex % 2 === 0;
         return (
-          <section key={district}>
-            <div className="mb-5 flex items-baseline gap-3">
+          <section
+            key={district}
+            className={
+              isEven ? "bg-brand-parchment rounded-sm p-6 sm:p-8 -mx-2 sm:-mx-4" : "py-6 sm:py-8"
+            }
+          >
+            <div className="mb-5 flex items-baseline gap-3" data-reveal>
               <h2 className="font-display text-xl font-bold text-brand-navy">
                 District {district}
               </h2>
@@ -19,13 +28,12 @@ export function CommissionerGrid() {
               </span>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {members.map((commissioner) => (
-                <CommissionerCard key={commissioner.name} commissioner={commissioner} />
+              {members.map((commissioner, cardIndex) => (
+                <div key={commissioner.name} data-reveal data-reveal-delay={cardIndex * 60}>
+                  <CommissionerCard commissioner={commissioner} />
+                </div>
               ))}
             </div>
-            {district !== DISTRICTS[DISTRICTS.length - 1] && (
-              <div className="mt-12 divider-heritage opacity-20" />
-            )}
           </section>
         );
       })}
