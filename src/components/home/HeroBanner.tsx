@@ -163,12 +163,14 @@ export function HeroBanner() {
               >
                 Pay Taxes
               </a>
-              <Link
-                to="/contact"
+              <a
+                href="https://wheretennesseebegan.com"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex items-center justify-center rounded-sm border border-white/20 px-6 py-3 font-body text-sm font-medium tracking-wide text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-brand-brass/50 hover:text-brand-brass hover:bg-white/5 sm:px-8 sm:py-3.5"
               >
-                Contact Us
-              </Link>
+                Where Tennessee Began
+              </a>
             </div>
           </div>
 
