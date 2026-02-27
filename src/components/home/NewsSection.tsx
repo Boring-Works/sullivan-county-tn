@@ -2,17 +2,19 @@ import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
 import { NewsCard } from "~/components/shared/NewsCard";
 import { news } from "~/data/news";
+import { useScrollReveal } from "~/hooks/useScrollReveal";
 
 export function NewsSection() {
+  const containerRef = useScrollReveal<HTMLDivElement>();
   const latestNews = [...news]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 3);
 
   return (
     <section className="bg-white py-20 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div ref={containerRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Heading — editorial with decorative line + "View All" link */}
-        <div className="mb-14 flex items-end justify-between">
+        <div className="mb-14 flex items-end justify-between" data-reveal>
           <div>
             <div className="mb-4 h-px w-12 bg-brand-copper" />
             <h2 className="font-display text-3xl font-bold text-brand-navy sm:text-4xl">
@@ -31,10 +33,17 @@ export function NewsSection() {
           </Link>
         </div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {latestNews.map((item) => (
-            <NewsCard key={item.slug} item={item} />
+        {/* Grid — featured first item */}
+        <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
+          {latestNews.map((item, index) => (
+            <div
+              key={item.slug}
+              className={index === 0 ? "lg:col-span-2" : ""}
+              data-reveal
+              data-reveal-delay={index * 80}
+            >
+              <NewsCard item={item} featured={index === 0} />
+            </div>
           ))}
         </div>
 
