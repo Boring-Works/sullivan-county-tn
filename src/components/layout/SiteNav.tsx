@@ -58,7 +58,7 @@ export function SiteNav() {
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         scrolled
-          ? "bg-white/95 backdrop-blur-md shadow-sm border-b border-brand-surface"
+          ? "bg-white/80 backdrop-blur-lg shadow-sm border-b border-brand-surface"
           : "bg-transparent",
       )}
     >
@@ -124,7 +124,7 @@ export function SiteNav() {
               {/* Mega Menu — refined with category accents */}
               {megaMenuOpen && (
                 <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3">
-                  <div className="w-[920px] rounded-md border border-brand-surface bg-white p-8 shadow-2xl shadow-brand-navy/8">
+                  <div className="w-[920px] rounded-md border border-brand-surface bg-white p-8 shadow-2xl shadow-brand-navy/8 animate-scale-in">
                     <div className="mb-5 flex items-center justify-between border-b border-brand-surface pb-4">
                       <h3 className="font-display text-base font-bold text-brand-navy">
                         County Departments
@@ -251,20 +251,20 @@ export function SiteNav() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="lg:hidden fixed inset-0 top-16 z-40 bg-white overflow-y-auto">
+        <div className="lg:hidden fixed inset-0 top-16 z-40 bg-brand-navy overflow-y-auto">
           <div className="px-4 py-6 space-y-1">
             {/* Departments Collapsible */}
-            <div>
+            <div className="opacity-0 animate-slide-in-right" style={{ animationDelay: "0.05s" }}>
               <button
                 type="button"
-                className="flex w-full items-center justify-between rounded-sm px-3 py-3.5 font-body text-base font-medium text-brand-slate hover:bg-brand-parchment transition-colors"
+                className="flex w-full items-center justify-between rounded-sm px-3 py-3.5 font-body text-base font-medium text-white/90 hover:bg-white/10 transition-colors"
                 onClick={() => setExpandedCategory(expandedCategory === "all" ? null : "all")}
               >
                 <span>Departments</span>
                 <svg
                   aria-hidden="true"
                   className={cn(
-                    "h-5 w-5 transition-transform duration-200",
+                    "h-5 w-5 text-white/70 transition-transform duration-200",
                     expandedCategory === "all" && "rotate-180",
                   )}
                   fill="none"
@@ -284,7 +284,7 @@ export function SiteNav() {
                     const depts = getDepartmentsByCategory(catKey);
                     return (
                       <div key={catKey}>
-                        <div className="mb-1.5 font-body text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-stone px-3">
+                        <div className="mb-1.5 font-body text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-brass/70 px-3">
                           {category.label}
                         </div>
                         <ul className="space-y-0.5">
@@ -293,7 +293,7 @@ export function SiteNav() {
                               <Link
                                 to="/departments/$slug"
                                 params={{ slug: dept.slug }}
-                                className="block rounded-sm px-3 py-2 font-body text-sm text-brand-slate hover:bg-brand-parchment hover:text-brand-navy transition-colors"
+                                className="block rounded-sm px-3 py-2 font-body text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors"
                                 onClick={closeMobile}
                               >
                                 {dept.name}
@@ -306,7 +306,7 @@ export function SiteNav() {
                   })}
                   <Link
                     to="/departments"
-                    className="block rounded-sm px-3 py-2 font-body text-sm font-semibold text-brand-copper hover:text-brand-copper-light transition-colors"
+                    className="block rounded-sm px-3 py-2 font-body text-sm font-semibold text-brand-brass hover:text-brand-brass/80 transition-colors"
                     onClick={closeMobile}
                   >
                     View All Departments &rarr;
@@ -316,11 +316,12 @@ export function SiteNav() {
             </div>
 
             {/* Static Links */}
-            {NAV_LINKS.map((link) => (
+            {NAV_LINKS.map((link, index) => (
               <Link
                 key={link.href}
                 to={link.href}
-                className="block rounded-sm px-3 py-3.5 font-body text-base font-medium text-brand-slate hover:bg-brand-parchment hover:text-brand-navy transition-colors"
+                className="block rounded-sm px-3 py-3.5 font-body text-base font-medium text-white/90 hover:bg-white/10 hover:text-white transition-colors opacity-0 animate-slide-in-right"
+                style={{ animationDelay: `${0.1 + index * 0.05}s` }}
                 onClick={closeMobile}
               >
                 {link.label}
@@ -328,7 +329,10 @@ export function SiteNav() {
             ))}
 
             {/* Pay Taxes (Mobile) */}
-            <div className="pt-5 mt-3 border-t border-brand-surface">
+            <div
+              className="pt-5 mt-3 border-t border-white/10 opacity-0 animate-slide-in-right"
+              style={{ animationDelay: "0.3s" }}
+            >
               <a
                 href="https://sullivantntrustee.gov/property-tax/"
                 target="_blank"
