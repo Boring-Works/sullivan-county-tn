@@ -1,34 +1,77 @@
 import { Link } from "@tanstack/react-router";
+import { useEffect, useRef } from "react";
+import { MountainDivider } from "~/components/shared/MountainDivider";
+import { useCountUp } from "~/hooks/useCountUp";
+
+function StatCounter({ end, suffix, label }: { end: number; suffix?: string; label: string }) {
+  const { ref, display } = useCountUp({ end, suffix, duration: 2200 });
+  return (
+    <div className="text-center">
+      <div ref={ref} className="font-display text-3xl font-bold text-white sm:text-4xl">
+        {display}
+      </div>
+      <div className="mt-1 font-body text-xs font-medium tracking-widest uppercase text-white/50">
+        {label}
+      </div>
+    </div>
+  );
+}
 
 export function HeroBanner() {
+  const heroRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    function handleScroll() {
+      if (heroRef.current) {
+        heroRef.current.style.setProperty("--scroll-y", `${window.scrollY}`);
+      }
+    }
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <section className="relative min-h-[85vh] flex items-center overflow-hidden bg-brand-navy">
-      {/* Topographic texture */}
-      <div className="absolute inset-0 bg-topo-pattern opacity-100" />
+    <section
+      ref={heroRef}
+      className="relative min-h-screen flex items-center overflow-hidden bg-brand-navy"
+    >
+      {/* Background image with parallax */}
+      <img
+        src="/hero-mountains.jpg"
+        alt=""
+        width={1920}
+        height={1080}
+        fetchPriority="high"
+        className="absolute inset-0 w-full h-full object-cover"
+        style={{ transform: "translateY(calc(var(--scroll-y, 0) * 0.3px))" }}
+      />
 
-      {/* Gradient overlay — warm-to-cool diagonal */}
-      <div className="absolute inset-0 bg-gradient-to-br from-brand-navy via-brand-blue/90 to-brand-navy-light" />
+      {/* Dark overlay — gradient from bottom */}
+      <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/80 to-brand-navy/40" />
 
-      {/* Grain texture */}
+      {/* Topo texture overlay */}
+      <div className="absolute inset-0 bg-topo-pattern" />
+
+      {/* Grain */}
       <div className="bg-grain absolute inset-0" />
 
-      {/* Decorative brass accent line — top */}
-      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-brand-brass to-transparent opacity-40" />
+      {/* Brass accent line — top */}
+      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-brand-brass to-transparent opacity-40" />
 
       {/* Content — asymmetric left-aligned */}
-      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-28 sm:px-8 lg:px-12">
+      <div className="relative z-10 mx-auto w-full max-w-7xl px-6 py-32 sm:px-8 lg:px-12">
         <div className="max-w-3xl">
           {/* Established badge */}
           <div className="mb-8 opacity-0 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-            <span className="inline-flex items-center gap-2 border border-brand-brass/30 rounded-full px-4 py-1.5 text-xs font-medium tracking-widest uppercase text-brand-brass">
+            <span className="inline-flex items-center gap-2 border border-brand-brass/30 rounded-full px-4 py-1.5 text-xs font-medium tracking-widest uppercase text-brand-brass backdrop-blur-sm">
               <span className="block h-1.5 w-1.5 rounded-full bg-brand-brass" />
               Established 1779
             </span>
           </div>
 
-          {/* County name — large editorial serif */}
+          {/* County name */}
           <h1
-            className="font-display text-6xl font-bold tracking-tight text-white leading-[1.05] opacity-0 animate-fade-up sm:text-7xl lg:text-8xl"
+            className="font-display text-6xl font-bold tracking-tight text-white leading-[1.05] opacity-0 animate-fade-up sm:text-7xl lg:text-[8rem]"
             style={{ animationDelay: "0.2s" }}
           >
             Sullivan
@@ -36,7 +79,7 @@ export function HeroBanner() {
             <span className="text-brand-brass/90">County</span>
           </h1>
 
-          {/* State — tracking wide, smaller */}
+          {/* State */}
           <p
             className="mt-4 font-body text-lg font-light tracking-[0.25em] uppercase text-white/50 opacity-0 animate-fade-up sm:text-xl"
             style={{ animationDelay: "0.35s" }}
@@ -44,7 +87,7 @@ export function HeroBanner() {
             Tennessee
           </p>
 
-          {/* Decorative divider */}
+          {/* Divider */}
           <div
             className="mt-8 h-px w-32 origin-left bg-gradient-to-r from-brand-copper to-brand-brass/40 opacity-0 animate-line-grow"
             style={{ animationDelay: "0.45s" }}
@@ -55,11 +98,10 @@ export function HeroBanner() {
             className="mt-8 max-w-xl text-lg leading-relaxed text-white/70 opacity-0 animate-fade-up sm:text-xl"
             style={{ animationDelay: "0.55s" }}
           >
-            Second oldest county in Tennessee. Serving over 156,000 residents across 430 square
-            miles of the Appalachian Highlands.
+            Second oldest county in Tennessee. Serving the Appalachian Highlands.
           </p>
 
-          {/* CTA Buttons — horizontal with border treatments */}
+          {/* CTAs */}
           <div
             className="mt-12 flex flex-col gap-4 opacity-0 animate-fade-up sm:flex-row sm:gap-5"
             style={{ animationDelay: "0.7s" }}
@@ -98,7 +140,7 @@ export function HeroBanner() {
           </div>
         </div>
 
-        {/* Decorative — vertical text on right (desktop) */}
+        {/* Vertical text */}
         <div className="hidden lg:block absolute right-12 top-1/2 -translate-y-1/2">
           <div
             className="opacity-0 animate-fade-in"
@@ -111,8 +153,25 @@ export function HeroBanner() {
         </div>
       </div>
 
-      {/* Bottom fade */}
-      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-brand-cream to-transparent" />
+      {/* Stat counters */}
+      <div className="absolute bottom-32 sm:bottom-36 left-0 right-0 z-10">
+        <div className="mx-auto max-w-3xl px-6">
+          <div
+            className="grid grid-cols-2 gap-6 sm:grid-cols-4 opacity-0 animate-fade-up"
+            style={{ animationDelay: "0.9s" }}
+          >
+            <StatCounter end={156000} suffix="+" label="Residents" />
+            <StatCounter end={430} label="Square Miles" />
+            <StatCounter end={27} label="Departments" />
+            <StatCounter end={1779} label="Established" />
+          </div>
+        </div>
+      </div>
+
+      {/* Mountain silhouette divider — replaces gradient fade */}
+      <div className="absolute bottom-0 left-0 right-0 z-20">
+        <MountainDivider fill="var(--color-brand-cream)" />
+      </div>
     </section>
   );
 }
