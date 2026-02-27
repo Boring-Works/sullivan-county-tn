@@ -90,7 +90,7 @@ export function HeroBanner() {
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-brand-brass to-transparent opacity-40" />
 
       {/* Main content — left-aligned asymmetric */}
-      <div className="relative z-10 flex-1 flex items-center px-6 pt-24 pb-40 sm:px-8 sm:pb-48 lg:px-12">
+      <div className="relative z-10 flex-1 flex items-center px-6 pt-24 pb-32 sm:px-8 sm:pb-40 lg:px-12">
         <div className="mx-auto w-full max-w-7xl">
           <div className="max-w-3xl">
             {/* Established badge */}
@@ -111,18 +111,10 @@ export function HeroBanner() {
               <span className="text-brand-brass">County</span>
             </h1>
 
-            {/* Location */}
-            <p
-              className="mt-3 font-body text-xs font-light tracking-[0.3em] uppercase text-white/50 opacity-0 animate-fade-up sm:text-sm"
-              style={{ animationDelay: "0.35s" }}
-            >
-              Blountville, Tennessee
-            </p>
-
             {/* Divider */}
             <div
-              className="mt-5 h-px w-24 origin-left bg-gradient-to-r from-brand-copper to-brand-brass/40 opacity-0 animate-line-grow sm:w-32"
-              style={{ animationDelay: "0.45s" }}
+              className="mt-4 h-px w-24 origin-left bg-gradient-to-r from-brand-copper to-brand-brass/40 opacity-0 animate-line-grow sm:w-32"
+              style={{ animationDelay: "0.35s" }}
             />
 
             {/* Tagline — italic editorial */}
@@ -188,12 +180,14 @@ export function HeroBanner() {
         </div>
       </div>
 
-      {/* Stat bar — floating above mountain divider, no container */}
+      {/* Stat bar — floating above mountain divider */}
       <div className="absolute bottom-[80px] sm:bottom-[100px] lg:bottom-[120px] left-0 right-0 z-30">
         <div
           className="mx-auto max-w-3xl px-6 opacity-0 animate-fade-up"
           style={{ animationDelay: "0.95s" }}
         >
+          {/* Subtle anchor line */}
+          <div className="mx-auto mb-5 h-px w-16 bg-gradient-to-r from-transparent via-brand-brass/30 to-transparent" />
           <div className="grid grid-cols-4 gap-2 sm:gap-6 lg:gap-10 justify-items-center">
             <StatItem
               end={156000}

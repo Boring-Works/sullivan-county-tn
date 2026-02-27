@@ -45,8 +45,8 @@ export function AboutSection() {
             <div className="mt-4 h-px w-20 bg-gradient-to-r from-brand-copper to-brand-brass/40" />
             <p className="mt-6 font-body text-base leading-relaxed text-brand-slate-light sm:text-lg">
               Sullivan County is the second oldest county in Tennessee, covering 430 square miles of
-              the Appalachian Highlands. Our county government serves over 156,000 residents from
-              the historic courthouse in Blountville.
+              the Appalachian Highlands. Home to Kingsport, Bristol, and Blountville, our county
+              government serves over 156,000 residents.
             </p>
             <p className="mt-4 font-body text-base leading-relaxed text-brand-slate-light">
               From property records to building permits, our 27 departments are here to help.
