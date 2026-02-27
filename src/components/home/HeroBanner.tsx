@@ -51,16 +51,31 @@ export function HeroBanner() {
       ref={heroRef}
       className="relative min-h-screen flex flex-col overflow-hidden bg-brand-navy"
     >
-      {/* Background image with parallax */}
-      <img
-        src="/hero-mountains.jpg"
-        alt=""
-        width={1920}
-        height={1080}
-        fetchPriority="high"
-        className="absolute inset-0 w-full h-full object-cover"
-        style={{ transform: "translateY(calc(var(--scroll-y, 0) * 0.3px))" }}
-      />
+      {/* Background image with parallax — responsive srcSet */}
+      <picture>
+        <source
+          media="(min-width: 1024px)"
+          srcSet="/images/hero/boone-lake-1920.jpg"
+          width={1920}
+          height={1440}
+        />
+        <source
+          media="(min-width: 640px)"
+          srcSet="/images/hero/boone-lake-1024.jpg"
+          width={1024}
+          height={768}
+        />
+        <img
+          src="/images/hero/boone-lake-640.jpg"
+          alt="Aerial view of Boone Lake in Sullivan County, Tennessee — forested islands surrounded by blue water with Appalachian mountains in the background"
+          width={640}
+          height={480}
+          fetchPriority="high"
+          decoding="async"
+          className="absolute inset-0 w-full h-full object-cover"
+          style={{ transform: "translateY(calc(var(--scroll-y, 0) * 0.3px))" }}
+        />
+      </picture>
 
       {/* Dark overlay — gradient from bottom */}
       <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/75 to-brand-navy/35" />
