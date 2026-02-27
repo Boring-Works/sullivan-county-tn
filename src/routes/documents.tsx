@@ -1,8 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ExternalLink, FileText } from "lucide-react";
+import { seo } from "~/utils/seo";
 
 export const Route = createFileRoute("/documents")({
   component: DocumentsPage,
+  head: () => ({
+    meta: seo({
+      title: "Document Library — Sullivan County, TN",
+      description:
+        "Access county documents, forms, agendas, court dockets, and public records from Sullivan County.",
+      url: "/documents",
+    }),
+  }),
 });
 
 const DOCUMENT_LIBRARY_URL = "https://sullivancountytn.gov/document-library/";

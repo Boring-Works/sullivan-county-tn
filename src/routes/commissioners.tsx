@@ -1,8 +1,18 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CommissionerGrid } from "~/components/commissioners/CommissionerGrid";
+import { seo } from "~/utils/seo";
 
 export const Route = createFileRoute("/commissioners")({
   component: CommissionersPage,
+  head: () => ({
+    meta: seo({
+      title: "County Commissioners — Sullivan County, TN",
+      description:
+        "Sullivan County commissioners across 11 districts. Find your representative and contact information.",
+      image: "/images/og/og-courthouse.jpg",
+      url: "/commissioners",
+    }),
+  }),
 });
 
 function CommissionersPage() {

@@ -1,8 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Mail, MapPin, Phone } from "lucide-react";
+import { seo } from "~/utils/seo";
 
 export const Route = createFileRoute("/ada-compliance")({
   component: AdaCompliancePage,
+  head: () => ({
+    meta: seo({
+      title: "ADA Compliance — Sullivan County, TN",
+      description:
+        "Sullivan County ADA compliance information, accommodation requests, and coordinator contacts.",
+      url: "/ada-compliance",
+    }),
+  }),
 });
 
 function AdaCompliancePage() {

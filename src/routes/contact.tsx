@@ -1,8 +1,18 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Clock, ExternalLink, MapPin, Phone } from "lucide-react";
+import { seo } from "~/utils/seo";
 
 export const Route = createFileRoute("/contact")({
   component: ContactPage,
+  head: () => ({
+    meta: seo({
+      title: "Contact Sullivan County Government",
+      description:
+        "Phone numbers, addresses, and office hours for Sullivan County government departments and services.",
+      image: "/images/og/og-courthouse.jpg",
+      url: "/contact",
+    }),
+  }),
 });
 
 const quickContacts = [

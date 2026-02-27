@@ -1,9 +1,23 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { DepartmentDetail } from "~/components/departments/DepartmentDetail";
 import { getDepartmentBySlug } from "~/data/departments";
+import { seo } from "~/utils/seo";
 
 export const Route = createFileRoute("/departments/$slug")({
   component: DepartmentPage,
+  head: ({ params }) => {
+    const dept = getDepartmentBySlug(params.slug);
+    return {
+      meta: dept
+        ? seo({
+            title: `${dept.name} — Sullivan County, TN`,
+            description: dept.description || `Contact information and services for ${dept.name}, Sullivan County Tennessee.`,
+            image: "/images/og/og-courthouse.jpg",
+            url: `/departments/${params.slug}`,
+          })
+        : [],
+    };
+  },
 });
 
 function DepartmentPage() {

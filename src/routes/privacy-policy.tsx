@@ -1,7 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { seo } from "~/utils/seo";
 
 export const Route = createFileRoute("/privacy-policy")({
   component: PrivacyPolicyPage,
+  head: () => ({
+    meta: seo({
+      title: "Privacy Policy — Sullivan County, TN",
+      description:
+        "How Sullivan County collects, uses, and protects your information when you visit our website.",
+      url: "/privacy-policy",
+    }),
+  }),
 });
 
 function PrivacyPolicyPage() {

@@ -1,8 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ExternalLink } from "lucide-react";
+import { seo } from "~/utils/seo";
 
 export const Route = createFileRoute("/employee-services")({
   component: EmployeeServicesPage,
+  head: () => ({
+    meta: seo({
+      title: "Employee Services — Sullivan County, TN",
+      description:
+        "Access employee portals, benefits information, and resources for Sullivan County staff.",
+      url: "/employee-services",
+    }),
+  }),
 });
 
 const portals = [

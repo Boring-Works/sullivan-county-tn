@@ -6,9 +6,19 @@ import {
   departments,
   getDepartmentsByCategory,
 } from "~/data/departments";
+import { seo } from "~/utils/seo";
 
 export const Route = createFileRoute("/departments/")({
   component: DepartmentsPage,
+  head: () => ({
+    meta: seo({
+      title: "County Departments — Sullivan County, TN",
+      description:
+        "Browse all Sullivan County government departments. Find contact information, services, and office hours.",
+      image: "/images/og/og-courthouse.jpg",
+      url: "/departments",
+    }),
+  }),
   validateSearch: (search: Record<string, unknown>) => ({
     category: (search.category as string) || undefined,
   }),
