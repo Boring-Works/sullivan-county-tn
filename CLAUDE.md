@@ -21,22 +21,48 @@ Citizen services portal for Sullivan County, Tennessee.
 - `npm run format` — Format with Biome
 - `npm run test` — Run tests
 
-## Project Structure
-```
-src/
-├── routes/              # File-based routes
-├── components/
-│   ├── layout/          # Header, Footer, Navigation
-│   ├── home/            # Homepage sections
-│   ├── departments/     # Department page components
-│   ├── commissioners/   # Commissioner components
-│   ├── shared/          # Reusable components
-│   └── ui/              # shadcn/ui primitives
-├── data/                # Static data files (departments, commissioners, etc.)
-├── lib/                 # Utilities (cn helper, etc.)
-└── styles/
-    └── app.css          # Tailwind + shadcn theme + brand tokens
-```
+## Routes
+| Route | File | Purpose |
+|-------|------|---------|
+| `/` | `routes/index.tsx` | Homepage dashboard (hero, quick services, dept categories, news) |
+| `/departments` | `routes/departments/index.tsx` | Department directory with category filter |
+| `/departments/$slug` | `routes/departments/$slug.tsx` | Individual department detail (27 departments) |
+| `/commissioners` | `routes/commissioners.tsx` | Commissioner grid by district (11 districts) |
+| `/news` | `routes/news.tsx` | County news feed |
+| `/contact` | `routes/contact.tsx` | General county contact info |
+| `/documents` | `routes/documents.tsx` | Document library categories (links to existing system) |
+
+## Data Files
+| File | Content |
+|------|---------|
+| `data/departments.ts` | 27 departments with contacts, services, offices, staff, external links |
+| `data/commissioners.ts` | 24 commissioners across 11 districts |
+| `data/news.ts` | County news articles |
+| `data/quick-services.ts` | 8 quick-access service links for homepage |
+
+## Key Components
+| Component | Location | Purpose |
+|-----------|----------|---------|
+| SiteNav | `components/layout/SiteNav.tsx` | Top nav with department mega-menu |
+| SiteFooter | `components/layout/SiteFooter.tsx` | Footer with county info + links |
+| HeroBanner | `components/home/HeroBanner.tsx` | Homepage hero banner |
+| QuickServices | `components/home/QuickServices.tsx` | 8-card service grid |
+| DepartmentCategories | `components/home/DepartmentCategories.tsx` | 6 category cards |
+| DepartmentDetail | `components/departments/DepartmentDetail.tsx` | Full department page layout |
+| ContactCard | `components/shared/ContactCard.tsx` | Reusable contact info card |
+| CommissionerGrid | `components/commissioners/CommissionerGrid.tsx` | District-grouped commissioner list |
+
+## Brand Tokens
+- `brand-blue` (#1e3a5f) — primary, headers, nav
+- `brand-orange` (#c45427) — CTAs, accents
+- `brand-green` (#2d7a4f) — success states
+- `brand-cream` (#fafaf8) — page background
+- `brand-slate` (#334155) — body text
+
+## Deployment
+- **Platform:** Cloudflare Workers
+- **Worker:** sullivan-county-tn
+- **Deploy:** `npm run deploy`
 
 ## Decision Log
 | Decision | Rationale | Date |
