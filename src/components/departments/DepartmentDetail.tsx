@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowLeft, Check, ExternalLink, MapPin, Phone } from "lucide-react";
+import { ArrowLeft, Calendar, Check, Download, ExternalLink, FileText, MapPin, Phone } from "lucide-react";
 import { ContactCard } from "~/components/shared/ContactCard";
 import { Badge } from "~/components/ui/badge";
 import type { Department, DepartmentCategory } from "~/data/departments";
@@ -95,6 +95,186 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
                 ))}
               </ul>
             </section>
+
+            {/* Important Notes */}
+            {department.importantNotes && department.importantNotes.length > 0 && (
+              <section>
+                <h2 className="font-display mb-4 text-xl font-bold text-brand-navy">
+                  Important Notes
+                </h2>
+                <div className="rounded-sm border border-amber-200 bg-amber-50 p-5">
+                  <ul className="space-y-2">
+                    {department.importantNotes.map((note) => (
+                      <li key={note} className="flex items-start gap-3">
+                        <span className="mt-2 block h-1.5 w-1.5 shrink-0 rounded-full bg-amber-500" />
+                        <span className="font-body text-sm text-amber-900">{note}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </section>
+            )}
+
+            {/* Bid Thresholds */}
+            {department.bidThresholds && department.bidThresholds.length > 0 && (
+              <section>
+                <h2 className="font-display mb-5 text-xl font-bold text-brand-navy">
+                  Bid Thresholds
+                </h2>
+                <div className="overflow-x-auto rounded-sm border border-brand-surface">
+                  <table className="w-full font-body text-sm">
+                    <thead>
+                      <tr className="border-b border-brand-surface bg-brand-parchment">
+                        <th className="px-5 py-3.5 text-left font-semibold text-brand-navy">
+                          Purchase Range
+                        </th>
+                        <th className="px-5 py-3.5 text-left font-semibold text-brand-navy">
+                          Process Required
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {department.bidThresholds.map((threshold) => (
+                        <tr
+                          key={threshold.range}
+                          className="border-b border-brand-surface last:border-b-0 even:bg-brand-parchment/50"
+                        >
+                          <td className="px-5 py-3.5 font-medium text-brand-slate whitespace-nowrap">
+                            {threshold.range}
+                          </td>
+                          <td className="px-5 py-3.5 text-brand-slate">
+                            {threshold.process}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </section>
+            )}
+
+            {/* Key Documents */}
+            {department.keyDocuments && department.keyDocuments.length > 0 && (
+              <section>
+                <h2 className="font-display mb-4 text-xl font-bold text-brand-navy">
+                  Key Documents
+                </h2>
+                <ul className="space-y-3">
+                  {department.keyDocuments.map((doc) => (
+                    <li key={doc.name} className="flex items-start gap-3">
+                      <FileText className="mt-0.5 size-4 shrink-0 text-brand-copper" />
+                      <div>
+                        {doc.url ? (
+                          <a
+                            href={doc.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="font-body font-medium text-brand-copper hover:text-brand-copper-light transition-colors"
+                          >
+                            {doc.name}
+                          </a>
+                        ) : (
+                          <span className="font-body font-medium text-brand-slate">
+                            {doc.name}
+                          </span>
+                        )}
+                        {doc.description && (
+                          <p className="mt-0.5 font-body text-sm text-brand-slate-light">
+                            {doc.description}
+                          </p>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Meeting Schedule */}
+            {department.meetingSchedule && department.meetingSchedule.length > 0 && (
+              <section>
+                <h2 className="font-display mb-5 text-xl font-bold text-brand-navy">
+                  Meeting Schedule
+                </h2>
+                <div className="grid gap-4 sm:grid-cols-2">
+                  {department.meetingSchedule.map((meeting) => (
+                    <div
+                      key={meeting.name}
+                      className="rounded-sm border border-brand-surface bg-white p-5"
+                    >
+                      <h3 className="font-display text-base font-bold text-brand-navy mb-2">
+                        {meeting.name}
+                      </h3>
+                      <div className="flex items-start gap-2.5 font-body text-sm text-brand-slate">
+                        <Calendar className="mt-0.5 size-4 shrink-0 text-brand-navy/60" />
+                        <span>{meeting.schedule}</span>
+                      </div>
+                      {meeting.location && (
+                        <div className="flex items-start gap-2.5 font-body text-sm text-brand-slate mt-2">
+                          <MapPin className="mt-0.5 size-4 shrink-0 text-brand-navy/60" />
+                          <span>{meeting.location}</span>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Publications */}
+            {department.publications && department.publications.length > 0 && (
+              <section>
+                <h2 className="font-display mb-4 text-xl font-bold text-brand-navy">
+                  Publications
+                </h2>
+                <ul className="space-y-2.5">
+                  {department.publications.map((pub) => (
+                    <li key={pub.name}>
+                      {pub.url ? (
+                        <a
+                          href={pub.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 font-body text-brand-copper hover:text-brand-copper-light transition-colors"
+                        >
+                          <Download className="size-4 shrink-0" />
+                          {pub.name}
+                        </a>
+                      ) : (
+                        <span className="inline-flex items-center gap-2 font-body text-brand-slate">
+                          <FileText className="size-4 shrink-0 text-brand-navy/60" />
+                          {pub.name}
+                        </span>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* FAQ */}
+            {department.faqItems && department.faqItems.length > 0 && (
+              <section>
+                <h2 className="font-display mb-5 text-xl font-bold text-brand-navy">
+                  Frequently Asked Questions
+                </h2>
+                <div className="space-y-4">
+                  {department.faqItems.map((faq) => (
+                    <div
+                      key={faq.question}
+                      className="rounded-sm border border-brand-surface bg-white p-5"
+                    >
+                      <h3 className="font-display text-base font-bold text-brand-navy mb-2">
+                        {faq.question}
+                      </h3>
+                      <p className="font-body text-sm leading-relaxed text-brand-slate">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
 
             {/* Additional Offices */}
             {hasOffices && (
