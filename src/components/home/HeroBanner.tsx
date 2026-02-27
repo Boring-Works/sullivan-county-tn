@@ -89,93 +89,100 @@ export function HeroBanner() {
       {/* Brass accent line — top */}
       <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-brand-brass to-transparent opacity-40" />
 
-      {/* Main content — centered */}
-      <div className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 pt-24 pb-48 sm:pb-56 text-center">
-        {/* Established badge */}
-        <div className="mb-8 opacity-0 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-          <span className="inline-flex items-center gap-2 border border-brand-brass/30 rounded-full px-5 py-2 text-xs font-medium tracking-widest uppercase text-brand-brass backdrop-blur-sm">
-            <span className="block h-1.5 w-1.5 rounded-full bg-brand-brass" />
-            Established 1779
-          </span>
-        </div>
+      {/* Main content — left-aligned asymmetric */}
+      <div className="relative z-10 flex-1 flex items-center px-6 pt-24 pb-48 sm:px-8 sm:pb-56 lg:px-12">
+        <div className="mx-auto w-full max-w-7xl">
+          <div className="max-w-3xl">
+            {/* Established badge */}
+            <div className="mb-8 opacity-0 animate-fade-up" style={{ animationDelay: "0.1s" }}>
+              <span className="inline-flex items-center gap-2 border border-brand-brass/30 rounded-full px-5 py-2 text-xs font-medium tracking-widest uppercase text-brand-brass backdrop-blur-sm">
+                <span className="block h-1.5 w-1.5 rounded-full bg-brand-brass" />
+                Established 1779
+              </span>
+            </div>
 
-        {/* County name — centered, commanding */}
-        <h1
-          className="font-display text-6xl font-bold tracking-tight text-white leading-[1.05] opacity-0 animate-fade-up sm:text-7xl lg:text-[8rem]"
-          style={{ animationDelay: "0.2s" }}
-        >
-          Sullivan
-          <br />
-          <span className="text-brand-brass/90">County</span>
-        </h1>
-
-        {/* Location */}
-        <p
-          className="mt-4 font-body text-sm font-light tracking-[0.3em] uppercase text-white/50 opacity-0 animate-fade-up sm:text-base"
-          style={{ animationDelay: "0.35s" }}
-        >
-          Blountville, Tennessee
-        </p>
-
-        {/* Tagline — italic editorial */}
-        <p
-          className="mt-6 max-w-md font-accent text-lg italic leading-relaxed text-white/60 opacity-0 animate-fade-up sm:text-xl"
-          style={{ animationDelay: "0.5s" }}
-        >
-          Second oldest county in Tennessee. Serving the Appalachian Highlands.
-        </p>
-
-        {/* CTAs — stacked centered, wider */}
-        <div
-          className="mt-10 flex flex-col items-center gap-3.5 opacity-0 animate-fade-up sm:flex-row sm:gap-4"
-          style={{ animationDelay: "0.65s" }}
-        >
-          <Link
-            to="/departments"
-            className="group inline-flex items-center justify-center gap-3 rounded-sm bg-brand-copper px-10 py-4 font-body text-sm font-semibold tracking-widest uppercase text-white transition-all duration-300 hover:bg-brand-copper-light hover:shadow-lg hover:shadow-brand-copper/20 min-w-[220px]"
-          >
-            Find a Department
-            <svg
-              aria-hidden="true"
-              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2}
+            {/* County name */}
+            <h1
+              className="font-display text-6xl font-bold tracking-tight text-white leading-[1.05] opacity-0 animate-fade-up sm:text-7xl lg:text-[8rem]"
+              style={{ animationDelay: "0.2s" }}
             >
-              <title>Arrow</title>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </Link>
-          <a
-            href="https://sullivantntrustee.gov/property-tax/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center rounded-sm border border-white/20 px-10 py-4 font-body text-sm font-semibold tracking-widest uppercase text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-brand-brass/50 hover:text-brand-brass hover:bg-white/5 min-w-[220px]"
-          >
-            Pay Property Taxes
-          </a>
-        </div>
+              Sullivan
+              <br />
+              <span className="text-brand-brass/90">County</span>
+            </h1>
 
-        {/* Scroll indicator */}
-        <div
-          className="mt-12 flex flex-col items-center gap-1.5 opacity-0 animate-fade-up"
-          style={{ animationDelay: "0.85s" }}
-        >
-          <span className="font-body text-[10px] font-medium tracking-[0.3em] uppercase text-white/30">
-            Scroll
-          </span>
-          <svg
-            aria-hidden="true"
-            className="h-5 w-5 text-white/30 animate-bounce"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={1.5}
-          >
-            <title>Scroll down</title>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
+            {/* Location */}
+            <p
+              className="mt-4 font-body text-sm font-light tracking-[0.3em] uppercase text-white/50 opacity-0 animate-fade-up sm:text-base"
+              style={{ animationDelay: "0.35s" }}
+            >
+              Blountville, Tennessee
+            </p>
+
+            {/* Divider */}
+            <div
+              className="mt-6 h-px w-32 origin-left bg-gradient-to-r from-brand-copper to-brand-brass/40 opacity-0 animate-line-grow"
+              style={{ animationDelay: "0.45s" }}
+            />
+
+            {/* Tagline — italic editorial */}
+            <p
+              className="mt-6 max-w-xl font-accent text-lg italic leading-relaxed text-white/60 opacity-0 animate-fade-up sm:text-xl"
+              style={{ animationDelay: "0.55s" }}
+            >
+              Second oldest county in Tennessee. Serving the Appalachian Highlands.
+            </p>
+
+            {/* CTAs */}
+            <div
+              className="mt-10 flex flex-col gap-4 opacity-0 animate-fade-up sm:flex-row sm:gap-5"
+              style={{ animationDelay: "0.7s" }}
+            >
+              <Link
+                to="/departments"
+                className="group inline-flex items-center gap-3 rounded-sm bg-brand-copper px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:bg-brand-copper-light hover:shadow-lg hover:shadow-brand-copper/20"
+              >
+                Find a Department
+                <svg
+                  aria-hidden="true"
+                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2}
+                >
+                  <title>Arrow</title>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+              <a
+                href="https://sullivantntrustee.gov/property-tax/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center rounded-sm border border-white/20 px-8 py-3.5 font-body text-sm font-medium tracking-wide text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-brand-brass/50 hover:text-brand-brass hover:bg-white/5"
+              >
+                Pay Property Taxes
+              </a>
+              <Link
+                to="/contact"
+                className="inline-flex items-center justify-center rounded-sm border border-white/20 px-8 py-3.5 font-body text-sm font-medium tracking-wide text-white/90 backdrop-blur-sm transition-all duration-300 hover:border-brand-brass/50 hover:text-brand-brass hover:bg-white/5"
+              >
+                Contact Us
+              </Link>
+            </div>
+          </div>
+
+          {/* Vertical text — right side (desktop) */}
+          <div className="hidden lg:block absolute right-12 top-1/2 -translate-y-1/2">
+            <div
+              className="opacity-0 animate-fade-in"
+              style={{ animationDelay: "1s", writingMode: "vertical-rl" }}
+            >
+              <span className="text-xs font-body font-light tracking-[0.4em] uppercase text-white/15">
+                Appalachian Highlands
+              </span>
+            </div>
+          </div>
         </div>
       </div>
 
