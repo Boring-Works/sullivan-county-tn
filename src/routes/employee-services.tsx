@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Download, ExternalLink } from "lucide-react";
+import { VideoEmbed } from "~/components/shared/VideoEmbed";
 import { seo } from "~/utils/seo";
 
 export const Route = createFileRoute("/employee-services")({
@@ -91,17 +92,18 @@ function EmployeeServicesPage() {
           </h2>
           <div className="space-y-2">
             {[
-              { name: "Employment Application", href: "/documents/employment-application.pdf" },
-              { name: "Open Enrollment Flyer", href: "/documents/open-enrollment-flyer.pdf" },
+              { name: "Employment Application", href: "/documents/employment-application.pdf", type: "PDF" },
+              { name: "Open Enrollment Flyer", href: "/documents/open-enrollment-flyer.pdf", type: "PDF" },
               {
                 name: "Health Plan Comparison (2025)",
                 href: "/documents/health-plan-comparison-2025.pdf",
+                type: "PDF",
               },
               {
                 name: "Medical and Vision Rates (2025)",
                 href: "/documents/medical-vision-rates-2025.pdf",
+                type: "PDF",
               },
-              { name: "Title VI Training Video", href: "/documents/title-vi-training-video.pdf" },
             ].map((doc) => (
               <a
                 key={doc.name}
@@ -110,11 +112,28 @@ function EmployeeServicesPage() {
                 className="flex items-center gap-3 rounded-sm border border-brand-surface bg-white p-4 transition-colors hover:border-brand-copper/30 group"
               >
                 <Download className="size-4 shrink-0 text-brand-copper" />
-                <span className="font-body text-sm font-medium text-brand-slate group-hover:text-brand-navy transition-colors">
+                <span className="font-body text-sm font-medium text-brand-slate group-hover:text-brand-navy transition-colors flex-1">
                   {doc.name}
+                </span>
+                <span className="rounded bg-brand-parchment px-1.5 py-0.5 font-body text-[10px] font-semibold uppercase tracking-wider text-brand-stone">
+                  {doc.type}
                 </span>
               </a>
             ))}
+          </div>
+        </div>
+
+        {/* Training Video */}
+        <div className="mb-14">
+          <h2 className="font-display text-xl font-bold text-brand-navy mb-6">
+            Required Training
+          </h2>
+          <div className="max-w-2xl">
+            <VideoEmbed
+              videoId="NIGQe15IZlo"
+              title="Title VI Nondiscrimination Training"
+              description="Required training for all Sullivan County employees"
+            />
           </div>
         </div>
 

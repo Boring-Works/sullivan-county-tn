@@ -96,19 +96,23 @@ function AdaCompliancePage() {
               {[
                 {
                   name: "Accommodation or Barrier Removal Request Form",
-                  href: "/documents/ada-accommodation-request-form.pdf",
+                  href: "/documents/ada-accommodation-request-form.docx",
+                  type: "DOCX",
                 },
                 {
                   name: "Accommodation or Barrier Removal Request Form (Courts)",
                   href: "/documents/ada-accommodation-request-form-courts.pdf",
+                  type: "PDF",
                 },
                 {
                   name: "Employee ADA Grievance Policy",
-                  href: "/documents/ada-grievance-policy.pdf",
+                  href: "/documents/ada-grievance-policy.docx",
+                  type: "DOCX",
                 },
                 {
                   name: "ADA Notice for Courts",
-                  href: "/documents/ada-notice-courts.pdf",
+                  href: "/documents/ada-notice-courts.doc",
+                  type: "DOC",
                 },
               ].map((doc) => (
                 <a
@@ -118,8 +122,11 @@ function AdaCompliancePage() {
                   className="flex items-center gap-3 rounded-sm border border-brand-surface bg-white p-4 transition-colors hover:border-brand-copper/30 group"
                 >
                   <Download className="size-4 shrink-0 text-brand-copper" />
-                  <span className="font-body text-sm font-medium text-brand-slate group-hover:text-brand-navy transition-colors">
+                  <span className="font-body text-sm font-medium text-brand-slate group-hover:text-brand-navy transition-colors flex-1">
                     {doc.name}
+                  </span>
+                  <span className="rounded bg-brand-parchment px-1.5 py-0.5 font-body text-[10px] font-semibold uppercase tracking-wider text-brand-stone">
+                    {doc.type}
                   </span>
                 </a>
               ))}

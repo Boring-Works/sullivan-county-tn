@@ -117,6 +117,25 @@ export function buildSearchIndex(): SearchItem[] {
 		});
 	}
 
+	// Downloadable documents
+	const downloadableDocuments = [
+		{ title: "ADA Accommodation Request Form", description: "Request reasonable accommodations or barrier removal for county facilities" },
+		{ title: "ADA Courts Modification Form", description: "Request modifications to access judicial programs" },
+		{ title: "ADA Grievance Policy", description: "Policy for filing ADA-related grievances as a county employee" },
+		{ title: "Employment Application", description: "Official Sullivan County employment application" },
+		{ title: "Health Plan Comparison 2025", description: "Side-by-side comparison of available health plans" },
+		{ title: "Medical and Vision Rates 2025", description: "Premium rates for medical and vision coverage" },
+		{ title: "Open Enrollment Flyer", description: "Open enrollment information and deadlines" },
+	];
+	for (const doc of downloadableDocuments) {
+		items.push({
+			type: "document",
+			title: doc.title,
+			description: doc.description,
+			url: "/documents",
+		});
+	}
+
 	// Static pages
 	items.push(...staticPages);
 
