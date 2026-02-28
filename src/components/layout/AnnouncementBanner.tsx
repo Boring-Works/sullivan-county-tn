@@ -8,14 +8,9 @@ interface Announcement {
 	type: "info" | "urgent";
 }
 
-const announcements: Announcement[] = [
-	{
-		id: "new-website-2026",
-		message: "Welcome to Sullivan County's new website! Explore departments, services, and documents.",
-		link: { text: "View departments", href: "/departments" },
-		type: "info",
-	},
-];
+// Add announcements here when needed (tax deadlines, weather alerts, etc.)
+// Example: { id: "tax-2026", message: "Property taxes due March 1.", link: { text: "Pay online", href: "https://sullivantntrustee.gov/" }, type: "urgent" }
+const announcements: Announcement[] = [];
 
 export function AnnouncementBanner() {
 	const [dismissed, setDismissed] = useState<Set<string>>(() => {
