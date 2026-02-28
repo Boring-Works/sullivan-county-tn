@@ -34,7 +34,7 @@ export const news: NewsItem[] = [
 		summary:
 			"Blountville Little League is seeking volunteers for the upcoming season. Community members are encouraged to get involved.",
 		url: "https://sullivancountytn.gov/407097-2/",
-		pdfUrl: "/documents/blountville-little-league-volunteers.pdf",
+		pdfUrl: "/documents/public-documents/blountville-little-league-volunteers.pdf",
 		content: [
 			"Blountville Little League is actively seeking volunteers for the upcoming baseball and softball season. The league depends on community involvement to provide a positive experience for young athletes across Sullivan County.",
 			"Volunteer positions include coaches, assistant coaches, team parents, concession stand workers, field maintenance crew, and scorekeepers. No prior coaching experience is required — training will be provided for all coaching volunteers.",
@@ -50,7 +50,7 @@ export const news: NewsItem[] = [
 		slug: "affidavit-sullivan-co-public-notice",
 		summary: "Public notice affidavit issued by Sullivan County for official county business.",
 		url: "https://sullivancountytn.gov/407069-2/",
-		pdfUrl: "/documents/affidavit-sullivan-co-public-notice.pdf",
+		pdfUrl: "/documents/public-documents/affidavit-sullivan-co-public-notice.pdf",
 		content: [
 			"Sullivan County has issued a public notice affidavit in accordance with Tennessee state law requirements for official county business proceedings.",
 			"This notice is published to inform Sullivan County residents of official county actions requiring public notification under Tennessee Code Annotated.",

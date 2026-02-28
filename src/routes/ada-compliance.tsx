@@ -96,23 +96,28 @@ function AdaCompliancePage() {
               {[
                 {
                   name: "Accommodation or Barrier Removal Request Form",
-                  href: "/documents/ada-accommodation-request-form.docx",
+                  href: "/documents/ada/ada-request-for-accommodation-or-barrier-removal-form-2019.docx",
                   type: "DOCX",
                 },
                 {
                   name: "Accommodation or Barrier Removal Request Form (Courts)",
-                  href: "/documents/ada-accommodation-request-form-courts.pdf",
+                  href: "/documents/ada/ada-request-for-modification-form.pdf",
                   type: "PDF",
                 },
                 {
                   name: "Employee ADA Grievance Policy",
-                  href: "/documents/ada-grievance-policy.docx",
+                  href: "/documents/ada/ada-employee-grievance-policy-2019.docx",
                   type: "DOCX",
                 },
                 {
                   name: "ADA Notice for Courts",
-                  href: "/documents/ada-notice-courts.doc",
+                  href: "/documents/ada/notice-regarding-ada.doc",
                   type: "DOC",
+                },
+                {
+                  name: "ADA Transition Plan 2018\u20132028",
+                  href: "/documents/ada/ada-transition-plan-2018-2028-final-approved.pdf",
+                  type: "PDF",
                 },
               ].map((doc) => (
                 <a

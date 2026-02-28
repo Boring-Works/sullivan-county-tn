@@ -1,150 +1,109 @@
 import { commissioners } from "./commissioners";
 import { departments } from "./departments";
+import { documents } from "./documents";
 import { news } from "./news";
 
 export interface SearchItem {
-	type: "department" | "news" | "commissioner" | "document" | "page";
-	title: string;
-	description: string;
-	url: string;
-	category?: string;
+  type: "department" | "news" | "commissioner" | "document" | "page";
+  title: string;
+  description: string;
+  url: string;
+  category?: string;
 }
 
-const documentCategories = [
-	"ADA Documents",
-	"Agendas",
-	"County Commission",
-	"Court Dockets",
-	"Court Forms",
-	"Emergency Management Documents",
-	"Employee Services",
-	"Finance Documents",
-	"Planning and Codes",
-	"Property Assessor",
-	"Public Documents",
-	"Purchasing Documents",
-	"Sanitation",
-	"Sullivan County FMS 2020",
-	"Veterans Service Officer",
-];
-
 const staticPages: SearchItem[] = [
-	{
-		type: "page",
-		title: "Contact Sullivan County",
-		description:
-			"General contact information, office locations, phone numbers, and hours for Sullivan County government.",
-		url: "/contact",
-	},
-	{
-		type: "page",
-		title: "ADA Compliance",
-		description:
-			"ADA compliance information, accommodation requests, grievance policy, and ADA coordinator contacts.",
-		url: "/ada-compliance",
-	},
-	{
-		type: "page",
-		title: "Privacy Policy",
-		description:
-			"Sullivan County privacy policy, data collection practices, cookies, and user rights.",
-		url: "/privacy-policy",
-	},
-	{
-		type: "page",
-		title: "Employee Services",
-		description:
-			"Employee portals, benefits information, employment applications, and resources for Sullivan County staff.",
-		url: "/employee-services",
-	},
-	{
-		type: "page",
-		title: "Document Library",
-		description:
-			"County documents, forms, agendas, court dockets, and public records from Sullivan County.",
-		url: "/documents",
-	},
-	{
-		type: "page",
-		title: "Calendar & Meetings",
-		description:
-			"County commission meetings, public hearings, planning commission, zoning board, and community events.",
-		url: "/calendar",
-	},
+  {
+    type: "page",
+    title: "Contact Sullivan County",
+    description:
+      "General contact information, office locations, phone numbers, and hours for Sullivan County government.",
+    url: "/contact",
+  },
+  {
+    type: "page",
+    title: "ADA Compliance",
+    description:
+      "ADA compliance information, accommodation requests, grievance policy, and ADA coordinator contacts.",
+    url: "/ada-compliance",
+  },
+  {
+    type: "page",
+    title: "Privacy Policy",
+    description:
+      "Sullivan County privacy policy, data collection practices, cookies, and user rights.",
+    url: "/privacy-policy",
+  },
+  {
+    type: "page",
+    title: "Employee Services",
+    description:
+      "Employee portals, benefits information, employment applications, and resources for Sullivan County staff.",
+    url: "/employee-services",
+  },
+  {
+    type: "page",
+    title: "Document Library",
+    description:
+      "County documents, forms, agendas, court dockets, and public records from Sullivan County.",
+    url: "/documents",
+  },
+  {
+    type: "page",
+    title: "Calendar & Meetings",
+    description:
+      "County commission meetings, public hearings, planning commission, zoning board, and community events.",
+    url: "/calendar",
+  },
 ];
 
 export function buildSearchIndex(): SearchItem[] {
-	const items: SearchItem[] = [];
+  const items: SearchItem[] = [];
 
-	// Departments
-	for (const dept of departments) {
-		items.push({
-			type: "department",
-			title: dept.name,
-			description: `${dept.description} Services: ${dept.services.join(", ")}`,
-			url: `/departments/${dept.slug}`,
-			category: dept.category,
-		});
-	}
+  // Departments
+  for (const dept of departments) {
+    items.push({
+      type: "department",
+      title: dept.name,
+      description: `${dept.description} Services: ${dept.services.join(", ")}`,
+      url: `/departments/${dept.slug}`,
+      category: dept.category,
+    });
+  }
 
-	// News
-	for (const article of news) {
-		items.push({
-			type: "news",
-			title: article.title,
-			description: article.summary,
-			url: `/news/${article.slug}`,
-		});
-	}
+  // News
+  for (const article of news) {
+    items.push({
+      type: "news",
+      title: article.title,
+      description: article.summary,
+      url: `/news/${article.slug}`,
+    });
+  }
 
-	// Commissioners
-	const districts = new Map<number, string[]>();
-	for (const c of commissioners) {
-		const existing = districts.get(c.district) || [];
-		existing.push(c.name);
-		districts.set(c.district, existing);
-	}
-	for (const c of commissioners) {
-		items.push({
-			type: "commissioner",
-			title: c.name,
-			description: `Commissioner, District ${c.district}`,
-			url: "/commissioners",
-			category: `District ${c.district}`,
-		});
-	}
+  // Commissioners
+  for (const c of commissioners) {
+    items.push({
+      type: "commissioner",
+      title: c.name,
+      description: `Commissioner, District ${c.district}`,
+      url: "/commissioners",
+      category: `District ${c.district}`,
+    });
+  }
 
-	// Document categories
-	for (const cat of documentCategories) {
-		items.push({
-			type: "document",
-			title: cat,
-			description: `${cat} — county documents and forms`,
-			url: "/documents",
-		});
-	}
+  // Documents (from data file)
+  for (const doc of documents) {
+    items.push({
+      type: "document",
+      title: doc.name,
+      description: `${doc.category} — ${doc.description}`,
+      url: "/documents",
+      category: doc.category,
+    });
+  }
 
-	// Downloadable documents
-	const downloadableDocuments = [
-		{ title: "ADA Accommodation Request Form", description: "Request reasonable accommodations or barrier removal for county facilities" },
-		{ title: "ADA Courts Modification Form", description: "Request modifications to access judicial programs" },
-		{ title: "ADA Grievance Policy", description: "Policy for filing ADA-related grievances as a county employee" },
-		{ title: "Employment Application", description: "Official Sullivan County employment application" },
-		{ title: "Health Plan Comparison 2025", description: "Side-by-side comparison of available health plans" },
-		{ title: "Medical and Vision Rates 2025", description: "Premium rates for medical and vision coverage" },
-		{ title: "Open Enrollment Flyer", description: "Open enrollment information and deadlines" },
-	];
-	for (const doc of downloadableDocuments) {
-		items.push({
-			type: "document",
-			title: doc.title,
-			description: doc.description,
-			url: "/documents",
-		});
-	}
+  // Static pages
+  items.push(...staticPages);
 
-	// Static pages
-	items.push(...staticPages);
-
-	return items;
+  return items;
 }

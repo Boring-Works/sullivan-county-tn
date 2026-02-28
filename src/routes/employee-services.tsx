@@ -92,16 +92,34 @@ function EmployeeServicesPage() {
           </h2>
           <div className="space-y-2">
             {[
-              { name: "Employment Application", href: "/documents/employment-application.pdf", type: "PDF" },
-              { name: "Open Enrollment Flyer", href: "/documents/open-enrollment-flyer.pdf", type: "PDF" },
+              {
+                name: "Employment Application",
+                href: "/documents/employee-services/employment-application.pdf",
+                type: "PDF",
+              },
+              {
+                name: "Open Enrollment Flyer",
+                href: "/documents/employee-services/open-enrollment-flyer.pdf",
+                type: "PDF",
+              },
               {
                 name: "Health Plan Comparison (2025)",
-                href: "/documents/health-plan-comparison-2025.pdf",
+                href: "/documents/employee-services/health-plan-comparison-2025.pdf",
                 type: "PDF",
               },
               {
                 name: "Medical and Vision Rates (2025)",
-                href: "/documents/medical-vision-rates-2025.pdf",
+                href: "/documents/employee-services/medical-vision-rates-2025.pdf",
+                type: "PDF",
+              },
+              {
+                name: "Employee Handbook",
+                href: "/documents/employee-services/employee-handbook.pdf",
+                type: "PDF",
+              },
+              {
+                name: "Holiday Schedule 2026",
+                href: "/documents/employee-services/holiday-schedule-2026.pdf",
                 type: "PDF",
               },
             ].map((doc) => (
@@ -125,9 +143,7 @@ function EmployeeServicesPage() {
 
         {/* Training Video */}
         <div className="mb-14">
-          <h2 className="font-display text-xl font-bold text-brand-navy mb-6">
-            Required Training
-          </h2>
+          <h2 className="font-display text-xl font-bold text-brand-navy mb-6">Required Training</h2>
           <div className="max-w-2xl">
             <VideoEmbed
               videoId="NIGQe15IZlo"

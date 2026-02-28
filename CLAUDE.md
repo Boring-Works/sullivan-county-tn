@@ -33,7 +33,7 @@ Citizen services portal for Sullivan County, Tennessee.
 | `/news/$slug` | `routes/news/$slug.tsx` | News article detail page with full content |
 | `/calendar` | `routes/calendar.tsx` | Calendar & meetings (6 recurring schedules, YouTube live links) |
 | `/contact` | `routes/contact.tsx` | Contact hub with form (9 subjects), Google Maps, quick contacts, resources |
-| `/documents` | `routes/documents.tsx` | Searchable document center with downloads, video embeds |
+| `/documents` | `routes/documents.tsx` | 116-document library with 17 categories, search, category pills, collapsible sections |
 | `/ada-compliance` | `routes/ada-compliance.tsx` | ADA compliance info + 4 downloadable forms |
 | `/privacy-policy` | `routes/privacy-policy.tsx` | Privacy policy, cookies, data retention, user rights |
 | `/employee-services` | `routes/employee-services.tsx` | Employee portals (Skyward, Edison, Mark III), benefits, training videos |
@@ -45,6 +45,7 @@ Citizen services portal for Sullivan County, Tennessee.
 | `data/commissioners.ts` | 24 commissioners across 11 districts |
 | `data/news.ts` | County news articles with full content + PDF attachments |
 | `data/quick-services.ts` | 8 quick-access service links for homepage |
+| `data/documents.ts` | 116 documents across 17 categories (PDF, DOC, DOCX, MP4, TIF) with types and helpers |
 | `data/search-index.ts` | Unified search index (departments, news, commissioners, documents, pages) |
 
 ## Key Components
@@ -72,7 +73,7 @@ Citizen services portal for Sullivan County, Tennessee.
 ## Static Assets
 | Directory | Content |
 |-----------|---------|
-| `public/documents/` | 10 downloadable PDFs/DOCXs from WordPress |
+| `public/documents/` | 116 documents in 17 subdirectories (PDF, DOC, DOCX, MP4, TIF) |
 | `public/images/commissioners/` | Commissioner + Mayor headshots |
 | `public/rss.xml` | Static RSS feed (generated via `scripts/generate-rss.ts`) |
 
@@ -104,4 +105,4 @@ Citizen services portal for Sullivan County, Tennessee.
 | Fuse.js for site search | Client-side fuzzy search, ~5KB gzipped, Cmd+K modal | 2026-02-28 |
 | Static RSS via build script | No API routes needed — generate XML to public/ | 2026-02-28 |
 | YouTube nocookie embeds | Privacy-enhanced click-to-load video player | 2026-02-28 |
-| Documents served locally | 10 PDFs/DOCXs downloaded from WordPress to public/documents/ | 2026-02-28 |
+| Documents served locally | 116 files (PDF, DOC, DOCX, MP4, TIF) in 17 category subdirectories under public/documents/ | 2026-02-28 |
