@@ -5,7 +5,9 @@ const QUICK_LINKS = [
   { label: "Departments", href: "/departments" },
   { label: "Commissioners", href: "/commissioners" },
   { label: "News", href: "/news" },
+  { label: "Calendar", href: "/calendar" },
   { label: "Documents", href: "/documents" },
+  { label: "Employee Services", href: "/employee-services" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
@@ -149,6 +151,9 @@ export function SiteFooter() {
               <Link to="/privacy-policy" className="hover:text-brand-cream/60 transition-colors">
                 Privacy Policy
               </Link>
+              <a href="/rss.xml" className="hover:text-brand-cream/60 transition-colors">
+                RSS Feed
+              </a>
             </div>
           </div>
         </div>

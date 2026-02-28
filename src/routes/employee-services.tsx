@@ -19,7 +19,7 @@ const portals = [
   {
     name: "Skyward",
     description: "Financial and administrative system",
-    url: "#",
+    url: "https://skyward.iscorp.com/scripts/wsisa.dll/WService=wsfinsullivancogovtn/seplog01.w",
   },
   {
     name: "Edison Employee Portal",

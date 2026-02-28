@@ -29,6 +29,7 @@ export const Route = createRootRoute({
       },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "alternate", type: "application/rss+xml", title: "Sullivan County News", href: "/rss.xml" },
     ],
   }),
   component: RootComponent,

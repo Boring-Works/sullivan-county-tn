@@ -14,6 +14,7 @@ import { Route as EmployeeServicesRouteImport } from './routes/employee-services
 import { Route as DocumentsRouteImport } from './routes/documents'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CommissionersRouteImport } from './routes/commissioners'
+import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as AdaComplianceRouteImport } from './routes/ada-compliance'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NewsIndexRouteImport } from './routes/news/index'
@@ -44,6 +45,11 @@ const ContactRoute = ContactRouteImport.update({
 const CommissionersRoute = CommissionersRouteImport.update({
   id: '/commissioners',
   path: '/commissioners',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CalendarRoute = CalendarRouteImport.update({
+  id: '/calendar',
+  path: '/calendar',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdaComplianceRoute = AdaComplianceRouteImport.update({
@@ -80,6 +86,7 @@ const DepartmentsSlugRoute = DepartmentsSlugRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ada-compliance': typeof AdaComplianceRoute
+  '/calendar': typeof CalendarRoute
   '/commissioners': typeof CommissionersRoute
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
@@ -93,6 +100,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ada-compliance': typeof AdaComplianceRoute
+  '/calendar': typeof CalendarRoute
   '/commissioners': typeof CommissionersRoute
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
@@ -107,6 +115,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ada-compliance': typeof AdaComplianceRoute
+  '/calendar': typeof CalendarRoute
   '/commissioners': typeof CommissionersRoute
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
@@ -122,6 +131,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/ada-compliance'
+    | '/calendar'
     | '/commissioners'
     | '/contact'
     | '/documents'
@@ -135,6 +145,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/ada-compliance'
+    | '/calendar'
     | '/commissioners'
     | '/contact'
     | '/documents'
@@ -148,6 +159,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/ada-compliance'
+    | '/calendar'
     | '/commissioners'
     | '/contact'
     | '/documents'
@@ -162,6 +174,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AdaComplianceRoute: typeof AdaComplianceRoute
+  CalendarRoute: typeof CalendarRoute
   CommissionersRoute: typeof CommissionersRoute
   ContactRoute: typeof ContactRoute
   DocumentsRoute: typeof DocumentsRoute
@@ -208,6 +221,13 @@ declare module '@tanstack/react-router' {
       path: '/commissioners'
       fullPath: '/commissioners'
       preLoaderRoute: typeof CommissionersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/calendar': {
+      id: '/calendar'
+      path: '/calendar'
+      fullPath: '/calendar'
+      preLoaderRoute: typeof CalendarRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/ada-compliance': {
@@ -258,6 +278,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdaComplianceRoute: AdaComplianceRoute,
+  CalendarRoute: CalendarRoute,
   CommissionersRoute: CommissionersRoute,
   ContactRoute: ContactRoute,
   DocumentsRoute: DocumentsRoute,

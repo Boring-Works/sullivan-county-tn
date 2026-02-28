@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sullivan County, Tennessee — County News</title>
+    <link>https://sullivan-county-tn.codyboring.workers.dev/news</link>
+    <atom:link href="https://sullivan-county-tn.codyboring.workers.dev/rss.xml" rel="self" type="application/rss+xml"/>
+    <description>Official news and announcements from Sullivan County, Tennessee government.</description>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 28 Feb 2026 18:36:33 GMT</lastBuildDate>
+    <managingEditor>mayor@sullivancountytn.gov (Sullivan County Mayor's Office)</managingEditor>
+    <item>
+      <title>Sullivan County Employee Food Drive</title>
+      <link>https://sullivan-county-tn.codyboring.workers.dev/news/sullivan-county-employee-food-drive</link>
+      <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/sullivan-county-employee-food-drive</guid>
+      <description>Sullivan County employees organize a food drive to support the local community during the holiday season.</description>
+      <pubDate>Tue, 18 Nov 2025 00:00:00 GMT</pubDate>
+      <dc:creator>Nick Johnson</dc:creator>
+    </item>
+    <item>
+      <title>Blountville Little League Volunteers Needed</title>
+      <link>https://sullivan-county-tn.codyboring.workers.dev/news/blountville-little-league-volunteers-needed</link>
+      <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/blountville-little-league-volunteers-needed</guid>
+      <description>Blountville Little League is seeking volunteers for the upcoming season.</description>
+      <pubDate>Fri, 31 Oct 2025 00:00:00 GMT</pubDate>
+      <dc:creator>Nick Johnson</dc:creator>
+    </item>
+    <item>
+      <title>Affidavit Sullivan Co Public Notice</title>
+      <link>https://sullivan-county-tn.codyboring.workers.dev/news/affidavit-sullivan-co-public-notice</link>
+      <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/affidavit-sullivan-co-public-notice</guid>
+      <description>Public notice affidavit issued by Sullivan County for official county business.</description>
+      <pubDate>Thu, 02 Oct 2025 00:00:00 GMT</pubDate>
+      <dc:creator>Nick Johnson</dc:creator>
+    </item>
+    <item>
+      <title>Hotel/Motel Tax Law Update</title>
+      <link>https://sullivan-county-tn.codyboring.workers.dev/news/hotel-motel-tax-law-update</link>
+      <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/hotel-motel-tax-law-update</guid>
+      <description>New law regarding hotel/motel tax effective July 1, 2025.</description>
+      <pubDate>Thu, 10 Jul 2025 00:00:00 GMT</pubDate>
+      <dc:creator>Nick Johnson</dc:creator>
+    </item>
+    <item>
+      <title>Building Inspector &amp; Code Enforcement Job Opening</title>
+      <link>https://sullivan-county-tn.codyboring.workers.dev/news/building-inspector-code-enforcement-job-opening</link>
+      <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/building-inspector-code-enforcement-job-opening</guid>
+      <description>Sullivan County is hiring a Building Inspector and Code Enforcement Officer.</description>
+      <pubDate>Thu, 05 Jun 2025 00:00:00 GMT</pubDate>
+      <dc:creator>Nick Johnson</dc:creator>
+    </item>
+  </channel>
+</rss>

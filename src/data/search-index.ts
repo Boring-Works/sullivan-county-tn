@@ -64,6 +64,13 @@ const staticPages: SearchItem[] = [
 			"County documents, forms, agendas, court dockets, and public records from Sullivan County.",
 		url: "/documents",
 	},
+	{
+		type: "page",
+		title: "Calendar & Meetings",
+		description:
+			"County commission meetings, public hearings, planning commission, zoning board, and community events.",
+		url: "/calendar",
+	},
 ];
 
 export function buildSearchIndex(): SearchItem[] {
