@@ -20,6 +20,7 @@ Citizen services portal for Sullivan County, Tennessee.
 - `npm run lint` — Run Biome linter
 - `npm run format` — Format with Biome
 - `npm run test` — Run tests
+- `npx tsx scripts/generate-rss.ts` — Regenerate RSS feed after adding news
 
 ## Routes
 | Route | File | Purpose |
@@ -28,36 +29,51 @@ Citizen services portal for Sullivan County, Tennessee.
 | `/departments` | `routes/departments/index.tsx` | Department directory with category filter |
 | `/departments/$slug` | `routes/departments/$slug.tsx` | Individual department detail (27 departments) |
 | `/commissioners` | `routes/commissioners.tsx` | Commissioner grid by district (11 districts) |
-| `/news` | `routes/news.tsx` | County news feed |
-| `/contact` | `routes/contact.tsx` | General county contact info |
-| `/documents` | `routes/documents.tsx` | Document library categories (links to existing system) |
-| `/ada-compliance` | `routes/ada-compliance.tsx` | ADA compliance info, legal framework, coordinators |
+| `/news` | `routes/news/index.tsx` | County news feed |
+| `/news/$slug` | `routes/news/$slug.tsx` | News article detail page with full content |
+| `/calendar` | `routes/calendar.tsx` | Calendar & meetings (6 recurring schedules, YouTube live links) |
+| `/contact` | `routes/contact.tsx` | General county contact info + Google Maps embed |
+| `/documents` | `routes/documents.tsx` | Searchable document center with downloads, video embeds |
+| `/ada-compliance` | `routes/ada-compliance.tsx` | ADA compliance info + 4 downloadable forms |
 | `/privacy-policy` | `routes/privacy-policy.tsx` | Privacy policy, cookies, data retention, user rights |
-| `/employee-services` | `routes/employee-services.tsx` | Employee portals (Skyward, Edison, Mark III), benefits |
+| `/employee-services` | `routes/employee-services.tsx` | Employee portals (Skyward, Edison, Mark III), benefits, training videos |
 
 ## Data Files
 | File | Content |
 |------|---------|
 | `data/departments.ts` | 27 departments with contacts, services, offices, staff, external links |
 | `data/commissioners.ts` | 24 commissioners across 11 districts |
-| `data/news.ts` | County news articles |
+| `data/news.ts` | County news articles with full content + PDF attachments |
 | `data/quick-services.ts` | 8 quick-access service links for homepage |
+| `data/search-index.ts` | Unified search index (departments, news, commissioners, documents, pages) |
 
 ## Key Components
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| SiteNav | `components/layout/SiteNav.tsx` | Glass-morphism nav with department mega-menu |
+| SiteNav | `components/layout/SiteNav.tsx` | Glass-morphism nav with mega-menu + Cmd+K search |
 | SiteFooter | `components/layout/SiteFooter.tsx` | Footer with mountain silhouette + heritage ornament |
+| AnnouncementBanner | `components/layout/AnnouncementBanner.tsx` | Dismissible banner (localStorage persistence) |
+| SearchDialog | `components/layout/SearchDialog.tsx` | Fuse.js fuzzy search modal (Cmd+K) |
 | HeroBanner | `components/home/HeroBanner.tsx` | Cinematic hero with photo parallax + stat counters |
 | QuickServices | `components/home/QuickServices.tsx` | 8-card service grid with scroll reveals |
 | DepartmentCategories | `components/home/DepartmentCategories.tsx` | 6 category cards with scroll reveals |
 | NewsSection | `components/home/NewsSection.tsx` | Editorial news layout with featured first item |
 | DepartmentDetail | `components/departments/DepartmentDetail.tsx` | Department page with category-tinted banner |
+| NewsDetail | `components/news/NewsDetail.tsx` | Article detail with header, body, PDF/source links |
+| NewsCard | `components/shared/NewsCard.tsx` | News card with internal link + PDF badge |
+| VideoEmbed | `components/shared/VideoEmbed.tsx` | Privacy-enhanced YouTube (click-to-load, nocookie) |
 | ContactCard | `components/shared/ContactCard.tsx` | Reusable contact info card |
 | CommissionerGrid | `components/commissioners/CommissionerGrid.tsx` | District grid with alternating backgrounds |
 | MountainDivider | `components/shared/MountainDivider.tsx` | SVG mountain ridge section dividers |
 | useScrollReveal | `hooks/useScrollReveal.ts` | Intersection Observer scroll-reveal system |
 | useCountUp | `hooks/useCountUp.ts` | Animated stat counter hook |
+
+## Static Assets
+| Directory | Content |
+|-----------|---------|
+| `public/documents/` | 10 downloadable PDFs/DOCXs from WordPress |
+| `public/images/commissioners/` | Commissioner + Mayor headshots |
+| `public/rss.xml` | Static RSS feed (generated via `scripts/generate-rss.ts`) |
 
 ## Brand Tokens (Appalachian Civic Heritage)
 - `brand-navy` (#0c1e33) — primary, headers, nav, hero
@@ -84,3 +100,7 @@ Citizen services portal for Sullivan County, Tennessee.
 | Blue/orange/green brand system | Blue=trust/government, orange=Tennessee energy, green=Appalachian heritage | 2026-02-27 |
 | Appalachian Civic Heritage design v1 | Libre Caslon Text + Outfit fonts, navy/copper/brass palette, editorial layouts | 2026-02-27 |
 | Appalachian Editorial design v2 | Cinematic hero with photo parallax, scroll reveals, mountain dividers, glass nav, stat counters | 2026-02-27 |
+| Fuse.js for site search | Client-side fuzzy search, ~5KB gzipped, Cmd+K modal | 2026-02-28 |
+| Static RSS via build script | No API routes needed — generate XML to public/ | 2026-02-28 |
+| YouTube nocookie embeds | Privacy-enhanced click-to-load video player | 2026-02-28 |
+| Documents served locally | 10 PDFs/DOCXs downloaded from WordPress to public/documents/ | 2026-02-28 |

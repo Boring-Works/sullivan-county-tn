@@ -10,10 +10,10 @@ interface Announcement {
 
 const announcements: Announcement[] = [
 	{
-		id: "tax-2026",
-		message: "Property taxes are due February 28, 2026.",
-		link: { text: "Pay online", href: "https://sullivantntrustee.gov/" },
-		type: "urgent",
+		id: "new-website-2026",
+		message: "Welcome to Sullivan County's new website! Explore departments, services, and documents.",
+		link: { text: "View departments", href: "/departments" },
+		type: "info",
 	},
 ];
 
