@@ -1,6 +1,6 @@
 # Sullivan County TN — Site Audit & Comparison
 
-**Date:** February 28, 2026
+**Date:** February 28, 2026 (updated)
 **Current site:** https://sullivancountytn.gov (WordPress/Divi)
 **New site:** https://sullivan-county-tn.codyboring.workers.dev (TanStack Start/Cloudflare Workers)
 
@@ -10,7 +10,7 @@
 
 The current Sullivan County website runs on WordPress with the Divi theme builder. It is functional but dated in design, slow to load, and lacks modern SEO/social sharing capabilities. The new site is a static-first edge-deployed application with a custom "Appalachian Editorial" design system, full OG/Twitter Card support, and sub-second load times.
 
-This audit compares content parity, feature coverage, and identifies gaps.
+All critical gaps from the initial audit have been closed: site search, news detail pages, downloadable documents, calendar, RSS feed, announcement banner, and Google Maps are all live.
 
 ---
 
@@ -27,10 +27,13 @@ This audit compares content parity, feature coverage, and identifies gaps.
 | **Mobile** | Responsive (Divi breakpoints) | Responsive (Tailwind) |
 | **SEO/OG tags** | Basic WordPress SEO | Full OG + Twitter Cards + favicons |
 | **SSL** | Yes | Yes (Cloudflare) |
-| **Calendar** | The Events Calendar plugin | Not yet implemented |
+| **Calendar** | The Events Calendar plugin (0 events) | Recurring meeting schedules + YouTube links |
 | **Forms** | Contact Form 7 / reCAPTCHA | Not yet implemented |
-| **Search** | WordPress default search | Not yet implemented |
+| **Search** | WordPress default search | Fuse.js fuzzy search (Cmd+K) |
 | **CMS editing** | WordPress admin (browser) | Code-based (developer) |
+| **RSS** | WordPress default | Static XML + autodiscovery |
+| **Video** | Standard YouTube iframes | Privacy-enhanced click-to-load (nocookie) |
+| **Documents** | WordPress DLP plugin (AJAX) | Local files + searchable center |
 
 ---
 
@@ -49,9 +52,10 @@ This audit compares content parity, feature coverage, and identifies gaps.
 - Departments (mega-menu dropdown — 27 departments, categorized)
 - Commissioners
 - News
-- Contact
+- Calendar
 - Documents
-- Employee Services
+- Contact
+- Search (Cmd+K)
 - Pay Taxes (external CTA)
 
 ### Assessment
@@ -61,8 +65,8 @@ This audit compares content parity, feature coverage, and identifies gaps.
 | Commissioners link | **Added** — not in current nav |
 | Contact page link | **Added** — not in current nav |
 | Documents link | **Added** — not in current nav |
-| Calendar | **Missing** — current site has calendar in nav |
-| Search | **Missing** — current site has WordPress search |
+| Calendar | **Done** — recurring schedules + YouTube live |
+| Search | **Done** — Fuse.js fuzzy search, Cmd+K trigger |
 
 ---
 
@@ -125,169 +129,184 @@ All 26 from current site, **plus:**
 
 ### Homepage
 
-| Content | Current | New | Notes |
-|---------|---------|-----|-------|
+| Content | Current | New | Status |
+|---------|---------|-----|--------|
 | Hero banner | Static image/slider | Cinematic photo parallax + stat counters | **Improved** |
 | Department links | Dropdown menu only | Category cards + mega-menu | **Improved** |
 | Quick services | Grid of 6 resource links | 8-card animated grid | **Improved** |
-| County news | 5 recent articles | 5 recent articles | **Parity** |
-| Calendar widget | Events Calendar sidebar | Not implemented | **Gap** |
-| Birthplace of Country Music | Featured section | Not included | **Gap** (tourism content) |
-| Bristol Motor Speedway | Featured section | Not included | **Gap** (tourism content) |
-| Outdoor recreation | Featured section | Not included | **Gap** (tourism content) |
-| Property tax deadline notice | Featured banner | Not implemented | **Gap** |
+| County news | 5 recent articles | 5 recent articles (with detail pages) | **Improved** |
+| Calendar widget | Events Calendar sidebar (0 events) | Calendar in nav, meeting schedules on /calendar | **Replaced** |
+| Property tax notice | Featured banner | Dismissible announcement banner | **Done** |
 | About section | None | "Where Tennessee Began" section | **Added** |
 | Mountain dividers | None | SVG mountain ridge separators | **Added** |
 | Scroll animations | None | Intersection Observer reveals | **Added** |
+| Birthplace of Country Music | Featured section | Not included | **Omitted** (tourism, not gov) |
+| Bristol Motor Speedway | Featured section | Not included | **Omitted** (tourism, not gov) |
+| Outdoor recreation | Featured section | Not included | **Omitted** (tourism, not gov) |
 
 ### County News (`/news` vs `/county-news/`)
 
-| Content | Current | New | Notes |
-|---------|---------|-----|-------|
+| Content | Current | New | Status |
+|---------|---------|-----|--------|
 | Article list | Paginated blog posts | All articles in feed | **Parity** |
 | Article count | 5 visible + pagination | 5 articles | **Parity** |
-| Article detail pages | Full WordPress posts | Not yet (cards link nowhere) | **Gap** |
-| Categories/tags | WordPress categories | Article type badges | **Similar** |
-| Search/filter | WordPress search | Not implemented | **Gap** |
-| RSS feed | WordPress default | Not implemented | **Gap** |
+| Article detail pages | Full WordPress posts | `/news/$slug` with full content | **Done** |
+| PDF attachments | Download links on some articles | Download badges on cards + detail pages | **Done** |
+| Categories/tags | WordPress categories | None (all tagged as "news") | **Acceptable** |
+| Search/filter | WordPress search | Cmd+K global search covers news | **Done** |
+| RSS feed | WordPress default | Static XML + autodiscovery | **Done** |
 
 ### Commissioners (`/commissioners` vs `/county-commissioner-information/`)
 
-| Content | Current | New | Notes |
-|---------|---------|-----|-------|
+| Content | Current | New | Status |
+|---------|---------|-----|--------|
 | Commissioner list | Single page list | Grid by district (11 districts) | **Improved** |
-| Commissioner count | Listed | 24 commissioners, 2 per district + alternates | **Improved** |
+| Commissioner count | 24 listed | 24 commissioners + Mayor | **Improved** |
 | District grouping | Not grouped | Grouped by district | **Improved** |
-| Contact info | Names only | Names + titles + party | **Improved** |
-| Meeting info | Linked separately | Inline resources section | **Improved** |
-| YouTube link | Not present | Commission streams link | **Added** |
+| Contact info | Name, address, phone, email | Name, phone, email, city | **Parity** |
+| Photos | Headshots for most | Headshots for all 24 + Mayor | **Improved** |
+| Meeting info | "Current Agenda" link | YouTube channel + resources section | **Improved** |
+| YouTube link | Not in main content | Commission streams link | **Added** |
 
 ### Contact (`/contact`)
 
-| Content | Current | New | Notes |
-|---------|---------|-----|-------|
+| Content | Current | New | Status |
+|---------|---------|-----|--------|
 | Dedicated page | No dedicated contact page | Full contact hub | **Added** |
-| Main office info | Footer only | Prominent card with map pin | **Improved** |
+| Main office info | Footer only | Prominent card with address, phone, hours | **Improved** |
+| Google Maps | Footer embed | Grayscale-to-color map on contact page | **Done** |
 | Quick contacts | None | 4-card grid (Mayor, Clerk, Sheriff, EMA) | **Added** |
 | Community resources | Scattered | 14 external links organized | **Added** |
 | Emergency number | Not prominent | 911 highlighted for Sheriff | **Added** |
+| Contact form | Contact Form 7 + reCAPTCHA | Not yet implemented | **Gap** |
+
+### Calendar (`/calendar`)
+
+| Content | Current | New | Status |
+|---------|---------|-----|--------|
+| Calendar plugin | The Events Calendar | Not used (plugin shows 0 events) | **Replaced** |
+| Meeting schedules | Not on calendar page | 6 recurring meetings with schedule/time/location | **Added** |
+| YouTube live links | Not present | Commission meetings link to YouTube | **Added** |
+| Upcoming events | Plugin-based (empty) | Placeholder section (empty on old site too) | **Parity** |
+| Meeting resources | Not present | Links to agendas, documents, commissioners | **Added** |
 
 ### Documents (`/documents` vs `/document-library/`)
 
-| Content | Current | New | Notes |
-|---------|---------|-----|-------|
-| Category count | 15 categories | 15 categories | **Parity** |
-| Category list | Identical | Identical | **Parity** |
-| Document hosting | WordPress Media Library | Links to existing system | **Redirects to current** |
-| Search/filter | WordPress search | Not implemented | **Gap** |
-| Direct downloads | PDF links | External links to current system | **Redirects** |
+| Content | Current | New | Status |
+|---------|---------|-----|--------|
+| Category count | 15+ categories | 15 categories (external) + 10 local files | **Improved** |
+| Local documents | WordPress DLP plugin | 10 PDFs/DOCXs served from /documents/ | **Improved** |
+| File types shown | Hidden behind DLP viewer | Colored badges (PDF=red, DOCX=blue, DOC=blue) | **Improved** |
+| File sizes | Not shown | Shown per document | **Improved** |
+| Search/filter | DLP search (AJAX) | Filter input + Cmd+K global search | **Done** |
+| Video content | Title VI video link | Embedded privacy-enhanced YouTube | **Improved** |
+| Direct downloads | Wrapped in DLP viewer pages | Direct download links | **Improved** |
 
-### Employee Services (`/employee-services` vs `/staff/`)
+### Employee Services (`/employee-services`)
 
-| Content | Current | New | Notes |
-|---------|---------|-----|-------|
-| Skyward | Link | Link | **Parity** |
+| Content | Current | New | Status |
+|---------|---------|-----|--------|
+| Skyward Portal | Link (URL hidden in JS) | Direct link to Skyward login | **Improved** |
 | Edison Portal | Link | Link | **Parity** |
 | GOTOAssist | Link | Link | **Parity** |
 | Mark III Benefits | Link | Link | **Parity** |
-| Employment application | Download link | Listed as resource | **Partial** — no direct download |
-| Title VI video | Embedded/linked | Listed as resource | **Partial** — no direct link |
-| Open enrollment flyer | PDF download | Not linked | **Gap** |
-| Health plan comparison | PDF download | Listed as resource | **Partial** — no direct download |
-| Medical/vision rates | PDF download | Listed as resource | **Partial** — no direct download |
+| Employment application | Download link | Local PDF download | **Done** |
+| Title VI video | Link/embed | Privacy-enhanced video embed | **Improved** |
+| Open enrollment flyer | PDF download | Local PDF download | **Done** |
+| Health plan comparison | PDF download | Local PDF download | **Done** |
+| Medical/vision rates | PDF download | Local PDF download | **Done** |
 | Partners for Health | External link | External link | **Parity** |
 
 ### ADA Compliance (`/ada-compliance`)
 
-| Content | Current | New | Notes |
-|---------|---------|-----|-------|
+| Content | Current | New | Status |
+|---------|---------|-----|--------|
 | Legal framework | Section 504 + ADA | Section 504 + ADA | **Parity** |
 | ADA titles breakdown | 5 titles listed | 5 titles listed | **Parity** |
-| Accommodation forms | 4 downloadable forms | Described, no downloads | **Gap** — forms not linked |
+| Accommodation forms | 4 downloadable forms | 4 local downloads with type badges | **Done** |
 | Local coordinator | Bobby L. Russell | Bobby L. Russell | **Parity** |
-| State coordinator | Nashville office | Nashville office + email | **Improved** — added email |
+| State coordinator | Nashville office | Nashville office + email | **Improved** |
 | Non-discrimination policy | Judicial notice | Judicial notice | **Parity** |
-| Employee grievance policy | Link to document | Not included | **Gap** |
+| Employee grievance policy | Link to document | Local DOCX download | **Done** |
 
 ### Privacy Policy (`/privacy-policy`)
 
-| Content | Current | New | Notes |
-|---------|---------|-----|-------|
-| Data collection | Comments, media, cookies | Comments, media, Gravatar, cookies | **Improved** — added Gravatar |
+| Content | Current | New | Status |
+|---------|---------|-----|--------|
+| Data collection | Comments, media, cookies | Comments, media, Gravatar, cookies | **Improved** |
 | Cookie table | Inline text | Formatted table | **Improved** |
 | Embedded content | Mentioned | Detailed explanation | **Improved** |
 | Data retention | Described | Described | **Parity** |
 | User rights | Described | Highlighted card | **Improved** |
-| Third-party services | Spam detection mention | Spam detection mention | **Parity** |
-| Contact forms section | Empty header | Not included | **Parity** (both empty) |
 
 ---
 
-## Features Missing from New Site
+## Gap Status (from Initial Audit)
 
-### Critical Gaps
-| Feature | Priority | Notes |
-|---------|----------|-------|
-| **Event Calendar** | High | Current site uses The Events Calendar plugin. Interactive calendar with importable events. Key community feature. |
-| **Site Search** | High | WordPress provides native search. New site has no search capability. |
-| **Downloadable Forms/Documents** | High | ADA forms, employment application, benefits documents are directly downloadable on current site. New site only describes them or links to external system. |
-| **News Article Detail Pages** | Medium | Current site has full article pages. New site only shows cards with no detail view. |
+### Critical Gaps — ALL CLOSED
 
-### Nice-to-Have Gaps
-| Feature | Priority | Notes |
-|---------|----------|-------|
-| **Tourism content** | Low | Birthplace of Country Music, Bristol Motor Speedway, outdoor recreation sections on current homepage. May not be needed for government portal. |
-| **RSS feed** | Low | WordPress auto-generates. Useful for news subscribers. |
-| **reCAPTCHA/forms** | Medium | Current site has contact forms. New site has no form submission. |
-| **Google Maps embed** | Low | Current footer has map. New site has address text only. |
-| **Featured announcements** | Medium | Current site has prominent property tax deadline banner. New site has no announcement system. |
+| Feature | Initial Status | Current Status |
+|---------|---------------|----------------|
+| **Site Search** | Missing | **Done** — Fuse.js, Cmd+K, fuzzy search |
+| **News Detail Pages** | Missing | **Done** — `/news/$slug` with full content |
+| **Downloadable Documents** | Missing | **Done** — 10 files served locally |
+| **Calendar** | Missing | **Done** — 6 recurring meetings + YouTube |
 
----
+### Phase 2 Gaps — MOSTLY CLOSED
 
-## Features Improved in New Site
+| Feature | Initial Status | Current Status |
+|---------|---------------|----------------|
+| **Announcement Banner** | Missing | **Done** — Dismissible, localStorage |
+| **Google Maps** | Missing | **Done** — Grayscale hover on contact page |
+| **RSS Feed** | Missing | **Done** — Static XML + autodiscovery |
+| **Contact Form** | Missing | **Still missing** — could add with Turnstile |
 
-| Feature | Improvement |
-|---------|-------------|
-| **Performance** | Edge-deployed, sub-second loads vs 3-5s WordPress |
-| **Design system** | Custom "Appalachian Editorial" brand with navy/copper/brass palette, Libre Caslon + Outfit typography |
-| **Department organization** | 6 color-coded categories vs flat list |
-| **Department data** | Structured data (staff, offices, services, documents, FAQs, meeting schedules) vs inconsistent WordPress pages |
-| **Commissioner page** | District-grouped grid with 24 commissioners vs basic list |
-| **Contact hub** | Dedicated page with quick contacts and 14 community resource links |
-| **Social sharing** | Full OG + Twitter Card meta with custom images (Boone Lake + courthouse with text overlay) |
-| **Favicons** | SVG + apple-touch-icon vs none |
-| **Navigation** | Glass-morphism nav with categorized mega-menu vs basic WordPress menu |
-| **Visual identity** | Mountain dividers, scroll reveals, cinematic hero, stat counters |
-| **Mobile experience** | Purpose-built responsive design vs Divi breakpoints |
-| **Accessibility** | Semantic HTML, ARIA labels, focus states vs generic WordPress output |
+### Phase 3 Items — OPTIONAL
+
+| Feature | Status | Notes |
+|---------|--------|-------|
+| Tourism content | Omitted | Birthplace of Country Music, BMS, outdoor rec — not core gov content |
+| Staff directory | Not built | Department pages already show staff |
+| Accessibility audit | Not run | Lighthouse/axe-core testing recommended |
+| Analytics | Not added | Cloudflare Web Analytics is free + privacy-friendly |
 
 ---
 
-## External Links Comparison
+## Remaining Gaps
 
-### Links on Current Site (also on New Site)
-- Sullivan County Trustee / Property Tax: sullivantntrustee.gov
+| Feature | Priority | Effort | Notes |
+|---------|----------|--------|-------|
+| **Contact form** | Medium | ~1hr | Cloudflare Turnstile for spam protection, email via Workers |
+| **Cloudflare Analytics** | Low | ~5min | Add `data-cf-beacon` script tag, zero-cookie tracking |
+| **Lighthouse audit** | Low | ~30min | Run accessibility + performance tests, fix any findings |
+| **Commissioner email addresses** | Low | ~15min | Some commissioners on old site have emails not in new data |
+
+---
+
+## External Links — Full Comparison
+
+### Present on Both Sites
+- Sullivan County Trustee: sullivantntrustee.gov
 - Animal Shelter: animalshelter-sullivancounty.org
 - Sullivan County Schools: sullivank12.net
 - Sullivan County Public Library: scpltn.org
 - Sullivan County Sheriff: scsotn.com
 - Partners for Health: tn.gov/partnersforhealth
 - County Clerk: sullivancountyclerktn.com
+- State of Tennessee: tn.gov
+- County Technical Assistance Service: ctas.tennessee.edu
 
-### Links on Current Site (missing from New Site)
-- State of Tennessee: tn.gov *(on current homepage sidebar)*
-- County Technical Assistance Service: ctas.tennessee.edu *(on current homepage sidebar)*
-- Commission meeting agenda PDFs *(dynamic, current packet)*
-- Google Maps embed for county office
-
-### Links on New Site (not on Current Site)
+### New Site Only (enhancements)
 - BidNet (Purchasing Bids): bidnetdirect.com
 - Chancery Court: sullivantnchancery.com
 - District Attorney: sullivancountyda.com
 - Election Office: scelect.org
 - Historic Sullivan: historicsullivan.com
 - Register of Deeds Records: ustitlesearch.net
-- YouTube Commission Streams
+- YouTube Commission Streams: youtube.com/@sullivancountycommission
+
+### Old Site Only
+- Commission meeting agenda PDF (dynamic current-packet link)
 
 ---
 
@@ -296,34 +315,14 @@ All 26 from current site, **plus:**
 | Claim | Current Site | New Site | Verified |
 |-------|-------------|----------|----------|
 | County Mayor | Richard S. Venable | Richard Venable | Yes |
-| Main address | 3411 TN-126, Blountville, TN 37617 | 3411 TN-126, Blountville, TN 37617 | Yes |
-| Mayor phone | (423) 323-6417 | (423) 323-6417 | Yes |
-| ADA Coordinator | Bobby L. Russell | Bobby L. Russell | Yes |
-| ADA Coordinator phone | (423) 279-2752 | (423) 279-2752 | Yes |
-| State ADA office | 511 Union St, Suite 600, Nashville | 511 Union St, Suite 600, Nashville | Yes |
+| Main address | 3411 TN-126, Blountville, TN 37617 | Same | Yes |
+| Mayor phone | (423) 323-6417 | Same | Yes |
+| ADA Coordinator | Bobby L. Russell | Same | Yes |
+| ADA Coordinator phone | (423) 279-2752 | Same | Yes |
+| State ADA office | 511 Union St, Suite 600, Nashville | Same | Yes |
 | Department count | 26 (excl. Trustee) | 27 (incl. Commissioners as route) | Consistent |
-| Commissioner districts | Not specified | 11 districts | Verified |
-| News articles | 5 recent | 5 recent (same articles) | Yes |
-| Document categories | 15 | 15 (identical list) | Yes |
-
----
-
-## Recommendations
-
-### Phase 1 — Close Critical Gaps
-1. **Add event calendar** — Either embed Google Calendar or build a simple events list from structured data
-2. **Add site search** — Implement client-side search across departments and news (Fuse.js or similar)
-3. **Link downloadable documents** — ADA forms, employment application, benefits PDFs need direct download links
-4. **Add news detail pages** — Create `/news/$slug` route for full article views
-
-### Phase 2 — Enhance
-5. **Announcement banner** — Add a dismissible banner system for urgent notices (tax deadlines, weather alerts)
-6. **Contact form** — Add a simple contact form with Cloudflare Turnstile (replaces reCAPTCHA)
-7. **Google Maps embed** — Add map to contact page or footer
-8. **RSS feed** — Generate RSS XML for news articles
-
-### Phase 3 — Optional
-9. **Tourism content** — Consider whether Birthplace of Country Music / BMS content belongs on government portal
-10. **Staff directory** — Build searchable staff directory from department data
-11. **Accessibility audit** — Run axe-core / Lighthouse accessibility tests
-12. **Analytics** — Add Cloudflare Web Analytics (privacy-friendly, no cookies)
+| Commissioner count | 24 across 11 districts | Same | Yes |
+| Commissioner districts | 11 | Same | Yes |
+| News articles | 5 recent | Same 5 articles | Yes |
+| Document categories | 15+ | 15 external + 10 local | Yes |
+| Skyward URL | Hidden in JS onclick handler | Direct link | Verified |
