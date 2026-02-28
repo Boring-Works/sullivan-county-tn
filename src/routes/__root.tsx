@@ -2,6 +2,7 @@
 
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { AnnouncementBanner } from "~/components/layout/AnnouncementBanner";
 import { SiteFooter } from "~/components/layout/SiteFooter";
 import { SiteNav } from "~/components/layout/SiteNav";
 import appCss from "~/styles/app.css?url";
@@ -36,6 +37,7 @@ export const Route = createRootRoute({
 function RootComponent() {
   return (
     <RootDocument>
+      <AnnouncementBanner />
       <SiteNav />
       <Outlet />
       <SiteFooter />
