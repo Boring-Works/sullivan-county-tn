@@ -3,7 +3,7 @@ import { NewsCard } from "~/components/shared/NewsCard";
 import { news } from "~/data/news";
 import { seo } from "~/utils/seo";
 
-export const Route = createFileRoute("/news")({
+export const Route = createFileRoute("/news/")({
   component: NewsPage,
   head: () => ({
     meta: seo({

@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { Mail, MapPin, Phone } from "lucide-react";
+import { Download, Mail, MapPin, Phone } from "lucide-react";
 import { seo } from "~/utils/seo";
 
 export const Route = createFileRoute("/ada-compliance")({
@@ -84,6 +84,45 @@ function AdaCompliancePage() {
                 disability and will provide reasonable modifications for qualified individuals with
                 disabilities.
               </p>
+            </div>
+          </section>
+
+          {/* Forms & Documents */}
+          <section>
+            <h2 className="font-display text-xl font-bold text-brand-navy mb-4">
+              Forms &amp; Documents
+            </h2>
+            <div className="space-y-2">
+              {[
+                {
+                  name: "Accommodation or Barrier Removal Request Form",
+                  href: "/documents/ada-accommodation-request-form.pdf",
+                },
+                {
+                  name: "Accommodation or Barrier Removal Request Form (Courts)",
+                  href: "/documents/ada-accommodation-request-form-courts.pdf",
+                },
+                {
+                  name: "Employee ADA Grievance Policy",
+                  href: "/documents/ada-grievance-policy.pdf",
+                },
+                {
+                  name: "ADA Notice for Courts",
+                  href: "/documents/ada-notice-courts.pdf",
+                },
+              ].map((doc) => (
+                <a
+                  key={doc.name}
+                  href={doc.href}
+                  download
+                  className="flex items-center gap-3 rounded-sm border border-brand-surface bg-white p-4 transition-colors hover:border-brand-copper/30 group"
+                >
+                  <Download className="size-4 shrink-0 text-brand-copper" />
+                  <span className="font-body text-sm font-medium text-brand-slate group-hover:text-brand-navy transition-colors">
+                    {doc.name}
+                  </span>
+                </a>
+              ))}
             </div>
           </section>
 

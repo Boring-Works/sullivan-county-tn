@@ -10,24 +10,20 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
-import { Route as NewsRouteImport } from './routes/news'
 import { Route as EmployeeServicesRouteImport } from './routes/employee-services'
 import { Route as DocumentsRouteImport } from './routes/documents'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CommissionersRouteImport } from './routes/commissioners'
 import { Route as AdaComplianceRouteImport } from './routes/ada-compliance'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as NewsIndexRouteImport } from './routes/news/index'
 import { Route as DepartmentsIndexRouteImport } from './routes/departments/index'
+import { Route as NewsSlugRouteImport } from './routes/news/$slug'
 import { Route as DepartmentsSlugRouteImport } from './routes/departments/$slug'
 
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const NewsRoute = NewsRouteImport.update({
-  id: '/news',
-  path: '/news',
   getParentRoute: () => rootRouteImport,
 } as any)
 const EmployeeServicesRoute = EmployeeServicesRouteImport.update({
@@ -60,9 +56,19 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const NewsIndexRoute = NewsIndexRouteImport.update({
+  id: '/news/',
+  path: '/news/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DepartmentsIndexRoute = DepartmentsIndexRouteImport.update({
   id: '/departments/',
   path: '/departments/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewsSlugRoute = NewsSlugRouteImport.update({
+  id: '/news/$slug',
+  path: '/news/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DepartmentsSlugRoute = DepartmentsSlugRouteImport.update({
@@ -78,10 +84,11 @@ export interface FileRoutesByFullPath {
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
   '/employee-services': typeof EmployeeServicesRoute
-  '/news': typeof NewsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/departments/$slug': typeof DepartmentsSlugRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/departments/': typeof DepartmentsIndexRoute
+  '/news/': typeof NewsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -90,10 +97,11 @@ export interface FileRoutesByTo {
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
   '/employee-services': typeof EmployeeServicesRoute
-  '/news': typeof NewsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/departments/$slug': typeof DepartmentsSlugRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/departments': typeof DepartmentsIndexRoute
+  '/news': typeof NewsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -103,10 +111,11 @@ export interface FileRoutesById {
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
   '/employee-services': typeof EmployeeServicesRoute
-  '/news': typeof NewsRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/departments/$slug': typeof DepartmentsSlugRoute
+  '/news/$slug': typeof NewsSlugRoute
   '/departments/': typeof DepartmentsIndexRoute
+  '/news/': typeof NewsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -117,10 +126,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/documents'
     | '/employee-services'
-    | '/news'
     | '/privacy-policy'
     | '/departments/$slug'
+    | '/news/$slug'
     | '/departments/'
+    | '/news/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -129,10 +139,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/documents'
     | '/employee-services'
-    | '/news'
     | '/privacy-policy'
     | '/departments/$slug'
+    | '/news/$slug'
     | '/departments'
+    | '/news'
   id:
     | '__root__'
     | '/'
@@ -141,10 +152,11 @@ export interface FileRouteTypes {
     | '/contact'
     | '/documents'
     | '/employee-services'
-    | '/news'
     | '/privacy-policy'
     | '/departments/$slug'
+    | '/news/$slug'
     | '/departments/'
+    | '/news/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -154,10 +166,11 @@ export interface RootRouteChildren {
   ContactRoute: typeof ContactRoute
   DocumentsRoute: typeof DocumentsRoute
   EmployeeServicesRoute: typeof EmployeeServicesRoute
-  NewsRoute: typeof NewsRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   DepartmentsSlugRoute: typeof DepartmentsSlugRoute
+  NewsSlugRoute: typeof NewsSlugRoute
   DepartmentsIndexRoute: typeof DepartmentsIndexRoute
+  NewsIndexRoute: typeof NewsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -167,13 +180,6 @@ declare module '@tanstack/react-router' {
       path: '/privacy-policy'
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof PrivacyPolicyRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/news': {
-      id: '/news'
-      path: '/news'
-      fullPath: '/news'
-      preLoaderRoute: typeof NewsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/employee-services': {
@@ -218,11 +224,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/news/': {
+      id: '/news/'
+      path: '/news'
+      fullPath: '/news/'
+      preLoaderRoute: typeof NewsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/departments/': {
       id: '/departments/'
       path: '/departments'
       fullPath: '/departments/'
       preLoaderRoute: typeof DepartmentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/news/$slug': {
+      id: '/news/$slug'
+      path: '/news/$slug'
+      fullPath: '/news/$slug'
+      preLoaderRoute: typeof NewsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/departments/$slug': {
@@ -242,10 +262,11 @@ const rootRouteChildren: RootRouteChildren = {
   ContactRoute: ContactRoute,
   DocumentsRoute: DocumentsRoute,
   EmployeeServicesRoute: EmployeeServicesRoute,
-  NewsRoute: NewsRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   DepartmentsSlugRoute: DepartmentsSlugRoute,
+  NewsSlugRoute: NewsSlugRoute,
   DepartmentsIndexRoute: DepartmentsIndexRoute,
+  NewsIndexRoute: NewsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

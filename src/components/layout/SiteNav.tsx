@@ -1,5 +1,7 @@
 import { Link, useRouterState } from "@tanstack/react-router";
+import { Search } from "lucide-react";
 import { useEffect, useState } from "react";
+import { SearchDialog } from "~/components/layout/SearchDialog";
 import {
   DEPARTMENT_CATEGORIES,
   type DepartmentCategory,
@@ -29,6 +31,7 @@ export function SiteNav() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
   const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   // Only show transparent nav on pages with dark backgrounds at the top
@@ -54,6 +57,17 @@ export function SiteNav() {
       document.body.style.overflow = "";
     };
   }, [mobileOpen]);
+
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    }
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   function closeMobile() {
     setMobileOpen(false);
@@ -219,8 +233,22 @@ export function SiteNav() {
             ))}
           </div>
 
-          {/* Right: Pay Taxes + Mobile Toggle */}
+          {/* Right: Search + Pay Taxes + Mobile Toggle */}
           <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => setSearchOpen(true)}
+              className={cn(
+                "hidden lg:inline-flex items-center gap-2 rounded-sm px-3 py-1.5 font-body text-sm transition-all duration-200",
+                solid
+                  ? "text-brand-stone border border-brand-surface hover:border-brand-copper/30 hover:text-brand-navy"
+                  : "text-white/70 border border-white/20 hover:border-white/40 hover:text-white",
+              )}
+              aria-label="Search"
+            >
+              <Search className="size-3.5" />
+              <kbd className="text-[10px] opacity-60 font-mono">&#8984;K</kbd>
+            </button>
             <a
               href="https://sullivantntrustee.gov/property-tax/"
               target="_blank"
@@ -357,11 +385,22 @@ export function SiteNav() {
               </Link>
             ))}
 
-            {/* Pay Taxes (Mobile) */}
+            {/* Search + Pay Taxes (Mobile) */}
             <div
-              className="pt-5 mt-3 border-t border-white/10 opacity-0 animate-slide-in-right"
+              className="pt-5 mt-3 border-t border-white/10 space-y-3 opacity-0 animate-slide-in-right"
               style={{ animationDelay: "0.3s" }}
             >
+              <button
+                type="button"
+                onClick={() => {
+                  closeMobile();
+                  setSearchOpen(true);
+                }}
+                className="flex w-full items-center justify-center gap-2 rounded-sm border border-white/20 px-4 py-3.5 font-body text-base font-medium text-white/90 transition-colors hover:bg-white/10"
+              >
+                <Search className="size-4" />
+                Search
+              </button>
               <a
                 href="https://sullivantntrustee.gov/property-tax/"
                 target="_blank"
@@ -374,6 +413,8 @@ export function SiteNav() {
           </div>
         </div>
       )}
+
+      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
     </nav>
   );
 }

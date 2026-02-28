@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { ExternalLink } from "lucide-react";
+import { Download, ExternalLink } from "lucide-react";
 import { seo } from "~/utils/seo";
 
 export const Route = createFileRoute("/employee-services")({
@@ -79,6 +79,40 @@ function EmployeeServicesPage() {
                   </div>
                   <p className="font-body text-sm text-brand-slate-light">{portal.description}</p>
                 </div>
+              </a>
+            ))}
+          </div>
+        </div>
+
+        {/* Documents & Downloads */}
+        <div className="mb-14">
+          <h2 className="font-display text-xl font-bold text-brand-navy mb-6">
+            Documents &amp; Downloads
+          </h2>
+          <div className="space-y-2">
+            {[
+              { name: "Employment Application", href: "/documents/employment-application.pdf" },
+              { name: "Open Enrollment Flyer", href: "/documents/open-enrollment-flyer.pdf" },
+              {
+                name: "Health Plan Comparison (2025)",
+                href: "/documents/health-plan-comparison-2025.pdf",
+              },
+              {
+                name: "Medical and Vision Rates (2025)",
+                href: "/documents/medical-vision-rates-2025.pdf",
+              },
+              { name: "Title VI Training Video", href: "/documents/title-vi-training-video.pdf" },
+            ].map((doc) => (
+              <a
+                key={doc.name}
+                href={doc.href}
+                download
+                className="flex items-center gap-3 rounded-sm border border-brand-surface bg-white p-4 transition-colors hover:border-brand-copper/30 group"
+              >
+                <Download className="size-4 shrink-0 text-brand-copper" />
+                <span className="font-body text-sm font-medium text-brand-slate group-hover:text-brand-navy transition-colors">
+                  {doc.name}
+                </span>
               </a>
             ))}
           </div>
