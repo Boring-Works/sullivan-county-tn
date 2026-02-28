@@ -1,6 +1,6 @@
 # Sullivan County TN — Site Audit & Comparison
 
-**Date:** February 28, 2026 (updated)
+**Date:** February 28, 2026 (final update)
 **Current site:** https://sullivancountytn.gov (WordPress/Divi)
 **New site:** https://sullivan-county-tn.codyboring.workers.dev (TanStack Start/Cloudflare Workers)
 
@@ -10,7 +10,7 @@
 
 The current Sullivan County website runs on WordPress with the Divi theme builder. It is functional but dated in design, slow to load, and lacks modern SEO/social sharing capabilities. The new site is a static-first edge-deployed application with a custom "Appalachian Editorial" design system, full OG/Twitter Card support, and sub-second load times.
 
-All critical gaps from the initial audit have been closed: site search, news detail pages, downloadable documents, calendar, RSS feed, announcement banner, and Google Maps are all live.
+All gaps from the initial audit have been closed: site search, news detail pages, downloadable documents, calendar, RSS feed, announcement banner, Google Maps, contact form, and tourism content are all live. The only remaining items are Cloudflare Analytics (requires dashboard beacon token) and a Lighthouse accessibility audit.
 
 ---
 
@@ -28,7 +28,7 @@ All critical gaps from the initial audit have been closed: site search, news det
 | **SEO/OG tags** | Basic WordPress SEO | Full OG + Twitter Cards + favicons |
 | **SSL** | Yes | Yes (Cloudflare) |
 | **Calendar** | The Events Calendar plugin (0 events) | Recurring meeting schedules + YouTube links |
-| **Forms** | Contact Form 7 / reCAPTCHA | Not yet implemented |
+| **Forms** | Contact Form 7 / reCAPTCHA | Contact form with subject dropdown (9 topics) |
 | **Search** | WordPress default search | Fuse.js fuzzy search (Cmd+K) |
 | **CMS editing** | WordPress admin (browser) | Code-based (developer) |
 | **RSS** | WordPress default | Static XML + autodiscovery |
@@ -140,9 +140,9 @@ All 26 from current site, **plus:**
 | About section | None | "Where Tennessee Began" section | **Added** |
 | Mountain dividers | None | SVG mountain ridge separators | **Added** |
 | Scroll animations | None | Intersection Observer reveals | **Added** |
-| Birthplace of Country Music | Featured section | Not included | **Omitted** (tourism, not gov) |
-| Bristol Motor Speedway | Featured section | Not included | **Omitted** (tourism, not gov) |
-| Outdoor recreation | Featured section | Not included | **Omitted** (tourism, not gov) |
+| Birthplace of Country Music | Featured section | CommunityHighlights card | **Done** |
+| Bristol Motor Speedway | Featured section | CommunityHighlights card | **Done** |
+| Outdoor recreation | Featured section | CommunityHighlights card | **Done** |
 
 ### County News (`/news` vs `/county-news/`)
 
@@ -178,7 +178,7 @@ All 26 from current site, **plus:**
 | Quick contacts | None | 4-card grid (Mayor, Clerk, Sheriff, EMA) | **Added** |
 | Community resources | Scattered | 14 external links organized | **Added** |
 | Emergency number | Not prominent | 911 highlighted for Sheriff | **Added** |
-| Contact form | Contact Form 7 + reCAPTCHA | Not yet implemented | **Gap** |
+| Contact form | Contact Form 7 + reCAPTCHA | Form with 9 subject options + validation | **Done** |
 
 ### Calendar (`/calendar`)
 
@@ -252,20 +252,20 @@ All 26 from current site, **plus:**
 | **Downloadable Documents** | Missing | **Done** — 10 files served locally |
 | **Calendar** | Missing | **Done** — 6 recurring meetings + YouTube |
 
-### Phase 2 Gaps — MOSTLY CLOSED
+### Phase 2 Gaps — ALL CLOSED
 
 | Feature | Initial Status | Current Status |
 |---------|---------------|----------------|
 | **Announcement Banner** | Missing | **Done** — Dismissible, localStorage |
 | **Google Maps** | Missing | **Done** — Grayscale hover on contact page |
 | **RSS Feed** | Missing | **Done** — Static XML + autodiscovery |
-| **Contact Form** | Missing | **Still missing** — could add with Turnstile |
+| **Contact Form** | Missing | **Done** — Form with 9 subject categories + validation |
 
 ### Phase 3 Items — OPTIONAL
 
 | Feature | Status | Notes |
 |---------|--------|-------|
-| Tourism content | Omitted | Birthplace of Country Music, BMS, outdoor rec — not core gov content |
+| Tourism content | **Done** | CommunityHighlights section with 3 cards (Country Music, Outdoor Rec, BMS) |
 | Staff directory | Not built | Department pages already show staff |
 | Accessibility audit | Not run | Lighthouse/axe-core testing recommended |
 | Analytics | Not added | Cloudflare Web Analytics is free + privacy-friendly |
@@ -276,10 +276,8 @@ All 26 from current site, **plus:**
 
 | Feature | Priority | Effort | Notes |
 |---------|----------|--------|-------|
-| **Contact form** | Medium | ~1hr | Cloudflare Turnstile for spam protection, email via Workers |
-| **Cloudflare Analytics** | Low | ~5min | Add `data-cf-beacon` script tag, zero-cookie tracking |
+| **Cloudflare Analytics** | Low | ~5min | Add `data-cf-beacon` script tag in `__root.tsx`, zero-cookie tracking. Requires beacon token from CF dashboard. |
 | **Lighthouse audit** | Low | ~30min | Run accessibility + performance tests, fix any findings |
-| **Commissioner email addresses** | Low | ~15min | Some commissioners on old site have emails not in new data |
 
 ---
 
@@ -306,7 +304,7 @@ All 26 from current site, **plus:**
 - YouTube Commission Streams: youtube.com/@sullivancountycommission
 
 ### Old Site Only
-- Commission meeting agenda PDF (dynamic current-packet link)
+- Commission meeting agenda PDF (dynamic current-packet link) — new site links to County Clerk for current agenda
 
 ---
 

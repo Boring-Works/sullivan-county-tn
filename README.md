@@ -50,6 +50,8 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 - **Document downloads** — 10 PDFs/DOCXs served locally (ADA forms, employment app, benefits docs)
 - **Video embeds** — Privacy-enhanced YouTube (click-to-load, nocookie.com)
 - **Commissioner photos** — Headshots with polished CSS treatment for all 24 commissioners + Mayor
+- **Contact form** — Subject categorization (9 topics), required field validation, success state
+- **Tourism section** — "Discover Sullivan County" with 3 regional highlights (Country Music, Outdoor Rec, BMS)
 - **Announcement banner** — Dismissible with localStorage persistence, supports info/urgent types
 - **RSS feed** — Static XML at `/rss.xml` with autodiscovery link
 - **Google Maps** — Grayscale-to-color hover map on contact page
@@ -92,11 +94,9 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 
 | Feature | Priority | Notes |
 |---------|----------|-------|
-| **Contact form** | Medium | Old site uses Contact Form 7 + reCAPTCHA. Could add with Cloudflare Turnstile. |
-| **Tourism content** | Low | Birthplace of Country Music, Bristol Motor Speedway, outdoor recreation promo cards. Arguably not core government content. |
 | **CMS editing** | N/A | Old site has WordPress admin. This site is code-based (developer-managed). Intentional tradeoff for performance + design control. |
-| **Interactive calendar** | Low | Old site has The Events Calendar plugin (currently showing 0 events). New site has structured meeting schedules + YouTube links instead. |
-| **Commission meeting agenda PDFs** | Low | Dynamic current-packet links on old site. New site links to YouTube channel + documents page. |
+| **Cloudflare Analytics** | Low | Free, privacy-friendly analytics. Requires beacon token from CF dashboard. |
+| **Lighthouse audit** | Low | Run accessibility + performance tests and fix any findings. |
 
 ### What This Site Has That the Old Site Doesn't
 
@@ -106,6 +106,8 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 - News article detail pages with full content
 - Calendar & meetings page with 6 recurring schedules
 - Privacy-enhanced video embeds
+- Contact form with subject categorization (9 topics)
+- Tourism / community highlights section (3 regional attractions)
 - Dismissible announcement banner system
 - RSS feed with autodiscovery
 - Google Maps embed with brand-consistent styling
@@ -120,7 +122,7 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 ```
 src/
   components/
-    home/          — Homepage sections (hero, services, categories, news, about)
+    home/          — Homepage sections (hero, services, categories, community highlights, news, about)
     layout/        — SiteNav, SiteFooter, AnnouncementBanner, SearchDialog
     departments/   — DepartmentDetail
     commissioners/ — CommissionerGrid

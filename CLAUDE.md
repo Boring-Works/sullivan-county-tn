@@ -32,7 +32,7 @@ Citizen services portal for Sullivan County, Tennessee.
 | `/news` | `routes/news/index.tsx` | County news feed |
 | `/news/$slug` | `routes/news/$slug.tsx` | News article detail page with full content |
 | `/calendar` | `routes/calendar.tsx` | Calendar & meetings (6 recurring schedules, YouTube live links) |
-| `/contact` | `routes/contact.tsx` | General county contact info + Google Maps embed |
+| `/contact` | `routes/contact.tsx` | Contact hub with form (9 subjects), Google Maps, quick contacts, resources |
 | `/documents` | `routes/documents.tsx` | Searchable document center with downloads, video embeds |
 | `/ada-compliance` | `routes/ada-compliance.tsx` | ADA compliance info + 4 downloadable forms |
 | `/privacy-policy` | `routes/privacy-policy.tsx` | Privacy policy, cookies, data retention, user rights |
@@ -57,6 +57,7 @@ Citizen services portal for Sullivan County, Tennessee.
 | HeroBanner | `components/home/HeroBanner.tsx` | Cinematic hero with photo parallax + stat counters |
 | QuickServices | `components/home/QuickServices.tsx` | 8-card service grid with scroll reveals |
 | DepartmentCategories | `components/home/DepartmentCategories.tsx` | 6 category cards with scroll reveals |
+| CommunityHighlights | `components/home/CommunityHighlights.tsx` | 3 tourism/regional attraction cards |
 | NewsSection | `components/home/NewsSection.tsx` | Editorial news layout with featured first item |
 | DepartmentDetail | `components/departments/DepartmentDetail.tsx` | Department page with category-tinted banner |
 | NewsDetail | `components/news/NewsDetail.tsx` | Article detail with header, body, PDF/source links |
