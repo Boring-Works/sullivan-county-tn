@@ -264,6 +264,15 @@
     0 4px 12px rgba(12, 30, 51, 0.04);
 }
 
+/* Official headshot treatment — unified look for all portraits */
+.official-headshot {
+  filter: saturate(0.85) contrast(1.05) brightness(1.02);
+  transition: filter 0.4s ease;
+}
+.group:hover .official-headshot {
+  filter: saturate(1) contrast(1.05) brightness(1.02);
+}
+
 /* Scroll-reveal animation system */
 [data-reveal] {
   opacity: 0;

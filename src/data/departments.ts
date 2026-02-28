@@ -64,7 +64,7 @@ export interface Department {
   slug: string;
   name: string;
   category: DepartmentCategory;
-  head: { name: string; title: string };
+  head: { name: string; title: string; photo?: string };
   contact: ContactInfo;
   description: string;
   services: string[];
@@ -85,7 +85,7 @@ export const departments: Department[] = [
     slug: "county-mayor",
     name: "County Mayor",
     category: "administrative",
-    head: { name: "Richard S. Venable", title: "County Mayor" },
+    head: { name: "Richard S. Venable", title: "County Mayor", photo: "/images/officials/richard-venable.jpg" },
     contact: {
       phone: "(423) 323-6417",
       fax: "(423) 279-2897",
