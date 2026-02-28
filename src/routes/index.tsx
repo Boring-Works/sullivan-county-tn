@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AboutSection } from "~/components/home/AboutSection";
+import { CommunityHighlights } from "~/components/home/CommunityHighlights";
 import { DepartmentCategories } from "~/components/home/DepartmentCategories";
 import { HeroBanner } from "~/components/home/HeroBanner";
 import { NewsSection } from "~/components/home/NewsSection";
@@ -19,6 +20,7 @@ function HomePage() {
       <MountainDivider fill="var(--color-brand-parchment)" />
       <DepartmentCategories />
       <MountainDividerInverted fill="var(--color-brand-parchment)" className="bg-white" />
+      <CommunityHighlights />
       <NewsSection />
     </main>
   );

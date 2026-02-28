@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Clock, ExternalLink, MapPin, Phone } from "lucide-react";
+import { CheckCircle, Clock, ExternalLink, MapPin, Phone, Send } from "lucide-react";
+import { type FormEvent, useState } from "react";
 import { seo } from "~/utils/seo";
 
 export const Route = createFileRoute("/contact")({
@@ -161,6 +162,9 @@ function ContactPage() {
           </div>
         </div>
 
+        {/* Contact Form */}
+        <ContactForm />
+
         {/* External resources */}
         <div className="rounded-sm border border-brand-surface bg-brand-parchment p-7">
           <h2 className="font-display text-xl font-bold text-brand-navy mb-5">
@@ -184,5 +188,138 @@ function ContactPage() {
         </div>
       </div>
     </main>
+  );
+}
+
+const SUBJECT_OPTIONS = [
+  "General Inquiry",
+  "Property Tax Question",
+  "Building Permits",
+  "Court Records",
+  "Public Records Request",
+  "Road / Highway Issue",
+  "Animal Control",
+  "Employment",
+  "Other",
+] as const;
+
+function ContactForm() {
+  const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+
+  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setSending(true);
+    // Simulate form submission — in production, this would POST to a Worker endpoint
+    setTimeout(() => {
+      setSending(false);
+      setSubmitted(true);
+    }, 800);
+  }
+
+  if (submitted) {
+    return (
+      <div className="mb-14 rounded-sm border border-brand-sage/30 bg-brand-sage/5 p-8 text-center">
+        <CheckCircle className="mx-auto mb-4 size-10 text-brand-sage" />
+        <h2 className="font-display text-xl font-bold text-brand-navy mb-2">
+          Message Sent
+        </h2>
+        <p className="font-body text-sm text-brand-slate max-w-md mx-auto">
+          Thank you for contacting Sullivan County. A staff member will respond to your
+          inquiry within 2 business days during regular office hours.
+        </p>
+        <button
+          type="button"
+          onClick={() => setSubmitted(false)}
+          className="mt-5 font-body text-sm text-brand-copper hover:text-brand-copper-light hover:underline"
+        >
+          Send another message
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mb-14 rounded-sm border border-brand-surface bg-white p-7">
+      <h2 className="font-display text-xl font-bold text-brand-navy mb-2">
+        Send a Message
+      </h2>
+      <p className="font-body text-sm text-brand-slate-light mb-6">
+        Have a question or need assistance? Fill out the form below and a county staff member
+        will respond within 2 business days.
+      </p>
+      <form onSubmit={handleSubmit} className="space-y-5">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+          <div>
+            <label htmlFor="contact-name" className="block font-body text-sm font-medium text-brand-navy mb-1.5">
+              Full Name <span className="text-brand-copper">*</span>
+            </label>
+            <input
+              id="contact-name"
+              name="name"
+              type="text"
+              required
+              className="w-full rounded-sm border border-brand-surface bg-brand-cream px-3.5 py-2.5 font-body text-sm text-brand-slate placeholder:text-brand-stone/60 focus:border-brand-copper focus:outline-none focus:ring-1 focus:ring-brand-copper/30 transition-colors"
+              placeholder="Your full name"
+            />
+          </div>
+          <div>
+            <label htmlFor="contact-email" className="block font-body text-sm font-medium text-brand-navy mb-1.5">
+              Email Address <span className="text-brand-copper">*</span>
+            </label>
+            <input
+              id="contact-email"
+              name="email"
+              type="email"
+              required
+              className="w-full rounded-sm border border-brand-surface bg-brand-cream px-3.5 py-2.5 font-body text-sm text-brand-slate placeholder:text-brand-stone/60 focus:border-brand-copper focus:outline-none focus:ring-1 focus:ring-brand-copper/30 transition-colors"
+              placeholder="your.email@example.com"
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="contact-subject" className="block font-body text-sm font-medium text-brand-navy mb-1.5">
+            Subject <span className="text-brand-copper">*</span>
+          </label>
+          <select
+            id="contact-subject"
+            name="subject"
+            required
+            className="w-full rounded-sm border border-brand-surface bg-brand-cream px-3.5 py-2.5 font-body text-sm text-brand-slate focus:border-brand-copper focus:outline-none focus:ring-1 focus:ring-brand-copper/30 transition-colors"
+          >
+            <option value="">Select a topic...</option>
+            {SUBJECT_OPTIONS.map((opt) => (
+              <option key={opt} value={opt}>{opt}</option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="contact-message" className="block font-body text-sm font-medium text-brand-navy mb-1.5">
+            Message <span className="text-brand-copper">*</span>
+          </label>
+          <textarea
+            id="contact-message"
+            name="message"
+            required
+            rows={5}
+            className="w-full rounded-sm border border-brand-surface bg-brand-cream px-3.5 py-2.5 font-body text-sm text-brand-slate placeholder:text-brand-stone/60 focus:border-brand-copper focus:outline-none focus:ring-1 focus:ring-brand-copper/30 transition-colors resize-y"
+            placeholder="How can we help you?"
+          />
+        </div>
+        <div className="flex items-center justify-between gap-4 pt-1">
+          <p className="font-body text-xs text-brand-stone">
+            <span className="text-brand-copper">*</span> Required fields
+          </p>
+          <button
+            type="submit"
+            disabled={sending}
+            className="inline-flex items-center gap-2 rounded-sm bg-brand-copper px-6 py-2.5 font-body text-sm font-semibold text-white transition-colors hover:bg-brand-copper-light disabled:opacity-60 disabled:cursor-not-allowed"
+          >
+            <Send className="size-3.5" />
+            {sending ? "Sending..." : "Send Message"}
+          </button>
+        </div>
+      </form>
+    </div>
   );
 }

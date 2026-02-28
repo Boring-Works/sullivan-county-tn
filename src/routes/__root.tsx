@@ -55,6 +55,11 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <body className="min-h-screen bg-brand-cream text-brand-slate antialiased font-body">
         {children}
         <Scripts />
+        {/*
+          Cloudflare Web Analytics — enable in CF dashboard:
+          Workers & Pages > sullivan-county-tn > Analytics > Web Analytics
+          Then paste the beacon script here with the real token.
+        */}
       </body>
     </html>
   );
