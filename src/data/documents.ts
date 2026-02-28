@@ -886,14 +886,6 @@ export const documents: DocumentItem[] = [
     category: "Property Assessor",
   },
   {
-    name: "Assessment vs Taxation (Video)",
-    description: "Informational video explaining the difference between assessment and taxation",
-    href: "/documents/property-assessor/assessment-vs-taxation-video.mp4",
-    type: "MP4",
-    size: "26.0 MB",
-    category: "Property Assessor",
-  },
-  {
     name: "Change of Address Form",
     description: "Form to update property owner address with the assessor",
     href: "/documents/property-assessor/change-of-address-form.pdf",
