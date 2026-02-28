@@ -1,6 +1,12 @@
 import { ExternalLink } from "lucide-react";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
 
+const accentClasses = {
+	"brand-copper": "bg-brand-copper",
+	"brand-sage": "bg-brand-sage",
+	"brand-navy": "bg-brand-navy",
+} as const;
+
 const HIGHLIGHTS = [
 	{
 		title: "Birthplace of Country Music",
@@ -8,7 +14,7 @@ const HIGHLIGHTS = [
 			"Explore the rich history and vibrant culture of Sullivan County — the Birthplace of Country Music. Visit the museum in Bristol to experience the captivating exhibits and fascinating stories behind the genre's origins.",
 		url: "https://birthplaceofcountrymusic.org/",
 		icon: "🎵",
-		accent: "brand-copper",
+		accent: "brand-copper" as const,
 	},
 	{
 		title: "Outdoor Recreation",
@@ -16,7 +22,7 @@ const HIGHLIGHTS = [
 			"From Boone Lake and South Holston Lake to scenic parks and the Appalachian Trail corridor, Sullivan County offers endless opportunities for boating, fishing, hiking, and camping across 430 square miles of highlands.",
 		url: "https://www.historicsullivan.com/",
 		icon: "🏔️",
-		accent: "brand-sage",
+		accent: "brand-sage" as const,
 	},
 	{
 		title: "Bristol Motor Speedway",
@@ -24,9 +30,9 @@ const HIGHLIGHTS = [
 			'Known as "The Last Great Colosseum," Bristol Motor Speedway is one of the most iconic tracks in NASCAR. This high-banked, half-mile oval delivers heart-pounding action and an electric atmosphere.',
 		url: "https://www.bristolmotorspeedway.com/",
 		icon: "🏁",
-		accent: "brand-navy",
+		accent: "brand-navy" as const,
 	},
-] as const;
+];
 
 export function CommunityHighlights() {
 	const containerRef = useScrollReveal<HTMLElement>();
@@ -57,7 +63,7 @@ export function CommunityHighlights() {
 						>
 							{/* Top accent bar */}
 							<div
-								className={`h-1 bg-${item.accent} scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100`}
+								className={`h-1 ${accentClasses[item.accent]} scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100`}
 							/>
 
 							<div className="flex-1 p-7">

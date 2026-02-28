@@ -21,7 +21,7 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 | Components | shadcn/ui + Radix primitives |
 | Search | Fuse.js (~5KB, client-side fuzzy) |
 | Fonts | Libre Caslon Text (serif) + Outfit (sans) |
-| Linting | Biome |
+| Linting | Biome (2-space indent, 100 char width) |
 | Language | TypeScript (strict) |
 
 ## What's Live
@@ -30,25 +30,60 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 
 | Route | Description |
 |-------|-------------|
-| `/` | Homepage — cinematic hero, quick services, department categories, latest news |
-| `/departments` | 27 departments organized into 6 color-coded categories |
-| `/departments/$slug` | Individual department pages with contacts, staff, services, offices, FAQs |
+| `/` | Homepage — cinematic hero with parallax, animated stat counters, quick services (8), department categories (6), community highlights (3), latest news |
+| `/departments` | 27 departments organized into 6 color-coded categories with filtering |
+| `/departments/$slug` | Individual department pages with contacts, staff, services, offices, FAQs, publications, bid thresholds |
 | `/commissioners` | 24 county commissioners + Mayor, organized by 11 districts with headshots |
 | `/news` | County news feed with article cards |
 | `/news/$slug` | Full article pages with content, PDF downloads, source links |
 | `/calendar` | 6 recurring meeting schedules with YouTube live stream links |
-| `/contact` | Contact hub with Google Maps, quick contacts (4), community resources (14) |
-| `/documents` | Searchable document center with 10 local files, video embeds, external categories |
-| `/ada-compliance` | ADA legal framework, coordinators, 4 downloadable forms |
-| `/employee-services` | Skyward/Edison/Mark III portals, benefits docs, Title VI training video |
+| `/contact` | Contact hub with Google Maps, quick contacts (4), contact form (9 subjects), community resources (14) |
+| `/documents` | 115 documents across 17 categories with search, category pills, collapsible sections, type badges |
+| `/ada-compliance` | ADA legal framework, coordinators, 5 downloadable forms |
+| `/employee-services` | Skyward/Edison/Mark III portals, 6 benefits docs, Title VI training video |
 | `/privacy-policy` | Full privacy policy with cookie table, data retention, user rights |
+
+### Data
+
+| File | Content |
+|------|---------|
+| `data/departments.ts` | 27 departments with contacts, services, offices, staff, external links, FAQs |
+| `data/commissioners.ts` | 24 commissioners across 11 districts with photos, addresses, emails |
+| `data/news.ts` | 5 news articles with full content + PDF attachments |
+| `data/documents.ts` | 115 documents across 17 categories (PDF, DOC, DOCX, TIF) with types, sizes, descriptions |
+| `data/quick-services.ts` | 8 quick-access service links for homepage |
+| `data/search-index.ts` | Unified search index — 178 searchable items (departments + news + commissioners + documents + pages) |
+
+### Document Library (115 files, 17 categories)
+
+All documents are served locally — no external WordPress dependency.
+
+| Category | Files | Types |
+|----------|-------|-------|
+| ADA Documents | 5 | DOCX, PDF, DOC |
+| Agendas | 17 | PDF |
+| County Commission | 1 | PDF |
+| Court Dockets | 3 | PDF |
+| Court Forms for Attorneys | 19 | DOC, PDF, TIF |
+| Court Forms for Bondsman | 8 | DOC, PDF |
+| Court Forms for Public | 5 | DOC, PDF, DOCX |
+| Emergency Management | 10 | PDF, DOCX |
+| Employee Services | 11 | PDF |
+| Finance Documents | 9 | PDF |
+| Financial Management | 1 | PDF |
+| Planning and Codes | 2 | PDF |
+| Property Assessor | 9 | PDF |
+| Public Documents | 8 | PDF |
+| Purchasing | 3 | DOC, PDF |
+| Sanitation | 3 | PDF |
+| Veterans | 1 | PDF |
 
 ### Features
 
-- **Site search** — Cmd+K / Ctrl+K fuzzy search across departments, news, commissioners, documents, pages
+- **Site search** — Cmd+K / Ctrl+K fuzzy search across 178 items (departments, news, commissioners, documents, pages)
+- **Document library** — 115 files across 17 categories with search, category pills, collapsible sections, file type badges (PDF/DOC/DOCX/TIF)
 - **Department mega-menu** — 27 departments in 6 categories (Admin, Courts, Public Safety, Finance, Ops, Community)
-- **Document downloads** — 10 PDFs/DOCXs served locally (ADA forms, employment app, benefits docs)
-- **Video embeds** — Privacy-enhanced YouTube (click-to-load, nocookie.com)
+- **Video embeds** — Privacy-enhanced YouTube (click-to-load, nocookie.com, no tracking until play)
 - **Commissioner photos** — Headshots with polished CSS treatment for all 24 commissioners + Mayor
 - **Contact form** — Subject categorization (9 topics), required field validation, success state
 - **Tourism section** — "Discover Sullivan County" with 3 regional highlights (Country Music, Outdoor Rec, BMS)
@@ -58,6 +93,7 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 - **Scroll animations** — Intersection Observer reveal system throughout
 - **Mountain dividers** — Custom SVG section separators matching Appalachian theme
 - **Glass-morphism nav** — Transparent-to-solid on scroll, adapts to dark/light page headers
+- **Animated stat counters** — Homepage hero with residents, sq miles, departments, year established
 
 ## Comparison: New Site vs Old WordPress Site
 
@@ -70,9 +106,9 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 | **Navigation** | Flat 26-item dropdown | Categorized mega-menu + mobile drawer |
 | **Departments** | Inconsistent WordPress pages | Structured data: staff, offices, services, FAQs, docs |
 | **Commissioners** | Basic name list | District-grouped grid with headshots |
-| **Documents** | WordPress DLP plugin (AJAX-loaded) | Searchable center with local files + type badges |
+| **Documents** | WordPress DLP plugin (118 files via AJAX) | 115 local files with search, category pills, type badges |
 | **Contact** | No dedicated page (footer only) | Full hub with maps, quick contacts, 14 resources |
-| **Search** | WordPress default search | Fuzzy search modal (Cmd+K) |
+| **Search** | WordPress default search | Fuzzy search modal (Cmd+K), 178 indexed items |
 | **News** | Blog posts with pagination | Article cards + detail pages + PDF downloads |
 | **SEO** | Basic WordPress SEO | Full OG + Twitter Cards + structured meta |
 | **Mobile** | Divi breakpoints | Purpose-built responsive design |
@@ -84,10 +120,10 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 - All 5 news articles (same content)
 - All 27 departments (same data + enhanced)
 - All 24 commissioners (same people + photos)
-- ADA compliance content + 4 forms
+- All 115 documents served locally (was 118 on WordPress — 3 removed: 2 duplicate versions, 1 video exceeding Cloudflare 25MB limit)
+- ADA compliance content + 5 forms
 - Employee portals (Skyward, Edison, Mark III)
 - Privacy policy content
-- 15 document categories (external link to WP library for categories not yet local)
 - All external resource links (Trustee, Schools, Library, Sheriff, Animal Shelter, etc.)
 
 ### What the Old Site Has That This Doesn't (Yet)
@@ -95,12 +131,12 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 | Feature | Priority | Notes |
 |---------|----------|-------|
 | **CMS editing** | N/A | Old site has WordPress admin. This site is code-based (developer-managed). Intentional tradeoff for performance + design control. |
+| **Contact form backend** | Medium | Form renders and validates, but submit is simulated. Needs Worker endpoint. |
 | **Cloudflare Analytics** | Low | Free, privacy-friendly analytics. Requires beacon token from CF dashboard. |
-| **Lighthouse audit** | Low | Run accessibility + performance tests and fix any findings. |
 
 ### What This Site Has That the Old Site Doesn't
 
-- Cmd+K site search
+- Cmd+K site search (178 indexed items)
 - Categorized department organization (6 categories with color-coding)
 - Commissioner headshot photos
 - News article detail pages with full content
@@ -115,42 +151,69 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 - Scroll reveal animation system
 - Animated stat counters on homepage
 - About section ("Where Tennessee Began")
-- File type badges on document downloads (PDF/DOCX/DOC)
+- Full document library with category browsing, search, and collapsible sections
 
 ## Project Structure
 
 ```
 src/
   components/
-    home/          — Homepage sections (hero, services, categories, community highlights, news, about)
+    home/          — HeroBanner, QuickServices, DepartmentCategories, NewsSection,
+                     CommunityHighlights, AboutSection
     layout/        — SiteNav, SiteFooter, AnnouncementBanner, SearchDialog
-    departments/   — DepartmentDetail
-    commissioners/ — CommissionerGrid
+    departments/   — DepartmentCard, DepartmentDetail
+    commissioners/ — CommissionerGrid, CommissionerCard
     news/          — NewsDetail
-    shared/        — NewsCard, VideoEmbed, ContactCard, MountainDivider
-    ui/            — shadcn/ui primitives (badge, button, dialog, etc.)
+    shared/        — NewsCard, VideoEmbed, ContactCard, MountainDivider,
+                     MountainDividerInverted
+    ui/            — shadcn/ui primitives (badge, button, card)
   data/
     departments.ts    — 27 departments with contacts, services, offices, staff
     commissioners.ts  — 24 commissioners across 11 districts
     news.ts           — 5 news articles with full content + PDF attachments
+    documents.ts      — 115 documents across 17 categories with types and sizes
     quick-services.ts — 8 quick-access service links
-    search-index.ts   — Unified search index
+    search-index.ts   — Unified search index (178 items)
   hooks/
-    useScrollReveal.ts — Intersection Observer scroll-reveal
-    useCountUp.ts      — Animated counter
-  routes/              — File-based routing (TanStack Router)
+    useScrollReveal.ts — Intersection Observer scroll-reveal system
+    useCountUp.ts      — Animated counter with ease-out easing
+  routes/              — File-based routing (TanStack Router, 12 pages + 1 layout)
   styles/
-    app.css            — Tailwind v4 config + custom design tokens
+    app.css            — Tailwind v4 config + brand tokens + animations + utilities
   utils/
     seo.ts             — OG/Twitter Card meta helper
 
 public/
-  documents/     — 10 downloadable PDFs/DOCXs
-  images/        — Hero photos, OG images, commissioner headshots
-  rss.xml        — Static RSS feed
+  documents/     — 115 files in 17 subdirectories (PDF, DOC, DOCX, TIF)
+    ada/                    — 5 files
+    agendas/                — 17 files
+    county-commission/      — 1 file
+    court-dockets/          — 3 files
+    court-forms-attorneys/  — 19 files
+    court-forms-bondsman/   — 8 files
+    court-forms-public/     — 5 files
+    emergency-management/   — 10 files
+    employee-services/      — 11 files
+    finance/                — 9 files
+    financial-management/   — 1 file
+    planning-codes/         — 2 files
+    property-assessor/      — 9 files
+    public-documents/       — 8 files
+    purchasing/             — 3 files
+    sanitation/             — 3 files
+    veterans/               — 1 file
+  images/
+    commissioners/ — 23 headshots (JPG/PNG)
+    hero/          — 6 responsive hero images (640/1024/1920px)
+    about/         — 2 courthouse photos
+    officials/     — 1 mayor photo
+    og/            — 2 OG meta images
+  rss.xml        — Static RSS feed (5 items)
+  favicon.svg    — Navy square with brass "SC" monogram
+  apple-touch-icon.png
 
 scripts/
-  generate-rss.ts — RSS feed generator (run: npx tsx scripts/generate-rss.ts)
+  generate-rss.ts — RSS feed generator
 ```
 
 ## Commands
@@ -161,6 +224,7 @@ npm run build     # Production build
 npm run deploy    # Build + deploy to Cloudflare Workers
 npm run lint      # Biome linter
 npm run format    # Biome formatter
+npm run test      # Vitest
 
 npx tsx scripts/generate-rss.ts  # Regenerate RSS after adding news
 ```
@@ -173,7 +237,7 @@ npx tsx scripts/generate-rss.ts  # Regenerate RSS after adding news
 
 **New commissioner:** Add to `src/data/commissioners.ts` with name, district, phone, email. Add headshot to `public/images/commissioners/`.
 
-**New document:** Place file in `public/documents/`, add to the relevant page (ada-compliance, employee-services, or documents route).
+**New document:** Place file in `public/documents/{category}/` (slugified filename), add entry to `src/data/documents.ts` with name, description, href, type, size, category.
 
 **Announcement banner:** Edit `src/components/layout/AnnouncementBanner.tsx` — update the `announcements` array.
 
@@ -190,6 +254,17 @@ A custom design language built for Sullivan County's identity — the second-old
 - Cream (#faf8f5) — page backgrounds
 - Parchment (#f3efe9) — alternating sections
 
+**Department category accents:** Courts (#6b4c8a), Public Safety (#a63d3d), Community (#3d7a7a)
+
 **Typography:** Libre Caslon Text (display/headlines) + Outfit (body/UI)
 
 **Motifs:** Mountain ridge dividers, topo-map texture overlays, heritage ornamental rules, scroll-reveal animations, glass-morphism navigation
+
+## Deployment
+
+- **Platform:** Cloudflare Workers
+- **Worker name:** sullivan-county-tn
+- **Preview env:** sullivan-county-tn-preview
+- **Compatibility:** 2026-02-06, nodejs_compat flag
+- **Observability:** Enabled
+- **Deploy:** `npm run deploy` (builds + deploys via Wrangler)
