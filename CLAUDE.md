@@ -43,7 +43,7 @@ Citizen services portal for Sullivan County, Tennessee.
 | File | Content |
 |------|---------|
 | `data/departments.ts` | 25 departments with contacts, services, offices, staff, external links |
-| `data/commissioners.ts` | 23 commissioners across 11 districts |
+| `data/commissioners.ts` | 24 commissioners across 11 districts |
 | `data/news.ts` | County news articles with full content + PDF attachments |
 | `data/quick-services.ts` | 8 quick-access service links for homepage |
 | `data/documents.ts` | 115 documents across 17 categories (PDF, DOC, DOCX, MP4, TIF) with types and helpers |

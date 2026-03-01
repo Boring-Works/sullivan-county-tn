@@ -33,7 +33,7 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 | `/` | Homepage — cinematic hero with parallax, animated stat counters, quick services (8), department categories (6), community highlights (3), latest news |
 | `/departments` | 25 departments organized into 6 color-coded categories with filtering |
 | `/departments/$slug` | Individual department pages with contacts, staff, services, offices, FAQs, publications, bid thresholds |
-| `/commissioners` | 23 county commissioners + Mayor, organized by 11 districts with headshots |
+| `/commissioners` | 24 county commissioners + Mayor, organized by 11 districts with headshots |
 | `/news` | County news feed with article cards |
 | `/news/$slug` | Full article pages with content, PDF downloads, source links |
 | `/calendar` | 6 recurring meeting schedules with YouTube live stream links |
@@ -48,11 +48,11 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 | File | Content |
 |------|---------|
 | `data/departments.ts` | 25 departments with contacts, services, offices, staff, external links, FAQs |
-| `data/commissioners.ts` | 23 commissioners across 11 districts with photos, addresses, emails |
+| `data/commissioners.ts` | 24 commissioners across 11 districts with photos, addresses, emails |
 | `data/news.ts` | 5 news articles with full content + PDF attachments |
 | `data/documents.ts` | 115 documents across 17 categories (PDF, DOC, DOCX, TIF) with types, sizes, descriptions |
 | `data/quick-services.ts` | 8 quick-access service links for homepage |
-| `data/search-index.ts` | Unified search index — 174 searchable items (departments + news + commissioners + documents + pages) |
+| `data/search-index.ts` | Unified search index — 175 searchable items (departments + news + commissioners + documents + pages) |
 
 ### Document Library (115 files, 17 categories)
 
@@ -80,11 +80,11 @@ All documents are served locally — no external WordPress dependency.
 
 ### Features
 
-- **Site search** — Cmd+K / Ctrl+K fuzzy search across 174 items (departments, news, commissioners, documents, pages)
+- **Site search** — Cmd+K / Ctrl+K fuzzy search across 175 items (departments, news, commissioners, documents, pages)
 - **Document library** — 115 files across 17 categories with search, category pills, collapsible sections, file type badges (PDF/DOC/DOCX/TIF)
 - **Department mega-menu** — 25 departments in 6 categories (Admin, Courts, Public Safety, Finance, Ops, Community)
 - **Video embeds** — Privacy-enhanced YouTube (click-to-load, nocookie.com, no tracking until play)
-- **Commissioner photos** — Headshots with polished CSS treatment for all 23 commissioners + Mayor
+- **Commissioner photos** — Headshots with polished CSS treatment for all 24 commissioners + Mayor
 - **Contact form** — Subject categorization (9 topics), server-side validation, KV storage backend with 90-day TTL
 - **Tourism section** — "Discover Sullivan County" with 3 regional highlights (Country Music, Outdoor Rec, BMS)
 - **Announcement banner** — Dismissible with localStorage persistence, supports info/urgent types
@@ -112,7 +112,7 @@ All documents are served locally — no external WordPress dependency.
 | **Commissioners** | Basic name list | District-grouped grid with headshots |
 | **Documents** | WordPress DLP plugin (118 files via AJAX) | 115 local files with search, category pills, type badges |
 | **Contact** | No dedicated page (footer only) | Full hub with maps, quick contacts, 14 resources |
-| **Search** | WordPress default search | Fuzzy search modal (Cmd+K), 174 indexed items |
+| **Search** | WordPress default search | Fuzzy search modal (Cmd+K), 175 indexed items |
 | **News** | Blog posts with pagination | Article cards + detail pages + PDF downloads |
 | **SEO** | Basic WordPress SEO | Full OG + Twitter Cards + structured meta |
 | **Mobile** | Divi breakpoints | Purpose-built responsive design |
@@ -123,7 +123,7 @@ All documents are served locally — no external WordPress dependency.
 
 - All 5 news articles (same content)
 - All 25 departments (same data + enhanced)
-- All 23 commissioners (same people + photos)
+- All 24 commissioners (same people + photos)
 - All 115 documents served locally (was 118 on WordPress — 3 removed: 2 duplicate versions, 1 video exceeding Cloudflare 25MB limit)
 - ADA compliance content + 5 forms
 - Employee portals (Skyward, Edison, Mark III)
@@ -138,7 +138,7 @@ All documents are served locally — no external WordPress dependency.
 
 ### What This Site Has That the Old Site Doesn't
 
-- Cmd+K site search (174 indexed items)
+- Cmd+K site search (175 indexed items)
 - Categorized department organization (6 categories with color-coding)
 - Commissioner headshot photos
 - News article detail pages with full content
@@ -174,11 +174,11 @@ src/
     ui/            — shadcn/ui primitives (badge, button, card)
   data/
     departments.ts    — 25 departments with contacts, services, offices, staff
-    commissioners.ts  — 23 commissioners across 11 districts
+    commissioners.ts  — 24 commissioners across 11 districts
     news.ts           — 5 news articles with full content + PDF attachments
     documents.ts      — 115 documents across 17 categories with types and sizes
     quick-services.ts — 8 quick-access service links
-    search-index.ts   — Unified search index (174 items)
+    search-index.ts   — Unified search index (175 items)
   hooks/
     useScrollReveal.ts — Intersection Observer scroll-reveal system
     useCountUp.ts      — Animated counter with ease-out easing
