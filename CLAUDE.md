@@ -28,13 +28,13 @@ Citizen services portal for Sullivan County, Tennessee.
 |-------|------|---------|
 | `/` | `routes/index.tsx` | Homepage dashboard (hero, quick services, dept categories, news) |
 | `/departments` | `routes/departments/index.tsx` | Department directory with category filter |
-| `/departments/$slug` | `routes/departments/$slug.tsx` | Individual department detail (27 departments) |
+| `/departments/$slug` | `routes/departments/$slug.tsx` | Individual department detail (25 departments) |
 | `/commissioners` | `routes/commissioners.tsx` | Commissioner grid by district (11 districts) |
 | `/news` | `routes/news/index.tsx` | County news feed |
 | `/news/$slug` | `routes/news/$slug.tsx` | News article detail page with full content |
 | `/calendar` | `routes/calendar.tsx` | Calendar & meetings (6 recurring schedules, YouTube live links) |
 | `/contact` | `routes/contact.tsx` | Contact hub with form (9 subjects, KV backend), Google Maps, quick contacts, resources |
-| `/documents` | `routes/documents.tsx` | 116-document library with 17 categories, search, category pills, collapsible sections |
+| `/documents` | `routes/documents.tsx` | 115-document library with 17 categories, search, category pills, collapsible sections |
 | `/ada-compliance` | `routes/ada-compliance.tsx` | ADA compliance info + 4 downloadable forms |
 | `/privacy-policy` | `routes/privacy-policy.tsx` | Privacy policy, cookies, data retention, user rights |
 | `/employee-services` | `routes/employee-services.tsx` | Employee portals (Skyward, Edison, Mark III), benefits, training videos |
@@ -42,11 +42,11 @@ Citizen services portal for Sullivan County, Tennessee.
 ## Data Files
 | File | Content |
 |------|---------|
-| `data/departments.ts` | 27 departments with contacts, services, offices, staff, external links |
-| `data/commissioners.ts` | 24 commissioners across 11 districts |
+| `data/departments.ts` | 25 departments with contacts, services, offices, staff, external links |
+| `data/commissioners.ts` | 23 commissioners across 11 districts |
 | `data/news.ts` | County news articles with full content + PDF attachments |
 | `data/quick-services.ts` | 8 quick-access service links for homepage |
-| `data/documents.ts` | 116 documents across 17 categories (PDF, DOC, DOCX, MP4, TIF) with types and helpers |
+| `data/documents.ts` | 115 documents across 17 categories (PDF, DOC, DOCX, MP4, TIF) with types and helpers |
 | `data/search-index.ts` | Unified search index (departments, news, commissioners, documents, pages) |
 
 ## Key Components
@@ -75,10 +75,10 @@ Citizen services portal for Sullivan County, Tennessee.
 ## Static Assets
 | Directory | Content |
 |-----------|---------|
-| `public/documents/` | 116 documents in 17 subdirectories (PDF, DOC, DOCX, MP4, TIF) |
+| `public/documents/` | 115 documents in 17 subdirectories (PDF, DOC, DOCX, MP4, TIF) |
 | `public/images/commissioners/` | Commissioner + Mayor headshots |
 | `public/rss.xml` | Static RSS feed (generated via `scripts/generate-rss.ts`) |
-| `public/sitemap.xml` | Static sitemap (generated via `scripts/generate-sitemap.ts`, 42 URLs) |
+| `public/sitemap.xml` | Static sitemap (generated via `scripts/generate-sitemap.ts`, 40 URLs) |
 | `public/robots.txt` | Crawler directives + sitemap reference |
 
 ## Server Functions
@@ -119,8 +119,8 @@ Citizen services portal for Sullivan County, Tennessee.
 | Fuse.js for site search | Client-side fuzzy search, ~5KB gzipped, Cmd+K modal | 2026-02-28 |
 | Static RSS via build script | No API routes needed — generate XML to public/ | 2026-02-28 |
 | YouTube nocookie embeds | Privacy-enhanced click-to-load video player | 2026-02-28 |
-| Documents served locally | 116 files (PDF, DOC, DOCX, MP4, TIF) in 17 category subdirectories under public/documents/ | 2026-02-28 |
+| Documents served locally | 115 files (PDF, DOC, DOCX, MP4, TIF) in 17 category subdirectories under public/documents/ | 2026-02-28 |
 | Contact form backend via KV | Server function stores submissions in CF KV (90-day TTL), no external email service | 2026-03-01 |
 | Custom 404 page | Branded not-found with quick links + search hint, uses notFoundComponent | 2026-03-01 |
-| Sitemap + robots.txt | Static generation scripts, 42 URLs, Google Search Console ready | 2026-03-01 |
+| Sitemap + robots.txt | Static generation scripts, 40 URLs, Google Search Console ready | 2026-03-01 |
 | CF Web Analytics beacon | Free, privacy-friendly, no cookies — token from CF dashboard required | 2026-03-01 |

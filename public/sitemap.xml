@@ -73,12 +73,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/county-commission</loc>
-    <lastmod>2026-03-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/register-of-deeds</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
@@ -91,13 +85,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/human-resources</loc>
+    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/election-office</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/information-technology</loc>
+    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/archives-and-tourism</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -115,36 +109,6 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/criminal-court</loc>
-    <lastmod>2026-03-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/general-sessions-court</loc>
-    <lastmod>2026-03-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/juvenile-court</loc>
-    <lastmod>2026-03-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/circuit-court-clerk</loc>
-    <lastmod>2026-03-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/criminal-court-clerk</loc>
-    <lastmod>2026-03-01</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
     <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/district-attorney</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
@@ -157,7 +121,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/sheriffs-office</loc>
+    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/sheriff</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/ems</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -169,7 +139,7 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/codes-inspection</loc>
+    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/medical-examiner</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -181,13 +151,13 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/trustee</loc>
+    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/finance-department</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/finance</loc>
+    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/fms-2020</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
@@ -199,25 +169,43 @@
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/highway-department</loc>
+    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/risk-management</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/sanitation</loc>
+    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/highway</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/parks-recreation</loc>
+    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/maintenance</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
-    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/planning-zoning</loc>
+    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/solid-waste</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/planning-and-codes</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/soil-water-conservation</loc>
+    <lastmod>2026-03-01</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://sullivan-county-tn.codyboring.workers.dev/departments/veterans-office</loc>
     <lastmod>2026-03-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

@@ -9,35 +9,33 @@ import { resolve } from "node:path";
 
 const SITE_URL = "https://sullivan-county-tn.codyboring.workers.dev";
 
-// Department slugs (all 27)
+// Department slugs — must match src/data/departments.ts exactly
 const departmentSlugs = [
   "county-mayor",
   "county-clerk",
-  "county-commission",
   "register-of-deeds",
   "county-attorney",
-  "human-resources",
-  "information-technology",
+  "election-office",
+  "archives-and-tourism",
   "circuit-court",
   "chancery-court",
-  "criminal-court",
-  "general-sessions-court",
-  "juvenile-court",
-  "circuit-court-clerk",
-  "criminal-court-clerk",
   "district-attorney",
   "public-defender",
-  "sheriffs-office",
+  "sheriff",
+  "ems",
   "emergency-management",
-  "codes-inspection",
+  "medical-examiner",
   "property-assessor",
-  "trustee",
-  "finance",
+  "finance-department",
+  "fms-2020",
   "purchasing",
-  "highway-department",
-  "sanitation",
-  "parks-recreation",
-  "planning-zoning",
+  "risk-management",
+  "highway",
+  "maintenance",
+  "solid-waste",
+  "planning-and-codes",
+  "soil-water-conservation",
+  "veterans-office",
 ];
 
 // News slugs (all 5)
