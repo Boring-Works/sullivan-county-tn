@@ -19,7 +19,7 @@ interface NewsDetailProps {
 
 export function NewsDetail({ article }: NewsDetailProps) {
 	return (
-		<main className="pt-24 pb-14">
+		<main id="main-content" className="pt-24 pb-14">
 			{/* Header */}
 			<div className="bg-brand-parchment border-b border-brand-surface">
 				<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">

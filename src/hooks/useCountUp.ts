@@ -13,7 +13,13 @@ export function useCountUp({ end, duration = 2000, suffix = "", prefix = "" }: U
   const ref = useRef<HTMLElement>(null);
 
   const animate = useCallback(() => {
+    // Skip animation for users who prefer reduced motion
+    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setValue(end);
+      return;
+    }
     const start = performance.now();
+    const rafId = { current: 0 };
     function step(now: number) {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
@@ -21,10 +27,10 @@ export function useCountUp({ end, duration = 2000, suffix = "", prefix = "" }: U
       const eased = 1 - (1 - progress) ** 3;
       setValue(Math.round(eased * end));
       if (progress < 1) {
-        requestAnimationFrame(step);
+        rafId.current = requestAnimationFrame(step);
       }
     }
-    requestAnimationFrame(step);
+    rafId.current = requestAnimationFrame(step);
   }, [end, duration]);
 
   useEffect(() => {

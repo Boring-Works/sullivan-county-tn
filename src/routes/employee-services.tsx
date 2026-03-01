@@ -48,7 +48,7 @@ const resources = [
 
 function EmployeeServicesPage() {
   return (
-    <main className="pt-24 pb-14">
+    <main id="main-content" className="pt-24 pb-14">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-4 h-px w-12 bg-brand-copper" />
         <h1 className="font-display text-4xl font-bold text-brand-navy mb-4 sm:text-5xl">

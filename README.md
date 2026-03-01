@@ -97,7 +97,16 @@ All documents are served locally — no external WordPress dependency.
 - **Custom 404 page** — Branded not-found with quick links to Home, Departments, Documents, Commissioners + search hint
 - **Sitemap** — Static XML at `/sitemap.xml` with 40 URLs for Google Search Console
 - **robots.txt** — Crawler directives with sitemap reference
-- **Cloudflare Web Analytics** — Free, privacy-friendly, no cookies (beacon script installed)
+- **Cloudflare Web Analytics** — Free, privacy-friendly, no cookies (beacon ready, needs token)
+- **Security headers** — CSP, X-Frame-Options, HSTS, Referrer-Policy, Permissions-Policy via `_headers`
+- **Cache optimization** — Immutable 1yr for hashed assets, 1day for documents, 1wk for images
+- **Skip-to-content** — Visually-hidden link for keyboard/screen reader users (WCAG 2.4.1)
+- **Reduced motion** — Respects `prefers-reduced-motion` OS setting, disables all animations
+- **Honeypot spam protection** — Hidden field rejects bots, proper email regex, field length limits
+- **Canonical URLs** — `<link rel="canonical">` on all pages via `seoLinks()` helper
+- **JSON-LD structured data** — `GovernmentOrganization` schema on homepage
+- **Article meta** — News articles use `og:type: article` with `article:published_time`
+- **Font preconnect** — `preconnect` hints for Google Fonts (eliminates DNS/connection latency)
 
 ## Comparison: New Site vs Old WordPress Site
 

@@ -1,5 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
 interface ContactFormData {
   name: string;
   email: string;
@@ -10,10 +12,19 @@ interface ContactFormData {
 export const submitContactForm = createServerFn({ method: "POST" })
   .validator((data: unknown): ContactFormData => {
     const d = data as Record<string, unknown>;
+
+    // Honeypot — if filled, silently reject (bots fill hidden fields)
+    if (typeof d.website === "string" && d.website.trim() !== "") {
+      throw new Error("Submission rejected");
+    }
+
     if (typeof d.name !== "string" || !d.name.trim()) throw new Error("Name is required");
-    if (typeof d.email !== "string" || !d.email.trim() || !d.email.includes("@"))
+    if (d.name.length > 200) throw new Error("Name too long (200 character limit)");
+    if (typeof d.email !== "string" || !d.email.trim() || !EMAIL_RE.test(d.email.trim()))
       throw new Error("Valid email is required");
+    if (d.email.length > 320) throw new Error("Email too long");
     if (typeof d.subject !== "string" || !d.subject.trim()) throw new Error("Subject is required");
+    if (d.subject.length > 200) throw new Error("Subject too long (200 character limit)");
     if (typeof d.message !== "string" || !d.message.trim()) throw new Error("Message is required");
     if (d.message.length > 5000) throw new Error("Message too long (5000 character limit)");
     return {

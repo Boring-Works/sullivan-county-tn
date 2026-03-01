@@ -34,7 +34,7 @@ function DepartmentsPage() {
   const categoryKeys = Object.keys(DEPARTMENT_CATEGORIES) as DepartmentCategory[];
 
   return (
-    <main className="mx-auto max-w-7xl px-4 pt-24 pb-14 sm:px-6 lg:px-8">
+    <main id="main-content" className="mx-auto max-w-7xl px-4 pt-24 pb-14 sm:px-6 lg:px-8">
       {/* Page heading */}
       <div className="mb-10">
         <div className="mb-4 h-px w-12 bg-brand-copper" />

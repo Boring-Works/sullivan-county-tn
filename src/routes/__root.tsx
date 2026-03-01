@@ -7,7 +7,7 @@ import { NotFound } from "~/components/layout/NotFound";
 import { SiteFooter } from "~/components/layout/SiteFooter";
 import { SiteNav } from "~/components/layout/SiteNav";
 import appCss from "~/styles/app.css?url";
-import { seo } from "~/utils/seo";
+import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -23,6 +23,9 @@ export const Route = createRootRoute({
       }),
     ],
     links: [
+      ...seoLinks("/"),
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       { rel: "stylesheet", href: appCss },
       {
         rel: "stylesheet",
@@ -61,15 +64,20 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         <HeadContent />
       </head>
       <body className="min-h-screen bg-brand-cream text-brand-slate antialiased font-body">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-sm focus:bg-brand-copper focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg"
+        >
+          Skip to main content
+        </a>
         {children}
         <Scripts />
-        {/* Cloudflare Web Analytics — free, privacy-friendly, no cookies.
-            To activate: CF Dashboard → Web Analytics → Add Site → copy token below. */}
+        {/* Cloudflare Web Analytics — uncomment and add token from CF Dashboard → Web Analytics → Add Site
         <script
           defer
           src="https://static.cloudflareinsights.com/beacon.min.js"
-          data-cf-beacon='{"token":"REPLACE_WITH_CF_ANALYTICS_TOKEN"}'
-        />
+          data-cf-beacon='{"token":"YOUR_TOKEN_HERE"}'
+        /> */}
       </body>
     </html>
   );

@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { NewsDetail } from "~/components/news/NewsDetail";
 import { getNewsBySlug } from "~/data/news";
-import { seo } from "~/utils/seo";
+import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/news/$slug")({
 	component: NewsArticlePage,
@@ -13,8 +13,11 @@ export const Route = createFileRoute("/news/$slug")({
 						title: `${article.title} — Sullivan County, TN`,
 						description: article.summary,
 						url: `/news/${params.slug}`,
+						type: "article",
+						publishedTime: article.date,
 					})
 				: [],
+			links: article ? seoLinks(`/news/${params.slug}`) : [],
 		};
 	},
 });
@@ -25,7 +28,7 @@ function NewsArticlePage() {
 
 	if (!article) {
 		return (
-			<main className="mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 lg:px-8">
+			<main id="main-content" className="mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 lg:px-8">
 				<h1 className="text-2xl font-bold text-brand-navy">Article not found</h1>
 				<p className="mt-2 text-brand-slate">
 					The news article you're looking for doesn't exist or may have been moved.

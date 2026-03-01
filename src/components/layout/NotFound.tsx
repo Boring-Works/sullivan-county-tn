@@ -10,7 +10,7 @@ const quickLinks = [
 
 export function NotFound() {
   return (
-    <main className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 lg:px-8">
+    <main id="main-content" className="mx-auto max-w-3xl px-4 py-20 text-center sm:px-6 lg:px-8">
       <p className="font-display text-7xl font-bold text-brand-brass/30 sm:text-9xl">404</p>
 
       <h1 className="mt-4 font-display text-3xl font-bold text-brand-navy sm:text-4xl">

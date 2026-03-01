@@ -80,6 +80,7 @@ Citizen services portal for Sullivan County, Tennessee.
 | `public/rss.xml` | Static RSS feed (generated via `scripts/generate-rss.ts`) |
 | `public/sitemap.xml` | Static sitemap (generated via `scripts/generate-sitemap.ts`, 40 URLs) |
 | `public/robots.txt` | Crawler directives + sitemap reference |
+| `public/_headers` | Security headers (CSP, HSTS, X-Frame-Options) + cache control |
 
 ## Server Functions
 | Function | File | Purpose |
@@ -124,3 +125,9 @@ Citizen services portal for Sullivan County, Tennessee.
 | Custom 404 page | Branded not-found with quick links + search hint, uses notFoundComponent | 2026-03-01 |
 | Sitemap + robots.txt | Static generation scripts, 40 URLs, Google Search Console ready | 2026-03-01 |
 | CF Web Analytics beacon | Free, privacy-friendly, no cookies — token from CF dashboard required | 2026-03-01 |
+| Security headers via _headers | CSP, HSTS, X-Frame-Options, Referrer-Policy, Permissions-Policy | 2026-03-01 |
+| Cache headers for static assets | Immutable 1yr for hashed assets, 1day docs, 1wk images | 2026-03-01 |
+| Skip-to-content + reduced motion | WCAG 2.4.1 compliance, prefers-reduced-motion media query | 2026-03-01 |
+| Honeypot spam protection | Hidden field rejects bots, better email regex, field length limits | 2026-03-01 |
+| Canonical URLs + JSON-LD | GovernmentOrganization schema, article OG type for news, rel=canonical | 2026-03-01 |
+| Font preconnect hints | preconnect for fonts.googleapis.com + fonts.gstatic.com | 2026-03-01 |

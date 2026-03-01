@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { DepartmentDetail } from "~/components/departments/DepartmentDetail";
 import { getDepartmentBySlug } from "~/data/departments";
-import { seo } from "~/utils/seo";
+import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/departments/$slug")({
   component: DepartmentPage,
@@ -16,6 +16,7 @@ export const Route = createFileRoute("/departments/$slug")({
             url: `/departments/${params.slug}`,
           })
         : [],
+      links: dept ? seoLinks(`/departments/${params.slug}`) : [],
     };
   },
 });
@@ -26,7 +27,7 @@ function DepartmentPage() {
 
   if (!department) {
     return (
-      <main className="mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 lg:px-8">
+      <main id="main-content" className="mx-auto max-w-7xl px-4 py-20 text-center sm:px-6 lg:px-8">
         <h1 className="text-2xl font-bold text-brand-navy">Department not found</h1>
         <p className="mt-2 text-brand-slate">
           The department you're looking for doesn't exist or may have been moved.

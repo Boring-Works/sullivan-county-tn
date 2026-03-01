@@ -63,7 +63,7 @@ const externalResources = [
 
 function ContactPage() {
   return (
-    <main className="pt-24 pb-14">
+    <main id="main-content" className="pt-24 pb-14">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-4 h-px w-12 bg-brand-copper" />
         <h1 className="font-display text-4xl font-bold text-brand-navy mb-4 sm:text-5xl">
@@ -222,6 +222,7 @@ function ContactForm() {
           email: formData.get("email") as string,
           subject: formData.get("subject") as string,
           message: formData.get("message") as string,
+          website: formData.get("website") as string,
         },
       });
       setSubmitted(true);
@@ -260,6 +261,11 @@ function ContactForm() {
         respond within 2 business days.
       </p>
       <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Honeypot — hidden from humans, bots fill it and get rejected */}
+        <div className="absolute -left-[9999px]" aria-hidden="true">
+          <label htmlFor="contact-website">Website</label>
+          <input type="text" id="contact-website" name="website" tabIndex={-1} autoComplete="off" />
+        </div>
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div>
             <label

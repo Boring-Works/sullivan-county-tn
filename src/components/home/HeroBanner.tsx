@@ -37,6 +37,8 @@ export function HeroBanner() {
   const heroRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
+    // Skip parallax for users who prefer reduced motion
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     function handleScroll() {
       if (heroRef.current) {
         heroRef.current.style.setProperty("--scroll-y", `${window.scrollY}`);
