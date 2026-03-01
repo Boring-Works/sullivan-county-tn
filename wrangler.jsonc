@@ -7,6 +7,12 @@
   "observability": {
     "enabled": true
   },
+  "kv_namespaces": [
+    {
+      "binding": "CONTACT_SUBMISSIONS",
+      "id": "e512ab18f079489fab252adba81cf501"
+    }
+  ],
   "env": {
     "preview": {
       "name": "sullivan-county-tn-preview"

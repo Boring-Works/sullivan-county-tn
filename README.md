@@ -85,7 +85,7 @@ All documents are served locally — no external WordPress dependency.
 - **Department mega-menu** — 27 departments in 6 categories (Admin, Courts, Public Safety, Finance, Ops, Community)
 - **Video embeds** — Privacy-enhanced YouTube (click-to-load, nocookie.com, no tracking until play)
 - **Commissioner photos** — Headshots with polished CSS treatment for all 24 commissioners + Mayor
-- **Contact form** — Subject categorization (9 topics), required field validation, success state
+- **Contact form** — Subject categorization (9 topics), server-side validation, KV storage backend with 90-day TTL
 - **Tourism section** — "Discover Sullivan County" with 3 regional highlights (Country Music, Outdoor Rec, BMS)
 - **Announcement banner** — Dismissible with localStorage persistence, supports info/urgent types
 - **RSS feed** — Static XML at `/rss.xml` with autodiscovery link
@@ -94,6 +94,10 @@ All documents are served locally — no external WordPress dependency.
 - **Mountain dividers** — Custom SVG section separators matching Appalachian theme
 - **Glass-morphism nav** — Transparent-to-solid on scroll, adapts to dark/light page headers
 - **Animated stat counters** — Homepage hero with residents, sq miles, departments, year established
+- **Custom 404 page** — Branded not-found with quick links to Home, Departments, Documents, Commissioners + search hint
+- **Sitemap** — Static XML at `/sitemap.xml` with 42 URLs for Google Search Console
+- **robots.txt** — Crawler directives with sitemap reference
+- **Cloudflare Web Analytics** — Free, privacy-friendly, no cookies (beacon script installed)
 
 ## Comparison: New Site vs Old WordPress Site
 
@@ -126,13 +130,11 @@ All documents are served locally — no external WordPress dependency.
 - Privacy policy content
 - All external resource links (Trustee, Schools, Library, Sheriff, Animal Shelter, etc.)
 
-### What the Old Site Has That This Doesn't (Yet)
+### What the Old Site Has That This Doesn't
 
-| Feature | Priority | Notes |
-|---------|----------|-------|
-| **CMS editing** | N/A | Old site has WordPress admin. This site is code-based (developer-managed). Intentional tradeoff for performance + design control. |
-| **Contact form backend** | Medium | Form renders and validates, but submit is simulated. Needs Worker endpoint. |
-| **Cloudflare Analytics** | Low | Free, privacy-friendly analytics. Requires beacon token from CF dashboard. |
+| Feature | Notes |
+|---------|-------|
+| **CMS editing** | Old site has WordPress admin. This site is code-based (developer-managed). Intentional tradeoff for performance + design control. |
 
 ### What This Site Has That the Old Site Doesn't
 
@@ -142,16 +144,19 @@ All documents are served locally — no external WordPress dependency.
 - News article detail pages with full content
 - Calendar & meetings page with 6 recurring schedules
 - Privacy-enhanced video embeds
-- Contact form with subject categorization (9 topics)
+- Contact form with subject categorization (9 topics) + server-side KV storage
 - Tourism / community highlights section (3 regional attractions)
 - Dismissible announcement banner system
 - RSS feed with autodiscovery
+- Sitemap.xml (42 URLs) + robots.txt for SEO
+- Custom branded 404 page with quick links + search hint
 - Google Maps embed with brand-consistent styling
 - SVG mountain ridge section dividers
 - Scroll reveal animation system
 - Animated stat counters on homepage
 - About section ("Where Tennessee Began")
 - Full document library with category browsing, search, and collapsible sections
+- Cloudflare Web Analytics (free, privacy-friendly, no cookies)
 
 ## Project Structure
 
@@ -160,7 +165,7 @@ src/
   components/
     home/          — HeroBanner, QuickServices, DepartmentCategories, NewsSection,
                      CommunityHighlights, AboutSection
-    layout/        — SiteNav, SiteFooter, AnnouncementBanner, SearchDialog
+    layout/        — SiteNav, SiteFooter, AnnouncementBanner, SearchDialog, NotFound
     departments/   — DepartmentCard, DepartmentDetail
     commissioners/ — CommissionerGrid, CommissionerCard
     news/          — NewsDetail
@@ -177,6 +182,8 @@ src/
   hooks/
     useScrollReveal.ts — Intersection Observer scroll-reveal system
     useCountUp.ts      — Animated counter with ease-out easing
+  server/
+    contact.ts         — Contact form server function (validates + stores in KV)
   routes/              — File-based routing (TanStack Router, 12 pages + 1 layout)
   styles/
     app.css            — Tailwind v4 config + brand tokens + animations + utilities
@@ -209,11 +216,15 @@ public/
     officials/     — 1 mayor photo
     og/            — 2 OG meta images
   rss.xml        — Static RSS feed (5 items)
+  sitemap.xml    — Static sitemap (42 URLs)
+  robots.txt     — Crawler directives + sitemap reference
   favicon.svg    — Navy square with brass "SC" monogram
+  favicon.ico    — 32x32 ICO for legacy browsers
   apple-touch-icon.png
 
 scripts/
-  generate-rss.ts — RSS feed generator
+  generate-rss.ts     — RSS feed generator
+  generate-sitemap.ts — Sitemap generator (42 URLs)
 ```
 
 ## Commands

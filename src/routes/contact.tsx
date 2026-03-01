@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CheckCircle, Clock, ExternalLink, MapPin, Phone, Send } from "lucide-react";
+import { AlertCircle, CheckCircle, Clock, ExternalLink, MapPin, Phone, Send } from "lucide-react";
 import { type FormEvent, useState } from "react";
+import { submitContactForm } from "~/server/contact";
 import { seo } from "~/utils/seo";
 
 export const Route = createFileRoute("/contact")({
@@ -206,27 +207,39 @@ const SUBJECT_OPTIONS = [
 function ContactForm() {
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSending(true);
-    // Simulate form submission — in production, this would POST to a Worker endpoint
-    setTimeout(() => {
-      setSending(false);
+    setError("");
+
+    const formData = new FormData(e.currentTarget);
+    try {
+      await submitContactForm({
+        data: {
+          name: formData.get("name") as string,
+          email: formData.get("email") as string,
+          subject: formData.get("subject") as string,
+          message: formData.get("message") as string,
+        },
+      });
       setSubmitted(true);
-    }, 800);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    } finally {
+      setSending(false);
+    }
   }
 
   if (submitted) {
     return (
       <div className="mb-14 rounded-sm border border-brand-sage/30 bg-brand-sage/5 p-8 text-center">
         <CheckCircle className="mx-auto mb-4 size-10 text-brand-sage" />
-        <h2 className="font-display text-xl font-bold text-brand-navy mb-2">
-          Message Sent
-        </h2>
+        <h2 className="font-display text-xl font-bold text-brand-navy mb-2">Message Sent</h2>
         <p className="font-body text-sm text-brand-slate max-w-md mx-auto">
-          Thank you for contacting Sullivan County. A staff member will respond to your
-          inquiry within 2 business days during regular office hours.
+          Thank you for contacting Sullivan County. A staff member will respond to your inquiry
+          within 2 business days during regular office hours.
         </p>
         <button
           type="button"
@@ -241,17 +254,18 @@ function ContactForm() {
 
   return (
     <div className="mb-14 rounded-sm border border-brand-surface bg-white p-7">
-      <h2 className="font-display text-xl font-bold text-brand-navy mb-2">
-        Send a Message
-      </h2>
+      <h2 className="font-display text-xl font-bold text-brand-navy mb-2">Send a Message</h2>
       <p className="font-body text-sm text-brand-slate-light mb-6">
-        Have a question or need assistance? Fill out the form below and a county staff member
-        will respond within 2 business days.
+        Have a question or need assistance? Fill out the form below and a county staff member will
+        respond within 2 business days.
       </p>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
           <div>
-            <label htmlFor="contact-name" className="block font-body text-sm font-medium text-brand-navy mb-1.5">
+            <label
+              htmlFor="contact-name"
+              className="block font-body text-sm font-medium text-brand-navy mb-1.5"
+            >
               Full Name <span className="text-brand-copper">*</span>
             </label>
             <input
@@ -264,7 +278,10 @@ function ContactForm() {
             />
           </div>
           <div>
-            <label htmlFor="contact-email" className="block font-body text-sm font-medium text-brand-navy mb-1.5">
+            <label
+              htmlFor="contact-email"
+              className="block font-body text-sm font-medium text-brand-navy mb-1.5"
+            >
               Email Address <span className="text-brand-copper">*</span>
             </label>
             <input
@@ -278,7 +295,10 @@ function ContactForm() {
           </div>
         </div>
         <div>
-          <label htmlFor="contact-subject" className="block font-body text-sm font-medium text-brand-navy mb-1.5">
+          <label
+            htmlFor="contact-subject"
+            className="block font-body text-sm font-medium text-brand-navy mb-1.5"
+          >
             Subject <span className="text-brand-copper">*</span>
           </label>
           <select
@@ -289,12 +309,17 @@ function ContactForm() {
           >
             <option value="">Select a topic...</option>
             {SUBJECT_OPTIONS.map((opt) => (
-              <option key={opt} value={opt}>{opt}</option>
+              <option key={opt} value={opt}>
+                {opt}
+              </option>
             ))}
           </select>
         </div>
         <div>
-          <label htmlFor="contact-message" className="block font-body text-sm font-medium text-brand-navy mb-1.5">
+          <label
+            htmlFor="contact-message"
+            className="block font-body text-sm font-medium text-brand-navy mb-1.5"
+          >
             Message <span className="text-brand-copper">*</span>
           </label>
           <textarea
@@ -306,6 +331,12 @@ function ContactForm() {
             placeholder="How can we help you?"
           />
         </div>
+        {error && (
+          <div className="flex items-start gap-2.5 rounded-sm border border-red-200 bg-red-50 p-4">
+            <AlertCircle className="mt-0.5 size-4 shrink-0 text-red-600" />
+            <p className="font-body text-sm text-red-700">{error}</p>
+          </div>
+        )}
         <div className="flex items-center justify-between gap-4 pt-1">
           <p className="font-body text-xs text-brand-stone">
             <span className="text-brand-copper">*</span> Required fields

@@ -3,6 +3,7 @@
 import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { AnnouncementBanner } from "~/components/layout/AnnouncementBanner";
+import { NotFound } from "~/components/layout/NotFound";
 import { SiteFooter } from "~/components/layout/SiteFooter";
 import { SiteNav } from "~/components/layout/SiteNav";
 import appCss from "~/styles/app.css?url";
@@ -28,11 +29,18 @@ export const Route = createRootRoute({
         href: "https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap",
       },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "icon", sizes: "32x32", href: "/favicon.ico" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
-      { rel: "alternate", type: "application/rss+xml", title: "Sullivan County News", href: "/rss.xml" },
+      {
+        rel: "alternate",
+        type: "application/rss+xml",
+        title: "Sullivan County News",
+        href: "/rss.xml",
+      },
     ],
   }),
   component: RootComponent,
+  notFoundComponent: NotFound,
 });
 
 function RootComponent() {
@@ -55,11 +63,13 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <body className="min-h-screen bg-brand-cream text-brand-slate antialiased font-body">
         {children}
         <Scripts />
-        {/*
-          Cloudflare Web Analytics — enable in CF dashboard:
-          Workers & Pages > sullivan-county-tn > Analytics > Web Analytics
-          Then paste the beacon script here with the real token.
-        */}
+        {/* Cloudflare Web Analytics — free, privacy-friendly, no cookies.
+            To activate: CF Dashboard → Web Analytics → Add Site → copy token below. */}
+        <script
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token":"REPLACE_WITH_CF_ANALYTICS_TOKEN"}'
+        />
       </body>
     </html>
   );

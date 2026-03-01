@@ -21,6 +21,7 @@ Citizen services portal for Sullivan County, Tennessee.
 - `npm run format` — Format with Biome
 - `npm run test` — Run tests
 - `npx tsx scripts/generate-rss.ts` — Regenerate RSS feed after adding news
+- `npx tsx scripts/generate-sitemap.ts` — Regenerate sitemap after adding routes/content
 
 ## Routes
 | Route | File | Purpose |
@@ -32,7 +33,7 @@ Citizen services portal for Sullivan County, Tennessee.
 | `/news` | `routes/news/index.tsx` | County news feed |
 | `/news/$slug` | `routes/news/$slug.tsx` | News article detail page with full content |
 | `/calendar` | `routes/calendar.tsx` | Calendar & meetings (6 recurring schedules, YouTube live links) |
-| `/contact` | `routes/contact.tsx` | Contact hub with form (9 subjects), Google Maps, quick contacts, resources |
+| `/contact` | `routes/contact.tsx` | Contact hub with form (9 subjects, KV backend), Google Maps, quick contacts, resources |
 | `/documents` | `routes/documents.tsx` | 116-document library with 17 categories, search, category pills, collapsible sections |
 | `/ada-compliance` | `routes/ada-compliance.tsx` | ADA compliance info + 4 downloadable forms |
 | `/privacy-policy` | `routes/privacy-policy.tsx` | Privacy policy, cookies, data retention, user rights |
@@ -55,6 +56,7 @@ Citizen services portal for Sullivan County, Tennessee.
 | SiteFooter | `components/layout/SiteFooter.tsx` | Footer with mountain silhouette + heritage ornament |
 | AnnouncementBanner | `components/layout/AnnouncementBanner.tsx` | Dismissible banner (localStorage persistence) |
 | SearchDialog | `components/layout/SearchDialog.tsx` | Fuse.js fuzzy search modal (Cmd+K) |
+| NotFound | `components/layout/NotFound.tsx` | Custom 404 page with quick links + search hint |
 | HeroBanner | `components/home/HeroBanner.tsx` | Cinematic hero with photo parallax + stat counters |
 | QuickServices | `components/home/QuickServices.tsx` | 8-card service grid with scroll reveals |
 | DepartmentCategories | `components/home/DepartmentCategories.tsx` | 6 category cards with scroll reveals |
@@ -76,6 +78,18 @@ Citizen services portal for Sullivan County, Tennessee.
 | `public/documents/` | 116 documents in 17 subdirectories (PDF, DOC, DOCX, MP4, TIF) |
 | `public/images/commissioners/` | Commissioner + Mayor headshots |
 | `public/rss.xml` | Static RSS feed (generated via `scripts/generate-rss.ts`) |
+| `public/sitemap.xml` | Static sitemap (generated via `scripts/generate-sitemap.ts`, 42 URLs) |
+| `public/robots.txt` | Crawler directives + sitemap reference |
+
+## Server Functions
+| Function | File | Purpose |
+|----------|------|---------|
+| `submitContactForm` | `server/contact.ts` | Validates + stores contact form submissions in KV (90-day TTL) |
+
+## Cloudflare Bindings
+| Binding | Type | Purpose |
+|---------|------|---------|
+| `CONTACT_SUBMISSIONS` | KV Namespace | Stores contact form submissions (ID: `e512ab18f079489fab252adba81cf501`) |
 
 ## Brand Tokens (Appalachian Civic Heritage)
 - `brand-navy` (#0c1e33) — primary, headers, nav, hero
@@ -106,3 +120,7 @@ Citizen services portal for Sullivan County, Tennessee.
 | Static RSS via build script | No API routes needed — generate XML to public/ | 2026-02-28 |
 | YouTube nocookie embeds | Privacy-enhanced click-to-load video player | 2026-02-28 |
 | Documents served locally | 116 files (PDF, DOC, DOCX, MP4, TIF) in 17 category subdirectories under public/documents/ | 2026-02-28 |
+| Contact form backend via KV | Server function stores submissions in CF KV (90-day TTL), no external email service | 2026-03-01 |
+| Custom 404 page | Branded not-found with quick links + search hint, uses notFoundComponent | 2026-03-01 |
+| Sitemap + robots.txt | Static generation scripts, 42 URLs, Google Search Console ready | 2026-03-01 |
+| CF Web Analytics beacon | Free, privacy-friendly, no cookies — token from CF dashboard required | 2026-03-01 |
