@@ -6,7 +6,7 @@
     <atom:link href="https://sullivan-county-tn.codyboring.workers.dev/rss.xml" rel="self" type="application/rss+xml"/>
     <description>Official news and announcements from Sullivan County, Tennessee government.</description>
     <language>en-us</language>
-    <lastBuildDate>Sat, 28 Feb 2026 18:36:33 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 02 Mar 2026 05:25:22 GMT</lastBuildDate>
     <managingEditor>mayor@sullivancountytn.gov (Sullivan County Mayor's Office)</managingEditor>
     <item>
       <title>Sullivan County Employee Food Drive</title>
@@ -47,6 +47,22 @@
       <description>Sullivan County is hiring a Building Inspector and Code Enforcement Officer.</description>
       <pubDate>Thu, 05 Jun 2025 00:00:00 GMT</pubDate>
       <dc:creator>Nick Johnson</dc:creator>
+    </item>
+    <item>
+      <title>Household Hazardous Waste Collection Event</title>
+      <link>https://sullivan-county-tn.codyboring.workers.dev/news/household-hazardous-waste-collection</link>
+      <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/household-hazardous-waste-collection</guid>
+      <description>Free household hazardous waste collection event for Sullivan County residents.</description>
+      <pubDate>Fri, 30 Aug 2024 00:00:00 GMT</pubDate>
+      <dc:creator>Sullivan County</dc:creator>
+    </item>
+    <item>
+      <title>GIS Interactive Zoning Map Now Available</title>
+      <link>https://sullivan-county-tn.codyboring.workers.dev/news/gis-interactive-zoning-map</link>
+      <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/gis-interactive-zoning-map</guid>
+      <description>Sullivan County&apos;s interactive GIS zoning map is now available online.</description>
+      <pubDate>Tue, 17 May 2022 00:00:00 GMT</pubDate>
+      <dc:creator>Sullivan County</dc:creator>
     </item>
   </channel>
 </rss>

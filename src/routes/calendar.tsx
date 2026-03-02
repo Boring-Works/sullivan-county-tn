@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Calendar, Clock, ExternalLink, MapPin } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/calendar")({
@@ -56,16 +57,31 @@ const recurringMeetings = [
 	},
 ];
 
+const countyHolidays = [
+	{ name: "New Year's Day", date: "January 1" },
+	{ name: "Martin Luther King Jr. Day", date: "3rd Monday in January" },
+	{ name: "Presidents' Day", date: "3rd Monday in February" },
+	{ name: "Good Friday", date: "Friday before Easter" },
+	{ name: "Memorial Day", date: "Last Monday in May" },
+	{ name: "Independence Day", date: "July 4" },
+	{ name: "Labor Day", date: "1st Monday in September" },
+	{ name: "Columbus Day", date: "2nd Monday in October" },
+	{ name: "Veterans Day", date: "November 11" },
+	{ name: "Thanksgiving", date: "4th Thursday & Friday in November" },
+	{ name: "Christmas Eve & Day", date: "December 24–25" },
+];
+
 function CalendarPage() {
+	const { t } = useTranslation();
 	return (
 		<main id="main-content" className="pt-24 pb-14">
 			<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 				<div className="mb-4 h-px w-12 bg-brand-copper" />
 				<h1 className="font-display text-4xl font-bold text-brand-navy mb-4 sm:text-5xl">
-					Calendar &amp; Meetings
+					{t("calendar.title")}
 				</h1>
 				<p className="font-body text-brand-slate-light mb-14 max-w-2xl leading-relaxed">
-					Sullivan County government meeting schedules, public hearings, and community events.
+					{t("calendar.description")}
 				</p>
 
 				{/* Recurring Meetings */}
@@ -117,6 +133,33 @@ function CalendarPage() {
 					</div>
 				</section>
 
+				{/* County Holiday Closures */}
+				<section className="mb-14">
+					<h2 className="font-display text-xl font-bold text-brand-navy mb-6">
+						County Holiday Closures
+					</h2>
+					<p className="font-body text-sm text-brand-slate-light mb-5 max-w-2xl">
+						Sullivan County government offices are closed on the following holidays.
+						Emergency services (911, Sheriff, EMS) remain available 24/7.
+					</p>
+					<div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+						{countyHolidays.map((holiday) => (
+							<div
+								key={holiday.name}
+								className="flex items-center gap-3 rounded-sm border border-brand-surface bg-white px-4 py-3"
+							>
+								<Calendar className="size-4 shrink-0 text-brand-copper" />
+								<div>
+									<p className="font-body text-sm font-medium text-brand-navy">
+										{holiday.name}
+									</p>
+									<p className="font-body text-xs text-brand-stone">{holiday.date}</p>
+								</div>
+							</div>
+						))}
+					</div>
+				</section>
+
 				{/* Upcoming Events */}
 				<section className="mb-14">
 					<h2 className="font-display text-xl font-bold text-brand-navy mb-6">
@@ -128,8 +171,8 @@ function CalendarPage() {
 							No upcoming events scheduled
 						</p>
 						<p className="font-body text-sm text-brand-slate-light max-w-md mx-auto">
-							Check back for upcoming community events, public hearings, and special sessions.
-							Meeting agendas are published before each session.
+							Check back for upcoming community events, public hearings, and special
+							sessions. Meeting agendas are published before each session.
 						</p>
 					</div>
 				</section>

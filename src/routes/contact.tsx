@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AlertCircle, CheckCircle, Clock, ExternalLink, MapPin, Phone, Send } from "lucide-react";
 import { type FormEvent, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { submitContactForm } from "~/server/contact";
 import { seo, seoLinks } from "~/utils/seo";
 
@@ -28,6 +29,11 @@ const quickContacts = [
     name: "County Clerk",
     phone: "(423) 323-6428",
     description: "Vehicle registration, marriage licenses, business licenses",
+  },
+  {
+    name: "Trustee (Tax Payments)",
+    phone: "(423) 323-6440",
+    description: "Property tax payments, tax records, and delinquent taxes",
   },
   {
     name: "Sheriff's Office",
@@ -101,12 +107,13 @@ function MapEmbed() {
 }
 
 function ContactPage() {
+  const { t } = useTranslation();
   return (
     <main id="main-content" className="pt-24 pb-14">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-4 h-px w-12 bg-brand-copper" />
         <h1 className="font-display text-4xl font-bold text-brand-navy mb-4 sm:text-5xl">
-          Contact Sullivan County
+          {t("contact.title")}
         </h1>
         <p className="font-body text-brand-slate-light mb-14 max-w-2xl leading-relaxed">
           Reach out to Sullivan County government offices for assistance with county services,
@@ -232,6 +239,7 @@ const SUBJECT_OPTIONS = [
 ] as const;
 
 function ContactForm() {
+  const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState("");
@@ -282,7 +290,7 @@ function ContactForm() {
 
   return (
     <div className="mb-14 rounded-sm border border-brand-surface bg-white p-7">
-      <h2 className="font-display text-xl font-bold text-brand-navy mb-2">Send a Message</h2>
+      <h2 className="font-display text-xl font-bold text-brand-navy mb-2">{t("contact.sendMessage")}</h2>
       <p className="font-body text-sm text-brand-slate-light mb-6">
         Have a question or need assistance? Fill out the form below and a county staff member will
         respond within 2 business days.
@@ -299,7 +307,7 @@ function ContactForm() {
               htmlFor="contact-name"
               className="block font-body text-sm font-medium text-brand-navy mb-1.5"
             >
-              Full Name <span className="text-brand-copper">*</span>
+              {t("contact.name")} <span className="text-brand-copper">*</span>
             </label>
             <input
               id="contact-name"
@@ -315,7 +323,7 @@ function ContactForm() {
               htmlFor="contact-email"
               className="block font-body text-sm font-medium text-brand-navy mb-1.5"
             >
-              Email Address <span className="text-brand-copper">*</span>
+              {t("contact.email")} <span className="text-brand-copper">*</span>
             </label>
             <input
               id="contact-email"
@@ -332,7 +340,7 @@ function ContactForm() {
             htmlFor="contact-subject"
             className="block font-body text-sm font-medium text-brand-navy mb-1.5"
           >
-            Subject <span className="text-brand-copper">*</span>
+            {t("contact.subject")} <span className="text-brand-copper">*</span>
           </label>
           <select
             id="contact-subject"
@@ -353,7 +361,7 @@ function ContactForm() {
             htmlFor="contact-message"
             className="block font-body text-sm font-medium text-brand-navy mb-1.5"
           >
-            Message <span className="text-brand-copper">*</span>
+            {t("contact.message")} <span className="text-brand-copper">*</span>
           </label>
           <textarea
             id="contact-message"
@@ -380,7 +388,7 @@ function ContactForm() {
             className="inline-flex items-center gap-2 rounded-sm bg-brand-copper px-6 py-2.5 font-body text-sm font-semibold text-white transition-colors hover:bg-brand-copper-light disabled:opacity-60 disabled:cursor-not-allowed"
           >
             <Send className="size-3.5" />
-            {sending ? "Sending..." : "Send Message"}
+            {sending ? t("contact.sending") : t("contact.send")}
           </button>
         </div>
       </form>

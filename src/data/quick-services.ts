@@ -63,4 +63,11 @@ export const quickServices: QuickService[] = [
     icon: "Medal",
     external: false,
   },
+  {
+    title: "GIS & Property Lookup",
+    description: "Search property records, view zoning maps, and explore county GIS data.",
+    href: "https://gis.sullivancountytn.gov/",
+    icon: "Map",
+    external: true,
+  },
 ];
