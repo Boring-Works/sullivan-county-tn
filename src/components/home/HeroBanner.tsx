@@ -53,8 +53,30 @@ export function HeroBanner() {
       ref={heroRef}
       className="relative min-h-screen flex flex-col overflow-hidden bg-brand-navy"
     >
-      {/* Background image with parallax — responsive srcSet */}
+      {/* Background image with parallax — responsive srcSet, WebP preferred */}
       <picture>
+        {/* WebP — modern format, 40-60% smaller */}
+        <source
+          media="(min-width: 1024px)"
+          srcSet="/images/hero/boone-lake-1920.webp"
+          type="image/webp"
+          width={1920}
+          height={1440}
+        />
+        <source
+          media="(min-width: 640px)"
+          srcSet="/images/hero/boone-lake-1024.webp"
+          type="image/webp"
+          width={1024}
+          height={768}
+        />
+        <source
+          srcSet="/images/hero/boone-lake-640.webp"
+          type="image/webp"
+          width={640}
+          height={480}
+        />
+        {/* JPEG fallback */}
         <source
           media="(min-width: 1024px)"
           srcSet="/images/hero/boone-lake-1920.jpg"

@@ -1,6 +1,13 @@
 /// <reference types="vite/client" />
 
-import { createRootRoute, HeadContent, Outlet, Scripts } from "@tanstack/react-router";
+import {
+	type ErrorComponentProps,
+	Link,
+	createRootRoute,
+	HeadContent,
+	Outlet,
+	Scripts,
+} from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { AnnouncementBanner } from "~/components/layout/AnnouncementBanner";
 import { NotFound } from "~/components/layout/NotFound";
@@ -8,6 +15,56 @@ import { SiteFooter } from "~/components/layout/SiteFooter";
 import { SiteNav } from "~/components/layout/SiteNav";
 import appCss from "~/styles/app.css?url";
 import { seo, seoLinks } from "~/utils/seo";
+
+function RouteErrorFallback({ error }: ErrorComponentProps) {
+	return (
+		<main id="main-content" className="mx-auto max-w-7xl px-4 py-24 text-center sm:px-6 lg:px-8">
+			<div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-safety/10">
+				<svg
+					className="h-8 w-8 text-brand-safety"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+					strokeWidth={2}
+				>
+					<title>Error</title>
+					<path
+						strokeLinecap="round"
+						strokeLinejoin="round"
+						d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+					/>
+				</svg>
+			</div>
+			<h1 className="font-display text-2xl font-bold text-brand-navy mb-2">
+				Something went wrong
+			</h1>
+			<p className="font-body text-brand-slate-light mb-6 max-w-md mx-auto">
+				We encountered an unexpected error. Please try refreshing the page or return to the
+				homepage.
+			</p>
+			{error instanceof Error && (
+				<p className="font-body text-xs text-brand-stone mb-6 max-w-lg mx-auto break-words">
+					{error.message}
+				</p>
+			)}
+			<div className="flex items-center justify-center gap-4">
+				<button
+					type="button"
+					onClick={() => window.location.reload()}
+					className="rounded-sm bg-brand-copper px-6 py-2.5 font-body text-sm font-semibold text-white hover:bg-brand-copper-light transition-colors"
+				>
+					Refresh Page
+				</button>
+				<Link
+					to="/"
+					className="rounded-sm border border-brand-surface px-6 py-2.5 font-body text-sm font-semibold text-brand-navy hover:bg-brand-parchment transition-colors"
+				>
+					Go Home
+				</Link>
+			</div>
+		</main>
+	);
+}
 
 export const Route = createRootRoute({
   head: () => ({
@@ -44,6 +101,7 @@ export const Route = createRootRoute({
   }),
   component: RootComponent,
   notFoundComponent: NotFound,
+  errorComponent: RouteErrorFallback,
 });
 
 function RootComponent() {
@@ -72,7 +130,10 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         </a>
         {children}
         <Scripts />
-        {/* Cloudflare Web Analytics — uncomment and add token from CF Dashboard → Web Analytics → Add Site
+        {/* Cloudflare Web Analytics — Add CF Dashboard token to enable:
+            1. Go to dash.cloudflare.com → Web Analytics → Add Site
+            2. Replace YOUR_TOKEN_HERE with the provided token
+            3. Uncomment the script tag below
         <script
           defer
           src="https://static.cloudflareinsights.com/beacon.min.js"

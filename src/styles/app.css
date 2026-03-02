@@ -317,3 +317,42 @@
     transform: none;
   }
 }
+
+/* Print-friendly styles for department pages and document listings */
+@media print {
+  nav,
+  footer {
+    display: none !important;
+  }
+  [role="dialog"],
+  .sr-only {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt;
+  }
+  * {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+  .card-lift,
+  [data-reveal] {
+    break-inside: avoid;
+    transform: none !important;
+  }
+  img {
+    max-width: 100% !important;
+    page-break-inside: avoid;
+  }
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+    word-break: break-all;
+  }
+  nav a[href]::after {
+    content: none !important;
+  }
+}

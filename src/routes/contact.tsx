@@ -62,6 +62,44 @@ const externalResources = [
   { label: "County Technical Assistance Service", url: "http://www.ctas.tennessee.edu/" },
 ];
 
+function MapEmbed() {
+  const [loaded, setLoaded] = useState(false);
+
+  if (!loaded) {
+    return (
+      <div className="mt-6 rounded-sm overflow-hidden border border-brand-surface bg-brand-parchment flex flex-col items-center justify-center gap-3 h-[250px]">
+        <MapPin className="size-8 text-brand-copper" />
+        <p className="font-display text-sm font-semibold text-brand-navy">
+          Sullivan County Government Offices
+        </p>
+        <button
+          type="button"
+          onClick={() => setLoaded(true)}
+          className="inline-flex items-center gap-1.5 rounded-sm border border-brand-copper px-4 py-2 font-body text-sm font-semibold text-brand-copper hover:bg-brand-copper hover:text-white transition-colors"
+        >
+          Load Map
+        </button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="mt-6 rounded-sm overflow-hidden border border-brand-surface">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3201.5!2d-82.329!3d36.533!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x885a84cb1c8e0273%3A0xd8cde48bc92169f0!2s3411%20TN-126%2C%20Blountville%2C%20TN%2037617!5e0!3m2!1sen!2sus!4v1"
+        width="100%"
+        height="250"
+        style={{ border: 0 }}
+        allowFullScreen
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+        title="Sullivan County offices location"
+        className="grayscale hover:grayscale-0 transition-all duration-500"
+      />
+    </div>
+  );
+}
+
 function ContactPage() {
   return (
     <main id="main-content" className="pt-24 pb-14">
@@ -106,20 +144,8 @@ function ContactPage() {
             </Link>
             .
           </p>
-          {/* Map */}
-          <div className="mt-6 rounded-sm overflow-hidden border border-brand-surface">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3201.5!2d-82.329!3d36.533!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x885a84cb1c8e0273%3A0xd8cde48bc92169f0!2s3411%20TN-126%2C%20Blountville%2C%20TN%2037617!5e0!3m2!1sen!2sus!4v1"
-              width="100%"
-              height="250"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Sullivan County offices location"
-              className="grayscale hover:grayscale-0 transition-all duration-500"
-            />
-          </div>
+          {/* Map — click-to-load to save ~500KB of external resources */}
+          <MapEmbed />
         </div>
 
         {/* Quick contacts grid */}

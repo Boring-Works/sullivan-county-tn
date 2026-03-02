@@ -112,6 +112,11 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
 							onChange={(e) => setQuery(e.target.value)}
 							onKeyDown={handleKeyDown}
 							className="flex-1 bg-transparent font-body text-sm text-brand-slate placeholder:text-brand-stone outline-none"
+							role="combobox"
+							aria-expanded={results.length > 0}
+							aria-controls="search-results-list"
+							aria-activedescendant={results.length > 0 ? `search-result-${selectedIndex}` : undefined}
+							aria-label="Search Sullivan County"
 						/>
 						<Dialog.Close asChild>
 							<button
@@ -135,9 +140,14 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
 						)}
 
 						{results.length > 0 && (
-							<ul>
+							<ul id="search-results-list" role="listbox">
 								{results.map((result, index) => (
-									<li key={`${result.item.type}-${result.item.url}-${result.item.title}`}>
+									<li
+										key={`${result.item.type}-${result.item.url}-${result.item.title}`}
+										id={`search-result-${index}`}
+										role="option"
+										aria-selected={index === selectedIndex}
+									>
 										<button
 											type="button"
 											onClick={() => navigateToResult(result.item)}
