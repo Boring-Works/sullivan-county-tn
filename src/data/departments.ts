@@ -514,7 +514,7 @@ export const departments: Department[] = [
       },
       {
         question: "When is the next reappraisal?",
-        answer: "The next statewide reappraisal is scheduled for 2025.",
+        answer: "The most recent statewide reappraisal was completed in 2025. Tennessee conducts reappraisals on a cycle set by the State Board of Equalization.",
       },
     ],
     importantNotes: [

@@ -251,7 +251,7 @@ export function HeroBanner() {
                 }
               />
               <StatItem
-                end={27}
+                end={25}
                 label="Departments"
                 icon={
                   <svg

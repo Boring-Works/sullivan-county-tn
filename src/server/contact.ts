@@ -53,7 +53,7 @@ export const submitContactForm = createServerFn({ method: "POST" })
       }
     } catch {
       // KV not available (e.g., local dev without bindings) — submission still succeeds
-      console.log("Contact submission (KV unavailable):", JSON.stringify(submission));
+      console.log("Contact submission stored locally (KV unavailable):", id);
     }
 
     return { success: true, id };

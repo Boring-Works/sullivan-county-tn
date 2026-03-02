@@ -49,7 +49,7 @@ export function AboutSection() {
               government serves over 156,000 residents.
             </p>
             <p className="mt-4 font-body text-base leading-relaxed text-brand-slate-light">
-              From property records to building permits, our 27 departments are here to help.
+              From property records to building permits, our 25 departments are here to help.
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link

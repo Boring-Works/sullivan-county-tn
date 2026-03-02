@@ -12,6 +12,7 @@ export const Route = createFileRoute("/news/$slug")({
 				? seo({
 						title: `${article.title} — Sullivan County, TN`,
 						description: article.summary,
+						image: "/images/og/og-courthouse.jpg",
 						url: `/news/${params.slug}`,
 						type: "article",
 						publishedTime: article.date,

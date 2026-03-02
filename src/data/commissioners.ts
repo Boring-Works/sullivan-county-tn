@@ -30,7 +30,7 @@ export const commissioners: Commissioner[] = [
   {
     name: "Cheryl Harvey",
     district: 2,
-    address: "1108 Mountain Vist Dr, Bristol, TN 37620",
+    address: "1108 Mountain Vista Dr, Bristol, TN 37620",
     email: "Cheryl.Harvey@sullivancountytn.gov",
     photo: "/images/commissioners/cheryl-harvey.jpg",
   },

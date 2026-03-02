@@ -10,6 +10,7 @@ export const Route = createFileRoute("/news/")({
       title: "County News — Sullivan County, TN",
       description:
         "Latest announcements, events, and public notices from Sullivan County government.",
+      image: "/images/og/og-courthouse.jpg",
       url: "/news",
     }),
     links: seoLinks("/news"),
