@@ -1,0 +1,110 @@
+{
+  "nav": {
+    "departments": "Departments",
+    "history": "History",
+    "communities": "Communities",
+    "commissioners": "Commissioners",
+    "news": "News",
+    "calendar": "Calendar",
+    "documents": "Documents",
+    "minutes": "Minutes",
+    "forms": "Forms",
+    "contact": "Contact",
+    "payTaxes": "Pay Taxes",
+    "search": "Search",
+    "viewAll": "View All",
+    "viewAllDepartments": "View All Departments",
+    "countyDepartments": "County Departments"
+  },
+  "home": {
+    "heroTitle": "Sullivan County",
+    "heroSubtitle": "Tennessee",
+    "heroTagline": "Where Tennessee Began",
+    "quickServices": "Quick Services",
+    "departmentCategories": "Department Categories",
+    "latestNews": "Latest News",
+    "viewAllNews": "View All News",
+    "communityHighlights": "Community Highlights",
+    "about": "About Sullivan County"
+  },
+  "news": {
+    "title": "County News",
+    "description": "Stay up to date with the latest announcements, events, and public notices from Sullivan County government.",
+    "backToNews": "Back to News",
+    "articleNotFound": "Article not found",
+    "articleNotFoundDesc": "The news article you're looking for doesn't exist or may have been moved."
+  },
+  "forms": {
+    "title": "Online Forms",
+    "description": "Submit requests, applications, and feedback to Sullivan County government online. All submissions are reviewed by the appropriate department.",
+    "startForm": "Start Form",
+    "yourInfo": "Your Information",
+    "fullName": "Full Name",
+    "email": "Email Address",
+    "phone": "Phone Number",
+    "optional": "optional",
+    "required": "Required fields",
+    "submit": "Submit",
+    "submitting": "Submitting...",
+    "submitted": "Submission Received",
+    "submittedDesc": "Thank you for your submission. The appropriate department will review it and contact you if additional information is needed.",
+    "backToForms": "Back to Forms",
+    "allForms": "All Forms",
+    "formNotFound": "Form not found",
+    "formNotFoundDesc": "The form you're looking for doesn't exist.",
+    "details": "Details"
+  },
+  "minutes": {
+    "title": "Meeting Minutes",
+    "description": "Archive of Sullivan County commission meetings, committee sessions, and public hearings. Download agendas and minutes as PDF documents.",
+    "searchPlaceholder": "Search minutes...",
+    "allCommittees": "All Committees",
+    "records": "records",
+    "record": "record",
+    "noResults": "No meeting minutes found matching your search."
+  },
+  "contact": {
+    "title": "Contact Sullivan County",
+    "sendMessage": "Send a Message",
+    "name": "Your Name",
+    "email": "Email Address",
+    "subject": "Subject",
+    "message": "Message",
+    "send": "Send Message",
+    "sending": "Sending..."
+  },
+  "documents": {
+    "title": "Document Library",
+    "description": "Access official Sullivan County documents, forms, agendas, and publications.",
+    "searchPlaceholder": "Search documents...",
+    "allCategories": "All Categories"
+  },
+  "calendar": {
+    "title": "Calendar & Meetings",
+    "description": "Upcoming meetings, public hearings, and events for Sullivan County government."
+  },
+  "commissioners": {
+    "title": "County Commissioners",
+    "description": "Sullivan County is governed by a 24-member County Commission representing 11 districts."
+  },
+  "footer": {
+    "government": "Government",
+    "resources": "Resources",
+    "connect": "Connect With Us",
+    "copyright": "Sullivan County, Tennessee. All rights reserved.",
+    "ada": "ADA Compliance",
+    "privacy": "Privacy Policy",
+    "employeeServices": "Employee Services"
+  },
+  "common": {
+    "backToHome": "Go Home",
+    "refreshPage": "Refresh Page",
+    "errorTitle": "Something went wrong",
+    "errorDesc": "We encountered an unexpected error. Please try refreshing the page or return to the homepage.",
+    "notFoundTitle": "Page Not Found",
+    "loading": "Loading...",
+    "select": "Select...",
+    "pdf": "PDF",
+    "download": "Download"
+  }
+}

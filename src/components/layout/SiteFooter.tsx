@@ -1,13 +1,14 @@
 import { Link } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { MountainDividerInverted } from "~/components/shared/MountainDivider";
 
 const QUICK_LINKS = [
   { label: "Departments", href: "/departments" },
+  { label: "History", href: "/history" },
+  { label: "Communities", href: "/communities" },
   { label: "Commissioners", href: "/commissioners" },
   { label: "News", href: "/news" },
-  { label: "Calendar", href: "/calendar" },
   { label: "Documents", href: "/documents" },
-  { label: "Employee Services", href: "/employee-services" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
@@ -19,6 +20,7 @@ const EXTERNAL_RESOURCES = [
 ] as const;
 
 export function SiteFooter() {
+  const { t } = useTranslation();
   return (
     <footer className="relative bg-brand-navy-deep text-brand-cream/70">
       <MountainDividerInverted fill="var(--color-brand-navy-deep)" />
@@ -60,7 +62,7 @@ export function SiteFooter() {
           {/* Column 2: Quick Links */}
           <div>
             <h3 className="font-display text-sm font-bold text-brand-cream mb-5 tracking-wide">
-              Quick Links
+              {t("footer.government")}
             </h3>
             <ul className="space-y-2.5">
               {QUICK_LINKS.map((link) => (
@@ -79,7 +81,7 @@ export function SiteFooter() {
           {/* Column 3: External Resources */}
           <div>
             <h3 className="font-display text-sm font-bold text-brand-cream mb-5 tracking-wide">
-              External Resources
+              {t("footer.resources")}
             </h3>
             <ul className="space-y-2.5">
               {EXTERNAL_RESOURCES.map((resource) => (
@@ -146,10 +148,10 @@ export function SiteFooter() {
             </div>
             <div className="flex items-center gap-6">
               <Link to="/ada-compliance" className="hover:text-brand-cream/60 transition-colors">
-                ADA Compliance
+                {t("footer.ada")}
               </Link>
               <Link to="/privacy-policy" className="hover:text-brand-cream/60 transition-colors">
-                Privacy Policy
+                {t("footer.privacy")}
               </Link>
               <a href="/rss.xml" className="hover:text-brand-cream/60 transition-colors">
                 RSS Feed

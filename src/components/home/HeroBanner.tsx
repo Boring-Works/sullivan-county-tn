@@ -144,7 +144,7 @@ export function HeroBanner() {
               className="mt-5 max-w-xl font-accent text-base italic leading-relaxed text-white/70 opacity-0 animate-fade-up sm:text-xl"
               style={{ animationDelay: "0.55s" }}
             >
-              Second oldest county in Tennessee. Serving the Appalachian Highlands.
+              Where Tennessee Began and Begins.
             </p>
 
             {/* CTA — primary button + text links */}
@@ -175,14 +175,12 @@ export function HeroBanner() {
                 >
                   Pay Property Taxes
                 </a>
-                <a
-                  href="https://wheretennesseebegan.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  to="/history"
                   className="inline-flex items-center rounded-full border border-white/20 px-4 py-1.5 text-white/70 backdrop-blur-sm transition-all hover:border-brand-brass/40 hover:text-brand-brass"
                 >
-                  Where Tennessee Began
-                </a>
+                  Our History
+                </Link>
               </div>
             </div>
           </div>
@@ -210,7 +208,7 @@ export function HeroBanner() {
           <div className="rounded-sm border border-white/10 bg-brand-navy/40 backdrop-blur-md px-6 py-4 sm:px-8 sm:py-5">
             <div className="grid grid-cols-4 gap-2 sm:gap-6 lg:gap-10 justify-items-center">
               <StatItem
-                end={156000}
+                end={158000}
                 suffix="+"
                 label="Residents"
                 icon={

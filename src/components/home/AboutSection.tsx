@@ -44,12 +44,20 @@ export function AboutSection() {
             </h2>
             <div className="mt-4 h-px w-20 bg-gradient-to-r from-brand-copper to-brand-brass/40" />
             <p className="mt-6 font-body text-base leading-relaxed text-brand-slate-light sm:text-lg">
-              Sullivan County is the second oldest county in Tennessee, covering 430 square miles of
-              the Appalachian Highlands. Home to Kingsport, Bristol, and Blountville, our county
-              government serves over 156,000 residents.
+              Sullivan County is the second oldest county in Tennessee and where Tennessee's
+              government began. In 1790, Governor William Blount established the Southwest
+              Territory's capital at Rocky Mount — the political entity from which the State of
+              Tennessee was born. Today, our county covers 430 square miles of the Appalachian
+              Highlands, serving over 158,000 residents.
             </p>
             <p className="mt-4 font-body text-base leading-relaxed text-brand-slate-light">
-              From property records to building permits, our 25 departments are here to help.
+              From property records to building permits, our 25 departments are here to help.{" "}
+              <Link
+                to="/history"
+                className="text-brand-copper hover:text-brand-copper-light transition-colors font-medium"
+              >
+                Explore our founding story &rarr;
+              </Link>
             </p>
             <div className="mt-8 flex flex-wrap gap-4">
               <Link

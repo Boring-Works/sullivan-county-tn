@@ -9,27 +9,81 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as VisitRouteImport } from './routes/visit'
+import { Route as TransportationRouteImport } from './routes/transportation'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as PeopleRouteImport } from './routes/people'
+import { Route as MinutesRouteImport } from './routes/minutes'
 import { Route as EmployeeServicesRouteImport } from './routes/employee-services'
+import { Route as EducationRouteImport } from './routes/education'
+import { Route as EconomicDevelopmentRouteImport } from './routes/economic-development'
 import { Route as DocumentsRouteImport } from './routes/documents'
 import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CommissionersRouteImport } from './routes/commissioners'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as AdaComplianceRouteImport } from './routes/ada-compliance'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NewsIndexRouteImport } from './routes/news/index'
+import { Route as HistoryIndexRouteImport } from './routes/history/index'
+import { Route as FormsIndexRouteImport } from './routes/forms/index'
 import { Route as DepartmentsIndexRouteImport } from './routes/departments/index'
+import { Route as CommunitiesIndexRouteImport } from './routes/communities/index'
+import { Route as AdminIndexRouteImport } from './routes/admin/index'
 import { Route as NewsSlugRouteImport } from './routes/news/$slug'
+import { Route as HistoryTimelineRouteImport } from './routes/history/timeline'
+import { Route as HistorySlugRouteImport } from './routes/history/$slug'
+import { Route as FormsTypeRouteImport } from './routes/forms/$type'
 import { Route as DepartmentsSlugRouteImport } from './routes/departments/$slug'
+import { Route as CommunitiesSlugRouteImport } from './routes/communities/$slug'
+import { Route as AdminSubmissionsRouteImport } from './routes/admin/submissions'
+import { Route as AdminLoginRouteImport } from './routes/admin/login'
+import { Route as AdminAnnouncementsRouteImport } from './routes/admin/announcements'
+import { Route as AdminNewsIndexRouteImport } from './routes/admin/news/index'
+import { Route as AdminMinutesIndexRouteImport } from './routes/admin/minutes/index'
+import { Route as AdminNewsNewRouteImport } from './routes/admin/news/new'
+import { Route as AdminNewsIdRouteImport } from './routes/admin/news/$id'
+import { Route as AdminMinutesNewRouteImport } from './routes/admin/minutes/new'
+import { Route as AdminMinutesIdRouteImport } from './routes/admin/minutes/$id'
 
+const VisitRoute = VisitRouteImport.update({
+  id: '/visit',
+  path: '/visit',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TransportationRoute = TransportationRouteImport.update({
+  id: '/transportation',
+  path: '/transportation',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PeopleRoute = PeopleRouteImport.update({
+  id: '/people',
+  path: '/people',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MinutesRoute = MinutesRouteImport.update({
+  id: '/minutes',
+  path: '/minutes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EmployeeServicesRoute = EmployeeServicesRouteImport.update({
   id: '/employee-services',
   path: '/employee-services',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EducationRoute = EducationRouteImport.update({
+  id: '/education',
+  path: '/education',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EconomicDevelopmentRoute = EconomicDevelopmentRouteImport.update({
+  id: '/economic-development',
+  path: '/economic-development',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DocumentsRoute = DocumentsRouteImport.update({
@@ -57,6 +111,11 @@ const AdaComplianceRoute = AdaComplianceRouteImport.update({
   path: '/ada-compliance',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -67,9 +126,29 @@ const NewsIndexRoute = NewsIndexRouteImport.update({
   path: '/news/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HistoryIndexRoute = HistoryIndexRouteImport.update({
+  id: '/history/',
+  path: '/history/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FormsIndexRoute = FormsIndexRouteImport.update({
+  id: '/forms/',
+  path: '/forms/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DepartmentsIndexRoute = DepartmentsIndexRouteImport.update({
   id: '/departments/',
   path: '/departments/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunitiesIndexRoute = CommunitiesIndexRouteImport.update({
+  id: '/communities/',
+  path: '/communities/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NewsSlugRoute = NewsSlugRouteImport.update({
@@ -77,117 +156,364 @@ const NewsSlugRoute = NewsSlugRouteImport.update({
   path: '/news/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HistoryTimelineRoute = HistoryTimelineRouteImport.update({
+  id: '/history/timeline',
+  path: '/history/timeline',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistorySlugRoute = HistorySlugRouteImport.update({
+  id: '/history/$slug',
+  path: '/history/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FormsTypeRoute = FormsTypeRouteImport.update({
+  id: '/forms/$type',
+  path: '/forms/$type',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DepartmentsSlugRoute = DepartmentsSlugRouteImport.update({
   id: '/departments/$slug',
   path: '/departments/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CommunitiesSlugRoute = CommunitiesSlugRouteImport.update({
+  id: '/communities/$slug',
+  path: '/communities/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSubmissionsRoute = AdminSubmissionsRouteImport.update({
+  id: '/admin/submissions',
+  path: '/admin/submissions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/admin/login',
+  path: '/admin/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminAnnouncementsRoute = AdminAnnouncementsRouteImport.update({
+  id: '/admin/announcements',
+  path: '/admin/announcements',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminNewsIndexRoute = AdminNewsIndexRouteImport.update({
+  id: '/admin/news/',
+  path: '/admin/news/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminMinutesIndexRoute = AdminMinutesIndexRouteImport.update({
+  id: '/admin/minutes/',
+  path: '/admin/minutes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminNewsNewRoute = AdminNewsNewRouteImport.update({
+  id: '/admin/news/new',
+  path: '/admin/news/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminNewsIdRoute = AdminNewsIdRouteImport.update({
+  id: '/admin/news/$id',
+  path: '/admin/news/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminMinutesNewRoute = AdminMinutesNewRouteImport.update({
+  id: '/admin/minutes/new',
+  path: '/admin/minutes/new',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminMinutesIdRoute = AdminMinutesIdRouteImport.update({
+  id: '/admin/minutes/$id',
+  path: '/admin/minutes/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/ada-compliance': typeof AdaComplianceRoute
   '/calendar': typeof CalendarRoute
   '/commissioners': typeof CommissionersRoute
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
+  '/economic-development': typeof EconomicDevelopmentRoute
+  '/education': typeof EducationRoute
   '/employee-services': typeof EmployeeServicesRoute
+  '/minutes': typeof MinutesRoute
+  '/people': typeof PeopleRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/transportation': typeof TransportationRoute
+  '/visit': typeof VisitRoute
+  '/admin/announcements': typeof AdminAnnouncementsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/submissions': typeof AdminSubmissionsRoute
+  '/communities/$slug': typeof CommunitiesSlugRoute
   '/departments/$slug': typeof DepartmentsSlugRoute
+  '/forms/$type': typeof FormsTypeRoute
+  '/history/$slug': typeof HistorySlugRoute
+  '/history/timeline': typeof HistoryTimelineRoute
   '/news/$slug': typeof NewsSlugRoute
+  '/admin/': typeof AdminIndexRoute
+  '/communities/': typeof CommunitiesIndexRoute
   '/departments/': typeof DepartmentsIndexRoute
+  '/forms/': typeof FormsIndexRoute
+  '/history/': typeof HistoryIndexRoute
   '/news/': typeof NewsIndexRoute
+  '/admin/minutes/$id': typeof AdminMinutesIdRoute
+  '/admin/minutes/new': typeof AdminMinutesNewRoute
+  '/admin/news/$id': typeof AdminNewsIdRoute
+  '/admin/news/new': typeof AdminNewsNewRoute
+  '/admin/minutes/': typeof AdminMinutesIndexRoute
+  '/admin/news/': typeof AdminNewsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/ada-compliance': typeof AdaComplianceRoute
   '/calendar': typeof CalendarRoute
   '/commissioners': typeof CommissionersRoute
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
+  '/economic-development': typeof EconomicDevelopmentRoute
+  '/education': typeof EducationRoute
   '/employee-services': typeof EmployeeServicesRoute
+  '/minutes': typeof MinutesRoute
+  '/people': typeof PeopleRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/transportation': typeof TransportationRoute
+  '/visit': typeof VisitRoute
+  '/admin/announcements': typeof AdminAnnouncementsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/submissions': typeof AdminSubmissionsRoute
+  '/communities/$slug': typeof CommunitiesSlugRoute
   '/departments/$slug': typeof DepartmentsSlugRoute
+  '/forms/$type': typeof FormsTypeRoute
+  '/history/$slug': typeof HistorySlugRoute
+  '/history/timeline': typeof HistoryTimelineRoute
   '/news/$slug': typeof NewsSlugRoute
+  '/admin': typeof AdminIndexRoute
+  '/communities': typeof CommunitiesIndexRoute
   '/departments': typeof DepartmentsIndexRoute
+  '/forms': typeof FormsIndexRoute
+  '/history': typeof HistoryIndexRoute
   '/news': typeof NewsIndexRoute
+  '/admin/minutes/$id': typeof AdminMinutesIdRoute
+  '/admin/minutes/new': typeof AdminMinutesNewRoute
+  '/admin/news/$id': typeof AdminNewsIdRoute
+  '/admin/news/new': typeof AdminNewsNewRoute
+  '/admin/minutes': typeof AdminMinutesIndexRoute
+  '/admin/news': typeof AdminNewsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/ada-compliance': typeof AdaComplianceRoute
   '/calendar': typeof CalendarRoute
   '/commissioners': typeof CommissionersRoute
   '/contact': typeof ContactRoute
   '/documents': typeof DocumentsRoute
+  '/economic-development': typeof EconomicDevelopmentRoute
+  '/education': typeof EducationRoute
   '/employee-services': typeof EmployeeServicesRoute
+  '/minutes': typeof MinutesRoute
+  '/people': typeof PeopleRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/transportation': typeof TransportationRoute
+  '/visit': typeof VisitRoute
+  '/admin/announcements': typeof AdminAnnouncementsRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/admin/submissions': typeof AdminSubmissionsRoute
+  '/communities/$slug': typeof CommunitiesSlugRoute
   '/departments/$slug': typeof DepartmentsSlugRoute
+  '/forms/$type': typeof FormsTypeRoute
+  '/history/$slug': typeof HistorySlugRoute
+  '/history/timeline': typeof HistoryTimelineRoute
   '/news/$slug': typeof NewsSlugRoute
+  '/admin/': typeof AdminIndexRoute
+  '/communities/': typeof CommunitiesIndexRoute
   '/departments/': typeof DepartmentsIndexRoute
+  '/forms/': typeof FormsIndexRoute
+  '/history/': typeof HistoryIndexRoute
   '/news/': typeof NewsIndexRoute
+  '/admin/minutes/$id': typeof AdminMinutesIdRoute
+  '/admin/minutes/new': typeof AdminMinutesNewRoute
+  '/admin/news/$id': typeof AdminNewsIdRoute
+  '/admin/news/new': typeof AdminNewsNewRoute
+  '/admin/minutes/': typeof AdminMinutesIndexRoute
+  '/admin/news/': typeof AdminNewsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/about'
     | '/ada-compliance'
     | '/calendar'
     | '/commissioners'
     | '/contact'
     | '/documents'
+    | '/economic-development'
+    | '/education'
     | '/employee-services'
+    | '/minutes'
+    | '/people'
     | '/privacy-policy'
+    | '/transportation'
+    | '/visit'
+    | '/admin/announcements'
+    | '/admin/login'
+    | '/admin/submissions'
+    | '/communities/$slug'
     | '/departments/$slug'
+    | '/forms/$type'
+    | '/history/$slug'
+    | '/history/timeline'
     | '/news/$slug'
+    | '/admin/'
+    | '/communities/'
     | '/departments/'
+    | '/forms/'
+    | '/history/'
     | '/news/'
+    | '/admin/minutes/$id'
+    | '/admin/minutes/new'
+    | '/admin/news/$id'
+    | '/admin/news/new'
+    | '/admin/minutes/'
+    | '/admin/news/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/about'
     | '/ada-compliance'
     | '/calendar'
     | '/commissioners'
     | '/contact'
     | '/documents'
+    | '/economic-development'
+    | '/education'
     | '/employee-services'
+    | '/minutes'
+    | '/people'
     | '/privacy-policy'
+    | '/transportation'
+    | '/visit'
+    | '/admin/announcements'
+    | '/admin/login'
+    | '/admin/submissions'
+    | '/communities/$slug'
     | '/departments/$slug'
+    | '/forms/$type'
+    | '/history/$slug'
+    | '/history/timeline'
     | '/news/$slug'
+    | '/admin'
+    | '/communities'
     | '/departments'
+    | '/forms'
+    | '/history'
     | '/news'
+    | '/admin/minutes/$id'
+    | '/admin/minutes/new'
+    | '/admin/news/$id'
+    | '/admin/news/new'
+    | '/admin/minutes'
+    | '/admin/news'
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/ada-compliance'
     | '/calendar'
     | '/commissioners'
     | '/contact'
     | '/documents'
+    | '/economic-development'
+    | '/education'
     | '/employee-services'
+    | '/minutes'
+    | '/people'
     | '/privacy-policy'
+    | '/transportation'
+    | '/visit'
+    | '/admin/announcements'
+    | '/admin/login'
+    | '/admin/submissions'
+    | '/communities/$slug'
     | '/departments/$slug'
+    | '/forms/$type'
+    | '/history/$slug'
+    | '/history/timeline'
     | '/news/$slug'
+    | '/admin/'
+    | '/communities/'
     | '/departments/'
+    | '/forms/'
+    | '/history/'
     | '/news/'
+    | '/admin/minutes/$id'
+    | '/admin/minutes/new'
+    | '/admin/news/$id'
+    | '/admin/news/new'
+    | '/admin/minutes/'
+    | '/admin/news/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   AdaComplianceRoute: typeof AdaComplianceRoute
   CalendarRoute: typeof CalendarRoute
   CommissionersRoute: typeof CommissionersRoute
   ContactRoute: typeof ContactRoute
   DocumentsRoute: typeof DocumentsRoute
+  EconomicDevelopmentRoute: typeof EconomicDevelopmentRoute
+  EducationRoute: typeof EducationRoute
   EmployeeServicesRoute: typeof EmployeeServicesRoute
+  MinutesRoute: typeof MinutesRoute
+  PeopleRoute: typeof PeopleRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  TransportationRoute: typeof TransportationRoute
+  VisitRoute: typeof VisitRoute
+  AdminAnnouncementsRoute: typeof AdminAnnouncementsRoute
+  AdminLoginRoute: typeof AdminLoginRoute
+  AdminSubmissionsRoute: typeof AdminSubmissionsRoute
+  CommunitiesSlugRoute: typeof CommunitiesSlugRoute
   DepartmentsSlugRoute: typeof DepartmentsSlugRoute
+  FormsTypeRoute: typeof FormsTypeRoute
+  HistorySlugRoute: typeof HistorySlugRoute
+  HistoryTimelineRoute: typeof HistoryTimelineRoute
   NewsSlugRoute: typeof NewsSlugRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+  CommunitiesIndexRoute: typeof CommunitiesIndexRoute
   DepartmentsIndexRoute: typeof DepartmentsIndexRoute
+  FormsIndexRoute: typeof FormsIndexRoute
+  HistoryIndexRoute: typeof HistoryIndexRoute
   NewsIndexRoute: typeof NewsIndexRoute
+  AdminMinutesIdRoute: typeof AdminMinutesIdRoute
+  AdminMinutesNewRoute: typeof AdminMinutesNewRoute
+  AdminNewsIdRoute: typeof AdminNewsIdRoute
+  AdminNewsNewRoute: typeof AdminNewsNewRoute
+  AdminMinutesIndexRoute: typeof AdminMinutesIndexRoute
+  AdminNewsIndexRoute: typeof AdminNewsIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/visit': {
+      id: '/visit'
+      path: '/visit'
+      fullPath: '/visit'
+      preLoaderRoute: typeof VisitRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/transportation': {
+      id: '/transportation'
+      path: '/transportation'
+      fullPath: '/transportation'
+      preLoaderRoute: typeof TransportationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy-policy': {
       id: '/privacy-policy'
       path: '/privacy-policy'
@@ -195,11 +521,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PrivacyPolicyRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/people': {
+      id: '/people'
+      path: '/people'
+      fullPath: '/people'
+      preLoaderRoute: typeof PeopleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/minutes': {
+      id: '/minutes'
+      path: '/minutes'
+      fullPath: '/minutes'
+      preLoaderRoute: typeof MinutesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/employee-services': {
       id: '/employee-services'
       path: '/employee-services'
       fullPath: '/employee-services'
       preLoaderRoute: typeof EmployeeServicesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/education': {
+      id: '/education'
+      path: '/education'
+      fullPath: '/education'
+      preLoaderRoute: typeof EducationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/economic-development': {
+      id: '/economic-development'
+      path: '/economic-development'
+      fullPath: '/economic-development'
+      preLoaderRoute: typeof EconomicDevelopmentRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/documents': {
@@ -237,6 +591,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdaComplianceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -251,11 +612,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewsIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/history/': {
+      id: '/history/'
+      path: '/history'
+      fullPath: '/history/'
+      preLoaderRoute: typeof HistoryIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forms/': {
+      id: '/forms/'
+      path: '/forms'
+      fullPath: '/forms/'
+      preLoaderRoute: typeof FormsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/departments/': {
       id: '/departments/'
       path: '/departments'
       fullPath: '/departments/'
       preLoaderRoute: typeof DepartmentsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/communities/': {
+      id: '/communities/'
+      path: '/communities'
+      fullPath: '/communities/'
+      preLoaderRoute: typeof CommunitiesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/news/$slug': {
@@ -265,6 +654,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NewsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/history/timeline': {
+      id: '/history/timeline'
+      path: '/history/timeline'
+      fullPath: '/history/timeline'
+      preLoaderRoute: typeof HistoryTimelineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/history/$slug': {
+      id: '/history/$slug'
+      path: '/history/$slug'
+      fullPath: '/history/$slug'
+      preLoaderRoute: typeof HistorySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forms/$type': {
+      id: '/forms/$type'
+      path: '/forms/$type'
+      fullPath: '/forms/$type'
+      preLoaderRoute: typeof FormsTypeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/departments/$slug': {
       id: '/departments/$slug'
       path: '/departments/$slug'
@@ -272,22 +682,116 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DepartmentsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/communities/$slug': {
+      id: '/communities/$slug'
+      path: '/communities/$slug'
+      fullPath: '/communities/$slug'
+      preLoaderRoute: typeof CommunitiesSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/submissions': {
+      id: '/admin/submissions'
+      path: '/admin/submissions'
+      fullPath: '/admin/submissions'
+      preLoaderRoute: typeof AdminSubmissionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/admin/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/announcements': {
+      id: '/admin/announcements'
+      path: '/admin/announcements'
+      fullPath: '/admin/announcements'
+      preLoaderRoute: typeof AdminAnnouncementsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/news/': {
+      id: '/admin/news/'
+      path: '/admin/news'
+      fullPath: '/admin/news/'
+      preLoaderRoute: typeof AdminNewsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/minutes/': {
+      id: '/admin/minutes/'
+      path: '/admin/minutes'
+      fullPath: '/admin/minutes/'
+      preLoaderRoute: typeof AdminMinutesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/news/new': {
+      id: '/admin/news/new'
+      path: '/admin/news/new'
+      fullPath: '/admin/news/new'
+      preLoaderRoute: typeof AdminNewsNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/news/$id': {
+      id: '/admin/news/$id'
+      path: '/admin/news/$id'
+      fullPath: '/admin/news/$id'
+      preLoaderRoute: typeof AdminNewsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/minutes/new': {
+      id: '/admin/minutes/new'
+      path: '/admin/minutes/new'
+      fullPath: '/admin/minutes/new'
+      preLoaderRoute: typeof AdminMinutesNewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/minutes/$id': {
+      id: '/admin/minutes/$id'
+      path: '/admin/minutes/$id'
+      fullPath: '/admin/minutes/$id'
+      preLoaderRoute: typeof AdminMinutesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   AdaComplianceRoute: AdaComplianceRoute,
   CalendarRoute: CalendarRoute,
   CommissionersRoute: CommissionersRoute,
   ContactRoute: ContactRoute,
   DocumentsRoute: DocumentsRoute,
+  EconomicDevelopmentRoute: EconomicDevelopmentRoute,
+  EducationRoute: EducationRoute,
   EmployeeServicesRoute: EmployeeServicesRoute,
+  MinutesRoute: MinutesRoute,
+  PeopleRoute: PeopleRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
+  TransportationRoute: TransportationRoute,
+  VisitRoute: VisitRoute,
+  AdminAnnouncementsRoute: AdminAnnouncementsRoute,
+  AdminLoginRoute: AdminLoginRoute,
+  AdminSubmissionsRoute: AdminSubmissionsRoute,
+  CommunitiesSlugRoute: CommunitiesSlugRoute,
   DepartmentsSlugRoute: DepartmentsSlugRoute,
+  FormsTypeRoute: FormsTypeRoute,
+  HistorySlugRoute: HistorySlugRoute,
+  HistoryTimelineRoute: HistoryTimelineRoute,
   NewsSlugRoute: NewsSlugRoute,
+  AdminIndexRoute: AdminIndexRoute,
+  CommunitiesIndexRoute: CommunitiesIndexRoute,
   DepartmentsIndexRoute: DepartmentsIndexRoute,
+  FormsIndexRoute: FormsIndexRoute,
+  HistoryIndexRoute: HistoryIndexRoute,
   NewsIndexRoute: NewsIndexRoute,
+  AdminMinutesIdRoute: AdminMinutesIdRoute,
+  AdminMinutesNewRoute: AdminMinutesNewRoute,
+  AdminNewsIdRoute: AdminNewsIdRoute,
+  AdminNewsNewRoute: AdminNewsNewRoute,
+  AdminMinutesIndexRoute: AdminMinutesIndexRoute,
+  AdminNewsIndexRoute: AdminNewsIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

@@ -1,0 +1,110 @@
+{
+  "nav": {
+    "departments": "Departamentos",
+    "history": "Historia",
+    "communities": "Comunidades",
+    "commissioners": "Comisionados",
+    "news": "Noticias",
+    "calendar": "Calendario",
+    "documents": "Documentos",
+    "minutes": "Actas",
+    "forms": "Formularios",
+    "contact": "Contacto",
+    "payTaxes": "Pagar Impuestos",
+    "search": "Buscar",
+    "viewAll": "Ver Todos",
+    "viewAllDepartments": "Ver Todos los Departamentos",
+    "countyDepartments": "Departamentos del Condado"
+  },
+  "home": {
+    "heroTitle": "Condado de Sullivan",
+    "heroSubtitle": "Tennessee",
+    "heroTagline": "Donde Comenzó Tennessee",
+    "quickServices": "Servicios Rápidos",
+    "departmentCategories": "Categorías de Departamentos",
+    "latestNews": "Últimas Noticias",
+    "viewAllNews": "Ver Todas las Noticias",
+    "communityHighlights": "Destacados de la Comunidad",
+    "about": "Sobre el Condado de Sullivan"
+  },
+  "news": {
+    "title": "Noticias del Condado",
+    "description": "Manténgase al día con los últimos anuncios, eventos y avisos públicos del gobierno del Condado de Sullivan.",
+    "backToNews": "Volver a Noticias",
+    "articleNotFound": "Artículo no encontrado",
+    "articleNotFoundDesc": "El artículo de noticias que busca no existe o puede haber sido movido."
+  },
+  "forms": {
+    "title": "Formularios en Línea",
+    "description": "Envíe solicitudes, aplicaciones y comentarios al gobierno del Condado de Sullivan en línea. Todas las presentaciones son revisadas por el departamento correspondiente.",
+    "startForm": "Iniciar Formulario",
+    "yourInfo": "Su Información",
+    "fullName": "Nombre Completo",
+    "email": "Correo Electrónico",
+    "phone": "Número de Teléfono",
+    "optional": "opcional",
+    "required": "Campos obligatorios",
+    "submit": "Enviar",
+    "submitting": "Enviando...",
+    "submitted": "Presentación Recibida",
+    "submittedDesc": "Gracias por su presentación. El departamento correspondiente la revisará y se comunicará con usted si se necesita información adicional.",
+    "backToForms": "Volver a Formularios",
+    "allForms": "Todos los Formularios",
+    "formNotFound": "Formulario no encontrado",
+    "formNotFoundDesc": "El formulario que busca no existe.",
+    "details": "Detalles"
+  },
+  "minutes": {
+    "title": "Actas de Reuniones",
+    "description": "Archivo de reuniones de la comisión del Condado de Sullivan, sesiones de comités y audiencias públicas. Descargue agendas y actas como documentos PDF.",
+    "searchPlaceholder": "Buscar actas...",
+    "allCommittees": "Todos los Comités",
+    "records": "registros",
+    "record": "registro",
+    "noResults": "No se encontraron actas de reuniones que coincidan con su búsqueda."
+  },
+  "contact": {
+    "title": "Contactar al Condado de Sullivan",
+    "sendMessage": "Enviar un Mensaje",
+    "name": "Su Nombre",
+    "email": "Correo Electrónico",
+    "subject": "Asunto",
+    "message": "Mensaje",
+    "send": "Enviar Mensaje",
+    "sending": "Enviando..."
+  },
+  "documents": {
+    "title": "Biblioteca de Documentos",
+    "description": "Acceda a documentos oficiales, formularios, agendas y publicaciones del Condado de Sullivan.",
+    "searchPlaceholder": "Buscar documentos...",
+    "allCategories": "Todas las Categorías"
+  },
+  "calendar": {
+    "title": "Calendario y Reuniones",
+    "description": "Próximas reuniones, audiencias públicas y eventos del gobierno del Condado de Sullivan."
+  },
+  "commissioners": {
+    "title": "Comisionados del Condado",
+    "description": "El Condado de Sullivan está gobernado por una Comisión del Condado de 24 miembros que representan 11 distritos."
+  },
+  "footer": {
+    "government": "Gobierno",
+    "resources": "Recursos",
+    "connect": "Conéctese Con Nosotros",
+    "copyright": "Condado de Sullivan, Tennessee. Todos los derechos reservados.",
+    "ada": "Cumplimiento ADA",
+    "privacy": "Política de Privacidad",
+    "employeeServices": "Servicios para Empleados"
+  },
+  "common": {
+    "backToHome": "Ir al Inicio",
+    "refreshPage": "Actualizar Página",
+    "errorTitle": "Algo salió mal",
+    "errorDesc": "Encontramos un error inesperado. Intente actualizar la página o regrese a la página de inicio.",
+    "notFoundTitle": "Página No Encontrada",
+    "loading": "Cargando...",
+    "select": "Seleccionar...",
+    "pdf": "PDF",
+    "download": "Descargar"
+  }
+}
