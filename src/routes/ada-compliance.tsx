@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Download, Mail, MapPin, Phone } from "lucide-react";
-import { seo } from "~/utils/seo";
+import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/ada-compliance")({
   component: AdaCompliancePage,
@@ -11,6 +11,7 @@ export const Route = createFileRoute("/ada-compliance")({
         "Sullivan County ADA compliance information, accommodation requests, and coordinator contacts.",
       url: "/ada-compliance",
     }),
+    links: seoLinks("/ada-compliance"),
   }),
 });
 

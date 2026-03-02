@@ -4,7 +4,7 @@ import { useMemo, useState } from "react";
 import { VideoEmbed } from "~/components/shared/VideoEmbed";
 import { CATEGORIES, documents } from "~/data/documents";
 import type { DocumentFileType } from "~/data/documents";
-import { seo } from "~/utils/seo";
+import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/documents")({
   component: DocumentsPage,
@@ -15,6 +15,7 @@ export const Route = createFileRoute("/documents")({
         "Access county documents, forms, agendas, court dockets, and public records from Sullivan County.",
       url: "/documents",
     }),
+    links: seoLinks("/documents"),
   }),
 });
 

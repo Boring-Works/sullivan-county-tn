@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { seo } from "~/utils/seo";
+import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/privacy-policy")({
   component: PrivacyPolicyPage,
@@ -10,6 +10,7 @@ export const Route = createFileRoute("/privacy-policy")({
         "How Sullivan County collects, uses, and protects your information when you visit our website.",
       url: "/privacy-policy",
     }),
+    links: seoLinks("/privacy-policy"),
   }),
 });
 

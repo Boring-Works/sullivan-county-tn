@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CommissionerGrid } from "~/components/commissioners/CommissionerGrid";
-import { seo } from "~/utils/seo";
+import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/commissioners")({
   component: CommissionersPage,
@@ -12,6 +12,7 @@ export const Route = createFileRoute("/commissioners")({
       image: "/images/og/og-courthouse.jpg",
       url: "/commissioners",
     }),
+    links: seoLinks("/commissioners"),
   }),
 });
 

@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { NewsCard } from "~/components/shared/NewsCard";
 import { news } from "~/data/news";
-import { seo } from "~/utils/seo";
+import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/news/")({
   component: NewsPage,
@@ -12,6 +12,7 @@ export const Route = createFileRoute("/news/")({
         "Latest announcements, events, and public notices from Sullivan County government.",
       url: "/news",
     }),
+    links: seoLinks("/news"),
   }),
 });
 

@@ -52,7 +52,7 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
   const hasLinks = department.externalLinks && department.externalLinks.length > 0;
 
   return (
-    <>
+    <main id="main-content">
       {/* Navy header banner */}
       <div className="relative bg-brand-navy overflow-hidden">
         {/* Topo texture */}
@@ -426,6 +426,6 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
           </div>
         </div>
       </div>
-    </>
+    </main>
   );
 }

@@ -35,7 +35,7 @@ export function NewsCard({ item, featured = false }: NewsCardProps) {
 					<Link
 						to="/news/$slug"
 						params={{ slug: item.slug }}
-						className="text-brand-navy hover:text-brand-blue-light transition-colors"
+						className="text-brand-navy hover:text-brand-copper transition-colors"
 					>
 						{item.title}
 					</Link>

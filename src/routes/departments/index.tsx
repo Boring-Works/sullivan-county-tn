@@ -6,7 +6,7 @@ import {
   departments,
   getDepartmentsByCategory,
 } from "~/data/departments";
-import { seo } from "~/utils/seo";
+import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/departments/")({
   component: DepartmentsPage,
@@ -18,6 +18,7 @@ export const Route = createFileRoute("/departments/")({
       image: "/images/og/og-courthouse.jpg",
       url: "/departments",
     }),
+    links: seoLinks("/departments"),
   }),
   validateSearch: (search: Record<string, unknown>) => ({
     category: (search.category as string) || undefined,

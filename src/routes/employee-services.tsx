@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Download, ExternalLink } from "lucide-react";
 import { VideoEmbed } from "~/components/shared/VideoEmbed";
-import { seo } from "~/utils/seo";
+import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/employee-services")({
   component: EmployeeServicesPage,
@@ -12,6 +12,7 @@ export const Route = createFileRoute("/employee-services")({
         "Access employee portals, benefits information, and resources for Sullivan County staff.",
       url: "/employee-services",
     }),
+    links: seoLinks("/employee-services"),
   }),
 });
 

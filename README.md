@@ -33,7 +33,7 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 | `/` | Homepage — cinematic hero with parallax, animated stat counters, quick services (8), department categories (6), community highlights (3), latest news |
 | `/departments` | 25 departments organized into 6 color-coded categories with filtering |
 | `/departments/$slug` | Individual department pages with contacts, staff, services, offices, FAQs, publications, bid thresholds |
-| `/commissioners` | 24 county commissioners + Mayor, organized by 11 districts with headshots |
+| `/commissioners` | 24 county commissioners organized by 11 districts with headshots |
 | `/news` | County news feed with article cards |
 | `/news/$slug` | Full article pages with content, PDF downloads, source links |
 | `/calendar` | 6 recurring meeting schedules with YouTube live stream links |
@@ -84,7 +84,7 @@ All documents are served locally — no external WordPress dependency.
 - **Document library** — 115 files across 17 categories with search, category pills, collapsible sections, file type badges (PDF/DOC/DOCX/TIF)
 - **Department mega-menu** — 25 departments in 6 categories (Admin, Courts, Public Safety, Finance, Ops, Community)
 - **Video embeds** — Privacy-enhanced YouTube (click-to-load, nocookie.com, no tracking until play)
-- **Commissioner photos** — Headshots with polished CSS treatment for all 24 commissioners + Mayor
+- **Commissioner photos** — Headshots with polished CSS treatment for all 24 commissioners
 - **Contact form** — Subject categorization (9 topics), server-side validation, KV storage backend with 90-day TTL
 - **Tourism section** — "Discover Sullivan County" with 3 regional highlights (Country Music, Outdoor Rec, BMS)
 - **Announcement banner** — Dismissible with localStorage persistence, supports info/urgent types
@@ -219,10 +219,10 @@ public/
     sanitation/             — 3 files
     veterans/               — 1 file
   images/
-    commissioners/ — 23 headshots (JPG/PNG)
+    commissioners/ — 23 commissioner headshots (JPG/PNG)
+    officials/     — Mayor headshot
     hero/          — 6 responsive hero images (640/1024/1920px)
     about/         — 2 courthouse photos
-    officials/     — 1 mayor photo
     og/            — 2 OG meta images
   rss.xml        — Static RSS feed (5 items)
   sitemap.xml    — Static sitemap (40 URLs)

@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Calendar, Clock, ExternalLink, MapPin } from "lucide-react";
-import { seo } from "~/utils/seo";
+import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/calendar")({
 	component: CalendarPage,
@@ -11,6 +11,7 @@ export const Route = createFileRoute("/calendar")({
 				"Upcoming county meetings, commission sessions, and public events in Sullivan County, Tennessee.",
 			url: "/calendar",
 		}),
+		links: seoLinks("/calendar"),
 	}),
 });
 

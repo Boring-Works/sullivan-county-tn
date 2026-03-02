@@ -35,7 +35,7 @@ Citizen services portal for Sullivan County, Tennessee.
 | `/calendar` | `routes/calendar.tsx` | Calendar & meetings (6 recurring schedules, YouTube live links) |
 | `/contact` | `routes/contact.tsx` | Contact hub with form (9 subjects, KV backend), Google Maps, quick contacts, resources |
 | `/documents` | `routes/documents.tsx` | 115-document library with 17 categories, search, category pills, collapsible sections |
-| `/ada-compliance` | `routes/ada-compliance.tsx` | ADA compliance info + 4 downloadable forms |
+| `/ada-compliance` | `routes/ada-compliance.tsx` | ADA compliance info + 5 downloadable forms |
 | `/privacy-policy` | `routes/privacy-policy.tsx` | Privacy policy, cookies, data retention, user rights |
 | `/employee-services` | `routes/employee-services.tsx` | Employee portals (Skyward, Edison, Mark III), benefits, training videos |
 
@@ -46,7 +46,7 @@ Citizen services portal for Sullivan County, Tennessee.
 | `data/commissioners.ts` | 24 commissioners across 11 districts |
 | `data/news.ts` | County news articles with full content + PDF attachments |
 | `data/quick-services.ts` | 8 quick-access service links for homepage |
-| `data/documents.ts` | 115 documents across 17 categories (PDF, DOC, DOCX, MP4, TIF) with types and helpers |
+| `data/documents.ts` | 115 documents across 17 categories (PDF, DOC, DOCX, TIF) with types and helpers |
 | `data/search-index.ts` | Unified search index (departments, news, commissioners, documents, pages) |
 
 ## Key Components
@@ -68,6 +68,9 @@ Citizen services portal for Sullivan County, Tennessee.
 | VideoEmbed | `components/shared/VideoEmbed.tsx` | Privacy-enhanced YouTube (click-to-load, nocookie) |
 | ContactCard | `components/shared/ContactCard.tsx` | Reusable contact info card |
 | CommissionerGrid | `components/commissioners/CommissionerGrid.tsx` | District grid with alternating backgrounds |
+| CommissionerCard | `components/commissioners/CommissionerCard.tsx` | Individual commissioner card with headshot |
+| AboutSection | `components/home/AboutSection.tsx` | "Where Tennessee Began" section with courthouse photos |
+| DepartmentCard | `components/departments/DepartmentCard.tsx` | Department card with category badge + phone |
 | MountainDivider | `components/shared/MountainDivider.tsx` | SVG mountain ridge section dividers |
 | useScrollReveal | `hooks/useScrollReveal.ts` | Intersection Observer scroll-reveal system |
 | useCountUp | `hooks/useCountUp.ts` | Animated stat counter hook |
@@ -75,8 +78,9 @@ Citizen services portal for Sullivan County, Tennessee.
 ## Static Assets
 | Directory | Content |
 |-----------|---------|
-| `public/documents/` | 115 documents in 17 subdirectories (PDF, DOC, DOCX, MP4, TIF) |
-| `public/images/commissioners/` | Commissioner + Mayor headshots |
+| `public/documents/` | 115 documents in 17 subdirectories (PDF, DOC, DOCX, TIF) |
+| `public/images/commissioners/` | Commissioner headshots (23 images) |
+| `public/images/officials/` | Mayor headshot |
 | `public/rss.xml` | Static RSS feed (generated via `scripts/generate-rss.ts`) |
 | `public/sitemap.xml` | Static sitemap (generated via `scripts/generate-sitemap.ts`, 40 URLs) |
 | `public/robots.txt` | Crawler directives + sitemap reference |
@@ -101,6 +105,9 @@ Citizen services portal for Sullivan County, Tennessee.
 - `brand-cream` (#faf8f5) — page background
 - `brand-parchment` (#f3efe9) — alternating section backgrounds
 - `brand-slate` (#2d3038) — body text
+- `brand-courts` (#6b4c8a) — courts category accent
+- `brand-safety` (#a63d3d) — public safety category accent
+- `brand-community` (#3d7a7a) — community category accent
 - **Typography:** Libre Caslon Text (display/serif) + Outfit (body/sans)
 
 ## Deployment
@@ -120,7 +127,7 @@ Citizen services portal for Sullivan County, Tennessee.
 | Fuse.js for site search | Client-side fuzzy search, ~5KB gzipped, Cmd+K modal | 2026-02-28 |
 | Static RSS via build script | No API routes needed — generate XML to public/ | 2026-02-28 |
 | YouTube nocookie embeds | Privacy-enhanced click-to-load video player | 2026-02-28 |
-| Documents served locally | 115 files (PDF, DOC, DOCX, MP4, TIF) in 17 category subdirectories under public/documents/ | 2026-02-28 |
+| Documents served locally | 115 files (PDF, DOC, DOCX, TIF) in 17 category subdirectories under public/documents/ | 2026-02-28 |
 | Contact form backend via KV | Server function stores submissions in CF KV (90-day TTL), no external email service | 2026-03-01 |
 | Custom 404 page | Branded not-found with quick links + search hint, uses notFoundComponent | 2026-03-01 |
 | Sitemap + robots.txt | Static generation scripts, 40 URLs, Google Search Console ready | 2026-03-01 |

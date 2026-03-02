@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AlertCircle, CheckCircle, Clock, ExternalLink, MapPin, Phone, Send } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import { submitContactForm } from "~/server/contact";
-import { seo } from "~/utils/seo";
+import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/contact")({
   component: ContactPage,
@@ -14,6 +14,7 @@ export const Route = createFileRoute("/contact")({
       image: "/images/og/og-courthouse.jpg",
       url: "/contact",
     }),
+    links: seoLinks("/contact"),
   }),
 });
 
@@ -150,8 +151,8 @@ function ContactPage() {
                     </div>
                     {"emergency" in dept && dept.emergency && (
                       <div className="flex items-center gap-2">
-                        <Phone className="size-3.5 shrink-0 text-[#a63d3d]" />
-                        <span className="font-semibold text-[#a63d3d]">
+                        <Phone className="size-3.5 shrink-0 text-brand-safety" />
+                        <span className="font-semibold text-brand-safety">
                           Emergency: {dept.emergency}
                         </span>
                       </div>

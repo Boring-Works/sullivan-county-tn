@@ -6,7 +6,7 @@ import { HeroBanner } from "~/components/home/HeroBanner";
 import { NewsSection } from "~/components/home/NewsSection";
 import { QuickServices } from "~/components/home/QuickServices";
 import { MountainDivider, MountainDividerInverted } from "~/components/shared/MountainDivider";
-import { SITE_URL } from "~/utils/seo";
+import { SITE_URL, seo, seoLinks } from "~/utils/seo";
 
 const governmentJsonLd = {
   "@context": "https://schema.org",
@@ -32,6 +32,16 @@ const governmentJsonLd = {
 
 export const Route = createFileRoute("/")({
   component: HomePage,
+  head: () => ({
+    meta: seo({
+      title: "Sullivan County, Tennessee — Official Government Website",
+      description:
+        "Official website for Sullivan County, Tennessee. Find departments, services, contact information, and county resources. Established 1779.",
+      image: "/images/og/og-default.jpg",
+      url: "/",
+    }),
+    links: seoLinks("/"),
+  }),
 });
 
 function HomePage() {

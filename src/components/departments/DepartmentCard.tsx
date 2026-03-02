@@ -6,11 +6,11 @@ import { DEPARTMENT_CATEGORIES } from "~/data/departments";
 
 const categoryColors: Record<DepartmentCategory, string> = {
   administrative: "bg-brand-navy/10 text-brand-navy",
-  courts: "bg-[#6b4c8a]/10 text-[#6b4c8a]",
-  "public-safety": "bg-[#a63d3d]/10 text-[#a63d3d]",
+  courts: "bg-brand-courts/10 text-brand-courts",
+  "public-safety": "bg-brand-safety/10 text-brand-safety",
   finance: "bg-brand-sage/10 text-brand-sage",
   operations: "bg-brand-brass/10 text-brand-brass",
-  community: "bg-[#3d7a7a]/10 text-[#3d7a7a]",
+  community: "bg-brand-community/10 text-brand-community",
 };
 
 interface DepartmentCardProps {
@@ -38,7 +38,7 @@ export function DepartmentCard({ department }: DepartmentCardProps) {
           <Link
             to="/departments/$slug"
             params={{ slug: department.slug }}
-            className="text-brand-navy hover:text-brand-blue-light transition-colors"
+            className="text-brand-navy hover:text-brand-copper transition-colors"
           >
             {department.name}
           </Link>
