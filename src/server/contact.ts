@@ -10,7 +10,7 @@ interface ContactFormData {
 }
 
 export const submitContactForm = createServerFn({ method: "POST" })
-  .validator((data: unknown): ContactFormData => {
+  .inputValidator((data: unknown): ContactFormData => {
     const d = data as Record<string, unknown>;
 
     // Honeypot — if filled, silently reject (bots fill hidden fields)
