@@ -52,12 +52,12 @@ Citizen services portal for Sullivan County, Tennessee.
 ## Key Components
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| SiteNav | `components/layout/SiteNav.tsx` | Glass-morphism nav with mega-menu + Cmd+K search |
+| SiteNav | `components/layout/SiteNav.tsx` | Glass-morphism nav with mega-menu (keyboard nav) + Cmd+K search (code-split) + mobile focus trap |
 | SiteFooter | `components/layout/SiteFooter.tsx` | Footer with mountain silhouette + heritage ornament |
 | AnnouncementBanner | `components/layout/AnnouncementBanner.tsx` | Dismissible banner (localStorage persistence) |
-| SearchDialog | `components/layout/SearchDialog.tsx` | Fuse.js fuzzy search modal (Cmd+K) |
+| SearchDialog | `components/layout/SearchDialog.tsx` | Fuse.js fuzzy search modal (Cmd+K), ARIA combobox pattern, lazy-loaded |
 | NotFound | `components/layout/NotFound.tsx` | Custom 404 page with quick links + search hint |
-| HeroBanner | `components/home/HeroBanner.tsx` | Cinematic hero with photo parallax + stat counters |
+| HeroBanner | `components/home/HeroBanner.tsx` | Cinematic hero with WebP + JPEG `<picture>` sources + stat counters |
 | QuickServices | `components/home/QuickServices.tsx` | 8-card service grid with scroll reveals |
 | DepartmentCategories | `components/home/DepartmentCategories.tsx` | 6 category cards with scroll reveals |
 | CommunityHighlights | `components/home/CommunityHighlights.tsx` | 3 tourism/regional attraction cards |
@@ -138,3 +138,14 @@ Citizen services portal for Sullivan County, Tennessee.
 | Honeypot spam protection | Hidden field rejects bots, better email regex, field length limits | 2026-03-01 |
 | Canonical URLs + JSON-LD | GovernmentOrganization schema, article OG type for news, rel=canonical | 2026-03-01 |
 | Font preconnect hints | preconnect for fonts.googleapis.com + fonts.gstatic.com | 2026-03-01 |
+| Code splitting (SearchDialog) | React.lazy + Suspense for SearchDialog/Fuse.js — bundle 502KB→415KB (17% reduction) | 2026-03-01 |
+| WebP hero images | cwebp conversion (quality 80), `<picture>` with WebP sources before JPEG fallbacks — 60%+ savings | 2026-03-01 |
+| Mega-menu keyboard nav | ArrowUp/Down cycling, Escape to close + focus return, roving tabindex | 2026-03-01 |
+| Mobile menu focus trap | Tab wrapping (first↔last), Escape to close, focus return to hamburger | 2026-03-01 |
+| Search dialog ARIA | role="combobox", aria-activedescendant, role="listbox"/"option" on results | 2026-03-01 |
+| Google Maps click-to-load | MapEmbed component saves ~500KB initial load on /contact | 2026-03-01 |
+| Root error boundary | errorComponent on root route with branded error page + refresh/home buttons | 2026-03-01 |
+| Print stylesheet | @media print hides nav/footer, avoids breaks, shows link URLs | 2026-03-01 |
+| Privacy policy rewrite | Removed WordPress boilerplate, now describes actual architecture (KV, Cloudflare, click-to-load) | 2026-03-01 |
+| Department count fix | Corrected 27→25 in hero stats + AboutSection to match actual data | 2026-03-01 |
+| PII sanitization | Contact form fallback log now only outputs submission ID, not full PII | 2026-03-01 |

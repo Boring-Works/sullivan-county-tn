@@ -89,7 +89,7 @@ All documents are served locally — no external WordPress dependency.
 - **Tourism section** — "Discover Sullivan County" with 3 regional highlights (Country Music, Outdoor Rec, BMS)
 - **Announcement banner** — Dismissible with localStorage persistence, supports info/urgent types
 - **RSS feed** — Static XML at `/rss.xml` with autodiscovery link
-- **Google Maps** — Grayscale-to-color hover map on contact page
+- **Google Maps** — Click-to-load map on contact page (~500KB deferred until interaction)
 - **Scroll animations** — Intersection Observer reveal system throughout
 - **Mountain dividers** — Custom SVG section separators matching Appalachian theme
 - **Glass-morphism nav** — Transparent-to-solid on scroll, adapts to dark/light page headers
@@ -107,6 +107,13 @@ All documents are served locally — no external WordPress dependency.
 - **JSON-LD structured data** — `GovernmentOrganization` schema on homepage
 - **Article meta** — News articles use `og:type: article` with `article:published_time`
 - **Font preconnect** — `preconnect` hints for Google Fonts (eliminates DNS/connection latency)
+- **Code splitting** — SearchDialog + Fuse.js lazy-loaded via React.lazy + Suspense (bundle 502KB→415KB, 17% reduction)
+- **WebP hero images** — `<picture>` element with WebP sources before JPEG fallbacks (60%+ file size savings)
+- **Mega-menu keyboard nav** — Arrow key cycling, Escape to close, roving tabindex for full keyboard accessibility
+- **Mobile focus trap** — Tab wrapping + Escape to close in mobile navigation drawer
+- **Search ARIA combobox** — Full ARIA combobox pattern with `aria-activedescendant`, `role="listbox"`, `role="option"`
+- **Root error boundary** — Branded error page with refresh/home buttons via TanStack Router `errorComponent`
+- **Print stylesheet** — Hides nav/footer, avoids page breaks, displays link URLs for printable pages
 
 ## Comparison: New Site vs Old WordPress Site
 
@@ -221,7 +228,7 @@ public/
   images/
     commissioners/ — 23 commissioner headshots (JPG/PNG)
     officials/     — Mayor headshot
-    hero/          — 6 responsive hero images (640/1024/1920px)
+    hero/          — 6 responsive hero images (640/1024/1920px, WebP + JPEG)
     about/         — 2 courthouse photos
     og/            — 2 OG meta images
   rss.xml        — Static RSS feed (5 items)
