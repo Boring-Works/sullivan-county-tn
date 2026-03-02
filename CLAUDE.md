@@ -1,6 +1,27 @@
 # Sullivan County TN Government Website
 
 Citizen services portal for Sullivan County, Tennessee.
+Brand: **"Where Tennessee Began and Begins"**
+
+## Current Status
+- **Government portal:** Live and complete (23 routes, 25 departments, 115 documents)
+- **Heritage Content Layer:** COMPLETE — All 5 phases built (11 new routes, 6 data files, 7 components)
+- **Implementation plan:** `docs/plans/2026-03-01-heritage-content-layer-implementation.md`
+- **Design doc:** `docs/plans/2026-03-01-heritage-content-layer-design.md`
+
+## Content Source of Truth
+ALL historical content comes from the triple-fact-checked master reference document:
+`/Users/codyboring/CodyML/projects/Sullivan County/compass_artifact_wf-e7361f8f-d40b-4bcd-8d42-4ba9245a7028_text_markdown.md`
+
+### Historical Rules (Non-Negotiable)
+1. Rocky Mount building dates to 1820s. SITE settled ~1770. Building ≠ site.
+2. First SOUTHWEST TERRITORY capital (1790-92). NOT "first US territorial capital." NOT "first TN state capital."
+3. Barsheba was William Cobb's wife. Mary was his sister.
+4. Lafayette did NOT visit Old Deery Inn (unverifiable local tradition).
+5. Kingsport charter: PETITION signed at Netherland Inn; CHARTER passed by TN General Assembly Aug 21, 1822.
+6. Education data: ~91% HS / ~27% BA (NOT the wrong 87.5%/16.7% from old brand plan).
+7. Nick Grindstaff monument is in Johnson County, NOT Sullivan County.
+8. AT exits Tennessee into Virginia (NOT "enters Tennessee from Virginia").
 
 ## Tech Stack
 - TanStack Start (full-stack React framework)
@@ -38,6 +59,17 @@ Citizen services portal for Sullivan County, Tennessee.
 | `/ada-compliance` | `routes/ada-compliance.tsx` | ADA compliance info + 5 downloadable forms |
 | `/privacy-policy` | `routes/privacy-policy.tsx` | Privacy policy, cookies, data retention, user rights |
 | `/employee-services` | `routes/employee-services.tsx` | Employee portals (Skyward, Edison, Mark III), benefits, training videos |
+| `/history` | `routes/history/index.tsx` | Founding story — 7 narrative sections (Cherokee Homeland through Modern Era) |
+| `/history/timeline` | `routes/history/timeline.tsx` | 48-event timeline across 6 eras with color-coded category dots |
+| `/history/$slug` | `routes/history/$slug.tsx` | Heritage site detail pages (8 sites: Rocky Mount, Netherland Inn, etc.) |
+| `/communities` | `routes/communities/index.tsx` | Community hub — 6 municipality cards |
+| `/communities/$slug` | `routes/communities/$slug.tsx` | Community detail (Kingsport, Bristol, Blountville, Bluff City, Piney Flats, Colonial Heights) |
+| `/about` | `routes/about.tsx` | County overview, demographics, Tri-Cities MSA context |
+| `/economic-development` | `routes/economic-development.tsx` | Top employers, sector breakdown, economic assets |
+| `/education` | `routes/education.tsx` | School systems, higher ed, educational attainment stats |
+| `/transportation` | `routes/transportation.tsx` | TRI airport, highways, transit + historical context |
+| `/people` | `routes/people.tsx` | Notable historical figures grid (7 people) |
+| `/visit` | `routes/visit.tsx` | Heritage Trail, parks, recreation, events, getting here |
 
 ## Data Files
 | File | Content |
@@ -47,7 +79,13 @@ Citizen services portal for Sullivan County, Tennessee.
 | `data/news.ts` | County news articles with full content + PDF attachments |
 | `data/quick-services.ts` | 8 quick-access service links for homepage |
 | `data/documents.ts` | 115 documents across 17 categories (PDF, DOC, DOCX, TIF) with types and helpers |
-| `data/search-index.ts` | Unified search index (departments, news, commissioners, documents, pages) |
+| `data/search-index.ts` | Unified search index (departments, news, commissioners, documents, heritage sites, communities, pages) |
+| `data/heritage-sites.ts` | 8 heritage sites with NRHP/NHL info, coordinates, key facts, trail stops |
+| `data/timeline.ts` | 48 timeline events (1761–2025) across 6 categories with color coding |
+| `data/communities.ts` | 6 communities with population, type, landmarks, highlights, at-a-glance stats |
+| `data/notable-people.ts` | 7 notable figures with categories, years, achievements |
+| `data/employers.ts` | 11 top employers + 3 sector employment entries |
+| `data/education.ts` | 6 school systems/institutions with types, enrollment, descriptions |
 
 ## Key Components
 | Component | Location | Purpose |
@@ -74,6 +112,13 @@ Citizen services portal for Sullivan County, Tennessee.
 | MountainDivider | `components/shared/MountainDivider.tsx` | SVG mountain ridge section dividers |
 | useScrollReveal | `hooks/useScrollReveal.ts` | Intersection Observer scroll-reveal system |
 | useCountUp | `hooks/useCountUp.ts` | Animated stat counter hook |
+| HeritageHero | `components/history/HeritageHero.tsx` | Hero with brand tagline + 1790/current year date device |
+| HistoryNarrative | `components/history/HistoryNarrative.tsx` | Long-form editorial content sections with scroll-reveal |
+| HeritageSiteCard | `components/history/HeritageSiteCard.tsx` | Heritage site card with NRHP/NHL badges |
+| VisitorInfoCard | `components/history/VisitorInfoCard.tsx` | Visitor info sidebar (hours, admission, location, website) |
+| TimelineSection | `components/history/TimelineSection.tsx` | Alternating vertical timeline with color-coded era dots |
+| CommunityCard | `components/communities/CommunityCard.tsx` | Community card with type badge, population, highlights |
+| PersonCard | `components/people/PersonCard.tsx` | Notable person card with category badge + achievement |
 
 ## Static Assets
 | Directory | Content |
@@ -149,3 +194,22 @@ Citizen services portal for Sullivan County, Tennessee.
 | Privacy policy rewrite | Removed WordPress boilerplate, now describes actual architecture (KV, Cloudflare, click-to-load) | 2026-03-01 |
 | Department count fix | Corrected 27→25 in hero stats + AboutSection to match actual data | 2026-03-01 |
 | PII sanitization | Contact form fallback log now only outputs submission ID, not full PII | 2026-03-01 |
+| Heritage Content Layer | Add /history, /communities, /about, /visit, /people, /education, /economic-development, /transportation routes using fact-checked master reference doc | 2026-03-01 |
+| Brand thesis | "Where Tennessee Began and Begins" — history-first, fact-checked, editorial tone | 2026-03-01 |
+| History-first phasing | Phase 1 = history/heritage pages (story of Sullivan County). Communities/civic pages come later. | 2026-03-01 |
+
+## Heritage Content Layer — COMPLETE (2026-03-01)
+
+All 5 phases built and production-verified:
+- **Phase 1:** History Wing — 3 routes, 5 components, 6 data files
+- **Phase 2:** Communities Wing — 2 routes, 1 component
+- **Phase 3:** Civic & People — 6 routes, 1 component
+- **Phase 4:** Integration — Nav, footer, homepage, search index, i18n updated
+- **Phase 5:** Build verified, lint fixed, committed
+
+### Key Patterns Established
+- Heritage site data uses `getHeritageSiteBySlug()` / `getTrailStops()` helpers
+- Timeline uses inline `var(--color-*)` styles (not dynamic Tailwind classes) for JIT compat
+- Community cards link to `/communities/$slug` with TanStack Router `params`
+- All new routes use `seo()` + `seoLinks()`, `useScrollReveal`, `MountainDivider` pattern
+- History narrative sections use `HistoryNarrative` wrapper with eyebrow/title/background props
