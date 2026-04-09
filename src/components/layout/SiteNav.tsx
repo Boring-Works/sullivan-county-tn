@@ -120,7 +120,7 @@ export function SiteNav() {
       }
       if (e.key !== "Tab") return;
 
-      const focusable = menu!.querySelectorAll<HTMLElement>(
+      const focusable = menu.querySelectorAll<HTMLElement>(
         'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])',
       );
       if (focusable.length === 0) return;
