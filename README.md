@@ -4,6 +4,16 @@
 
 **Live:** https://sullivan-county-tn.codyboring.workers.dev
 
+## Recent additions (2026-04-28 commit)
+
+- `src/components/{admin,forms,minutes}/` — new component groups
+- `src/data/{form-definitions,meeting-minutes}.ts` — typed data
+- `src/db/` + `drizzle.config.ts` — first DB scaffolding (D1 + Drizzle, replaces static JSON for new dynamic surfaces)
+- `scripts/scrape-news.ts` + `scripts/seed-db.ts` — ingestion + seed pipelines
+- `LanguageToggle` component (i18n surface)
+
+The static-data foundation (departments, commissioners, documents, news, history, communities, etc.) is unchanged. The DB scaffolding is for surfaces that need user input (forms, admin) or freshness (scraped news, meeting minutes).
+
 ---
 
 ## What This Is
