@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useTranslation } from "react-i18next";
 import { CommissionerGrid } from "~/components/commissioners/CommissionerGrid";
 import { seo, seoLinks } from "~/utils/seo";
 
@@ -17,16 +18,16 @@ export const Route = createFileRoute("/commissioners")({
 });
 
 function CommissionersPage() {
+  const { t } = useTranslation();
   return (
     <main id="main-content" className="pt-24 pb-14">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-4 h-px w-12 bg-brand-copper" />
         <h1 className="font-display text-4xl font-bold text-brand-navy mb-4 sm:text-5xl">
-          County Commissioners
+          {t("commissioners.title")}
         </h1>
         <p className="font-body text-brand-slate-light mb-14 max-w-2xl leading-relaxed">
-          Sullivan County is represented by commissioners across 11 districts. Contact your district
-          representative below.
+          {t("commissioners.description")}
         </p>
         <CommissionerGrid />
         <div className="mt-16 rounded-sm border border-brand-surface bg-brand-parchment p-7">

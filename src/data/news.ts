@@ -65,13 +65,13 @@ export const news: NewsItem[] = [
 		slug: "hotel-motel-tax-law-update",
 		summary:
 			"New law regarding hotel/motel tax effective July 1, 2025. Important update for hospitality businesses in Sullivan County.",
-		url: "https://sullivancountytn.gov/county-news/",
+		url: "https://sullivancountytn.gov/406826-2/",
 		content: [
 			"A new law regarding hotel and motel tax has taken effect as of July 1, 2025. All hospitality businesses operating in Sullivan County should be aware of the updated requirements.",
-			"The updated legislation affects how hotel/motel taxes are collected, reported, and remitted to the county. Business owners in the hospitality industry should review the changes to ensure compliance.",
-			"Sullivan County's hotel/motel tax supports tourism development, convention facilities, and related economic development activities throughout the county.",
-			"For detailed information about the new requirements and how they affect your business, contact the Sullivan County Clerk's office at (423) 323-6428 or visit the County Clerk's website.",
-			"The County Clerk's office is available to assist hospitality business owners with understanding the new filing procedures and tax rate adjustments.",
+			"Previous law required hotel operators to refund or provide credit to a person who maintained occupancy in a hotel for 30 continuous days for the tax previously collected. Effective July 1, 2025, hotels are now required to collect occupancy tax for the first 30 days a person has maintained occupancy.",
+			"The occupancy tax collected for the first 30 days must be remitted by the hotel to the Sullivan County Clerk's office no later than the twentieth day of each month for the preceding month, as outlined in Tenn. Code Ann. § 67-4-1405.",
+			"When a person has maintained occupancy for thirty continuous days, the operator shall remit the tax for such period and cease collecting the tax from the person for the remainder of their stay, per Public Chapter 364 (2025).",
+			"For detailed information about the new requirements and how they affect your business, contact the Sullivan County Clerk's office at (423) 323-6428.",
 		],
 	},
 	{
@@ -89,6 +89,36 @@ export const news: NewsItem[] = [
 			"This is a full-time position with competitive salary and benefits including medical, vision, and dental insurance through the county's employee benefits program.",
 			"To apply, submit a completed Sullivan County employment application to the Human Resources office. Applications are available on the Employee Services page or at the Financial Administration Building, 155 School Ave., Blountville, TN 37617.",
 			"Sullivan County is an equal opportunity employer. For questions about this position, contact the Planning and Codes department at (423) 323-6440.",
+		],
+	},
+	{
+		title: "Household Hazardous Waste Collection Event",
+		date: "2024-08-30",
+		author: "Sullivan County",
+		slug: "household-hazardous-waste-collection",
+		summary:
+			"Free household hazardous waste collection event at Sullivan Central Middle School. Residents can safely dispose of hazardous materials.",
+		url: "https://sullivancountytn.gov/7455/",
+		content: [
+			"Sullivan County is hosting a free Household Hazardous Waste Collection event for county residents to safely dispose of hazardous materials from their homes.",
+			"The event took place on Saturday, September 28, 2024 at Sullivan Central Middle School, 131 Shipley Ferry Rd, Blountville, TN.",
+			"Acceptable items include old paint, pesticides, cleaning chemicals, automotive fluids, batteries, and other household hazardous materials that should not be placed in regular trash.",
+			"This event is part of Sullivan County's ongoing commitment to environmental protection and responsible waste management for the community.",
+		],
+	},
+	{
+		title: "GIS Interactive Zoning Map Now Available",
+		date: "2022-05-17",
+		author: "Sullivan County",
+		slug: "gis-interactive-zoning-map",
+		summary:
+			"Sullivan County's interactive GIS zoning map is now available online. Search by address and view zoning designations.",
+		url: "https://sullivancountytn.gov/gis-interactive-zoning-map/",
+		content: [
+			"Sullivan County's GIS Analyst Jonathan Hamic has launched an interactive zoning map for public use, making it easier for residents and developers to access zoning information.",
+			"The interactive map allows users to view zoning designations across Sullivan County. Users can toggle zoning layers on and off and adjust transparency to see topographic details underneath.",
+			"The map features an address search function, making it simple to look up zoning information for specific properties throughout the county.",
+			"For questions about zoning designations or the interactive map, contact the Sullivan County Planning and Codes department at (423) 323-6440.",
 		],
 	},
 ];

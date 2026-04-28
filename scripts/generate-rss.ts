@@ -44,6 +44,20 @@ const news = [
 		slug: "building-inspector-code-enforcement-job-opening",
 		summary: "Sullivan County is hiring a Building Inspector and Code Enforcement Officer.",
 	},
+	{
+		title: "Household Hazardous Waste Collection Event",
+		date: "2024-08-30",
+		author: "Sullivan County",
+		slug: "household-hazardous-waste-collection",
+		summary: "Free household hazardous waste collection event for Sullivan County residents.",
+	},
+	{
+		title: "GIS Interactive Zoning Map Now Available",
+		date: "2022-05-17",
+		author: "Sullivan County",
+		slug: "gis-interactive-zoning-map",
+		summary: "Sullivan County's interactive GIS zoning map is now available online.",
+	},
 ];
 
 const SITE_URL = "https://sullivan-county-tn.codyboring.workers.dev";

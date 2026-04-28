@@ -127,7 +127,7 @@ ALL historical content comes from the triple-fact-checked master reference docum
 | `public/images/commissioners/` | Commissioner headshots (23 images) |
 | `public/images/officials/` | Mayor headshot |
 | `public/rss.xml` | Static RSS feed (generated via `scripts/generate-rss.ts`) |
-| `public/sitemap.xml` | Static sitemap (generated via `scripts/generate-sitemap.ts`, 40 URLs) |
+| `public/sitemap.xml` | Static sitemap (generated via `scripts/generate-sitemap.ts`, 65 URLs) |
 | `public/robots.txt` | Crawler directives + sitemap reference |
 | `public/_headers` | Security headers (CSP, HSTS, X-Frame-Options) + cache control |
 

@@ -9,10 +9,12 @@ import {
 	Scripts,
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import { I18nextProvider, useTranslation } from "react-i18next";
 import { AnnouncementBanner } from "~/components/layout/AnnouncementBanner";
 import { NotFound } from "~/components/layout/NotFound";
 import { SiteFooter } from "~/components/layout/SiteFooter";
 import { SiteNav } from "~/components/layout/SiteNav";
+import i18n from "~/lib/i18n";
 import appCss from "~/styles/app.css?url";
 import { seo, seoLinks } from "~/utils/seo";
 
@@ -106,18 +108,21 @@ export const Route = createRootRoute({
 
 function RootComponent() {
   return (
-    <RootDocument>
-      <AnnouncementBanner />
-      <SiteNav />
-      <Outlet />
-      <SiteFooter />
-    </RootDocument>
+    <I18nextProvider i18n={i18n}>
+      <RootDocument>
+        <AnnouncementBanner />
+        <SiteNav />
+        <Outlet />
+        <SiteFooter />
+      </RootDocument>
+    </I18nextProvider>
   );
 }
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
+  const { i18n } = useTranslation();
   return (
-    <html lang="en">
+    <html lang={i18n.language ?? "en"}>
       <head>
         <HeadContent />
       </head>

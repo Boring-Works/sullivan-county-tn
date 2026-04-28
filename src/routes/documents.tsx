@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronDown, Download, Search } from "lucide-react";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { VideoEmbed } from "~/components/shared/VideoEmbed";
 import { CATEGORIES, documents } from "~/data/documents";
 import type { DocumentFileType } from "~/data/documents";
@@ -28,6 +29,7 @@ const typeBadgeStyles: Record<DocumentFileType, string> = {
 };
 
 function DocumentsPage() {
+  const { t } = useTranslation();
   const [filter, setFilter] = useState("");
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
@@ -79,7 +81,7 @@ function DocumentsPage() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-4 h-px w-12 bg-brand-copper" />
         <h1 className="font-display text-4xl font-bold text-brand-navy mb-4 sm:text-5xl">
-          Document Library
+          {t("documents.title")}
         </h1>
         <p className="font-body text-brand-slate-light mb-8 max-w-2xl leading-relaxed">
           Download forms, policies, and resources. All {documents.length} documents are available
@@ -91,7 +93,7 @@ function DocumentsPage() {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-brand-stone" />
           <input
             type="text"
-            placeholder="Search all documents..."
+            placeholder={t("documents.searchPlaceholder")}
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
             className="w-full rounded-sm border border-brand-surface bg-white py-2.5 pl-10 pr-4 font-body text-sm text-brand-slate placeholder:text-brand-warm-gray focus:outline-none focus:border-brand-copper/50 focus:ring-1 focus:ring-brand-copper/20"

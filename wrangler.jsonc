@@ -13,6 +13,14 @@
       "id": "e512ab18f079489fab252adba81cf501"
     }
   ],
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "sullivan-county-db",
+      "database_id": "338cb345-92b9-4697-8e39-52d9844c8993",
+      "migrations_dir": "src/db/migrations"
+    }
+  ],
   "env": {
     "preview": {
       "name": "sullivan-county-tn-preview"
