@@ -159,6 +159,7 @@ All static TypeScript data files. Validated by unit tests.
 
 | Issue | Severity | Status |
 |-------|----------|--------|
+| React minified error #418 hydration warning on every page | LOW | Cosmetic console error. Originates in the TanStack Start `<Scripts />` + React 19 `<script>` auto-hoisting interaction (bootstrap module script position differs between streaming SSR and client first render). No visible effect on the rendered page. Already tried: hoisting our inline `<script>` tags to `<head>`, removing the duplicate `<main>` nesting — both fixed real bugs but neither resolved this framework-level mismatch. |
 | In-memory rate limiting doesn't work across Workers isolates | HIGH | All rate-limited endpoints share per-isolate buckets |
 | CSRF module is dead code | MEDIUM | Defined but never imported/used |
 
