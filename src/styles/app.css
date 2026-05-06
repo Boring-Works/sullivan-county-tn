@@ -311,6 +311,7 @@
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
@@ -319,6 +320,15 @@
     opacity: 1;
     transform: none;
     transition: none;
+  }
+  /* Items that start at opacity-0 and rely on entrance animations need an explicit
+     visible fallback so they don't sit invisible while waiting for animation-delay. */
+  .opacity-0.animate-slide-in-right,
+  .opacity-0.animate-fade-up,
+  .opacity-0.animate-fade-in,
+  .opacity-0.animate-scale-in {
+    opacity: 1 !important;
+    transform: none !important;
   }
   .card-lift:hover {
     transform: none;

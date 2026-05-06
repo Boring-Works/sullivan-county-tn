@@ -51,13 +51,15 @@ export function SiteNav() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [megaMenuOpen, setMegaMenuOpen] = useState(false);
-  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [mobileDeptsOpen, setMobileDeptsOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [megaFocusIndex, setMegaFocusIndex] = useState(-1);
+  // Coarse pointers (touch) get click-to-toggle only; fine pointers also get hover.
+  const [canHover, setCanHover] = useState(false);
 
   const megaMenuRef = useRef<HTMLDivElement>(null);
   const megaButtonRef = useRef<HTMLButtonElement>(null);
-  const megaContainerRef = useRef<HTMLDivElement>(null);
+  const megaWrapperRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
 
@@ -65,12 +67,24 @@ export function SiteNav() {
   const hasDarkHeader =
     pathname === "/" ||
     /^\/departments\/[^/]+/.test(pathname) ||
-    /^\/history/.test(pathname) ||
-    /^\/communities/.test(pathname) ||
-    /^\/(about|visit|people|education|economic-development|transportation)/.test(pathname);
+    /^\/history(\/|$)/.test(pathname) ||
+    /^\/communities(\/|$)/.test(pathname) ||
+    /^\/(about|visit|people|education|economic-development|transportation)(\/|$)/.test(pathname);
   const solid = !hasDarkHeader || scrolled;
 
+  const isLinkActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+  const departmentsActive = pathname === "/departments" || pathname.startsWith("/departments/");
+
   const megaMenuItems = buildMegaMenuItems();
+
+  // Detect hover-capable pointers so we can disable hover open on touch.
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    setCanHover(mq.matches);
+    const handler = (e: MediaQueryListEvent) => setCanHover(e.matches);
+    mq.addEventListener("change", handler);
+    return () => mq.removeEventListener("change", handler);
+  }, []);
 
   // Scroll listener
   useEffect(() => {
@@ -105,19 +119,19 @@ export function SiteNav() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  // Native DOM event listeners for mega-menu hover (survives React hydration failures)
+  // Close mega-menu on outside pointer down (touch + click)
   useEffect(() => {
-    const el = megaContainerRef.current;
-    if (!el) return;
-    const enter = () => setMegaMenuOpen(true);
-    const leave = () => setMegaMenuOpen(false);
-    el.addEventListener("mouseenter", enter);
-    el.addEventListener("mouseleave", leave);
-    return () => {
-      el.removeEventListener("mouseenter", enter);
-      el.removeEventListener("mouseleave", leave);
-    };
-  }, []);
+    if (!megaMenuOpen) return;
+    function handlePointerDown(e: PointerEvent) {
+      const wrapper = megaWrapperRef.current;
+      if (!wrapper) return;
+      if (e.target instanceof Node && !wrapper.contains(e.target)) {
+        setMegaMenuOpen(false);
+      }
+    }
+    document.addEventListener("pointerdown", handlePointerDown);
+    return () => document.removeEventListener("pointerdown", handlePointerDown);
+  }, [megaMenuOpen]);
 
   // Mobile focus trap
   useEffect(() => {
@@ -130,7 +144,7 @@ export function SiteNav() {
       if (e.key === "Escape") {
         e.preventDefault();
         setMobileOpen(false);
-        setExpandedCategory(null);
+        setMobileDeptsOpen(false);
         hamburgerRef.current?.focus();
         return;
       }
@@ -199,7 +213,7 @@ export function SiteNav() {
 
   function closeMobile() {
     setMobileOpen(false);
-    setExpandedCategory(null);
+    setMobileDeptsOpen(false);
   }
 
   return (
@@ -255,23 +269,31 @@ export function SiteNav() {
 
           {/* Center: Desktop Nav */}
           <div className="hidden lg:flex items-center gap-0.5">
-            {/* Departments Dropdown */}
+            {/* Departments Dropdown — wrapper handles hover open/close and bubbled
+                arrow/Escape keys; the interactive trigger is the inner <button>. */}
+            {/* biome-ignore lint/a11y/noStaticElementInteractions: positioning wrapper around a real <button> trigger and a disclosure panel */}
             <div
+              ref={megaWrapperRef}
               className="relative group"
-              onMouseEnter={() => setMegaMenuOpen(true)}
-              onMouseLeave={() => setMegaMenuOpen(false)}
+              onMouseEnter={() => canHover && setMegaMenuOpen(true)}
+              onMouseLeave={() => canHover && setMegaMenuOpen(false)}
               onKeyDown={handleMegaKeyDown}
             >
               <button
                 ref={megaButtonRef}
                 type="button"
                 className={cn(
-                  "flex items-center gap-1.5 px-3.5 py-2 font-body text-sm font-medium",
+                  "relative flex items-center gap-1.5 px-3.5 py-2 font-body text-sm",
                   "rounded-sm transition-all duration-200",
+                  departmentsActive ? "font-semibold" : "font-medium",
                   solid ? "text-brand-slate" : "text-white/90",
                   megaMenuOpen &&
                     (solid ? "bg-brand-surface text-brand-navy" : "bg-white/10 text-white"),
                   !megaMenuOpen && (solid ? "hover:text-brand-navy" : "hover:text-white"),
+                  departmentsActive &&
+                    (solid
+                      ? "text-brand-navy after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-0.5 after:rounded-full after:bg-brand-copper"
+                      : "text-white after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-0.5 after:rounded-full after:bg-brand-brass-light"),
                 )}
                 onClick={() => setMegaMenuOpen(!megaMenuOpen)}
                 onKeyDown={(e) => {
@@ -284,7 +306,7 @@ export function SiteNav() {
                   }
                 }}
                 aria-expanded={megaMenuOpen}
-                aria-haspopup="true"
+                aria-controls="departments-mega-menu"
               >
                 {t("nav.departments")}
                 <svg
@@ -307,84 +329,97 @@ export function SiteNav() {
               <div
                 className={cn(
                   "absolute left-1/2 -translate-x-1/2 top-full pt-3",
-                  megaMenuOpen ? "block" : "hidden group-hover:block",
+                  megaMenuOpen ? "block" : "hidden",
                 )}
               >
-                  <div
-                    ref={megaMenuRef}
-                    className="w-[920px] rounded-md border border-brand-surface bg-white p-8 shadow-2xl shadow-brand-navy/8 animate-scale-in"
-                    role="menu"
-                  >
-                    <div className="mb-5 flex items-center justify-between border-b border-brand-surface pb-4">
-                      <h3 className="font-display text-base font-bold text-brand-navy">
-                        {t("nav.countyDepartments")}
-                      </h3>
-                      <Link
-                        to="/departments"
-                        className="font-body text-xs font-semibold tracking-wide uppercase text-brand-copper hover:text-brand-copper-light transition-colors"
-                        onClick={() => setMegaMenuOpen(false)}
-                      >
-                        {t("nav.viewAll")} &rarr;
-                      </Link>
-                    </div>
-                    <div className="grid grid-cols-3 gap-8">
-                      {CATEGORY_ORDER.map((catKey) => {
-                        const category = DEPARTMENT_CATEGORIES[catKey];
-                        const depts = getDepartmentsByCategory(catKey);
-                        return (
-                          <div key={catKey}>
-                            <div className="mb-2.5 flex items-center gap-2">
-                              <div className="h-px flex-1 bg-brand-surface" />
-                              <span className="font-body text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-stone">
-                                {category.label}
-                              </span>
-                              <div className="h-px flex-1 bg-brand-surface" />
-                            </div>
-                            <ul className="space-y-0.5" role="group" aria-label={category.label}>
-                              {depts.map((dept) => (
-                                <li key={dept.slug} role="none">
+                <div
+                  ref={megaMenuRef}
+                  id="departments-mega-menu"
+                  className="w-[920px] rounded-md border border-brand-surface bg-white p-8 shadow-2xl shadow-brand-navy/8 animate-scale-in"
+                >
+                  <div className="mb-5 flex items-center justify-between border-b border-brand-surface pb-4">
+                    <h3 className="font-display text-base font-bold text-brand-navy">
+                      {t("nav.countyDepartments")}
+                    </h3>
+                    <Link
+                      to="/departments"
+                      search={{ category: undefined }}
+                      className="font-body text-xs font-semibold tracking-wide uppercase text-brand-copper hover:text-brand-copper-light transition-colors"
+                      onClick={() => setMegaMenuOpen(false)}
+                    >
+                      {t("nav.viewAll")} &rarr;
+                    </Link>
+                  </div>
+                  <div className="grid grid-cols-3 gap-8">
+                    {CATEGORY_ORDER.map((catKey) => {
+                      const category = DEPARTMENT_CATEGORIES[catKey];
+                      const depts = getDepartmentsByCategory(catKey);
+                      return (
+                        <div key={catKey}>
+                          <div className="mb-2.5 flex items-center gap-2">
+                            <div className="h-px flex-1 bg-brand-surface" />
+                            <span className="font-body text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-stone">
+                              {category.label}
+                            </span>
+                            <div className="h-px flex-1 bg-brand-surface" />
+                          </div>
+                          <ul className="space-y-0.5" aria-label={category.label}>
+                            {depts.map((dept) => {
+                              const active = pathname === `/departments/${dept.slug}`;
+                              return (
+                                <li key={dept.slug}>
                                   <Link
                                     to="/departments/$slug"
                                     params={{ slug: dept.slug }}
                                     data-mega-link=""
-                                    role="menuitem"
-                                    tabIndex={-1}
-                                    className="block rounded-sm px-2.5 py-1.5 font-body text-sm text-brand-slate hover:bg-brand-parchment hover:text-brand-navy focus:bg-brand-parchment focus:text-brand-navy focus:outline-none transition-colors"
+                                    aria-current={active ? "page" : undefined}
+                                    className={cn(
+                                      "block rounded-sm px-2.5 py-1.5 font-body text-sm transition-colors",
+                                      "hover:bg-brand-parchment hover:text-brand-navy focus:bg-brand-parchment focus:text-brand-navy focus:outline-none",
+                                      active
+                                        ? "bg-brand-parchment text-brand-navy font-semibold"
+                                        : "text-brand-slate",
+                                    )}
                                     onClick={() => setMegaMenuOpen(false)}
                                   >
                                     {dept.name}
                                   </Link>
                                 </li>
-                              ))}
-                            </ul>
-                          </div>
-                        );
-                      })}
-                    </div>
+                              );
+                            })}
+                          </ul>
+                        </div>
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </div>
 
             {/* Static Nav Links */}
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                aria-current={
-                  pathname === link.href || pathname.startsWith(`${link.href}/`)
-                    ? "page"
-                    : undefined
-                }
-                className={cn(
-                  "px-3.5 py-2 font-body text-sm font-medium rounded-sm transition-all duration-200",
-                  solid
-                    ? "text-brand-slate hover:text-brand-navy"
-                    : "text-white/90 hover:text-white",
-                )}
-              >
-                {t(link.labelKey)}
-              </Link>
-            ))}
+            {NAV_LINKS.map((link) => {
+              const active = isLinkActive(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "relative px-3.5 py-2 font-body text-sm rounded-sm transition-all duration-200",
+                    active ? "font-semibold" : "font-medium",
+                    solid
+                      ? "text-brand-slate hover:text-brand-navy"
+                      : "text-white/90 hover:text-white",
+                    active &&
+                      (solid
+                        ? "text-brand-navy after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-0.5 after:rounded-full after:bg-brand-copper"
+                        : "text-white after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-0.5 after:rounded-full after:bg-brand-brass-light"),
+                  )}
+                >
+                  {t(link.labelKey)}
+                </Link>
+              );
+            })}
           </div>
 
           {/* Right: Search + Pay Taxes + Mobile Toggle */}
@@ -479,15 +514,16 @@ export function SiteNav() {
               <button
                 type="button"
                 className="flex w-full items-center justify-between rounded-sm px-3 py-3.5 font-body text-base font-medium text-white/90 hover:bg-white/10 transition-colors"
-                onClick={() => setExpandedCategory(expandedCategory === "all" ? null : "all")}
-                aria-expanded={expandedCategory === "all"}
+                onClick={() => setMobileDeptsOpen((v) => !v)}
+                aria-expanded={mobileDeptsOpen}
+                aria-controls="mobile-departments-list"
               >
                 <span>{t("nav.departments")}</span>
                 <svg
                   aria-hidden="true"
                   className={cn(
                     "h-5 w-5 text-white/70 transition-transform duration-200",
-                    expandedCategory === "all" && "rotate-180",
+                    mobileDeptsOpen && "rotate-180",
                   )}
                   fill="none"
                   viewBox="0 0 24 24"
@@ -499,8 +535,8 @@ export function SiteNav() {
                 </svg>
               </button>
 
-              {expandedCategory === "all" && (
-                <div className="mt-2 space-y-5 pl-3">
+              {mobileDeptsOpen && (
+                <div id="mobile-departments-list" className="mt-2 space-y-5 pl-3">
                   {CATEGORY_ORDER.map((catKey) => {
                     const category = DEPARTMENT_CATEGORIES[catKey];
                     const depts = getDepartmentsByCategory(catKey);
@@ -528,6 +564,7 @@ export function SiteNav() {
                   })}
                   <Link
                     to="/departments"
+                    search={{ category: undefined }}
                     className="block rounded-sm px-3 py-2 font-body text-sm font-semibold text-brand-brass hover:text-brand-brass/80 transition-colors"
                     onClick={closeMobile}
                   >
@@ -538,17 +575,26 @@ export function SiteNav() {
             </div>
 
             {/* Static Links */}
-            {NAV_LINKS.map((link, index) => (
-              <Link
-                key={link.href}
-                to={link.href}
-                className="block rounded-sm px-3 py-3.5 font-body text-base font-medium text-white/90 hover:bg-white/10 hover:text-white transition-colors opacity-0 animate-slide-in-right"
-                style={{ animationDelay: `${0.1 + index * 0.05}s` }}
-                onClick={closeMobile}
-              >
-                {t(link.labelKey)}
-              </Link>
-            ))}
+            {NAV_LINKS.map((link, index) => {
+              const active = isLinkActive(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  to={link.href}
+                  aria-current={active ? "page" : undefined}
+                  className={cn(
+                    "block rounded-sm px-3 py-3.5 font-body text-base text-white/90 hover:bg-white/10 hover:text-white transition-colors opacity-0 animate-slide-in-right",
+                    active
+                      ? "font-semibold text-white border-l-2 border-brand-brass-light pl-[10px]"
+                      : "font-medium",
+                  )}
+                  style={{ animationDelay: `${0.1 + index * 0.05}s` }}
+                  onClick={closeMobile}
+                >
+                  {t(link.labelKey)}
+                </Link>
+              );
+            })}
 
             {/* Search + Pay Taxes (Mobile) */}
             <div
