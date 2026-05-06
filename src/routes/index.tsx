@@ -40,7 +40,16 @@ export const Route = createFileRoute("/")({
       image: "/images/og/og-default.jpg",
       url: "/",
     }),
-    links: seoLinks("/"),
+    links: [
+      ...seoLinks("/"),
+      {
+        rel: "preload",
+        href: "/images/hero/boone-lake-1920.webp",
+        as: "image",
+        type: "image/webp",
+        fetchPriority: "high",
+      },
+    ],
   }),
 });
 

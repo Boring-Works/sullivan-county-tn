@@ -96,13 +96,8 @@ export const Route = createRootRoute({
       { rel: "dns-prefetch", href: "https://img.youtube.com" },
       { rel: "dns-prefetch", href: "https://www.youtube-nocookie.com" },
       { rel: "dns-prefetch", href: "https://www.google.com" },
-      {
-        rel: "preload",
-        href: "/images/hero/boone-lake-1920.webp",
-        as: "image",
-        type: "image/webp",
-        fetchPriority: "high",
-      },
+      // Hero image preload moved to the home route — was firing a "preloaded but
+      // not used" warning on every other page since the image only renders on /.
       {
         rel: "preload",
         href: "https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap",
