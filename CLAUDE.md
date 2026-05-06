@@ -3,6 +3,15 @@
 Citizen services portal for Sullivan County, Tennessee.
 Brand: **"Where Tennessee Began and Begins"**
 
+## Audit Docs (May 2026)
+See `/docs/` for complete architecture audit:
+- [ARCHITECTURE.md](docs/ARCHITECTURE.md) — Full stack architecture
+- [CURRENT_STATE.md](docs/CURRENT_STATE.md) — Current project state
+- [COMPONENT_INVENTORY.md](docs/COMPONENT_INVENTORY.md) — All 37 components
+- [DEVELOPMENT_WORKFLOW.md](docs/DEVELOPMENT_WORKFLOW.md) — Dev workflow
+- [GAP_ANALYSIS.md](docs/GAP_ANALYSIS.md) — Known gaps
+- [NEXT_IMPLEMENTATION_PLAN.md](docs/NEXT_IMPLEMENTATION_PLAN.md) — Future plan
+
 ## State (2026-05-06)
 - **Tests:** 24 unit + 164 E2E across desktop/tablet/mobile (all green)
 - **A11y:** WCAG AA compliant (6 brand tokens fixed, 13 ARIA violations resolved)

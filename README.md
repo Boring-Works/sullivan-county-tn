@@ -4,7 +4,20 @@
 
 **Live:** https://sullivan-county-tn.codyboring.workers.dev
 
-## State (May 2026)
+## Documentation
+
+| Doc | Purpose |
+|-----|---------|
+| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Full architecture: frontend, backend, data flow, security, Cloudflare services |
+| [CURRENT_STATE.md](docs/CURRENT_STATE.md) | What exists, what's mocked, what's broken |
+| [COMPONENT_INVENTORY.md](docs/COMPONENT_INVENTORY.md) | All 37 components, their usage, and reuse guidance |
+| [DEVELOPMENT_WORKFLOW.md](docs/DEVELOPMENT_WORKFLOW.md) | Local setup, commands, deployment, testing, admin access |
+| [GAP_ANALYSIS.md](docs/GAP_ANALYSIS.md) | All known gaps by severity (critical → low) |
+| [NEXT_IMPLEMENTATION_PLAN.md](docs/NEXT_IMPLEMENTATION_PLAN.md) | Prioritized plan for future work (6 phases) |
+| [ADMIN-CREDENTIALS.md](docs/ADMIN-CREDENTIALS.md) | Admin login credentials and security notes |
+| [SITE-AUDIT.md](docs/SITE-AUDIT.md) | Original environment audit from project inception |
+
+---
 
 - **Tests:** 24 unit + 164 E2E across desktop/tablet/mobile (all passing)
 - **A11y:** WCAG AA compliant (7 brand tokens optimized for 4.5:1+ contrast, 13 ARIA violations resolved)
