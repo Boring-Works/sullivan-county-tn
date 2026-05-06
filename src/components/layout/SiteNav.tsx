@@ -217,289 +217,297 @@ export function SiteNav() {
   }
 
   return (
-    <nav
-      aria-label="Main navigation"
-      className={cn(
-        "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        solid
-          ? "bg-white/80 backdrop-blur-lg shadow-sm border-b border-brand-surface"
-          : "bg-transparent",
-      )}
-    >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between lg:h-18">
-          {/* Left: Logo + Branding */}
-          <Link to="/" className="flex items-center gap-3 shrink-0" onClick={closeMobile}>
-            <div
-              className={cn(
-                "flex h-10 w-10 items-center justify-center rounded-sm transition-all duration-300",
-                solid
-                  ? "bg-brand-navy border border-brand-brass/20"
-                  : "bg-white border border-white/80",
-              )}
-            >
-              <span
-                className={cn(
-                  "font-display text-sm font-bold tracking-tight transition-colors duration-300",
-                  solid ? "text-brand-brass" : "text-brand-navy",
-                )}
-              >
-                SC
-              </span>
-            </div>
-            <div className="hidden sm:block">
+    <>
+      <nav
+        aria-label="Main navigation"
+        className={cn(
+          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+          solid
+            ? "bg-white/80 backdrop-blur-lg shadow-sm border-b border-brand-surface"
+            : "bg-transparent",
+        )}
+      >
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="flex h-16 items-center justify-between lg:h-18">
+            {/* Left: Logo + Branding */}
+            <Link to="/" className="flex items-center gap-3 shrink-0" onClick={closeMobile}>
               <div
                 className={cn(
-                  "font-display text-sm font-bold tracking-wide leading-tight transition-colors duration-300",
-                  solid ? "text-brand-navy" : "text-white",
+                  "flex h-10 w-10 items-center justify-center rounded-sm transition-all duration-300",
+                  solid
+                    ? "bg-brand-navy border border-brand-brass/20"
+                    : "bg-white border border-white/80",
                 )}
               >
-                Sullivan County
-              </div>
-              <div
-                className={cn(
-                  "font-body text-[11px] font-light tracking-widest uppercase leading-tight transition-colors duration-300",
-                  solid ? "text-brand-stone" : "text-white/50",
-                )}
-              >
-                Tennessee
-              </div>
-            </div>
-          </Link>
-
-          {/* Center: Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-0.5">
-            {/* Departments Dropdown — wrapper handles hover open/close and bubbled
-                arrow/Escape keys; the interactive trigger is the inner <button>. */}
-            {/* biome-ignore lint/a11y/noStaticElementInteractions: positioning wrapper around a real <button> trigger and a disclosure panel */}
-            <div
-              ref={megaWrapperRef}
-              className="relative group"
-              onMouseEnter={() => canHover && setMegaMenuOpen(true)}
-              onMouseLeave={() => canHover && setMegaMenuOpen(false)}
-              onKeyDown={handleMegaKeyDown}
-            >
-              <button
-                ref={megaButtonRef}
-                type="button"
-                className={cn(
-                  "relative flex items-center gap-1.5 px-3.5 py-2 font-body text-sm",
-                  "rounded-sm transition-all duration-200",
-                  departmentsActive ? "font-semibold" : "font-medium",
-                  solid ? "text-brand-slate" : "text-white/90",
-                  megaMenuOpen &&
-                    (solid ? "bg-brand-surface text-brand-navy" : "bg-white/10 text-white"),
-                  !megaMenuOpen && (solid ? "hover:text-brand-navy" : "hover:text-white"),
-                  departmentsActive &&
-                    (solid
-                      ? "text-brand-navy after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-0.5 after:rounded-full after:bg-brand-copper"
-                      : "text-white after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-0.5 after:rounded-full after:bg-brand-brass-light"),
-                )}
-                onClick={() => setMegaMenuOpen(!megaMenuOpen)}
-                onKeyDown={(e) => {
-                  if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
-                    if (!megaMenuOpen) {
-                      e.preventDefault();
-                      setMegaMenuOpen(true);
-                      setMegaFocusIndex(0);
-                    }
-                  }
-                }}
-                aria-expanded={megaMenuOpen}
-                aria-controls="departments-mega-menu"
-              >
-                {t("nav.departments")}
-                <svg
-                  aria-hidden="true"
+                <span
                   className={cn(
-                    "h-3.5 w-3.5 transition-transform duration-200",
-                    megaMenuOpen && "rotate-180",
+                    "font-display text-sm font-bold tracking-tight transition-colors duration-300",
+                    solid ? "text-brand-brass" : "text-brand-navy",
                   )}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
                 >
-                  <title>Toggle dropdown</title>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-
-              {/* Mega Menu */}
-              <div
-                className={cn(
-                  "absolute left-1/2 -translate-x-1/2 top-full pt-3",
-                  megaMenuOpen ? "block" : "hidden",
-                )}
-              >
+                  SC
+                </span>
+              </div>
+              <div className="hidden sm:block">
                 <div
-                  ref={megaMenuRef}
-                  id="departments-mega-menu"
-                  className="w-[920px] rounded-md border border-brand-surface bg-white p-8 shadow-2xl shadow-brand-navy/8 animate-scale-in"
+                  className={cn(
+                    "font-display text-sm font-bold tracking-wide leading-tight transition-colors duration-300",
+                    solid ? "text-brand-navy" : "text-white",
+                  )}
                 >
-                  <div className="mb-5 flex items-center justify-between border-b border-brand-surface pb-4">
-                    <h3 className="font-display text-base font-bold text-brand-navy">
-                      {t("nav.countyDepartments")}
-                    </h3>
-                    <Link
-                      to="/departments"
-                      search={{ category: undefined }}
-                      className="font-body text-xs font-semibold tracking-wide uppercase text-brand-copper hover:text-brand-copper-light transition-colors"
-                      onClick={() => setMegaMenuOpen(false)}
-                    >
-                      {t("nav.viewAll")} &rarr;
-                    </Link>
-                  </div>
-                  <div className="grid grid-cols-3 gap-8">
-                    {CATEGORY_ORDER.map((catKey) => {
-                      const category = DEPARTMENT_CATEGORIES[catKey];
-                      const depts = getDepartmentsByCategory(catKey);
-                      return (
-                        <div key={catKey}>
-                          <div className="mb-2.5 flex items-center gap-2">
-                            <div className="h-px flex-1 bg-brand-surface" />
-                            <span className="font-body text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-stone">
-                              {category.label}
-                            </span>
-                            <div className="h-px flex-1 bg-brand-surface" />
-                          </div>
-                          <ul className="space-y-0.5" aria-label={category.label}>
-                            {depts.map((dept) => {
-                              const active = pathname === `/departments/${dept.slug}`;
-                              return (
-                                <li key={dept.slug}>
-                                  <Link
-                                    to="/departments/$slug"
-                                    params={{ slug: dept.slug }}
-                                    data-mega-link=""
-                                    aria-current={active ? "page" : undefined}
-                                    className={cn(
-                                      "block rounded-sm px-2.5 py-1.5 font-body text-sm transition-colors",
-                                      "hover:bg-brand-parchment hover:text-brand-navy focus:bg-brand-parchment focus:text-brand-navy focus:outline-none",
-                                      active
-                                        ? "bg-brand-parchment text-brand-navy font-semibold"
-                                        : "text-brand-slate",
-                                    )}
-                                    onClick={() => setMegaMenuOpen(false)}
-                                  >
-                                    {dept.name}
-                                  </Link>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </div>
-                      );
-                    })}
-                  </div>
+                  Sullivan County
+                </div>
+                <div
+                  className={cn(
+                    "font-body text-[11px] font-light tracking-widest uppercase leading-tight transition-colors duration-300",
+                    solid ? "text-brand-stone" : "text-white/50",
+                  )}
+                >
+                  Tennessee
                 </div>
               </div>
-            </div>
+            </Link>
 
-            {/* Static Nav Links */}
-            {NAV_LINKS.map((link) => {
-              const active = isLinkActive(link.href);
-              return (
-                <Link
-                  key={link.href}
-                  to={link.href}
-                  aria-current={active ? "page" : undefined}
+            {/* Center: Desktop Nav */}
+            <div className="hidden lg:flex items-center gap-0.5">
+              {/* Departments Dropdown — wrapper handles hover open/close and bubbled
+                arrow/Escape keys; the interactive trigger is the inner <button>. */}
+              {/* biome-ignore lint/a11y/noStaticElementInteractions: positioning wrapper around a real <button> trigger and a disclosure panel */}
+              <div
+                ref={megaWrapperRef}
+                className="relative group"
+                onMouseEnter={() => canHover && setMegaMenuOpen(true)}
+                onMouseLeave={() => canHover && setMegaMenuOpen(false)}
+                onKeyDown={handleMegaKeyDown}
+              >
+                <button
+                  ref={megaButtonRef}
+                  type="button"
                   className={cn(
-                    "relative px-3.5 py-2 font-body text-sm rounded-sm transition-all duration-200",
-                    active ? "font-semibold" : "font-medium",
-                    solid
-                      ? "text-brand-slate hover:text-brand-navy"
-                      : "text-white/90 hover:text-white",
-                    active &&
+                    "relative flex items-center gap-1.5 px-3.5 py-2 font-body text-sm",
+                    "rounded-sm transition-all duration-200",
+                    departmentsActive ? "font-semibold" : "font-medium",
+                    solid ? "text-brand-slate" : "text-white/90",
+                    megaMenuOpen &&
+                      (solid ? "bg-brand-surface text-brand-navy" : "bg-white/10 text-white"),
+                    !megaMenuOpen && (solid ? "hover:text-brand-navy" : "hover:text-white"),
+                    departmentsActive &&
                       (solid
                         ? "text-brand-navy after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-0.5 after:rounded-full after:bg-brand-copper"
                         : "text-white after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-0.5 after:rounded-full after:bg-brand-brass-light"),
                   )}
+                  onClick={() => setMegaMenuOpen(!megaMenuOpen)}
+                  onKeyDown={(e) => {
+                    if (e.key === "ArrowDown" || e.key === "Enter" || e.key === " ") {
+                      if (!megaMenuOpen) {
+                        e.preventDefault();
+                        setMegaMenuOpen(true);
+                        setMegaFocusIndex(0);
+                      }
+                    }
+                  }}
+                  aria-expanded={megaMenuOpen}
+                  aria-controls="departments-mega-menu"
                 >
-                  {t(link.labelKey)}
-                </Link>
-              );
-            })}
-          </div>
+                  {t("nav.departments")}
+                  <svg
+                    aria-hidden="true"
+                    className={cn(
+                      "h-3.5 w-3.5 transition-transform duration-200",
+                      megaMenuOpen && "rotate-180",
+                    )}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <title>Toggle dropdown</title>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
 
-          {/* Right: Search + Pay Taxes + Mobile Toggle */}
-          <div className="flex items-center gap-3">
-            <button
-              type="button"
-              onClick={() => setSearchOpen(true)}
-              className={cn(
-                "hidden lg:inline-flex items-center gap-2 rounded-sm px-3 py-1.5 font-body text-sm transition-all duration-200",
-                solid
-                  ? "text-brand-stone border border-brand-surface hover:border-brand-copper/30 hover:text-brand-navy"
-                  : "text-white/70 border border-white/20 hover:border-white/40 hover:text-white",
-              )}
-              aria-label="Search"
-            >
-              <Search className="size-3.5" />
-              <kbd className="text-[10px] text-brand-slate-light font-mono">&#8984;K</kbd>
-            </button>
-            <div className="hidden lg:block">
-              <LanguageToggle solid={solid} />
+                {/* Mega Menu */}
+                <div
+                  className={cn(
+                    "absolute left-1/2 -translate-x-1/2 top-full pt-3",
+                    megaMenuOpen ? "block" : "hidden",
+                  )}
+                >
+                  <div
+                    ref={megaMenuRef}
+                    id="departments-mega-menu"
+                    className="w-[920px] rounded-md border border-brand-surface bg-white p-8 shadow-2xl shadow-brand-navy/8 animate-scale-in"
+                  >
+                    <div className="mb-5 flex items-center justify-between border-b border-brand-surface pb-4">
+                      <h3 className="font-display text-base font-bold text-brand-navy">
+                        {t("nav.countyDepartments")}
+                      </h3>
+                      <Link
+                        to="/departments"
+                        search={{ category: undefined }}
+                        className="font-body text-xs font-semibold tracking-wide uppercase text-brand-copper hover:text-brand-copper-light transition-colors"
+                        onClick={() => setMegaMenuOpen(false)}
+                      >
+                        {t("nav.viewAll")} &rarr;
+                      </Link>
+                    </div>
+                    <div className="grid grid-cols-3 gap-8">
+                      {CATEGORY_ORDER.map((catKey) => {
+                        const category = DEPARTMENT_CATEGORIES[catKey];
+                        const depts = getDepartmentsByCategory(catKey);
+                        return (
+                          <div key={catKey}>
+                            <div className="mb-2.5 flex items-center gap-2">
+                              <div className="h-px flex-1 bg-brand-surface" />
+                              <span className="font-body text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-stone">
+                                {category.label}
+                              </span>
+                              <div className="h-px flex-1 bg-brand-surface" />
+                            </div>
+                            <ul className="space-y-0.5" aria-label={category.label}>
+                              {depts.map((dept) => {
+                                const active = pathname === `/departments/${dept.slug}`;
+                                return (
+                                  <li key={dept.slug}>
+                                    <Link
+                                      to="/departments/$slug"
+                                      params={{ slug: dept.slug }}
+                                      data-mega-link=""
+                                      aria-current={active ? "page" : undefined}
+                                      className={cn(
+                                        "block rounded-sm px-2.5 py-1.5 font-body text-sm transition-colors",
+                                        "hover:bg-brand-parchment hover:text-brand-navy focus:bg-brand-parchment focus:text-brand-navy focus:outline-none",
+                                        active
+                                          ? "bg-brand-parchment text-brand-navy font-semibold"
+                                          : "text-brand-slate",
+                                      )}
+                                      onClick={() => setMegaMenuOpen(false)}
+                                    >
+                                      {dept.name}
+                                    </Link>
+                                  </li>
+                                );
+                              })}
+                            </ul>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Static Nav Links */}
+              {NAV_LINKS.map((link) => {
+                const active = isLinkActive(link.href);
+                return (
+                  <Link
+                    key={link.href}
+                    to={link.href}
+                    aria-current={active ? "page" : undefined}
+                    className={cn(
+                      "relative px-3.5 py-2 font-body text-sm rounded-sm transition-all duration-200",
+                      active ? "font-semibold" : "font-medium",
+                      solid
+                        ? "text-brand-slate hover:text-brand-navy"
+                        : "text-white/90 hover:text-white",
+                      active &&
+                        (solid
+                          ? "text-brand-navy after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-0.5 after:rounded-full after:bg-brand-copper"
+                          : "text-white after:absolute after:bottom-1 after:left-3.5 after:right-3.5 after:h-0.5 after:rounded-full after:bg-brand-brass-light"),
+                    )}
+                  >
+                    {t(link.labelKey)}
+                  </Link>
+                );
+              })}
             </div>
-            <a
-              href="https://sullivantntrustee.gov/property-tax/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className={cn(
-                "hidden sm:inline-flex items-center rounded-sm px-5 py-2 font-body text-sm font-semibold tracking-wide transition-all duration-300",
-                solid
-                  ? "bg-brand-copper text-white hover:bg-brand-copper-light shadow-sm"
-                  : "bg-white/10 text-white border border-white/20 hover:bg-white/20 backdrop-blur-sm",
-              )}
-            >
-              {t("nav.payTaxes")}
-            </a>
 
-            {/* Mobile Hamburger */}
-            <button
-              ref={hamburgerRef}
-              type="button"
-              className={cn(
-                "lg:hidden inline-flex items-center justify-center rounded-sm p-2 transition-colors",
-                solid
-                  ? "text-brand-slate hover:bg-brand-surface hover:text-brand-navy"
-                  : "text-white/90 hover:text-white hover:bg-white/10",
-              )}
-              onClick={() => setMobileOpen(!mobileOpen)}
-              aria-expanded={mobileOpen}
-              aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            >
-              {mobileOpen ? (
-                <svg
-                  aria-hidden="true"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <title>Close menu</title>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg
-                  aria-hidden="true"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <title>Open menu</title>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              )}
-            </button>
+            {/* Right: Search + Pay Taxes + Mobile Toggle */}
+            <div className="flex items-center gap-3">
+              <button
+                type="button"
+                onClick={() => setSearchOpen(true)}
+                className={cn(
+                  "hidden lg:inline-flex items-center gap-2 rounded-sm px-3 py-1.5 font-body text-sm transition-all duration-200",
+                  solid
+                    ? "text-brand-stone border border-brand-surface hover:border-brand-copper/30 hover:text-brand-navy"
+                    : "text-white/70 border border-white/20 hover:border-white/40 hover:text-white",
+                )}
+                aria-label="Search"
+              >
+                <Search className="size-3.5" />
+                <kbd className="text-[10px] text-brand-slate-light font-mono">&#8984;K</kbd>
+              </button>
+              <div className="hidden lg:block">
+                <LanguageToggle solid={solid} />
+              </div>
+              <a
+                href="https://sullivantntrustee.gov/property-tax/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={cn(
+                  "hidden sm:inline-flex items-center rounded-sm px-5 py-2 font-body text-sm font-semibold tracking-wide transition-all duration-300",
+                  solid
+                    ? "bg-brand-copper text-white hover:bg-brand-copper-light shadow-sm"
+                    : "bg-white/10 text-white border border-white/20 hover:bg-white/20 backdrop-blur-sm",
+                )}
+              >
+                {t("nav.payTaxes")}
+              </a>
+
+              {/* Mobile Hamburger */}
+              <button
+                ref={hamburgerRef}
+                type="button"
+                className={cn(
+                  "lg:hidden inline-flex items-center justify-center rounded-sm p-2 transition-colors",
+                  solid
+                    ? "text-brand-slate hover:bg-brand-surface hover:text-brand-navy"
+                    : "text-white/90 hover:text-white hover:bg-white/10",
+                )}
+                onClick={() => setMobileOpen(!mobileOpen)}
+                aria-expanded={mobileOpen}
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              >
+                {mobileOpen ? (
+                  <svg
+                    aria-hidden="true"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <title>Close menu</title>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg
+                    aria-hidden="true"
+                    className="h-6 w-6"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                  >
+                    <title>Open menu</title>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 6h16M4 12h16M4 18h16"
+                    />
+                  </svg>
+                )}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      </nav>
 
-      {/* Mobile Menu — with focus trap */}
+      {/* Mobile Menu — rendered as a sibling of <nav> because <nav>'s
+          backdrop-blur establishes a containing block for fixed children,
+          which made the drawer compute height: 0 (top: 64px, bottom: 0). */}
       {mobileOpen && (
         <div
           ref={mobileMenuRef}
@@ -634,6 +642,6 @@ export function SiteNav() {
           <LazySearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
         </Suspense>
       )}
-    </nav>
+    </>
   );
 }
