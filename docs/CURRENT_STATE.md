@@ -1,8 +1,23 @@
 # Current State — Sullivan County TN Government Website
 
 **Date:** May 6, 2026
-**Live:** https://sullivan-county-tn.codyboring.workers.dev
+**Live:** https://sullivan-county-tn.codyboring.workers.dev (version `fa252b3f`)
 **Repo:** https://github.com/Boring-Works/sullivan-county-tn
+
+## Last session (2026-05-06 menu + UX audit)
+
+8 commits shipped on top of the previously-deployed state:
+
+1. **`672c028` fix(nav): mega-menu audit** — disclosure pattern, click-outside, hover gating, active states
+2. **`3f3282b` fix:** remove duplicate `<main id="main-content">` nesting + missing PWA icons
+3. **`18722c0` fix:** hoist speculation-rules + JSON-LD scripts to `<head>`
+4. **`160a760` fix(nav):** mobile drawer was rendering with `height: 0` (first attempt)
+5. **`12987db` fix(nav):** hoist mobile drawer + search dialog out of `<nav>` (root cause: `backdrop-blur-lg` containing block)
+6. **`763d5de` fix(a11y):** add `Dialog.Title` + `Dialog.Description` to SearchDialog (Radix requirement)
+7. **`2b2d2ce` fix:** remove speculation-rules script (was being ignored by browser)
+8. **`5cc7572` perf:** move hero image preload from root to home route (was firing "preloaded but not used" on every other page)
+
+Verification: 210/210 E2E tests pass against live worker, 24/24 unit tests, 0 production console warnings on every page tested (only the documented React #418 hydration error remains — pre-existing framework-level issue).
 
 ---
 
@@ -175,9 +190,10 @@ All static TypeScript data files. Validated by unit tests.
 | Server functions | 10 |
 | zod schemas | 7 |
 | Unit tests | 24 |
-| E2E tests | 198 |
+| E2E tests | 210 (passing against deployed URL) |
 | Brand tokens | 13 |
 | i18n keys | 87 (en + es) |
 | Build size | 747 KB (worker entry) |
 | Build time | ~3.0s |
-| Lint errors | 0 |
+| Lint errors | 0 in changed files (2 pre-existing warnings in unchanged `__root.tsx` JSON-LD + i18n cookie) |
+| Production console (sample pages) | 1 known framework error, 0 warnings |

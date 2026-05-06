@@ -10,9 +10,9 @@
 
 | # | Component | File Path | Purpose | Used In | Platform | Duplicate? | Recommendation |
 |---|-----------|-----------|---------|---------|----------|------------|----------------|
-| 1 | `SiteNav` | `src/components/layout/SiteNav.tsx` | Primary navigation with mega-menu, mobile hamburger, Cmd+K search trigger, glass-morphism scroll effect | `__root.tsx` | Web | No | KEEP |
+| 1 | `SiteNav` | `src/components/layout/SiteNav.tsx` | Primary navigation with disclosure-pattern mega-menu (click-outside close, hover-capability gating, active-page indicators), mobile drawer hoisted out of `<nav>` (sibling of nav so fixed positioning resolves to viewport, not the `backdrop-blur` containing block), Cmd+K search trigger, glass-morphism scroll effect | `__root.tsx` | Web | No | KEEP |
 | 2 | `SiteFooter` | `src/components/layout/SiteFooter.tsx` | Four-column footer with mountain SVG, links, copyright | `__root.tsx` | Web | No | KEEP |
-| 3 | `SearchDialog` | `src/components/layout/SearchDialog.tsx` | Fuse.js fuzzy search modal, ARIA combobox pattern, lazy-loaded | `SiteNav` | Web | No | KEEP |
+| 3 | `SearchDialog` | `src/components/layout/SearchDialog.tsx` | Fuse.js fuzzy search modal, ARIA combobox pattern, lazy-loaded, visually-hidden `Dialog.Title`/`Dialog.Description` for SR | `SiteNav` | Web | No | KEEP |
 | 4 | `AnnouncementBanner` | `src/components/layout/AnnouncementBanner.tsx` | Dismissible alert banner with localStorage persistence | `__root.tsx` | Web | No | KEEP |
 | 5 | `LanguageToggle` | `src/components/layout/LanguageToggle.tsx` | EN/ES toggle button with i18next | `SiteNav` | Web | No | KEEP |
 | 6 | `NotFound` | `src/components/layout/NotFound.tsx` | Custom 404 page with quick links + search hint | `router.tsx` as `notFoundComponent` | Web | No | KEEP |
