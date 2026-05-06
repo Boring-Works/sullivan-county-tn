@@ -65,8 +65,8 @@ export const createNewsArticle = createServerFn({ method: "POST" })
       author: data.author ?? "Sullivan County",
       summary: sanitize(data.summary),
       content: sanitizeHtml(data.content, {
-        allowedTags: ['p', 'br', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'h2', 'h3', 'h4'],
-        allowedAttributes: { 'a': ['href', 'target', 'rel'] },
+        allowedTags: ["p", "br", "b", "i", "em", "strong", "a", "ul", "ol", "li", "h2", "h3", "h4"],
+        allowedAttributes: { a: ["href", "target", "rel"] },
       }),
       status: data.status ?? "draft",
       url: data.url || null,
@@ -105,8 +105,8 @@ export const updateNewsArticle = createServerFn({ method: "POST" })
     if (updates.summary !== undefined) safeUpdates.summary = sanitize(updates.summary);
     if (updates.content !== undefined)
       safeUpdates.content = sanitizeHtml(updates.content, {
-        allowedTags: ['p', 'br', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'h2', 'h3', 'h4'],
-        allowedAttributes: { 'a': ['href', 'target', 'rel'] },
+        allowedTags: ["p", "br", "b", "i", "em", "strong", "a", "ul", "ol", "li", "h2", "h3", "h4"],
+        allowedAttributes: { a: ["href", "target", "rel"] },
       });
     if (updates.status !== undefined) safeUpdates.status = updates.status;
     if (updates.url !== undefined) safeUpdates.url = updates.url;

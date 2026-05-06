@@ -242,6 +242,7 @@ See `/docs/` for complete architecture audit:
 | Heritage Content Layer | Add /history, /communities, /about, /visit, /people, /education, /economic-development, /transportation routes using fact-checked master reference doc | 2026-03-01 |
 | Brand thesis | "Where Tennessee Began and Begins" — history-first, fact-checked, editorial tone | 2026-03-01 |
 | History-first phasing | Phase 1 = history/heritage pages (story of Sullivan County). Communities/civic pages come later. | 2026-03-01 |
+| SiteNav audit + disclosure rebuild | Removed dead `megaContainerRef` effect; switched mega-menu from invalid `role="menu"`/`menuitem` to proper disclosure (`aria-expanded` + `aria-controls` + `id`); added click-outside `pointerdown` close; gated hover open behind `matchMedia("(hover: hover) and (pointer: fine)")` so touch is click-only; added active-page indicators (`aria-current` + underline/left-border/parchment fill) to desktop links, Departments trigger, mobile links, and current department; anchored `hasDarkHeader` regex with `(\/|$)`; renamed `expandedCategory` → `mobileDeptsOpen`; `prefers-reduced-motion` now snaps entrance animations to opacity 1 with no delay. 15/15 mega-menu E2E pass. | 2026-05-06 |
 
 ## Heritage Content Layer — COMPLETE (2026-03-01)
 

@@ -26,8 +26,9 @@ test.describe("mega-menu on all pages", () => {
 			await btn.first().hover();
 			await page.waitForTimeout(400);
 
-			await expect(page.locator('[role="menu"]')).toBeVisible();
-			await expect(page.locator("text=Administrative")).toBeVisible();
+			const menu = page.locator("#departments-mega-menu");
+			await expect(menu).toBeVisible();
+			await expect(menu.getByText("Administrative")).toBeVisible();
 		});
 	}
 
@@ -40,11 +41,11 @@ test.describe("mega-menu on all pages", () => {
 
 		await btn.first().click();
 		await page.waitForTimeout(300);
-		await expect(page.locator('[role="menu"]')).toBeVisible();
+		await expect(page.locator("#departments-mega-menu")).toBeVisible();
 
 		await btn.first().click();
 		await page.waitForTimeout(300);
-		await expect(page.locator('[role="menu"]')).not.toBeVisible();
+		await expect(page.locator("#departments-mega-menu")).not.toBeVisible();
 	});
 
 	test("mega-menu links navigate correctly", async ({ page }) => {
@@ -56,7 +57,11 @@ test.describe("mega-menu on all pages", () => {
 		await btn.first().hover();
 		await page.waitForTimeout(400);
 
-		await page.locator('[role="menu"] a').filter({ hasText: "County Mayor" }).first().click();
+		await page
+			.locator("#departments-mega-menu a")
+			.filter({ hasText: "County Mayor" })
+			.first()
+			.click();
 		await expect(page).toHaveURL(/\/departments\/county-mayor/);
 	});
 
@@ -71,7 +76,7 @@ test.describe("mega-menu on all pages", () => {
 			await btn.first().hover();
 			await page.waitForTimeout(400);
 
-			const menu = page.locator('[role="menu"]');
+			const menu = page.locator("#departments-mega-menu");
 			await expect(menu).toContainText("Administrative");
 			await expect(menu).toContainText("Courts");
 			await expect(menu).toContainText("Public Safety");

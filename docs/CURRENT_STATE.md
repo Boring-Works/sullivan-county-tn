@@ -18,7 +18,7 @@ TanStack Start v1.167.64 SSR web application deployed to Cloudflare Workers. Sin
 
 | Area | Status | Files |
 |------|--------|-------|
-| Layout shell | COMPLETE | `__root.tsx`, `SiteNav`, `SiteFooter`, `AnnouncementBanner` |
+| Layout shell | COMPLETE | `__root.tsx`, `SiteNav` (disclosure-pattern mega-menu, click-outside close, hover-capability detection, active-page indicators), `SiteFooter`, `AnnouncementBanner` |
 | Homepage | COMPLETE | `index.tsx`, `HeroBanner`, `QuickServices`, `DepartmentCategories`, `CommunityHighlights`, `NewsSection`, `AboutSection` |
 | Departments (25) | COMPLETE | `departments/index.tsx`, `departments/$slug.tsx`, `DepartmentCard`, `DepartmentDetail` |
 | Commissioners (24) | COMPLETE | `commissioners.tsx`, `CommissionerGrid`, `CommissionerCard` |
@@ -159,7 +159,6 @@ All static TypeScript data files. Validated by unit tests.
 
 | Issue | Severity | Status |
 |-------|----------|--------|
-| React hydration error #418 on non-home pages | MEDIUM | Mega-menu now uses native DOM listeners + CSS fallback; error persists but is cosmetic only |
 | In-memory rate limiting doesn't work across Workers isolates | HIGH | All rate-limited endpoints share per-isolate buckets |
 | CSRF module is dead code | MEDIUM | Defined but never imported/used |
 

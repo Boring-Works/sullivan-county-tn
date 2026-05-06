@@ -96,8 +96,18 @@ export const Route = createRootRoute({
       { rel: "dns-prefetch", href: "https://img.youtube.com" },
       { rel: "dns-prefetch", href: "https://www.youtube-nocookie.com" },
       { rel: "dns-prefetch", href: "https://www.google.com" },
-      { rel: "preload", href: "/images/hero/boone-lake-1920.webp", as: "image", type: "image/webp", fetchPriority: "high" },
-      { rel: "preload", href: "https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap", as: "style" },
+      {
+        rel: "preload",
+        href: "/images/hero/boone-lake-1920.webp",
+        as: "image",
+        type: "image/webp",
+        fetchPriority: "high",
+      },
+      {
+        rel: "preload",
+        href: "https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap",
+        as: "style",
+      },
       { rel: "stylesheet", href: appCss },
       {
         rel: "stylesheet",
@@ -136,16 +146,19 @@ function RootComponent() {
 }
 
 function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
-	const { i18n } = useTranslation();
-	useEffect(() => {
-		syncStoredLocale();
-	}, []);
-	return (
-		<html lang={i18n.language ?? "en"} dir="ltr" suppressHydrationWarning>
+  const { i18n } = useTranslation();
+  useEffect(() => {
+    syncStoredLocale();
+  }, []);
+  return (
+    <html lang={i18n.language ?? "en"} dir="ltr" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
-      <body className="min-h-screen bg-brand-cream text-brand-slate antialiased font-body" suppressHydrationWarning>
+      <body
+        className="min-h-screen bg-brand-cream text-brand-slate antialiased font-body"
+        suppressHydrationWarning
+      >
         <a
           href="#main-content"
           onClick={(e) => {
@@ -183,7 +196,8 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
               "@type": "GovernmentOrganization",
               name: "Sullivan County, Tennessee",
               url: "https://sullivan-county-tn.codyboring.workers.dev",
-              description: "Official government website for Sullivan County, Tennessee. Find departments, services, contact information, and county resources. Established 1779.",
+              description:
+                "Official government website for Sullivan County, Tennessee. Find departments, services, contact information, and county resources. Established 1779.",
               address: {
                 "@type": "PostalAddress",
                 streetAddress: "3411 Highway 126",

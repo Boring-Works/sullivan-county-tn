@@ -12,7 +12,10 @@ export const createMinutesEntrySchema = z.object({
 export const updateMinutesEntrySchema = z.object({
   id: z.string().min(1, "ID is required"),
   committee: z.string().optional(),
-  date: z.string().regex(/^\d{4}-\d{2}-\d{2}/, "Date must be YYYY-MM-DD").optional(),
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}/, "Date must be YYYY-MM-DD")
+    .optional(),
   title: z.string().max(500).optional(),
   summary: z.string().max(2000).optional(),
   pdfUrl: z.string().url().optional().or(z.literal("")),
