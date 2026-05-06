@@ -152,26 +152,6 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
     <html lang={i18n.language ?? "en"} dir="ltr" suppressHydrationWarning>
       <head>
         <HeadContent />
-      </head>
-      <body
-        className="min-h-screen bg-brand-cream text-brand-slate antialiased font-body"
-        suppressHydrationWarning
-      >
-        <a
-          href="#main-content"
-          onClick={(e) => {
-            e.preventDefault();
-            const main = document.getElementById("main-content");
-            if (main) {
-              main.focus();
-              main.scrollIntoView();
-            }
-          }}
-          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-sm focus:bg-brand-copper focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg"
-        >
-          Skip to main content
-        </a>
-        {children}
         <script
           type="speculationrules"
           // biome-ignore lint/security/noDangerouslySetInnerHtml: speculation rules requires inline JSON
@@ -210,6 +190,26 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
             }),
           }}
         />
+      </head>
+      <body
+        className="min-h-screen bg-brand-cream text-brand-slate antialiased font-body"
+        suppressHydrationWarning
+      >
+        <a
+          href="#main-content"
+          onClick={(e) => {
+            e.preventDefault();
+            const main = document.getElementById("main-content");
+            if (main) {
+              main.focus();
+              main.scrollIntoView();
+            }
+          }}
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-sm focus:bg-brand-copper focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg"
+        >
+          Skip to main content
+        </a>
+        {children}
         <Scripts />
         {/* Cloudflare Web Analytics — Add CF Dashboard token to enable:
             1. Go to dash.cloudflare.com → Web Analytics → Add Site
