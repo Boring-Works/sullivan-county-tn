@@ -75,7 +75,7 @@ request.headers.get("CF-Connecting-IP") ?? request.headers.get("X-Forwarded-For"
 
 ---
 
-### 4. Wire hero parallax scroll effect
+### ~~4. Wire hero parallax scroll effect~~ ✅ DONE (2026-05-06)
 
 | Attribute | Detail |
 |-----------|--------|

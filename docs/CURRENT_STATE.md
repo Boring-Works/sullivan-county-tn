@@ -147,7 +147,7 @@ All static TypeScript data files. Validated by unit tests.
 | Admin announcements seed data | EMPTY | Schema exists, no data loaded |
 | CSRF integration | NOT WIRED | Module `csrf.ts` exists but not called from any endpoint |
 | Rate limiting (production) | BROKEN ON WORKERS | In-memory `Map` doesn't work across isolates |
-| Scroll-driven hero parallax | NOT WIRED | `setScrollY` function exists but `--scroll-y` CSS variable not set |
+| Scroll-driven hero parallax | COMPLETE | `translate3d` GPU-composited, rAF-throttled, 0.5 speed, `will-change: transform`, 130% image scale, respects `prefers-reduced-motion` |
 | Code-split SearchDialog | NOT VERIFIED | `React.lazy` import exists but bundle size impact not measured |
 | Google Maps click-to-load | NOT VERIFIED | Placeholder exists but actual map load not tested |
 | CF Web Analytics | NOT CONFIGURED | Token placeholder, no analytics flowing |

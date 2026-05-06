@@ -31,10 +31,9 @@
 - **Impact:** All users share one quota. One abuser blocks everyone.
 - **Fix:** Derive keys from `CF-Connecting-IP` header.
 
-### Scroll-Driven Hero Parallax Not Wired
-- **Status:** `setScrollY` function exists in `HeroBanner` but `--scroll-y` CSS variable never updates on scroll.
-- **Impact:** Parallax effect doesn't work.
-- **Fix:** Wire the scroll event listener.
+### ~~Scroll-Driven Hero Parallax~~ ✅ FIXED (2026-05-06)
+- **Status:** `translate3d` GPU-composited with rAF throttle, `will-change: transform`, 130% image scale to prevent clipping, respects `prefers-reduced-motion`.
+- **Impact:** None — resolved.
 
 ### Code-Split Bundle Size Not Verified
 - **Status:** `SearchDialog` is lazy-loaded via `React.lazy` but actual bundle split and size reduction not measured.
