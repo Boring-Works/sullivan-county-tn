@@ -13,12 +13,12 @@ export function TimelineSection({ events, title }: TimelineSectionProps) {
   return (
     <div ref={containerRef} className="relative">
       {title && (
-        <h3
+        <h2
           data-reveal
           className="font-display text-xl font-bold text-brand-navy mb-8 text-center sm:text-2xl"
         >
           {title}
-        </h3>
+        </h2>
       )}
 
       {/* Vertical line */}

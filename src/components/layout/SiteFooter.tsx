@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { MountainDividerInverted } from "~/components/shared/MountainDivider";
+import { CURRENT_YEAR } from "~/data/site-config";
 
 const QUICK_LINKS = [
   { label: "Departments", href: "/departments" },
@@ -37,7 +38,7 @@ export function SiteFooter() {
           <div className="md:col-span-1">
             <div className="flex items-center gap-3 mb-6">
               <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-brand-navy-light border border-brand-brass/20">
-                <span className="font-display text-sm font-bold text-brand-brass">SC</span>
+                <span className="font-display text-sm font-bold text-brand-brass-light">SC</span>
               </div>
               <div>
                 <div className="font-display text-sm font-bold text-brand-cream leading-tight">
@@ -69,7 +70,7 @@ export function SiteFooter() {
                 <li key={link.href}>
                   <Link
                     to={link.href}
-                    className="font-body text-sm hover:text-brand-brass transition-colors"
+                    className="font-body text-sm hover:text-brand-brass-light transition-colors"
                   >
                     {link.label}
                   </Link>
@@ -90,7 +91,7 @@ export function SiteFooter() {
                     href={resource.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="font-body text-sm hover:text-brand-brass transition-colors inline-flex items-center gap-1.5"
+                    className="font-body text-sm hover:text-brand-brass-light transition-colors inline-flex items-center gap-1.5"
                   >
                     {resource.label}
                     <svg
@@ -101,7 +102,6 @@ export function SiteFooter() {
                       stroke="currentColor"
                       strokeWidth={2}
                     >
-                      <title>External link</title>
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -142,7 +142,7 @@ export function SiteFooter() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 font-body text-xs text-brand-cream/40">
             <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
-              <span>&copy; 2026 Sullivan County, Tennessee</span>
+              <span>&copy; {CURRENT_YEAR} Sullivan County, Tennessee</span>
               <span className="hidden sm:inline text-brand-cream/20">&middot;</span>
               <span className="italic font-accent">Est. 1779</span>
             </div>

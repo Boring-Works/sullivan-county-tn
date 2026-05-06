@@ -1,12 +1,12 @@
 /// <reference types="vite/client" />
 
 import {
-	type ErrorComponentProps,
-	Link,
-	createRootRoute,
-	HeadContent,
-	Outlet,
-	Scripts,
+  createRootRoute,
+  type ErrorComponentProps,
+  HeadContent,
+  Link,
+  Outlet,
+  Scripts,
 } from "@tanstack/react-router";
 import type { ReactNode } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
@@ -19,53 +19,53 @@ import appCss from "~/styles/app.css?url";
 import { seo, seoLinks } from "~/utils/seo";
 
 function RouteErrorFallback({ error }: ErrorComponentProps) {
-	return (
-		<main id="main-content" className="mx-auto max-w-7xl px-4 py-24 text-center sm:px-6 lg:px-8">
-			<div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-safety/10">
-				<svg
-					className="h-8 w-8 text-brand-safety"
-					fill="none"
-					viewBox="0 0 24 24"
-					stroke="currentColor"
-					strokeWidth={2}
-				>
-					<title>Error</title>
-					<path
-						strokeLinecap="round"
-						strokeLinejoin="round"
-						d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
-					/>
-				</svg>
-			</div>
-			<h1 className="font-display text-2xl font-bold text-brand-navy mb-2">
-				Something went wrong
-			</h1>
-			<p className="font-body text-brand-slate-light mb-6 max-w-md mx-auto">
-				We encountered an unexpected error. Please try refreshing the page or return to the
-				homepage.
-			</p>
-			{error instanceof Error && (
-				<p className="font-body text-xs text-brand-stone mb-6 max-w-lg mx-auto break-words">
-					{error.message}
-				</p>
-			)}
-			<div className="flex items-center justify-center gap-4">
-				<button
-					type="button"
-					onClick={() => window.location.reload()}
-					className="rounded-sm bg-brand-copper px-6 py-2.5 font-body text-sm font-semibold text-white hover:bg-brand-copper-light transition-colors"
-				>
-					Refresh Page
-				</button>
-				<Link
-					to="/"
-					className="rounded-sm border border-brand-surface px-6 py-2.5 font-body text-sm font-semibold text-brand-navy hover:bg-brand-parchment transition-colors"
-				>
-					Go Home
-				</Link>
-			</div>
-		</main>
-	);
+  return (
+    <main id="main-content" className="mx-auto max-w-7xl px-4 py-24 text-center sm:px-6 lg:px-8">
+      <div className="mb-6 inline-flex h-16 w-16 items-center justify-center rounded-full bg-brand-safety/10">
+        <svg
+          className="h-8 w-8 text-brand-safety"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <title>Error</title>
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"
+          />
+        </svg>
+      </div>
+      <h1 className="font-display text-2xl font-bold text-brand-navy mb-2">Something went wrong</h1>
+      <p className="font-body text-brand-slate-light mb-6 max-w-md mx-auto">
+        We encountered an unexpected error. Please try refreshing the page or return to the
+        homepage.
+      </p>
+      {error instanceof Error && (
+        <p className="font-body text-xs text-brand-stone mb-6 max-w-lg mx-auto break-words">
+          {error.message}
+        </p>
+      )}
+      <div className="flex items-center justify-center gap-4">
+        <button
+          type="button"
+          onClick={() => {
+            if (typeof window !== "undefined") window.location.reload();
+          }}
+          className="rounded-sm bg-brand-copper px-6 py-2.5 font-body text-sm font-semibold text-white hover:bg-brand-copper-light transition-colors"
+        >
+          Refresh Page
+        </button>
+        <Link
+          to="/"
+          className="rounded-sm border border-brand-surface px-6 py-2.5 font-body text-sm font-semibold text-brand-navy hover:bg-brand-parchment transition-colors"
+        >
+          Go Home
+        </Link>
+      </div>
+    </main>
+  );
 }
 
 export const Route = createRootRoute({
@@ -112,7 +112,9 @@ function RootComponent() {
       <RootDocument>
         <AnnouncementBanner />
         <SiteNav />
-        <Outlet />
+        <main id="main-content" tabIndex={-1}>
+          <Outlet />
+        </main>
         <SiteFooter />
       </RootDocument>
     </I18nextProvider>
@@ -129,6 +131,14 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
       <body className="min-h-screen bg-brand-cream text-brand-slate antialiased font-body">
         <a
           href="#main-content"
+          onClick={(e) => {
+            e.preventDefault();
+            const main = document.getElementById("main-content");
+            if (main) {
+              main.focus();
+              main.scrollIntoView();
+            }
+          }}
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:rounded-sm focus:bg-brand-copper focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg"
         >
           Skip to main content

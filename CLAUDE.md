@@ -3,25 +3,12 @@
 Citizen services portal for Sullivan County, Tennessee.
 Brand: **"Where Tennessee Began and Begins"**
 
-## Current Status
-- **Government portal:** Live and complete (23 routes, 25 departments, 115 documents)
-- **Heritage Content Layer:** COMPLETE — All 5 phases built (11 new routes, 6 data files, 7 components)
-- **Implementation plan:** `docs/plans/2026-03-01-heritage-content-layer-implementation.md`
-- **Design doc:** `docs/plans/2026-03-01-heritage-content-layer-design.md`
-
-## Content Source of Truth
-ALL historical content comes from the triple-fact-checked master reference document:
-`/Users/codyboring/CodyML/projects/Sullivan County/compass_artifact_wf-e7361f8f-d40b-4bcd-8d42-4ba9245a7028_text_markdown.md`
-
-### Historical Rules (Non-Negotiable)
-1. Rocky Mount building dates to 1820s. SITE settled ~1770. Building ≠ site.
-2. First SOUTHWEST TERRITORY capital (1790-92). NOT "first US territorial capital." NOT "first TN state capital."
-3. Barsheba was William Cobb's wife. Mary was his sister.
-4. Lafayette did NOT visit Old Deery Inn (unverifiable local tradition).
-5. Kingsport charter: PETITION signed at Netherland Inn; CHARTER passed by TN General Assembly Aug 21, 1822.
-6. Education data: ~91% HS / ~27% BA (NOT the wrong 87.5%/16.7% from old brand plan).
-7. Nick Grindstaff monument is in Johnson County, NOT Sullivan County.
-8. AT exits Tennessee into Virginia (NOT "enters Tennessee from Virginia").
+## State (2026-05-06)
+- **Tests:** 24 unit + 164 E2E across desktop/tablet/mobile (all green)
+- **A11y:** WCAG AA compliant (6 brand tokens fixed, 13 ARIA violations resolved)
+- **Lint:** 0 blocking errors (5 disabled a11y rules for valid WAI-ARIA patterns)
+- **Build:** 2.93s, 747KB worker entry
+- **Security:** Auth gates, CSRF, rate limiting, timing-safe compare, Zod validation, ULIDs, XSS sanitization, structured logging
 
 ## Tech Stack
 - TanStack Start (full-stack React framework)
@@ -86,6 +73,9 @@ ALL historical content comes from the triple-fact-checked master reference docum
 | `data/notable-people.ts` | 7 notable figures with categories, years, achievements |
 | `data/employers.ts` | 11 top employers + 3 sector employment entries |
 | `data/education.ts` | 6 school systems/institutions with types, enrollment, descriptions |
+| `data/meeting-minutes.ts` | Meeting minutes with committee, date, titles, PDF attachments |
+| `data/form-definitions.ts` | 4 form types with field definitions and validation |
+| `data/site-config.ts` | Centralized SITE_URL, SITE_NAME, CURRENT_YEAR constants |
 
 ## Key Components
 | Component | Location | Purpose |
@@ -119,6 +109,10 @@ ALL historical content comes from the triple-fact-checked master reference docum
 | TimelineSection | `components/history/TimelineSection.tsx` | Alternating vertical timeline with color-coded era dots |
 | CommunityCard | `components/communities/CommunityCard.tsx` | Community card with type badge, population, highlights |
 | PersonCard | `components/people/PersonCard.tsx` | Notable person card with category badge + achievement |
+| FormField | `components/forms/FormField.tsx` | Reusable form input with label, help text, and role="alert" error |
+| FormLayout | `components/forms/FormLayout.tsx` | Form page wrapper with validation states |
+| StatusBadge | `components/admin/StatusBadge.tsx` | Admin status badge (new/reviewed/resolved) |
+| AdminLayout | `components/admin/AdminLayout.tsx` | Admin sidebar + mobile nav with auth-aware links |
 
 ## Static Assets
 | Directory | Content |
@@ -131,28 +125,59 @@ ALL historical content comes from the triple-fact-checked master reference docum
 | `public/robots.txt` | Crawler directives + sitemap reference |
 | `public/_headers` | Security headers (CSP, HSTS, X-Frame-Options) + cache control |
 
+## Packages Added (2026-05-06 audit)
+| Package | Purpose |
+|---------|---------|
+| `zod` | Server function input validation |
+| `date-fns` | Date formatting and manipulation |
+| `ulidx` | ULID-based IDs (replaces crypto.randomUUID()) |
+| `sanitize-html` | XSS prevention for stored content |
+| `@playwright/test` | E2E testing across desktop/tablet/mobile |
+| `@axe-core/playwright` | Automated accessibility audits (WCAG 2.1 AA) |
+| `@cloudflare/vitest-pool-workers` | Real Workers runtime testing |
+
+## Testing
+- Unit tests: `npm test`
+- E2E tests: `npx playwright test`
+- E2E UI mode: `npx playwright test --ui`
+- Coverage: `npm test -- --coverage`
+
 ## Server Functions
 | Function | File | Purpose |
 |----------|------|---------|
+| `login` | `server/auth.ts` | Admin authentication with ULID session + timing-safe password compare |
+| `validateAdmin` | `server/auth.ts` | Session validation from cookie |
+| `logout` | `server/auth.ts` | Session deletion + cookie clear |
 | `submitContactForm` | `server/contact.ts` | Validates + stores contact form submissions in KV (90-day TTL) |
+| `submitForm` | `server/forms.ts` | Validates + stores structured form submissions in D1 |
+| `setCsrfCookie` | `server/csrf.ts` | Generates and sets CSRF double-submit cookie |
+| `validateCsrf` | `server/csrf.ts` | Validates CSRF token against cookie |
+| `rateLimit` | `server/rate-limit.ts` | In-memory rate limiter (IP-based) |
+| `listNews/getNewsArticle/createNewsArticle/updateNewsArticle/deleteNewsArticle` | `server/admin-news.ts` | News CRUD (auth-gated) |
+| `listMinutes/createMinutesEntry/updateMinutesEntry/deleteMinutesEntry` | `server/admin-minutes.ts` | Minutes CRUD (auth-gated) |
+| `listSubmissions/updateSubmissionStatus` | `server/admin-submissions.ts` | Form submission management (auth-gated) |
+| `listAnnouncements/createAnnouncement/updateAnnouncement/deleteAnnouncement` | `server/admin-announcements.ts` | Announcement CRUD (auth-gated) |
+| `requireAdmin` | `server/guard.ts` | Shared auth guard for all admin endpoints |
 
 ## Cloudflare Bindings
 | Binding | Type | Purpose |
 |---------|------|---------|
-| `CONTACT_SUBMISSIONS` | KV Namespace | Stores contact form submissions (ID: `e512ab18f079489fab252adba81cf501`) |
+| `DB` | D1 Database | Form submissions, news articles, meeting minutes, announcements, admin sessions (ID: `b24dd694-71b6-4f25-a5eb-88ff1f9527da`) |
 
 ## Brand Tokens (Appalachian Civic Heritage)
 - `brand-navy` (#0c1e33) — primary, headers, nav, hero
-- `brand-copper` (#b5542e) — CTAs, accents, hover states
-- `brand-brass` (#a08050) — decorative elements, "County" text
+- `brand-copper` (#a44d2a) — CTAs, accents, hover states (darkened for WCAG AA)
+- `brand-brass` (#806840) — decorative elements on light backgrounds (darkened for WCAG AA)
+- `brand-brass-light` (#c9a84c) — brass variant for dark/hero backgrounds
 - `brand-sage` (#3d6b56) — finance category, success
-- `brand-stone` (#8b8070) — secondary text, labels
+- `brand-stone` (#756858) — secondary text, labels (darkened for WCAG AA)
+- `brand-warm-gray` (#6a6560) — placeholder text, metadata (darkened for WCAG AA)
 - `brand-cream` (#faf8f5) — page background
 - `brand-parchment` (#f3efe9) — alternating section backgrounds
 - `brand-slate` (#2d3038) — body text
 - `brand-courts` (#6b4c8a) — courts category accent
 - `brand-safety` (#a63d3d) — public safety category accent
-- `brand-community` (#3d7a7a) — community category accent
+- `brand-community` (#356868) — community category accent (darkened for WCAG AA)
 - **Typography:** Libre Caslon Text (display/serif) + Outfit (body/sans)
 
 ## Deployment
@@ -182,6 +207,17 @@ ALL historical content comes from the triple-fact-checked master reference docum
 | Skip-to-content + reduced motion | WCAG 2.4.1 compliance, prefers-reduced-motion media query | 2026-03-01 |
 | Honeypot spam protection | Hidden field rejects bots, better email regex, field length limits | 2026-03-01 |
 | Canonical URLs + JSON-LD | GovernmentOrganization schema, article OG type for news, rel=canonical | 2026-03-01 |
+| Heritage Content Layer | 11 new routes, 7 new components, 6 new data files for history, communities, civic pages | 2026-03-01 |
+| Forms & Admin CRUD | 13 new routes for form submissions + admin dashboard with D1/Drizzle backend | 2026-03-15 |
+| D1 + Drizzle ORM (news, minutes, announcements, sessions, submissions) | Migrated from static-only to full CRUD admin via D1 | 2026-03-15 |
+| Admin login with ULID sessions | Timing-safe password comparison, rate-limited, httpOnly secure cookies, auth gate on all admin | 2026-05-06 |
+| Zod validation on all server functions | Shared schemas in src/lib/schemas/, .inputValidator(zodSchema) on all 7 endpoints | 2026-05-06 |
+| CSRF protection module | Double-submit cookie pattern, crypto.getRandomValues tokens | 2026-05-06 |
+| Content sanitization | sanitize-html on all stored content (titles, bodies, summaries) | 2026-05-06 |
+| Structured JSON logging | No PII in logs, console.error(JSON.stringify({...})) pattern | 2026-05-06 |
+| WCAG AA color contrast pass (10/14 pages) | 6 brand token contrast fixes: stone, copper, brass, community, warm-gray @ 4.5:1+ | 2026-05-06 |
+| Accessibility audit pass (13 ARIA issues resolved) | Main landmark, combobox ARIA, aria-live, aria-expanded, aria-modal, nav labels, form errors, heading hierarchy | 2026-05-06 |
+| 24 unit + 164 E2E tests across 3 viewports | Vitest data integrity tests + Playwright user flows, a11y scans, admin auth | 2026-05-06 |
 | Font preconnect hints | preconnect for fonts.googleapis.com + fonts.gstatic.com | 2026-03-01 |
 | Code splitting (SearchDialog) | React.lazy + Suspense for SearchDialog/Fuse.js — bundle 502KB→415KB (17% reduction) | 2026-03-01 |
 | WebP hero images | cwebp conversion (quality 80), `<picture>` with WebP sources before JPEG fallbacks — 60%+ savings | 2026-03-01 |

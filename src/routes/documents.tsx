@@ -3,8 +3,8 @@ import { ChevronDown, Download, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { VideoEmbed } from "~/components/shared/VideoEmbed";
-import { CATEGORIES, documents } from "~/data/documents";
 import type { DocumentFileType } from "~/data/documents";
+import { CATEGORIES, documents } from "~/data/documents";
 import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/documents")({
@@ -113,7 +113,7 @@ function DocumentsPage() {
               }`}
             >
               All
-              <span className="ml-1.5 opacity-70">{documents.length}</span>
+              <span className="ml-1.5 opacity-90">{documents.length}</span>
             </button>
             {CATEGORIES.map((cat) => {
               const count = categoryCounts.get(cat.name) || 0;
@@ -129,7 +129,7 @@ function DocumentsPage() {
                   }`}
                 >
                   {cat.name}
-                  <span className="ml-1.5 opacity-70">{count}</span>
+                  <span className="ml-1.5 opacity-90">{count}</span>
                 </button>
               );
             })}
@@ -189,11 +189,9 @@ function DocumentsPage() {
                           </p>
                         </div>
                         <div className="flex items-center gap-2 shrink-0 mt-1">
-                          <span className="font-body text-[10px] text-brand-warm-gray">
-                            {doc.size}
-                          </span>
+                          <span className="font-body text-xs text-brand-warm-gray">{doc.size}</span>
                           <span
-                            className={`rounded px-1.5 py-0.5 font-body text-[10px] font-semibold uppercase tracking-wider ${typeBadgeStyles[doc.type]}`}
+                            className={`rounded px-1.5 py-0.5 font-body text-xs font-semibold uppercase tracking-wider ${typeBadgeStyles[doc.type]}`}
                           >
                             {doc.type}
                           </span>

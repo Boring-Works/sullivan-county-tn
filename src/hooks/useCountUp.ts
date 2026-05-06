@@ -14,7 +14,10 @@ export function useCountUp({ end, duration = 2000, suffix = "", prefix = "" }: U
 
   const animate = useCallback(() => {
     // Skip animation for users who prefer reduced motion
-    if (typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
       setValue(end);
       return;
     }

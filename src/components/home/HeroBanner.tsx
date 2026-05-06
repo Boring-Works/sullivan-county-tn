@@ -117,8 +117,8 @@ export function HeroBanner() {
           <div className="max-w-3xl">
             {/* Established badge */}
             <div className="mb-6 opacity-0 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-              <span className="inline-flex items-center gap-2 border border-brand-brass/50 rounded-full px-4 py-1.5 text-[11px] font-medium tracking-widest uppercase text-brand-brass backdrop-blur-sm">
-                <span className="block h-1.5 w-1.5 rounded-full bg-brand-brass" />
+              <span className="inline-flex items-center gap-2 border border-brand-brass-light/50 rounded-full px-4 py-1.5 text-[11px] font-medium tracking-widest uppercase text-brand-brass-light backdrop-blur-sm">
+                <span className="block h-1.5 w-1.5 rounded-full bg-brand-brass-light" />
                 Established 1779
               </span>
             </div>
@@ -130,7 +130,7 @@ export function HeroBanner() {
             >
               Sullivan
               <br />
-              <span className="text-[#d4b85a]">County</span>
+              <span className="text-brand-brass-light">County</span>
             </h1>
 
             {/* Divider */}
@@ -171,13 +171,13 @@ export function HeroBanner() {
                   href="https://sullivantntrustee.gov/property-tax/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center rounded-full border border-white/20 px-4 py-1.5 text-white/70 backdrop-blur-sm transition-all hover:border-brand-brass/40 hover:text-brand-brass"
+                  className="inline-flex items-center rounded-full border border-white/20 px-4 py-1.5 text-white/70 backdrop-blur-sm transition-all hover:border-brand-brass/40 hover:text-brand-brass-light"
                 >
                   Pay Property Taxes
                 </a>
                 <Link
                   to="/history"
-                  className="inline-flex items-center rounded-full border border-white/20 px-4 py-1.5 text-white/70 backdrop-blur-sm transition-all hover:border-brand-brass/40 hover:text-brand-brass"
+                  className="inline-flex items-center rounded-full border border-white/20 px-4 py-1.5 text-white/70 backdrop-blur-sm transition-all hover:border-brand-brass/40 hover:text-brand-brass-light"
                 >
                   Our History
                 </Link>

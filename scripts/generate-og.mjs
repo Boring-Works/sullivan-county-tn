@@ -1,16 +1,16 @@
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import sharp from "sharp";
-import { join, dirname } from "path";
-import { fileURLToPath } from "url";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, "..");
 
 async function generateDefaultOG() {
-	const src = join(root, "public/images/hero/boone-lake-1920.jpg");
-	const out = join(root, "public/images/og/og-default.jpg");
+  const src = join(root, "public/images/hero/boone-lake-1920.jpg");
+  const out = join(root, "public/images/og/og-default.jpg");
 
-	// Text overlay SVG — "Sullivan County" in serif + "Tennessee — Est. 1779" subtitle
-	const textOverlay = Buffer.from(`
+  // Text overlay SVG — "Sullivan County" in serif + "Tennessee — Est. 1779" subtitle
+  const textOverlay = Buffer.from(`
 <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
   <!-- Dark gradient overlay -->
   <defs>
@@ -45,20 +45,20 @@ async function generateDefaultOG() {
   <text x="106" y="84" font-family="Georgia, 'Times New Roman', serif" font-size="22" font-weight="700" fill="#0c1e33" text-anchor="middle">SC</text>
 </svg>`);
 
-	await sharp(src)
-		.resize(1200, 630, { fit: "cover", position: "center" })
-		.composite([{ input: textOverlay, top: 0, left: 0 }])
-		.jpeg({ quality: 90 })
-		.toFile(out);
+  await sharp(src)
+    .resize(1200, 630, { fit: "cover", position: "center" })
+    .composite([{ input: textOverlay, top: 0, left: 0 }])
+    .jpeg({ quality: 90 })
+    .toFile(out);
 
-	console.log("Created og-default.jpg");
+  console.log("Created og-default.jpg");
 }
 
 async function generateCourthouseOG() {
-	const src = join(root, "public/images/about/courthouse-960.jpg");
-	const out = join(root, "public/images/og/og-courthouse.jpg");
+  const src = join(root, "public/images/about/courthouse-960.jpg");
+  const out = join(root, "public/images/og/og-courthouse.jpg");
 
-	const textOverlay = Buffer.from(`
+  const textOverlay = Buffer.from(`
 <svg width="1200" height="630" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="overlay" x1="0" y1="0" x2="0" y2="1">
@@ -85,13 +85,13 @@ async function generateCourthouseOG() {
   <text x="106" y="84" font-family="Georgia, 'Times New Roman', serif" font-size="22" font-weight="700" fill="#0c1e33" text-anchor="middle">SC</text>
 </svg>`);
 
-	await sharp(src)
-		.resize(1200, 630, { fit: "cover", position: "center" })
-		.composite([{ input: textOverlay, top: 0, left: 0 }])
-		.jpeg({ quality: 90 })
-		.toFile(out);
+  await sharp(src)
+    .resize(1200, 630, { fit: "cover", position: "center" })
+    .composite([{ input: textOverlay, top: 0, left: 0 }])
+    .jpeg({ quality: 90 })
+    .toFile(out);
 
-	console.log("Created og-courthouse.jpg");
+  console.log("Created og-courthouse.jpg");
 }
 
 await generateDefaultOG();

@@ -1,7 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "sullivan-county-tn",
-  "compatibility_date": "2026-02-06",
+  "compatibility_date": "2026-05-06",
   "compatibility_flags": ["nodejs_compat"],
   "main": "@tanstack/react-start/server-entry",
   "observability": {
@@ -17,7 +17,7 @@
     {
       "binding": "DB",
       "database_name": "sullivan-county-db",
-      "database_id": "338cb345-92b9-4697-8e39-52d9844c8993",
+      "database_id": "b24dd694-71b6-4f25-a5eb-88ff1f9527da",
       "migrations_dir": "src/db/migrations"
     }
   ],

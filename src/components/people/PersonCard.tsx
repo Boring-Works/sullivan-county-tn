@@ -14,7 +14,7 @@ export function PersonCard({ person, index = 0 }: PersonCardProps) {
     >
       <div className="flex items-start justify-between gap-3 mb-3">
         <h3 className="font-display text-lg font-bold text-brand-navy">{person.name}</h3>
-        <span className="shrink-0 inline-flex items-center rounded-full bg-brand-navy/5 px-2.5 py-0.5 text-[10px] font-semibold tracking-wide uppercase text-brand-navy/60">
+        <span className="shrink-0 inline-flex items-center rounded-full bg-brand-navy/5 px-2.5 py-0.5 text-[10px] font-semibold tracking-wide uppercase text-brand-navy/80">
           {PERSON_CATEGORY_LABELS[person.category]}
         </span>
       </div>

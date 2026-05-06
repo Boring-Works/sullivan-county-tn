@@ -24,18 +24,21 @@ export function NotFound() {
 
       <div className="mt-8 mx-auto h-px w-20 bg-gradient-to-r from-transparent via-brand-copper to-transparent" />
 
-      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
-        {quickLinks.map((link) => (
-          <Link
-            key={link.to}
-            to={link.to}
-            className="flex flex-col items-center gap-2 rounded-lg border border-brand-surface bg-white p-4 font-body text-sm font-medium text-brand-navy transition-all hover:border-brand-copper hover:shadow-sm"
-          >
-            <link.icon className="size-5 text-brand-copper" />
-            {link.label}
-          </Link>
-        ))}
-      </div>
+      <nav aria-label="Quick links" className="mt-8">
+        <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          {quickLinks.map((link) => (
+            <li key={link.to}>
+              <Link
+                to={link.to}
+                className="flex flex-col items-center gap-2 rounded-lg border border-brand-surface bg-white p-4 font-body text-sm font-medium text-brand-navy transition-all hover:border-brand-copper hover:shadow-sm"
+              >
+                <link.icon className="size-5 text-brand-copper" />
+                {link.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </nav>
 
       <p className="mt-8 font-body text-sm text-brand-stone">
         Press{" "}

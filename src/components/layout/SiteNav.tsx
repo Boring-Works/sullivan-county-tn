@@ -111,6 +111,7 @@ export function SiteNav() {
     if (!menu) return;
 
     function handleTab(e: KeyboardEvent) {
+      if (!menu) return;
       if (e.key === "Escape") {
         e.preventDefault();
         setMobileOpen(false);
@@ -120,7 +121,7 @@ export function SiteNav() {
       }
       if (e.key !== "Tab") return;
 
-      const focusable = menu!.querySelectorAll<HTMLElement>(
+      const focusable = menu.querySelectorAll<HTMLElement>(
         'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])',
       );
       if (focusable.length === 0) return;
@@ -188,6 +189,7 @@ export function SiteNav() {
 
   return (
     <nav
+      aria-label="Main navigation"
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
         solid
@@ -351,6 +353,11 @@ export function SiteNav() {
               <Link
                 key={link.href}
                 to={link.href}
+                aria-current={
+                  pathname === link.href || pathname.startsWith(`${link.href}/`)
+                    ? "page"
+                    : undefined
+                }
                 className={cn(
                   "px-3.5 py-2 font-body text-sm font-medium rounded-sm transition-all duration-200",
                   solid
@@ -377,7 +384,7 @@ export function SiteNav() {
               aria-label="Search"
             >
               <Search className="size-3.5" />
-              <kbd className="text-[10px] opacity-60 font-mono">&#8984;K</kbd>
+              <kbd className="text-[10px] text-brand-slate-light font-mono">&#8984;K</kbd>
             </button>
             <div className="hidden lg:block">
               <LanguageToggle solid={solid} />
@@ -446,6 +453,7 @@ export function SiteNav() {
           ref={mobileMenuRef}
           className="lg:hidden fixed inset-0 top-16 z-40 bg-brand-navy overflow-y-auto"
           role="dialog"
+          aria-modal="true"
           aria-label="Navigation menu"
         >
           <div className="px-4 py-6 space-y-1">
@@ -455,6 +463,7 @@ export function SiteNav() {
                 type="button"
                 className="flex w-full items-center justify-between rounded-sm px-3 py-3.5 font-body text-base font-medium text-white/90 hover:bg-white/10 transition-colors"
                 onClick={() => setExpandedCategory(expandedCategory === "all" ? null : "all")}
+                aria-expanded={expandedCategory === "all"}
               >
                 <span>{t("nav.departments")}</span>
                 <svg

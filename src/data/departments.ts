@@ -85,7 +85,11 @@ export const departments: Department[] = [
     slug: "county-mayor",
     name: "County Mayor",
     category: "administrative",
-    head: { name: "Richard S. Venable", title: "County Mayor", photo: "/images/officials/richard-venable.jpg" },
+    head: {
+      name: "Richard S. Venable",
+      title: "County Mayor",
+      photo: "/images/officials/richard-venable.jpg",
+    },
     contact: {
       phone: "(423) 323-6417",
       fax: "(423) 279-2897",
@@ -514,7 +518,8 @@ export const departments: Department[] = [
       },
       {
         question: "When is the next reappraisal?",
-        answer: "The most recent statewide reappraisal was completed in 2025. Tennessee conducts reappraisals on a cycle set by the State Board of Equalization.",
+        answer:
+          "The most recent statewide reappraisal was completed in 2025. Tennessee conducts reappraisals on a cycle set by the State Board of Equalization.",
       },
     ],
     importantNotes: [

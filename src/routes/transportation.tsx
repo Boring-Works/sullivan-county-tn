@@ -80,9 +80,9 @@ function TransportationPage() {
                   className="rounded-sm border border-brand-surface bg-white p-6"
                 >
                   <Icon className="size-8 text-brand-copper mb-4" />
-                  <h3 className="font-display text-lg font-bold text-brand-navy mb-1">
+                  <h4 className="font-display text-lg font-bold text-brand-navy mb-1">
                     {mode.title}
-                  </h3>
+                  </h4>
                   <p className="font-body text-xs text-brand-stone mb-4">{mode.location}</p>
                   <ul className="space-y-2">
                     {mode.facts.map((fact) => (

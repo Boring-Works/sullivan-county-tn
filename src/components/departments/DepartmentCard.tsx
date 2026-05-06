@@ -9,7 +9,7 @@ const categoryColors: Record<DepartmentCategory, string> = {
   courts: "bg-brand-courts/10 text-brand-courts",
   "public-safety": "bg-brand-safety/10 text-brand-safety",
   finance: "bg-brand-sage/10 text-brand-sage",
-  operations: "bg-brand-brass/10 text-brand-brass",
+  operations: "bg-brand-brass/10 text-[#6b5a38]",
   community: "bg-brand-community/10 text-brand-community",
 };
 

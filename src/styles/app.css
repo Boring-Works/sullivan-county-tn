@@ -50,24 +50,25 @@
   --color-brand-blue: #1e3a5f;
   --color-brand-blue-light: #2a5080;
   --color-brand-blue-dark: #0f2440;
-  --color-brand-copper: #b5542e;
+  --color-brand-copper: #a44d2a;
   --color-brand-copper-light: #cf6e3e;
   --color-brand-copper-muted: rgba(181, 84, 46, 0.1);
-  --color-brand-brass: #c9a84c;
+  --color-brand-brass: #806840;
+  --color-brand-brass-light: #c9a84c;
   --color-brand-sage: #3d6b56;
   --color-brand-sage-light: #5a9477;
-  --color-brand-stone: #8b8070;
+  --color-brand-stone: #756858;
   --color-brand-cream: #faf8f5;
   --color-brand-parchment: #f3efe9;
   --color-brand-surface: #f0ece5;
   --color-brand-slate: #2d3038;
   --color-brand-slate-light: #5c6370;
-  --color-brand-warm-gray: #9a9590;
+  --color-brand-warm-gray: #6a6560;
 
   /* Department category accents */
   --color-brand-courts: #6b4c8a;
   --color-brand-safety: #a63d3d;
-  --color-brand-community: #3d7a7a;
+  --color-brand-community: #356868;
 
   /* Deeper navy for footer differentiation */
   --color-brand-navy-deep: #081624;
@@ -211,6 +212,12 @@
   * {
     @apply border-border outline-ring/50;
   }
+
+  *:focus-visible {
+    outline: 2px solid var(--color-brand-copper);
+    outline-offset: 2px;
+  }
+
   body {
     @apply bg-brand-cream text-brand-slate font-body;
     font-feature-settings:

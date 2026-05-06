@@ -1,4 +1,4 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { ExternalLink } from "lucide-react";
 
 import { HeritageHero } from "~/components/history/HeritageHero";
@@ -56,7 +56,7 @@ function EducationPage() {
                 data-reveal-delay={i * 100}
                 className="rounded-sm border border-brand-surface bg-white p-6"
               >
-                <span className="inline-flex items-center rounded-full bg-brand-navy/5 px-2.5 py-0.5 text-[10px] font-semibold tracking-wide uppercase text-brand-navy/60 mb-3">
+                <span className="inline-flex items-center rounded-full bg-brand-navy/5 px-2.5 py-0.5 text-[10px] font-semibold tracking-wide uppercase text-brand-navy/80 mb-3">
                   {TYPE_LABELS[school.type]}
                 </span>
                 <h3 className="font-display text-lg font-bold text-brand-navy mb-2">

@@ -12,3 +12,4 @@ dist
 .tanstack
 verification/*.png
 .wrangler/
+test-results/

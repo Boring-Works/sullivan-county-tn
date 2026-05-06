@@ -30,7 +30,7 @@ export function CommunityCard({ community, index = 0 }: CommunityCardProps) {
           <h3 className="font-display text-lg font-bold text-brand-navy group-hover:text-brand-copper transition-colors">
             {community.name}
           </h3>
-          <span className="shrink-0 inline-flex items-center rounded-full bg-brand-navy/5 px-2.5 py-0.5 text-[10px] font-semibold tracking-wide uppercase text-brand-navy/60">
+          <span className="shrink-0 inline-flex items-center rounded-full bg-brand-navy/5 px-2.5 py-0.5 text-[10px] font-semibold tracking-wide uppercase text-brand-navy/80">
             {TYPE_LABELS[community.type]}
           </span>
         </div>

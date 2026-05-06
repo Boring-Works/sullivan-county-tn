@@ -290,7 +290,9 @@ function ContactForm() {
 
   return (
     <div className="mb-14 rounded-sm border border-brand-surface bg-white p-7">
-      <h2 className="font-display text-xl font-bold text-brand-navy mb-2">{t("contact.sendMessage")}</h2>
+      <h2 className="font-display text-xl font-bold text-brand-navy mb-2">
+        {t("contact.sendMessage")}
+      </h2>
       <p className="font-body text-sm text-brand-slate-light mb-6">
         Have a question or need assistance? Fill out the form below and a county staff member will
         respond within 2 business days.

@@ -1,124 +1,126 @@
 import { createServerFn } from "@tanstack/react-start";
 import { getCookie, setCookie } from "@tanstack/react-start/server";
+import { eq, lt } from "drizzle-orm";
+import { ulid } from "ulidx";
 import { getDb } from "~/db";
 import { adminSessions } from "~/db/schema";
-import { eq, lt } from "drizzle-orm";
+import { loginSchema } from "~/lib/schemas/auth";
 
 const SESSION_COOKIE = "admin_session";
-const SESSION_TTL_MS = 24 * 60 * 60 * 1000; // 24 hours
+const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
 
 function getEnv() {
-	// Dynamic import for Cloudflare Workers env
-	return import("cloudflare:workers").then(({ env }) => env as Record<string, unknown>);
+  return import("cloudflare:workers").then(({ env }) => env as Record<string, unknown>);
+}
+
+async function timingSafeEqual(a: string, b: string): Promise<boolean> {
+  const encoder = new TextEncoder();
+  const [hashA, hashB] = await Promise.all([
+    crypto.subtle.digest("SHA-256", encoder.encode(a)),
+    crypto.subtle.digest("SHA-256", encoder.encode(b)),
+  ]);
+  return crypto.subtle.timingSafeEqual(hashA, hashB);
 }
 
 export const login = createServerFn({ method: "POST" })
-	.inputValidator((data: unknown) => {
-		const d = data as Record<string, unknown>;
-		if (typeof d.password !== "string" || !d.password.trim()) {
-			throw new Error("Password is required");
-		}
-		return { password: d.password.trim() };
-	})
-	.handler(async ({ data }) => {
-		let adminPassword: string | undefined;
-		try {
-			const env = await getEnv();
-			adminPassword = env.ADMIN_PASSWORD as string | undefined;
-		} catch {
-			// Fallback for local dev
-			adminPassword = process.env.ADMIN_PASSWORD;
-		}
+  .inputValidator(loginSchema)
+  .handler(async ({ data }) => {
+    let adminPassword: string | undefined;
+    try {
+      const env = await getEnv();
+      adminPassword = env.ADMIN_PASSWORD as string | undefined;
+    } catch {
+      adminPassword = process.env.ADMIN_PASSWORD;
+    }
 
-		if (!adminPassword || data.password !== adminPassword) {
-			throw new Error("Invalid password");
-		}
+    if (!adminPassword || !(await timingSafeEqual(data.password, adminPassword))) {
+      throw new Error("Invalid password");
+    }
 
-		const sessionId = crypto.randomUUID();
-		const now = new Date().toISOString();
-		const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString();
+    const sessionId = ulid();
+    const now = new Date().toISOString();
+    const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString();
 
-		try {
-			const env = await getEnv();
-			const d1 = env.DB as D1Database | undefined;
-			if (d1) {
-				const db = getDb(d1);
-				// Clean up expired sessions
-				await db.delete(adminSessions).where(lt(adminSessions.expiresAt, now));
-				// Create new session
-				await db.insert(adminSessions).values({
-					id: sessionId,
-					createdAt: now,
-					expiresAt,
-				});
-			}
-		} catch {
-			console.log("Session created locally (D1 unavailable):", sessionId);
-		}
+    try {
+      const env = await getEnv();
+      const d1 = env.DB as D1Database | undefined;
+      if (d1) {
+        const db = getDb(d1);
+        await db.delete(adminSessions).where(lt(adminSessions.expiresAt, now));
+        await db.insert(adminSessions).values({
+          id: sessionId,
+          createdAt: now,
+          expiresAt,
+        });
+      }
+    } catch {
+      console.error(JSON.stringify({ event: "session_create_failed", reason: "D1 unavailable" }));
+    }
 
-		setCookie(SESSION_COOKIE, sessionId, {
-			httpOnly: true,
-			secure: true,
-			sameSite: "strict",
-			path: "/",
-			maxAge: SESSION_TTL_MS / 1000,
-		});
+    setCookie(SESSION_COOKIE, sessionId, {
+      httpOnly: true,
+      secure: true,
+      sameSite: "strict",
+      path: "/",
+      maxAge: SESSION_TTL_MS / 1000,
+    });
 
-		return { success: true };
-	});
+    return { success: true };
+  });
 
 export const validateAdmin = createServerFn({ method: "GET" }).handler(async () => {
-	const sessionId = getCookie(SESSION_COOKIE);
-	if (!sessionId) {
-		return { valid: false };
-	}
+  const sessionId = getCookie(SESSION_COOKIE);
+  if (!sessionId) {
+    return { valid: false };
+  }
 
-	try {
-		const env = await getEnv();
-		const d1 = env.DB as D1Database | undefined;
-		if (d1) {
-			const db = getDb(d1);
-			const session = await db
-				.select()
-				.from(adminSessions)
-				.where(eq(adminSessions.id, sessionId))
-				.get();
+  try {
+    const env = await getEnv();
+    const d1 = env.DB as D1Database | undefined;
+    if (d1) {
+      const db = getDb(d1);
+      const session = await db
+        .select()
+        .from(adminSessions)
+        .where(eq(adminSessions.id, sessionId))
+        .get();
 
-			if (!session || new Date(session.expiresAt) < new Date()) {
-				return { valid: false };
-			}
-			return { valid: true };
-		}
-	} catch {
-		// D1 unavailable — allow in dev
-	}
+      if (!session || new Date(session.expiresAt) < new Date()) {
+        return { valid: false };
+      }
+      return { valid: true };
+    }
+  } catch {
+    console.error(JSON.stringify({ event: "auth_validation_failed", reason: "D1 unavailable" }));
+    return { valid: false };
+  }
 
-	return { valid: true };
+  return { valid: false };
 });
 
 export const logout = createServerFn({ method: "POST" }).handler(async () => {
-	const sessionId = getCookie(SESSION_COOKIE);
+  const sessionId = getCookie(SESSION_COOKIE);
 
-	if (sessionId) {
-		try {
-			const env = await getEnv();
-			const d1 = env.DB as D1Database | undefined;
-			if (d1) {
-				const db = getDb(d1);
-				await db.delete(adminSessions).where(eq(adminSessions.id, sessionId));
-			}
-		} catch {
-			// ignore
-		}
-	}
+  if (sessionId) {
+    try {
+      const env = await getEnv();
+      const d1 = env.DB as D1Database | undefined;
+      if (d1) {
+        const db = getDb(d1);
+        await db.delete(adminSessions).where(eq(adminSessions.id, sessionId));
+      }
+    } catch {
+      // Session cleanup best-effort
+    }
+  }
 
-	setCookie(SESSION_COOKIE, "", {
-		httpOnly: true,
-		secure: true,
-		sameSite: "strict",
-		path: "/",
-		maxAge: 0,
-	});
+  setCookie(SESSION_COOKIE, "", {
+    httpOnly: true,
+    secure: true,
+    sameSite: "strict",
+    path: "/",
+    maxAge: 0,
+  });
 
-	return { success: true };
+  return { success: true };
 });

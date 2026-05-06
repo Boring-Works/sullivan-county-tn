@@ -11,7 +11,9 @@ export const Route = createFileRoute("/departments/$slug")({
       meta: dept
         ? seo({
             title: `${dept.name} — Sullivan County, TN`,
-            description: dept.description || `Contact information and services for ${dept.name}, Sullivan County Tennessee.`,
+            description:
+              dept.description ||
+              `Contact information and services for ${dept.name}, Sullivan County Tennessee.`,
             image: "/images/og/og-courthouse.jpg",
             url: `/departments/${params.slug}`,
           })

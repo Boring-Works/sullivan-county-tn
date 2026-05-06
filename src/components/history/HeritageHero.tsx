@@ -60,7 +60,7 @@ export function HeritageHero({
           <div className="max-w-3xl">
             {/* Two Dates device */}
             <div className="mb-6 opacity-0 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-              <span className="inline-flex items-center gap-3 font-display text-sm font-bold tracking-widest text-brand-brass/80">
+              <span className="inline-flex items-center gap-3 font-display text-sm font-bold tracking-widest text-brand-brass-light/80">
                 1790 <span className="h-px w-6 bg-brand-brass/40" /> {currentYear}
               </span>
             </div>
@@ -87,7 +87,7 @@ export function HeritageHero({
             )}
 
             <p
-              className="mt-4 font-body text-sm tracking-widest uppercase text-brand-brass/60 opacity-0 animate-fade-up"
+              className="mt-4 font-body text-sm tracking-widest uppercase text-brand-brass-light/60 opacity-0 animate-fade-up"
               style={{ animationDelay: "0.7s" }}
             >
               {tagline}

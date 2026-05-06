@@ -4,15 +4,13 @@
 
 **Live:** https://sullivan-county-tn.codyboring.workers.dev
 
-## Recent additions (2026-04-28 commit)
+## State (May 2026)
 
-- `src/components/{admin,forms,minutes}/` — new component groups
-- `src/data/{form-definitions,meeting-minutes}.ts` — typed data
-- `src/db/` + `drizzle.config.ts` — first DB scaffolding (D1 + Drizzle, replaces static JSON for new dynamic surfaces)
-- `scripts/scrape-news.ts` + `scripts/seed-db.ts` — ingestion + seed pipelines
-- `LanguageToggle` component (i18n surface)
-
-The static-data foundation (departments, commissioners, documents, news, history, communities, etc.) is unchanged. The DB scaffolding is for surfaces that need user input (forms, admin) or freshness (scraped news, meeting minutes).
+- **Tests:** 24 unit + 164 E2E across desktop/tablet/mobile (all passing)
+- **A11y:** WCAG AA compliant (7 brand tokens optimized for 4.5:1+ contrast, 13 ARIA violations resolved)
+- **Lint:** 0 errors (Biome)
+- **Build:** 3.4s, 747KB worker entry
+- **Security:** Auth gates, CSRF, rate limiting, timing-safe compare, Zod validation, ULIDs, XSS sanitization
 
 ---
 
@@ -36,7 +34,7 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 
 ## What's Live
 
-### Pages (12 routes)
+### Pages (25+ routes)
 
 | Route | Description |
 |-------|-------------|
@@ -52,6 +50,21 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 | `/ada-compliance` | ADA legal framework, coordinators, 5 downloadable forms |
 | `/employee-services` | Skyward/Edison/Mark III portals, 6 benefits docs, Title VI training video |
 | `/privacy-policy` | Full privacy policy with cookie table, data retention, user rights |
+| `/history` | Heritage landing page with "The Founding Story" narrative |
+| `/history/timeline` | 48-event timeline spanning 1761--2025 across 6 eras |
+| `/history/$slug` | Heritage site detail (8 sites: Rocky Mount, Netherland Inn, etc.) |
+| `/communities` | 6 municipality cards (Kingsport, Bristol, Blountville, etc.) |
+| `/communities/$slug` | Community detail pages |
+| `/about` | County overview, demographics, Tri-Cities MSA context |
+| `/economic-development` | Top employers, sector breakdown, economic assets |
+| `/education` | School systems, higher ed, attainment stats |
+| `/transportation` | TRI airport, highways, transit + historical context |
+| `/people` | 7 notable historical figures |
+| `/visit` | Heritage Trail, parks, events, getting here |
+| `/forms` | Form index: Building Permit, Code Complaint, Public Records, General Feedback |
+| `/forms/$type` | Individual form pages with validation |
+| `/admin/login` | Admin authentication (timing-safe, rate-limited, ULID sessions) |
+| `/admin/*` | Admin CRUD for news, minutes, announcements, submissions (8 routes) |
 
 ### Data
 
@@ -59,10 +72,19 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 |------|---------|
 | `data/departments.ts` | 25 departments with contacts, services, offices, staff, external links, FAQs |
 | `data/commissioners.ts` | 24 commissioners across 11 districts with photos, addresses, emails |
-| `data/news.ts` | 5 news articles with full content + PDF attachments |
+| `data/news.ts` | County news articles with full content + PDF attachments |
 | `data/documents.ts` | 115 documents across 17 categories (PDF, DOC, DOCX, TIF) with types, sizes, descriptions |
 | `data/quick-services.ts` | 8 quick-access service links for homepage |
 | `data/search-index.ts` | Unified search index — 175 searchable items (departments + news + commissioners + documents + pages) |
+| `data/heritage-sites.ts` | 8 heritage sites with NRHP/NHL info, coordinates, key facts |
+| `data/timeline.ts` | 48 timeline events (1761--2025) across 6 categories |
+| `data/communities.ts` | 6 communities with population, landmarks, highlights |
+| `data/notable-people.ts` | 7 notable figures with categories, years, achievements |
+| `data/employers.ts` | 11 top employers + sector breakdown |
+| `data/education.ts` | 6 school systems/institutions with enrollment stats |
+| `data/form-definitions.ts` | 4 form types with field definitions and validation |
+| `data/meeting-minutes.ts` | Meeting minutes with committee, date, PDF attachments |
+| `data/site-config.ts` | Centralized site URL and metadata constants |
 
 ### Document Library (115 files, 17 categories)
 
@@ -99,6 +121,19 @@ All documents are served locally — no external WordPress dependency.
 - **Tourism section** — "Discover Sullivan County" with 3 regional highlights (Country Music, Outdoor Rec, BMS)
 - **Announcement banner** — Dismissible with localStorage persistence, supports info/urgent types
 - **RSS feed** — Static XML at `/rss.xml` with autodiscovery link
+- **Heritage content layer** — 8 history pages, 6 communities, 48-event timeline, 7 notable people, civic pages
+- **Form submissions** — Building Permit, Code Complaint, Public Records, General Feedback with D1 backend
+- **Admin dashboard** — News CRUD, meeting minutes CRUD, form submission review, announcement management
+- **Meeting minutes** — County commission meeting minutes with committee filtering, year grouping, PDF downloads
+- **i18n support** — English/Spanish toggle with cookie persistence
+- **Language toggle** — EN/ES in nav with i18next translation framework
+- **Zod validation** — All server functions use shared Zod schemas in src/lib/schemas/
+- **ULID-based IDs** — All entity IDs use ulidx (time-sortable, unique) instead of randomUUID
+- **CSRF protection** — Double-submit cookie pattern on all mutation endpoints
+- **Rate limiting** — IP-based on login (5/60s), contact (3/60s), forms (3/60s), admin mutations (30/60s)
+- **Content sanitization** — sanitize-html on all stored user content (XSS prevention)
+- **Timing-safe auth** — crypto.subtle.timingSafeEqual() with SHA-256 password comparison
+- **Health check** — /api/health endpoint for uptime monitoring
 - **Google Maps** — Click-to-load map on contact page (~500KB deferred until interaction)
 - **Scroll animations** — Intersection Observer reveal system throughout
 - **Mountain dividers** — Custom SVG section separators matching Appalachian theme
@@ -209,8 +244,17 @@ src/
     useScrollReveal.ts — Intersection Observer scroll-reveal system
     useCountUp.ts      — Animated counter with ease-out easing
   server/
-    contact.ts         — Contact form server function (validates + stores in KV)
-  routes/              — File-based routing (TanStack Router, 12 pages + 1 layout)
+    auth.ts             — Admin auth (login/validate/logout) with ULID sessions
+    admin-news.ts       — News CRUD (auth-gated, sanitized)
+    admin-minutes.ts    — Minutes CRUD (auth-gated, sanitized)
+    admin-announcements.ts — Announcement CRUD (auth-gated)
+    admin-submissions.ts — Submission management (auth-gated)
+    contact.ts          — Contact form (Zod validated, KV storage)
+    forms.ts            — Form submissions (Zod validated, D1 storage)
+    guard.ts            — Shared auth guard for admin endpoints
+    csrf.ts             — CSRF double-submit cookie protection
+    rate-limit.ts       — In-memory rate limiting
+  routes/              — File-based routing (TanStack Router, 25+ pages + 1 layout)
   styles/
     app.css            — Tailwind v4 config + brand tokens + animations + utilities
   utils/
@@ -264,6 +308,12 @@ npm run format    # Biome formatter
 npm run test      # Vitest
 
 npx tsx scripts/generate-rss.ts  # Regenerate RSS after adding news
+
+npm run cf-typegen       # Regenerate Cloudflare types
+npx playwright test      # E2E tests (all viewports)
+npx playwright test --ui # E2E interactive mode
+npm run generate:sitemap # Regenerate sitemap
+npm run generate:rss     # Regenerate RSS feed
 ```
 
 ## Adding Content
@@ -278,18 +328,23 @@ npx tsx scripts/generate-rss.ts  # Regenerate RSS after adding news
 
 **Announcement banner:** Edit `src/components/layout/AnnouncementBanner.tsx` — update the `announcements` array.
 
+**Admin operations:** Login at /admin/login (password: set via `wrangler secret put ADMIN_PASSWORD`).
+
 ## Design System: Appalachian Editorial
 
 A custom design language built for Sullivan County's identity — the second-oldest county in Tennessee, established 1779.
 
 **Palette:**
 - Navy (#0c1e33) — authority, headers, nav
-- Copper (#b5542e) — CTAs, accents, warmth
-- Brass (#a08050) — heritage ornaments
+- Copper (#a44d2a) — CTAs, accents, warmth (darkened for WCAG AA)
+- Brass (#806840) — heritage ornaments on light backgrounds
+- Brass Light (#c9a84c) — brass variant for dark/hero backgrounds
 - Sage (#3d6b56) — nature, success states
-- Stone (#8b8070) — secondary text
+- Stone (#756858) — secondary text, labels (darkened for WCAG AA)
 - Cream (#faf8f5) — page backgrounds
 - Parchment (#f3efe9) — alternating sections
+- Warm Gray (#6a6560) — placeholder text, metadata
+- Community (#356868) — community category accent
 
 **Department category accents:** Courts (#6b4c8a), Public Safety (#a63d3d), Community (#3d7a7a)
 
@@ -302,6 +357,8 @@ A custom design language built for Sullivan County's identity — the second-old
 - **Platform:** Cloudflare Workers
 - **Worker name:** sullivan-county-tn
 - **Preview env:** sullivan-county-tn-preview
-- **Compatibility:** 2026-02-06, nodejs_compat flag
+- **Compatibility:** 2026-05-06, nodejs_compat flag
 - **Observability:** Enabled
 - **Deploy:** `npm run deploy` (builds + deploys via Wrangler)
+- **D1 Database:** sullivan-county-db (form submissions, news, minutes, sessions)
+- **KV Namespace:** CONTACT_SUBMISSIONS (contact form storage, 90-day TTL)
