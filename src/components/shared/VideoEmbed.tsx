@@ -22,6 +22,7 @@ export function VideoEmbed({ videoId, title, description }: VideoEmbedProps) {
             allow="autoplay; encrypted-media"
             allowFullScreen
             className="absolute inset-0 size-full"
+            loading="lazy"
           />
         ) : (
           <button
@@ -35,6 +36,8 @@ export function VideoEmbed({ videoId, title, description }: VideoEmbedProps) {
               alt={title}
               className="size-full object-cover opacity-80 group-hover:opacity-90 transition-opacity duration-300"
               loading="lazy"
+              width={1280}
+              height={720}
             />
             {/* Dark overlay */}
             <div className="absolute inset-0 bg-gradient-to-t from-brand-navy/80 via-brand-navy/20 to-brand-navy/40" />

@@ -115,6 +115,7 @@ export const communities: Community[] = [
     populationYear: 2020,
     tagline: "Gateway to the Overmountain Trail",
     description:
+      // NPS documentation uses "Choates Ford" spelling — historically accepted
       "A small city in southeastern Sullivan County where the Overmountain Victory National Historic Trail crosses at Choates Ford. Bluff City provides access to Boone Lake and serves as a gateway between Sullivan and Washington Counties.",
     landmarks: ["Overmountain Victory Trail crossing at Choates Ford", "Boone Lake access"],
     keyFacts: [

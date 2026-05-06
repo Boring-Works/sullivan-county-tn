@@ -43,7 +43,7 @@ export function HeritageHero({
         width={1920}
         height={1080}
         fetchPriority="high"
-        decoding="async"
+        decoding="sync"
         className="absolute inset-0 w-full h-full object-cover"
         style={{
           transform: "translateY(calc(var(--scroll-y, 0) * 0.3px))",

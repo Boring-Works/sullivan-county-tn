@@ -27,7 +27,7 @@ export const submitForm = createServerFn({ method: "POST" })
       }
     }
 
-    rateLimit("form", 3, 60000);
+    rateLimit("form-submit", 3, 60000);
     const id = ulid();
     const now = new Date().toISOString();
 
@@ -52,6 +52,7 @@ export const submitForm = createServerFn({ method: "POST" })
       console.error(
         JSON.stringify({ event: "form_submission_store_failed", reason: "D1 unavailable" }),
       );
+      return { success: false, error: "storage_unavailable" };
     }
 
     return { success: true, id };

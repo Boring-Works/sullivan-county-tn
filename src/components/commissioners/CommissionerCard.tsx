@@ -21,6 +21,8 @@ export function CommissionerCard({ commissioner }: CommissionerCardProps) {
                 alt={commissioner.name}
                 className="size-full object-cover object-top official-headshot"
                 loading="lazy"
+                width={160}
+                height={160}
               />
             ) : (
               <div className="size-full bg-brand-parchment flex items-center justify-center">

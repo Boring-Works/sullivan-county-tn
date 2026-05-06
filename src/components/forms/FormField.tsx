@@ -58,6 +58,13 @@ export function FormField({ field, value, onChange, error }: FormFieldProps) {
           placeholder={field.placeholder}
           className={baseInputClass}
           required={field.required}
+          inputMode={
+            field.type === "number" ? "numeric" :
+            field.type === "tel" ? "tel" :
+            field.type === "email" ? "email" :
+            field.type === "date" ? undefined :
+            "text"
+          }
         />
       )}
 

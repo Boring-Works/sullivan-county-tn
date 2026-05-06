@@ -57,6 +57,7 @@ export function SiteNav() {
 
   const megaMenuRef = useRef<HTMLDivElement>(null);
   const megaButtonRef = useRef<HTMLButtonElement>(null);
+  const megaContainerRef = useRef<HTMLDivElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
 
@@ -102,6 +103,20 @@ export function SiteNav() {
     }
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
+  }, []);
+
+  // Native DOM event listeners for mega-menu hover (survives React hydration failures)
+  useEffect(() => {
+    const el = megaContainerRef.current;
+    if (!el) return;
+    const enter = () => setMegaMenuOpen(true);
+    const leave = () => setMegaMenuOpen(false);
+    el.addEventListener("mouseenter", enter);
+    el.addEventListener("mouseleave", leave);
+    return () => {
+      el.removeEventListener("mouseenter", enter);
+      el.removeEventListener("mouseleave", leave);
+    };
   }, []);
 
   // Mobile focus trap

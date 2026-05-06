@@ -73,7 +73,7 @@ export const Route = createRootRoute({
   head: () => ({
     meta: [
       { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
+      { name: "viewport", content: "width=device-width, initial-scale=1, viewport-fit=cover" },
       ...seo({
         title: "Sullivan County, Tennessee — Official Government Website",
         description:
@@ -81,11 +81,23 @@ export const Route = createRootRoute({
         image: "/images/og/og-default.jpg",
         url: "/",
       }),
+      { name: "theme-color", content: "#0c1e33" },
+      { name: "theme-color", media: "(prefers-color-scheme: light)", content: "#faf8f5" },
+      { name: "apple-mobile-web-app-capable", content: "yes" },
+      { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+      { name: "apple-mobile-web-app-title", content: "Sullivan County TN" },
+      { name: "mobile-web-app-capable", content: "yes" },
+      { name: "view-transition", content: "same-origin" },
     ],
     links: [
       ...seoLinks("/"),
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      { rel: "dns-prefetch", href: "https://img.youtube.com" },
+      { rel: "dns-prefetch", href: "https://www.youtube-nocookie.com" },
+      { rel: "dns-prefetch", href: "https://www.google.com" },
+      { rel: "preload", href: "/images/hero/boone-lake-1920.webp", as: "image", type: "image/webp", fetchPriority: "high" },
+      { rel: "preload", href: "https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600;700&display=swap", as: "style" },
       { rel: "stylesheet", href: appCss },
       {
         rel: "stylesheet",
@@ -94,6 +106,7 @@ export const Route = createRootRoute({
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "icon", sizes: "32x32", href: "/favicon.ico" },
       { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      { rel: "manifest", href: "/manifest.webmanifest" },
       {
         rel: "alternate",
         type: "application/rss+xml",
@@ -128,7 +141,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
 		syncStoredLocale();
 	}, []);
 	return (
-		<html lang={i18n.language ?? "en"} suppressHydrationWarning>
+		<html lang={i18n.language ?? "en"} dir="ltr" suppressHydrationWarning>
       <head>
         <HeadContent />
       </head>
@@ -148,6 +161,41 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
           Skip to main content
         </a>
         {children}
+        <script
+          type="speculationrules"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              prefetch: [
+                {
+                  source: "document",
+                  where: { href_matches: "/*" },
+                  eagerness: "moderate",
+                },
+              ],
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "GovernmentOrganization",
+              name: "Sullivan County, Tennessee",
+              url: "https://sullivan-county-tn.codyboring.workers.dev",
+              description: "Official government website for Sullivan County, Tennessee. Find departments, services, contact information, and county resources. Established 1779.",
+              address: {
+                "@type": "PostalAddress",
+                streetAddress: "3411 Highway 126",
+                addressLocality: "Blountville",
+                addressRegion: "TN",
+                postalCode: "37617",
+                addressCountry: "US",
+              },
+              foundingDate: "1779",
+            }),
+          }}
+        />
         <Scripts />
         {/* Cloudflare Web Analytics — Add CF Dashboard token to enable:
             1. Go to dash.cloudflare.com → Web Analytics → Add Site

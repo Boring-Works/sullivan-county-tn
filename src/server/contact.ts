@@ -33,6 +33,7 @@ export const submitContactForm = createServerFn({ method: "POST" })
       console.error(
         JSON.stringify({ event: "contact_submission_store_failed", reason: "KV unavailable" }),
       );
+      return { success: false, error: "storage_unavailable" };
     }
 
     return { success: true, id };

@@ -1,22 +1,22 @@
 import { z } from "zod";
 
 export const createAnnouncementSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  body: z.string().min(1, "Body is required"),
+  title: z.string().min(1, "Title is required").max(500),
+  body: z.string().min(1, "Body is required").max(10000),
   linkUrl: z.string().url().optional().or(z.literal("")),
   active: z.boolean().optional(),
-  startsAt: z.string().optional(),
-  endsAt: z.string().optional(),
+  startsAt: z.string().datetime().optional(),
+  endsAt: z.string().datetime().optional(),
 });
 
 export const updateAnnouncementSchema = z.object({
   id: z.string().min(1, "ID is required"),
-  title: z.string().optional(),
-  body: z.string().optional(),
+  title: z.string().max(500).optional(),
+  body: z.string().max(10000).optional(),
   linkUrl: z.string().url().optional().or(z.literal("")),
   active: z.boolean().optional(),
-  startsAt: z.string().optional(),
-  endsAt: z.string().optional(),
+  startsAt: z.string().datetime().optional(),
+  endsAt: z.string().datetime().optional(),
 });
 
 export const deleteAnnouncementSchema = z.object({

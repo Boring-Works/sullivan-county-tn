@@ -363,3 +363,9 @@
     content: none !important;
   }
 }
+
+/* Defer rendering for off-screen sections */
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 500px;
+}

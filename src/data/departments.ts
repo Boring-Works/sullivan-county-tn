@@ -297,7 +297,7 @@ export const departments: Department[] = [
       phone: "(423) 323-1220",
       fax: "(423) 323-7172",
       address: "1329 Suite B Hwy. 394, Blountville, TN 37617",
-      hours: "Monday-Friday, 8:00 AM-4:30 PM (closed designated holidays)",
+      hours: "Monday-Friday, 8am-4:30pm (closed designated holidays)",
     },
     description:
       "The Public Defender's office represents individuals who cannot afford private legal counsel, ensuring fair trials regardless of financial status. Services include legal advice, case investigation, plea negotiations, and court advocacy.",
@@ -343,7 +343,7 @@ export const departments: Department[] = [
       fax: "(423) 279-2816",
       email: "EMA@sullivancountytn.gov",
       address: "3193 Highway 126, Suite 101, Blountville, TN 37617",
-      hours: "Monday-Friday, 8am-5pm (excluding holidays)",
+      hours: "Monday-Friday, 8am-5pm (excluding designated holidays)",
     },
     description:
       "The Emergency Management Agency prepares and educates citizens while coordinating an integrated emergency management system across all emergency response organizations. Operations follow four phases: Mitigation, Preparedness, Response, and Recovery.",
@@ -586,7 +586,7 @@ export const departments: Department[] = [
       email: "cindy.stewart@sullivancountytn.gov",
       address:
         "Sullivan County Courthouse, 3419 Hwy 126, Blountville, TN 37617 (Mailing: 3411 Hwy. 126, Suite 202)",
-      hours: "Monday-Friday, 8:00 AM-4:30 PM. After hours: (423) 341-6207",
+      hours: "Monday-Friday, 8am-4:30pm. After hours: (423) 341-6207",
     },
     description:
       "The Maintenance Department provides custodial cleaning for county buildings and coordinates the Community Service Program for grounds maintenance. Facilities maintained include the Sullivan County Courthouse Complex, Office Building, Blountville and Bristol Justice Centers, and Health Department. School facilities, highways, and jail maintenance fall under separate departments.",
@@ -731,11 +731,11 @@ export const departments: Department[] = [
     slug: "risk-management",
     name: "Risk Management",
     category: "operations",
-    head: { name: "Larry Bailey", title: "Risk Manager" },
+    head: { name: "Larry G. Bailey", title: "Risk Manager" },
     contact: {
       phone: "(423) 323-6499",
       fax: "(423) 279-2887",
-      email: "larry.bailey@sullivancountytn.gov",
+      email: "Larry.Bailey@sullivancountytn.gov",
       address: "3411 Hwy. 126, Suite 205, Blountville, TN 37617",
       hours: "Monday-Friday, 8am-5pm (excluding designated holidays)",
     },
@@ -750,10 +750,10 @@ export const departments: Department[] = [
     ],
     staff: [
       {
-        name: "Larry Bailey",
+        name: "Larry G. Bailey",
         title: "Risk Manager",
         phone: "(423) 323-6499",
-        email: "larry.bailey@sullivancountytn.gov",
+        email: "Larry.Bailey@sullivancountytn.gov",
       },
       {
         name: "Andrea Hills",
@@ -829,7 +829,7 @@ export const departments: Department[] = [
       phone: "(423) 323-7431 Extension 3",
       email: "Sullivancountyswcd905@gmail.com",
       address: "2942 Highway 394, Suite 1, Blountville, TN 37617",
-      hours: "Monday-Friday, 8:00 am-4:30 pm (excluding holidays)",
+      hours: "Monday-Friday, 8am-4:30pm (excluding designated holidays)",
     },
     description:
       "The Soil & Water Conservation District protects and enhances soil, water, and agricultural resources for long-term sustainability. The Board of Supervisors meets monthly at the Blountville office. Programs include technical assistance, cost-share, conservation planning, and education outreach.",

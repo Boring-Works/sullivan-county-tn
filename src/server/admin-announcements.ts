@@ -63,6 +63,14 @@ export const updateAnnouncement = createServerFn({ method: "POST" })
     rateLimit("admin-announcements-mutate", 30, 60000);
     const d1 = await getD1();
     const db = getDb(d1);
+
+    const existing = await db
+      .select({ id: announcements.id })
+      .from(announcements)
+      .where(eq(announcements.id, data.id))
+      .get();
+    if (!existing) throw new Error("Announcement not found");
+
     const now = new Date().toISOString();
 
     const { id, ...updates } = data;
@@ -87,6 +95,14 @@ export const deleteAnnouncement = createServerFn({ method: "POST" })
     rateLimit("admin-announcements-mutate", 30, 60000);
     const d1 = await getD1();
     const db = getDb(d1);
+
+    const existing = await db
+      .select({ id: announcements.id })
+      .from(announcements)
+      .where(eq(announcements.id, data.id))
+      .get();
+    if (!existing) throw new Error("Announcement not found");
+
     await db.delete(announcements).where(eq(announcements.id, data.id));
     return { success: true };
   });

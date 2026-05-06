@@ -20,7 +20,7 @@ test.describe("mega-menu on all pages", () => {
 		test(`hover opens mega-menu on ${path}`, async ({ page }) => {
 			if (page.viewportSize()!.width < 1024) return;
 			await page.goto(path);
-			await page.waitForTimeout(800);
+			await page.waitForTimeout(1500);
 
 			const btn = page.locator("nav button", { hasText: "Departments" });
 			await btn.first().hover();
@@ -65,7 +65,7 @@ test.describe("mega-menu on all pages", () => {
 		const allPages = ["/", "/departments", "/history", "/contact"];
 		for (const path of allPages) {
 			await page.goto(path);
-			await page.waitForTimeout(800);
+			await page.waitForTimeout(1500);
 
 			const btn = page.locator("nav button", { hasText: "Departments" });
 			await btn.first().hover();

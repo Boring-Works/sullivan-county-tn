@@ -5,6 +5,7 @@ import { ulid } from "ulidx";
 import { getDb } from "~/db";
 import { adminSessions } from "~/db/schema";
 import { loginSchema } from "~/lib/schemas/auth";
+import { rateLimit } from "~/server/rate-limit";
 
 const SESSION_COOKIE = "admin_session";
 const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
@@ -25,6 +26,8 @@ async function timingSafeEqual(a: string, b: string): Promise<boolean> {
 export const login = createServerFn({ method: "POST" })
   .inputValidator(loginSchema)
   .handler(async ({ data }) => {
+    rateLimit("auth-login", 5, 60000);
+
     let adminPassword: string | undefined;
     try {
       const env = await getEnv();

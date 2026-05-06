@@ -66,6 +66,14 @@ export const updateMinutesEntry = createServerFn({ method: "POST" })
 
     const d1 = await getD1();
     const db = getDb(d1);
+
+    const existing = await db
+      .select({ id: meetingMinutes.id })
+      .from(meetingMinutes)
+      .where(eq(meetingMinutes.id, data.id))
+      .get();
+    if (!existing) throw new Error("Minutes entry not found");
+
     const now = new Date().toISOString();
 
     const { id, ...updates } = data;
@@ -92,6 +100,14 @@ export const deleteMinutesEntry = createServerFn({ method: "POST" })
 
     const d1 = await getD1();
     const db = getDb(d1);
+
+    const existing = await db
+      .select({ id: meetingMinutes.id })
+      .from(meetingMinutes)
+      .where(eq(meetingMinutes.id, data.id))
+      .get();
+    if (!existing) throw new Error("Minutes entry not found");
+
     await db.delete(meetingMinutes).where(eq(meetingMinutes.id, data.id));
     return { success: true };
   });

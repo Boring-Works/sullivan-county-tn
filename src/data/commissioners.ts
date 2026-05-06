@@ -213,7 +213,7 @@ export const commissioners: Commissioner[] = [
     name: "Archie Pierce",
     district: 11,
     address: "1504 Bridwell, Kingsport, TN 37664",
-    phone: "(423) 247-5330",
+    phone: "423-247-5330",
     photo: "/images/commissioners/archie-pierce.jpg",
   },
 ];

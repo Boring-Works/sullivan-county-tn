@@ -13,9 +13,4 @@ export function rateLimit(key: string, maxRequests: number, windowMs: number): v
   if (bucket.count > maxRequests) {
     throw new Error("Too many requests. Please try again later.");
   }
-
-  if (now > bucket.resetAt) {
-    bucket.count = 1;
-    bucket.resetAt = now + windowMs;
-  }
 }

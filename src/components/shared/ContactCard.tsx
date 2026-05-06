@@ -32,6 +32,8 @@ export function ContactCard({ head, contact, category }: ContactCardProps) {
                 alt={head.name}
                 className="size-full object-cover object-top official-headshot"
                 loading="lazy"
+                width={128}
+                height={128}
               />
               <div className="absolute inset-0 shadow-[inset_0_0_10px_rgba(0,0,0,0.15)] pointer-events-none" />
             </div>

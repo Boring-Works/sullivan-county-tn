@@ -48,6 +48,13 @@ export const createNewsArticle = createServerFn({ method: "POST" })
     rateLimit("admin-news-mutate", 30, 60000);
     const d1 = await getD1();
     const db = getDb(d1);
+    const existingSlug = await db
+      .select({ id: newsArticles.id })
+      .from(newsArticles)
+      .where(eq(newsArticles.slug, data.slug))
+      .get();
+    if (existingSlug) throw new Error("A news article with this slug already exists");
+
     const id = ulid();
     const now = new Date().toISOString();
 
@@ -57,7 +64,10 @@ export const createNewsArticle = createServerFn({ method: "POST" })
       slug: data.slug,
       author: data.author ?? "Sullivan County",
       summary: sanitize(data.summary),
-      content: data.content,
+      content: sanitizeHtml(data.content, {
+        allowedTags: ['p', 'br', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'h2', 'h3', 'h4'],
+        allowedAttributes: { 'a': ['href', 'target', 'rel'] },
+      }),
       status: data.status ?? "draft",
       url: data.url || null,
       pdfUrl: data.pdfUrl || null,
@@ -76,6 +86,14 @@ export const updateNewsArticle = createServerFn({ method: "POST" })
     rateLimit("admin-news-mutate", 30, 60000);
     const d1 = await getD1();
     const db = getDb(d1);
+
+    const existing = await db
+      .select({ id: newsArticles.id })
+      .from(newsArticles)
+      .where(eq(newsArticles.id, data.id))
+      .get();
+    if (!existing) throw new Error("News article not found");
+
     const now = new Date().toISOString();
 
     const { id, ...updates } = data;
@@ -85,7 +103,11 @@ export const updateNewsArticle = createServerFn({ method: "POST" })
     if (updates.slug !== undefined) safeUpdates.slug = updates.slug;
     if (updates.author !== undefined) safeUpdates.author = updates.author;
     if (updates.summary !== undefined) safeUpdates.summary = sanitize(updates.summary);
-    if (updates.content !== undefined) safeUpdates.content = updates.content;
+    if (updates.content !== undefined)
+      safeUpdates.content = sanitizeHtml(updates.content, {
+        allowedTags: ['p', 'br', 'b', 'i', 'em', 'strong', 'a', 'ul', 'ol', 'li', 'h2', 'h3', 'h4'],
+        allowedAttributes: { 'a': ['href', 'target', 'rel'] },
+      });
     if (updates.status !== undefined) safeUpdates.status = updates.status;
     if (updates.url !== undefined) safeUpdates.url = updates.url;
     if (updates.pdfUrl !== undefined) safeUpdates.pdfUrl = updates.pdfUrl;
@@ -106,6 +128,14 @@ export const deleteNewsArticle = createServerFn({ method: "POST" })
     rateLimit("admin-news-mutate", 30, 60000);
     const d1 = await getD1();
     const db = getDb(d1);
+
+    const existing = await db
+      .select({ id: newsArticles.id })
+      .from(newsArticles)
+      .where(eq(newsArticles.id, data.id))
+      .get();
+    if (!existing) throw new Error("News article not found");
+
     await db.delete(newsArticles).where(eq(newsArticles.id, data.id));
     return { success: true };
   });

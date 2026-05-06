@@ -2,8 +2,10 @@
   X-Content-Type-Options: nosniff
   X-Frame-Options: SAMEORIGIN
   Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  Cross-Origin-Embedder-Policy: credentialless
+  Cross-Origin-Opener-Policy: same-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), clipboard-read=(), clipboard-write=(self), display-capture=(), idle-detection=(), sync-xhr=(), screen-wake-lock=(), magnetometer=(), gyroscope=(), accelerometer=(), autoplay=(), fullscreen=(self)
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
   Content-Security-Policy: default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://img.youtube.com data:; frame-src https://www.youtube-nocookie.com https://www.google.com; connect-src 'self'; base-uri 'self'; form-action 'self'
 
 /assets/*
