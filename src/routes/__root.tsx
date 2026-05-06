@@ -152,21 +152,9 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
     <html lang={i18n.language ?? "en"} dir="ltr" suppressHydrationWarning>
       <head>
         <HeadContent />
-        <script
-          type="speculationrules"
-          // biome-ignore lint/security/noDangerouslySetInnerHtml: speculation rules requires inline JSON
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              prefetch: [
-                {
-                  source: "document",
-                  where: { href_matches: "/*" },
-                  eagerness: "moderate",
-                },
-              ],
-            }),
-          }}
-        />
+        {/* Speculation rules removed — React's dangerouslySetInnerHTML rehydration
+            causes the browser to ignore the rule set ("created using the innerHTML
+            setter"). Reinstate only if served as static HTML outside the React tree. */}
         <script
           type="application/ld+json"
           // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data must be inline JSON
