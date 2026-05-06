@@ -17,15 +17,94 @@
     "countyDepartments": "County Departments"
   },
   "home": {
-    "heroTitle": "Sullivan County",
-    "heroSubtitle": "Tennessee",
-    "heroTagline": "Where Tennessee Began",
-    "quickServices": "Quick Services",
-    "departmentCategories": "Department Categories",
-    "latestNews": "Latest News",
-    "viewAllNews": "View All News",
-    "communityHighlights": "Community Highlights",
-    "about": "About Sullivan County"
+    "heroEyebrow": "Sullivan County, Tennessee",
+    "heroEyebrowEst": "Established 1779",
+    "heroH1": "How can we help today?",
+    "heroSearchPlaceholder": "Search departments, services, people…",
+    "heroSearchAria": "Search Sullivan County departments, services, and people",
+    "heroChips": {
+      "payTaxes": "Pay property taxes",
+      "forms": "Forms",
+      "propertyLookup": "Property lookup",
+      "meetings": "Meetings",
+      "contact": "Contact"
+    },
+    "heroAlmanac": {
+      "residents": "Residents",
+      "squareMiles": "Square Miles",
+      "departments": "Departments",
+      "nextMeeting": "Next meeting",
+      "countyOffices": "County offices"
+    },
+    "topTasksLabel": "Top citizen tasks",
+    "opensInNewTab": "(opens in a new tab)",
+    "emergency": {
+      "eyebrow": "Emergency",
+      "heading": "In an emergency",
+      "body": "Save these numbers in your phone today.",
+      "moreResources": "More resources",
+      "lifeThreatening": "Life-threatening emergency",
+      "callNow": "Call now",
+      "sheriff": "Sheriff's Office",
+      "sheriffSub": "Non-emergency law enforcement",
+      "emergencyMgmt": "Emergency Management",
+      "emergencyMgmtSub": "Storms, road closures, evacuations"
+    },
+    "services": {
+      "heading": "Most-used services",
+      "description": "Pay taxes, apply for permits, register to vote, and more."
+    },
+    "departments": {
+      "heading": "Find your department",
+      "description": "Pick a category to find the right office, phone number, and hours.",
+      "browse": "Browse departments"
+    },
+    "promises": {
+      "eyebrow": "What you can expect",
+      "heading": "Open hours. Open meetings. Honest updates.",
+      "p1Title": "Real hours, real numbers",
+      "p1Body": "Every department lists its actual hours and a direct phone line. No phone trees.",
+      "p2Title": "Open meetings, open record",
+      "p2Body": "Every county commission meeting is public and streamed live on YouTube.",
+      "p3Title": "We listen and update",
+      "p3Body": "Site updates published weekly. Use the feedback widget on department and service pages to tell us what's missing."
+    },
+    "nextMeeting": {
+      "eyebrow": "Public Meeting",
+      "heading": "Next county commission meeting",
+      "body": "Open to the public. Streamed live.",
+      "seeFullSchedule": "See full schedule",
+      "addToCalendar": "Add to calendar",
+      "watchLive": "Watch live"
+    },
+    "newsSection": {
+      "heading": "Latest updates",
+      "description": "County news, meeting notes, and public notices.",
+      "viewAll": "View All",
+      "viewAllMobile": "View All News"
+    },
+    "communities": {
+      "eyebrow": "Explore the Region",
+      "heading": "Discover Sullivan County",
+      "explore": "Explore"
+    },
+    "communityMap": {
+      "eyebrow": "Where you live",
+      "heading": "The six communities of Sullivan County",
+      "description": "Tap a community to find its services, history, and contact info.",
+      "svgAria": "Map of Sullivan County, Tennessee, showing six communities: Kingsport, Bristol, Blountville, Bluff City, Piney Flats, and Colonial Heights.",
+      "viewCommunity": "View community",
+      "boundarySource": "Boundary data: U.S. Census TIGER/Line. Pins approximate community centers."
+    },
+    "about": {
+      "eyebrow": "Your County Government",
+      "headingPart1": "Serving Sullivan County",
+      "headingPart2": "Since 1779",
+      "body": "Tennessee's second-oldest county. In 1790, Governor William Blount made Rocky Mount the Southwest Territory's capital — the political seat from which Tennessee was born. Today we cover 430 square miles of the Appalachian Highlands and serve more than 158,000 residents.",
+      "readFoundingStory": "Read our founding story",
+      "contactUs": "Contact Us",
+      "meetCommissioners": "Meet Your Commissioners"
+    }
   },
   "news": {
     "title": "County News",

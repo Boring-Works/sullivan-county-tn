@@ -12,12 +12,14 @@ See `/docs/` for complete architecture audit:
 - [GAP_ANALYSIS.md](docs/GAP_ANALYSIS.md) — Known gaps
 - [NEXT_IMPLEMENTATION_PLAN.md](docs/NEXT_IMPLEMENTATION_PLAN.md) — Future plan
 
-## State (2026-05-06)
-- **Tests:** 24 unit + 164 E2E across desktop/tablet/mobile (all green)
-- **A11y:** WCAG AA compliant (6 brand tokens fixed, 13 ARIA violations resolved)
-- **Lint:** 0 blocking errors (5 disabled a11y rules for valid WAI-ARIA patterns)
-- **Build:** 2.93s, 747KB worker entry
+## State (2026-05-06 — citizen-utility + graphics refresh)
+- **Tests:** 58 unit + 164 E2E across desktop/tablet/mobile (all green)
+- **A11y:** WCAG AA compliant
+- **Lint:** 0 blocking errors (1 pre-existing cookie warning in `src/lib/i18n.ts`)
+- **Build:** ~3s, ~748 KB worker entry
 - **Security:** Auth gates, CSRF, rate limiting, timing-safe compare, Zod validation, ULIDs, XSS sanitization, structured logging
+- **Citizen-utility shipped:** Hero search + 5 task chips, EmergencyModule with elevated 911 tile (pulse halo, copper glow), AnnouncementBanner wired to D1 with banner-aware nav offset + severity dropdown in admin, Open-Now status pill (hydration-stable, holiday-aware, live pulse when open), Next-Meeting computation with .ics download, online/in-person service badges, "Was this helpful?" feedback widget on dept/forms/contact pages, vCard "Save Contact" exports on dept + commissioners, PWA install hint with iOS Safari-aware modal, native scroll-driven CSS animations, view transitions on dept list → detail, BreadcrumbList + Event JSON-LD, Spanish locale populated and wired across home components (machine translation — needs native review).
+- **Graphics shipped:** Official Sullivan County seal (sourced from sullivancountytn.gov, traced via potrace into a clean 47KB SVG, wired into footer mark + AboutSection + hero corner watermark), three-layer parallax mountain dividers, hero photo treatment cleanup (single cohesive overlay + soft inset vignette), card-lift hover refinement (brass-gradient bottom underline + inset depth shadow), printable dept-detail contact card with QR code, **interactive 6-community Sullivan County map** (US Census TIGER/Line boundary projected to a 700-char SVG path with pinned communities linking to existing /communities/$slug pages).
 
 ## Tech Stack
 - TanStack Start (full-stack React framework)
@@ -193,6 +195,33 @@ See `/docs/` for complete architecture audit:
 - **Platform:** Cloudflare Workers
 - **Worker:** sullivan-county-tn
 - **Deploy:** `npm run deploy`
+- **Before deploying** new D1 migrations, apply them remotely:
+  ```sh
+  npx wrangler d1 migrations apply --remote sullivan-county-db
+  ```
+  As of 2026-05-06 two pending remote migrations: `0001_page_feedback.sql` (creates the `page_feedback` table that backs the "Was this page helpful?" widget) and `0002_announcement_severity.sql` (adds the `severity` column to `announcements` so the urgent/info dropdown in /admin works). Without these, feedback submissions and severity-tagged banners error with HTTP 500 in production.
+- **Spanish locale** in `src/locales/es.json` is machine-translated. Schedule a native Spanish-speaker review before claiming bilingual support in marketing. Spanish renders **client-side only** — `syncStoredLocale()` reads the `locale` cookie in a `useEffect`, so the first paint is always English. The Spanish UI flashes in immediately after hydration. To eliminate the flash, plumb cookie-aware language detection into the server entry in `__root.tsx` (out of scope for this pass).
+- **Service worker / offline** is not yet shipped — the manifest is complete and Android Chrome installs cleanly via `beforeinstallprompt`. A future PR should ship a Workbox SW for the emergency module.
+
+## Voice & content standards
+This is a county government website. The reference points are GOV.UK, NYC.gov, the Smithsonian, NPR. **Not** a startup, **not** a SaaS product, **not** the Holston Partners cyberpunk redesign.
+- **Plain English at ~7th-grade reading level.** "Pay your property taxes" not "Submit your annual property tax remittance."
+- **"We" and "you,"** never "the county," "stakeholders," or "constituents."
+- **Banned consultant words:** *engagement, deliverables, leveraging, stakeholders, ecosystem, robust, world-class.*
+- **Lead with the verb.** "Find a department." "Get a permit." "Report a pothole."
+- **Be specific.** Real phone numbers, real hours, real dates beat generic prose.
+- **Civic restraint.** Heritage palette + Caslon + Outfit are the identity. Reserve copper/brass for true hierarchy moments. Mountain dividers used sparingly. Animation minimal.
+- **Identity earns its place; utility earns the citizen's time.** Hero is "How can we help today?" + search + 5 top tasks; heritage tagline is the quiet final line.
+
+## Architecture notes for new components
+- **`useOpenStatus(hours)`** parses department `contact.hours` strings. Format **must** look like `"Monday-Friday, 8am-4:30pm"` (additional clauses after the period are ignored). Strings starting with `"24/7"` always resolve to "Open 24/7." Unparseable strings render no pill (graceful fallback). On SSR (no `now`), the hook returns a stable hours summary placeholder ("Mon–Fri · 8:00 AM–4:30 PM") so the pill is visible immediately; client hydration upgrades to live "Open until 4:30 PM" / "Closed · Holiday Name". The hook honors all 13 county holidays (computed in `src/data/holidays.ts`, including Easter via Computus + observed-on-nearest-weekday for fixed-date holidays) — government offices show "Closed · {Holiday}" on observed-closure days even within business hours.
+- **Interactive county map (`src/components/home/CommunityMap.tsx`)** — boundary path derived once from US Census TIGER/Line FIPS 47163 polygon, equirectangular-projected at the county's center latitude into a 1000×373 viewBox (700-char SVG path committed; no runtime GeoJSON parsing). Six community pins computed from each municipality's lat/lng using the same projection. `Link to="/communities/$slug"` per pin; mobile fallback list when SVG pins are too small to tap. Replaces the old heritage trio of cards on the homepage.
+- **County seal (`src/components/shared/CountySeal.tsx`)** — sourced from sullivancountytn.gov's official artwork, traced via potrace into `public/images/seal/sullivan-seal.svg` (47KB, brand-navy tinted) plus rastered fallbacks at 64/128/256/512px. Wired into the footer mark, the AboutSection heading row, the hero corner watermark (`mix-blend-screen` at 8% opacity, `lg:` only), and the printable dept-detail card.
+- **`nextOccurrence(rule)`** computes the next concrete date for `{ dayOfWeek, nthOfMonth, time }` recurrence rules in America/New_York. `nthOfMonth` is `1 | 2 | 3 | 4 | "last"`. Used by `/calendar` and the homepage `NextMeetingCard`.
+- **`AnnouncementBanner`** reads from D1 via `listPublicAnnouncements` server function. Title prefix `[urgent]` upgrades severity. Banner sets `--banner-height` on the document root; `SiteNav` and `body` consume that var to offset themselves. Manage rows in `/admin/announcements`.
+- **`PageFeedback`** writes to the `page_feedback` D1 table via `submitPageFeedback` server function. Mounted on department detail, forms detail, and contact pages. Admin viewer is at `/admin/feedback` (future task — table populated even without UI).
+- **`TelLink`** normalizes phone numbers to `tel:+1XXXXXXXXXX` consistently. Use it everywhere a phone number is rendered; do not write raw `<a href="tel:...">` strings.
+- **`OpenStatusPill`** + **`SubmissionBadge`** + **vCard "Save Contact"** are the small civic-trust details — keep them on every department detail page going forward.
 
 ## Decision Log
 | Decision | Rationale | Date |

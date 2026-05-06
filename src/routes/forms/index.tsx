@@ -1,8 +1,20 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { AlertTriangle, FileSearch, HardHat, MessageSquare } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { FORM_DEFINITIONS } from "~/data/form-definitions";
+import { FORM_DEFINITIONS, type SubmissionMode } from "~/data/form-definitions";
 import { seo, seoLinks } from "~/utils/seo";
+
+const SUBMISSION_LABELS: Record<SubmissionMode, string> = {
+  online: "Online",
+  "in-person": "In person",
+  hybrid: "Online or in person",
+};
+
+const SUBMISSION_STYLES: Record<SubmissionMode, string> = {
+  online: "bg-brand-sage/10 text-brand-sage",
+  "in-person": "bg-brand-brass/10 text-[#7a6534]",
+  hybrid: "bg-brand-navy/10 text-brand-navy",
+};
 
 export const Route = createFileRoute("/forms/")({
   component: FormsPage,
@@ -53,9 +65,18 @@ function FormsPage() {
                     <Icon className="size-5" />
                   </div>
                   <div>
-                    <h2 className="font-display text-lg font-bold text-brand-navy mb-1 group-hover:text-brand-copper transition-colors">
-                      {form.title}
-                    </h2>
+                    <div className="flex flex-wrap items-center gap-2 mb-1.5">
+                      <h2 className="font-display text-lg font-bold text-brand-navy group-hover:text-brand-copper transition-colors">
+                        {form.title}
+                      </h2>
+                      {form.submission && (
+                        <span
+                          className={`inline-flex items-center rounded-full px-2 py-0.5 font-body text-[10px] font-medium tracking-wide ${SUBMISSION_STYLES[form.submission]}`}
+                        >
+                          {SUBMISSION_LABELS[form.submission]}
+                        </span>
+                      )}
+                    </div>
                     <p className="font-body text-sm text-brand-slate-light leading-relaxed">
                       {form.description}
                     </p>

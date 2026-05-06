@@ -46,6 +46,7 @@ export const createAnnouncement = createServerFn({ method: "POST" })
       title: sanitize(data.title),
       body: sanitize(data.body),
       linkUrl: data.linkUrl || null,
+      severity: data.severity ?? "info",
       active: data.active ?? true,
       startsAt: data.startsAt || null,
       endsAt: data.endsAt || null,

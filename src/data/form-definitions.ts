@@ -10,12 +10,16 @@ export interface FormField {
   helpText?: string;
 }
 
+export type SubmissionMode = "online" | "in-person" | "hybrid";
+
 export interface FormDefinition {
   type: string;
   title: string;
   description: string;
   icon: string;
   fields: FormField[];
+  /** Whether the request can be submitted online, requires an in-person visit, or both. */
+  submission?: SubmissionMode;
 }
 
 export const FORM_DEFINITIONS: FormDefinition[] = [
@@ -25,6 +29,7 @@ export const FORM_DEFINITIONS: FormDefinition[] = [
     description:
       "Apply for a building permit for new construction, renovation, or demolition in Sullivan County.",
     icon: "hard-hat",
+    submission: "online",
     fields: [
       {
         name: "address",
@@ -78,6 +83,7 @@ export const FORM_DEFINITIONS: FormDefinition[] = [
     description:
       "Report a potential code violation in unincorporated Sullivan County. All complaints are kept confidential.",
     icon: "alert-triangle",
+    submission: "online",
     fields: [
       {
         name: "address",
@@ -126,6 +132,7 @@ export const FORM_DEFINITIONS: FormDefinition[] = [
     description:
       "Submit a public records request per the Tennessee Public Records Act (T.C.A. § 10-7-503).",
     icon: "file-search",
+    submission: "online",
     fields: [
       {
         name: "description",
@@ -158,6 +165,7 @@ export const FORM_DEFINITIONS: FormDefinition[] = [
     title: "General Feedback",
     description: "Share feedback, suggestions, or concerns with Sullivan County government.",
     icon: "message-square",
+    submission: "online",
     fields: [
       {
         name: "department",

@@ -1,0 +1,66 @@
+import { SITE_URL } from "~/utils/seo";
+
+export interface BreadcrumbItem {
+  name: string;
+  /** Path-only URL, e.g. "/departments". Joined to SITE_URL. */
+  path: string;
+}
+
+export function breadcrumbList(items: BreadcrumbItem[]): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: items.map((item, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      name: item.name,
+      item: `${SITE_URL}${item.path}`,
+    })),
+  };
+}
+
+export function eventJsonLd(input: {
+  name: string;
+  start: Date;
+  end: Date;
+  location: string;
+  description?: string;
+  url?: string;
+}): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Event",
+    name: input.name,
+    startDate: input.start.toISOString(),
+    endDate: input.end.toISOString(),
+    eventStatus: "https://schema.org/EventScheduled",
+    eventAttendanceMode: "https://schema.org/MixedEventAttendanceMode",
+    location: {
+      "@type": "Place",
+      name: input.location,
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: "3411 TN-126",
+        addressLocality: "Blountville",
+        addressRegion: "TN",
+        postalCode: "37617",
+        addressCountry: "US",
+      },
+    },
+    organizer: {
+      "@type": "GovernmentOrganization",
+      name: "Sullivan County, Tennessee",
+      url: SITE_URL,
+    },
+    description: input.description,
+    url: input.url,
+  };
+}
+
+/**
+ * Inline JSON-LD as a string for `dangerouslySetInnerHTML`.
+ * Filters out undefined values so the rendered JSON stays tidy.
+ */
+export function jsonLdString(value: Record<string, unknown>): string {
+  return JSON.stringify(value, (_, v) => (v === undefined ? undefined : v));
+}

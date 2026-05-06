@@ -48,6 +48,9 @@ export const announcements = sqliteTable("announcements", {
   title: text("title").notNull(),
   body: text("body").notNull(),
   linkUrl: text("link_url"),
+  severity: text("severity", { enum: ["info", "urgent"] })
+    .notNull()
+    .default("info"),
   active: integer("active", { mode: "boolean" }).notNull().default(true),
   startsAt: text("starts_at"),
   endsAt: text("ends_at"),
@@ -60,4 +63,14 @@ export const adminSessions = sqliteTable("admin_sessions", {
   id: text("id").primaryKey(),
   createdAt: text("created_at").notNull(),
   expiresAt: text("expires_at").notNull(),
+});
+
+// ── Page Feedback ("Was this page helpful?") ────────────────────
+export const pageFeedback = sqliteTable("page_feedback", {
+  id: text("id").primaryKey(),
+  page: text("page").notNull(), // route pathname, e.g. "/departments/county-clerk"
+  helpful: integer("helpful", { mode: "boolean" }).notNull(),
+  comment: text("comment"),
+  userAgent: text("user_agent"),
+  createdAt: text("created_at").notNull(),
 });

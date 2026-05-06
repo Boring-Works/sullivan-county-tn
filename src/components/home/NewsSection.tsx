@@ -1,11 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import { NewsCard } from "~/components/shared/NewsCard";
 import { news } from "~/data/news";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
 
 export function NewsSection() {
   const containerRef = useScrollReveal<HTMLDivElement>();
+  const { t } = useTranslation();
   const latestNews = [...news]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 3);
@@ -16,20 +18,19 @@ export function NewsSection() {
         {/* Heading — editorial with decorative line + "View All" link */}
         <div className="mb-14 flex items-end justify-between" data-reveal>
           <div>
-            <div className="mb-4 h-px w-12 bg-brand-copper" />
             <h2 className="font-display text-3xl font-bold text-brand-navy sm:text-4xl">
-              County News
+              {t("home.newsSection.heading")}
             </h2>
             <p className="mt-3 font-body text-base text-brand-slate-light leading-relaxed sm:text-lg">
-              Stay informed about Sullivan County government updates and announcements
+              {t("home.newsSection.description")}
             </p>
           </div>
           <Link
             to="/news"
             className="hidden items-center gap-2 font-body text-sm font-semibold tracking-wide text-brand-copper transition-colors hover:text-brand-copper-light sm:flex"
           >
-            View All
-            <ArrowRight className="h-4 w-4" />
+            {t("home.newsSection.viewAll")}
+            <ArrowRight aria-hidden className="h-4 w-4" />
           </Link>
         </div>
 
@@ -53,8 +54,8 @@ export function NewsSection() {
             to="/news"
             className="inline-flex items-center gap-2 font-body text-sm font-semibold text-brand-copper transition-colors hover:text-brand-copper-light"
           >
-            View All News
-            <ArrowRight className="h-4 w-4" />
+            {t("home.newsSection.viewAllMobile")}
+            <ArrowRight aria-hidden className="h-4 w-4" />
           </Link>
         </div>
       </div>

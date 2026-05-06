@@ -25,6 +25,7 @@ function AnnouncementsPage() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [linkUrl, setLinkUrl] = useState("");
+  const [severity, setSeverity] = useState<"info" | "urgent">("info");
   const [creating, setCreating] = useState(false);
 
   const load = useCallback(async () => {
@@ -46,10 +47,13 @@ function AnnouncementsPage() {
     e.preventDefault();
     setCreating(true);
     try {
-      await createAnnouncement({ data: { title, body, linkUrl: linkUrl || undefined } });
+      await createAnnouncement({
+        data: { title, body, linkUrl: linkUrl || undefined, severity },
+      });
       setTitle("");
       setBody("");
       setLinkUrl("");
+      setSeverity("info");
       load();
     } finally {
       setCreating(false);
@@ -96,6 +100,30 @@ function AnnouncementsPage() {
             placeholder="Link URL (optional)"
             className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
           />
+          <fieldset className="flex items-center gap-4">
+            <legend className="sr-only">Severity</legend>
+            <span className="text-xs font-semibold text-gray-700">Severity:</span>
+            <label className="inline-flex items-center gap-1.5 text-sm">
+              <input
+                type="radio"
+                name="severity"
+                value="info"
+                checked={severity === "info"}
+                onChange={() => setSeverity("info")}
+              />
+              Info (navy)
+            </label>
+            <label className="inline-flex items-center gap-1.5 text-sm">
+              <input
+                type="radio"
+                name="severity"
+                value="urgent"
+                checked={severity === "urgent"}
+                onChange={() => setSeverity("urgent")}
+              />
+              Urgent (copper)
+            </label>
+          </fieldset>
           <button
             type="submit"
             disabled={creating}
@@ -125,6 +153,11 @@ function AnnouncementsPage() {
                     className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-medium ${item.active ? "bg-green-50 text-green-700" : "bg-gray-100 text-gray-500"}`}
                   >
                     {item.active ? "Active" : "Inactive"}
+                  </span>
+                  <span
+                    className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-medium ${item.severity === "urgent" ? "bg-red-50 text-red-700" : "bg-blue-50 text-blue-700"}`}
+                  >
+                    {item.severity === "urgent" ? "Urgent" : "Info"}
                   </span>
                 </div>
                 <p className="mt-0.5 text-xs text-gray-500">{item.body}</p>

@@ -2,6 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AlertCircle, CheckCircle, Clock, ExternalLink, MapPin, Phone, Send } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { PageFeedback } from "~/components/shared/PageFeedback";
+import { TelLink } from "~/components/shared/TelLink";
 import { submitContactForm } from "~/server/contact";
 import { seo, seoLinks } from "~/utils/seo";
 
@@ -131,10 +133,8 @@ function ContactPage() {
               <span>3411 TN-126, Blountville, TN 37617</span>
             </div>
             <div className="flex items-start gap-2.5">
-              <Phone className="mt-0.5 size-4 shrink-0 text-brand-copper" />
-              <a href="tel:+14233236417" className="hover:text-brand-navy hover:underline">
-                (423) 323-6417
-              </a>
+              <Phone aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-brand-copper" />
+              <TelLink phone="(423) 323-6417" className="hover:text-brand-navy hover:underline" />
             </div>
             <div className="flex items-start gap-2.5">
               <Clock className="mt-0.5 size-4 shrink-0 text-brand-copper" />
@@ -174,19 +174,17 @@ function ContactPage() {
                   </p>
                   <div className="flex flex-col gap-2 font-body text-sm">
                     <div className="flex items-center gap-2">
-                      <Phone className="size-3.5 shrink-0 text-brand-navy/50" />
-                      <a
-                        href={`tel:${dept.phone.replace(/[^\d+]/g, "")}`}
+                      <Phone aria-hidden="true" className="size-3.5 shrink-0 text-brand-navy/50" />
+                      <TelLink
+                        phone={dept.phone}
                         className="hover:text-brand-navy hover:underline"
-                      >
-                        {dept.phone}
-                      </a>
+                      />
                     </div>
                     {"emergency" in dept && dept.emergency && (
                       <div className="flex items-center gap-2">
-                        <Phone className="size-3.5 shrink-0 text-brand-safety" />
+                        <Phone aria-hidden="true" className="size-3.5 shrink-0 text-brand-safety" />
                         <span className="font-semibold text-brand-safety">
-                          Emergency: {dept.emergency}
+                          Emergency: <TelLink phone={dept.emergency} className="hover:underline" />
                         </span>
                       </div>
                     )}
@@ -221,6 +219,8 @@ function ContactPage() {
             ))}
           </ul>
         </div>
+
+        <PageFeedback />
       </div>
     </main>
   );

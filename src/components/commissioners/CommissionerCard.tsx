@@ -1,11 +1,25 @@
-import { Mail, MapPin, Phone, User } from "lucide-react";
+import { Contact, Mail, MapPin, Phone, User } from "lucide-react";
+import { TelLink } from "~/components/shared/TelLink";
 import type { Commissioner } from "~/data/commissioners";
+import { buildVCard, vCardDataHref } from "~/lib/vcard";
 
 interface CommissionerCardProps {
   commissioner: Commissioner;
 }
 
 export function CommissionerCard({ commissioner }: CommissionerCardProps) {
+  const vcardHref = vCardDataHref(
+    buildVCard({
+      fullName: commissioner.name,
+      title: `Sullivan County Commissioner — District ${commissioner.district}`,
+      organization: "Sullivan County, Tennessee",
+      phone: commissioner.phone,
+      email: commissioner.email,
+      address: commissioner.address,
+    }),
+  );
+  const vcardFile = `${commissioner.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.vcf`;
+
   return (
     <div className="card-lift group relative rounded-sm border border-brand-surface bg-white overflow-hidden">
       {/* Accent on hover */}
@@ -26,7 +40,7 @@ export function CommissionerCard({ commissioner }: CommissionerCardProps) {
               />
             ) : (
               <div className="size-full bg-brand-parchment flex items-center justify-center">
-                <User className="size-8 text-brand-stone/40" />
+                <User aria-hidden="true" className="size-8 text-brand-stone/40" />
               </div>
             )}
             {/* Subtle vignette overlay */}
@@ -40,25 +54,23 @@ export function CommissionerCard({ commissioner }: CommissionerCardProps) {
             {commissioner.name}
           </h3>
           <div className="flex items-start gap-1.5 font-body text-xs text-brand-slate-light mb-2.5">
-            <MapPin className="mt-0.5 size-3 shrink-0 text-brand-stone" />
+            <MapPin aria-hidden="true" className="mt-0.5 size-3 shrink-0 text-brand-stone" />
             <span className="line-clamp-2">{commissioner.address}</span>
           </div>
 
           <div className="flex flex-col gap-1.5 font-body text-xs">
             {commissioner.phone && (
               <div className="flex items-center gap-1.5">
-                <Phone className="size-3 shrink-0 text-brand-navy/40" />
-                <a
-                  href={`tel:${commissioner.phone}`}
+                <Phone aria-hidden="true" className="size-3 shrink-0 text-brand-navy/40" />
+                <TelLink
+                  phone={commissioner.phone}
                   className="text-brand-slate hover:text-brand-navy hover:underline"
-                >
-                  {commissioner.phone}
-                </a>
+                />
               </div>
             )}
             {commissioner.email && (
               <div className="flex items-center gap-1.5">
-                <Mail className="size-3 shrink-0 text-brand-navy/40" />
+                <Mail aria-hidden="true" className="size-3 shrink-0 text-brand-navy/40" />
                 <a
                   href={`mailto:${commissioner.email}`}
                   className="truncate text-brand-slate hover:text-brand-navy hover:underline"
@@ -66,6 +78,16 @@ export function CommissionerCard({ commissioner }: CommissionerCardProps) {
                   {commissioner.email}
                 </a>
               </div>
+            )}
+            {(commissioner.phone || commissioner.email) && (
+              <a
+                href={vcardHref}
+                download={vcardFile}
+                className="mt-1 inline-flex items-center gap-1.5 self-start text-[11px] font-medium text-brand-copper hover:text-brand-copper-light hover:underline"
+              >
+                <Contact aria-hidden="true" className="size-3" />
+                Save contact
+              </a>
             )}
           </div>
         </div>

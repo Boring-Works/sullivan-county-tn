@@ -1,43 +1,109 @@
 import { Link } from "@tanstack/react-router";
-import { useEffect, useRef } from "react";
+import {
+  Calendar,
+  DollarSign,
+  ExternalLink,
+  FileText,
+  type LucideIcon,
+  Map as MapIcon,
+  Phone,
+  Search,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
+import { CountySeal } from "~/components/shared/CountySeal";
 import { MountainDivider } from "~/components/shared/MountainDivider";
+import { COMMISSION_REGULAR_SESSION_RULE } from "~/data/meetings";
 import { useCountUp } from "~/hooks/useCountUp";
+import { useOpenStatus } from "~/hooks/useOpenStatus";
+import { formatNyDateShort, formatNyTime, nextOccurrence } from "~/lib/recurrence";
 
-function StatItem({
-  end,
-  suffix,
-  label,
-  icon,
-}: {
-  end: number;
-  suffix?: string;
-  label: string;
-  icon: React.ReactNode;
-}) {
+const COUNTY_OFFICE_HOURS = "Monday-Friday, 8am-4:30pm";
+
+type ChipKey = "payTaxes" | "forms" | "propertyLookup" | "meetings" | "contact";
+
+interface ExternalTask {
+  kind: "external";
+  labelKey: ChipKey;
+  href: string;
+  icon: LucideIcon;
+}
+
+interface InternalTask {
+  kind: "internal";
+  labelKey: ChipKey;
+  to: "/forms" | "/calendar" | "/contact";
+  icon: LucideIcon;
+}
+
+type TopTask = ExternalTask | InternalTask;
+
+const TOP_TASKS: TopTask[] = [
+  {
+    kind: "external",
+    labelKey: "payTaxes",
+    href: "https://sullivantntrustee.gov/property-tax/",
+    icon: DollarSign,
+  },
+  { kind: "internal", labelKey: "forms", to: "/forms", icon: FileText },
+  {
+    kind: "external",
+    labelKey: "propertyLookup",
+    href: "https://gis.sullivancountytn.gov/",
+    icon: MapIcon,
+  },
+  { kind: "internal", labelKey: "meetings", to: "/calendar", icon: Calendar },
+  { kind: "internal", labelKey: "contact", to: "/contact", icon: Phone },
+];
+
+function StatItem({ end, suffix, label }: { end: number; suffix?: string; label: string }) {
   const { ref, display } = useCountUp({ end, suffix, duration: 2200 });
   return (
-    <div className="flex flex-col items-center gap-1 sm:flex-row sm:gap-3">
-      <span className="text-white/60">{icon}</span>
-      <div className="text-center sm:text-left">
-        <div
-          ref={ref}
-          className="font-display text-base font-bold text-white sm:text-xl leading-none"
-        >
-          {display}
-        </div>
-        <div className="font-body text-[9px] font-medium tracking-widest uppercase text-white/40 sm:text-[10px]">
-          {label}
-        </div>
+    <div className="text-center sm:text-left">
+      <div
+        ref={ref}
+        className="font-display text-base font-bold text-white sm:text-xl leading-none"
+      >
+        {display}
+      </div>
+      <div className="font-body text-[9px] font-medium tracking-widest uppercase text-white/50 sm:text-[10px]">
+        {label}
       </div>
     </div>
   );
 }
 
+function NextMeetingTile() {
+  const { t } = useTranslation();
+  // Computed once on initial render so the date renders during SSR.
+  const [next] = useState(() => nextOccurrence(COMMISSION_REGULAR_SESSION_RULE));
+  return (
+    <Link
+      to="/calendar"
+      className="group flex flex-col items-center sm:items-start gap-0.5 transition-colors hover:text-brand-brass-light"
+    >
+      <span className="font-display text-base font-bold text-white sm:text-xl leading-none group-hover:text-brand-brass-light">
+        {formatNyDateShort(next)}
+      </span>
+      <span className="font-body text-[9px] font-medium tracking-widest uppercase text-white/50 sm:text-[10px]">
+        {t("home.heroAlmanac.nextMeeting")} · {formatNyTime(next)}
+      </span>
+    </Link>
+  );
+}
+
 const PARALLAX_SPEED = 0.5;
+
+function openSearch() {
+  if (typeof window === "undefined") return;
+  window.dispatchEvent(new CustomEvent("sullivan:open-search"));
+}
 
 export function HeroBanner() {
   const heroRef = useRef<HTMLElement>(null);
   const rafRef = useRef<number>(0);
+  const status = useOpenStatus(COUNTY_OFFICE_HOURS);
+  const { t } = useTranslation();
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -60,6 +126,7 @@ export function HeroBanner() {
   return (
     <section
       ref={heroRef}
+      aria-labelledby="hero-heading"
       className="relative min-h-screen flex flex-col overflow-hidden bg-brand-navy"
     >
       <picture>
@@ -110,189 +177,159 @@ export function HeroBanner() {
         />
       </picture>
 
-      <div className="absolute inset-0 bg-gradient-to-t from-brand-navy via-brand-navy/60 to-brand-navy/20" />
-      <div className="absolute inset-0 bg-gradient-to-r from-brand-navy/50 via-brand-navy/25 to-transparent" />
+      {/* One cohesive treatment: diagonal masthead + soft inner-shadow vignette. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(110deg, rgba(12,30,51,0.94) 0%, rgba(12,30,51,0.72) 38%, rgba(12,30,51,0.32) 70%, rgba(12,30,51,0) 100%), linear-gradient(to top, rgba(12,30,51,0.55) 0%, rgba(12,30,51,0) 55%)",
+        }}
+      />
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          boxShadow: "inset 0 0 180px 40px rgba(8,22,36,0.55)",
+        }}
+      />
+      <div aria-hidden="true" className="absolute inset-0 bg-topo-pattern opacity-30" />
 
-      <div className="absolute inset-0 bg-topo-pattern" />
+      {/* Seal watermark — quiet, decorative, top-right corner of the hero. */}
+      <div
+        aria-hidden="true"
+        className="hidden lg:block absolute top-24 right-12 z-10 opacity-[0.08] mix-blend-screen pointer-events-none"
+      >
+        <CountySeal size={180} className="invert" />
+      </div>
 
-      <div className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-transparent via-brand-brass to-transparent opacity-40" />
-
-      <div className="relative z-10 flex-1 flex items-center px-6 pt-24 pb-40 sm:px-8 sm:pb-48 lg:px-12">
+      <div className="relative z-10 flex-1 flex items-center px-6 pt-24 pb-44 sm:px-8 sm:pb-52 lg:px-12">
         <div className="mx-auto w-full max-w-7xl">
           <div className="max-w-3xl">
-            <div className="mb-6 opacity-0 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-              <span className="inline-flex items-center gap-2 border border-brand-brass-light/50 rounded-full px-4 py-1.5 text-[11px] font-medium tracking-widest uppercase text-brand-brass-light backdrop-blur-sm">
-                <span className="block h-1.5 w-1.5 rounded-full bg-brand-brass-light" />
-                Established 1779
+            <div className="mb-5 opacity-0 animate-fade-up" style={{ animationDelay: "0.1s" }}>
+              <span className="inline-flex items-center gap-2 font-body text-[11px] font-medium tracking-[0.2em] uppercase text-brand-brass-light">
+                {t("home.heroEyebrow")}
+                <span className="inline-block size-1 rounded-full bg-brand-brass-light/60" />
+                {t("home.heroEyebrowEst")}
               </span>
             </div>
 
             <h1
-              className="font-display text-5xl font-bold tracking-tight text-white leading-[1.05] opacity-0 animate-fade-up sm:text-7xl lg:text-[8rem]"
-              style={{ animationDelay: "0.2s" }}
+              id="hero-heading"
+              className="font-display font-bold tracking-tight text-white leading-[1.02] opacity-0 animate-fade-up"
+              style={{
+                animationDelay: "0.2s",
+                fontSize: "clamp(3rem, 7vw, 6.5rem)",
+              }}
             >
-              Sullivan
-              <br />
-              <span className="text-brand-brass-light">County</span>
+              {t("home.heroH1")}
             </h1>
 
-            <div
-              className="mt-5 h-0.5 w-16 origin-left bg-gradient-to-r from-brand-copper via-brand-brass to-brand-brass/20 opacity-0 animate-line-grow sm:w-24"
-              style={{ animationDelay: "0.35s" }}
-            />
-
-            <p
-              className="mt-5 max-w-xl font-accent text-base italic leading-relaxed text-white/70 opacity-0 animate-fade-up sm:text-xl"
-              style={{ animationDelay: "0.55s" }}
-            >
-              Where Tennessee Began and Begins.
-            </p>
-
-            <div className="mt-8 opacity-0 animate-fade-up" style={{ animationDelay: "0.7s" }}>
-              <Link
-                to="/departments"
-                className="group inline-flex items-center gap-3 rounded-sm bg-brand-copper px-8 py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:bg-brand-copper-light hover:shadow-lg hover:shadow-brand-copper/20"
+            {/* Search trigger — opens the existing SiteNav-mounted SearchDialog. */}
+            <div className="mt-7 opacity-0 animate-fade-up" style={{ animationDelay: "0.4s" }}>
+              <button
+                type="button"
+                onClick={openSearch}
+                className="group flex w-full items-center gap-3 rounded-sm border border-white/15 bg-white/95 px-4 py-3.5 text-left shadow-lg shadow-brand-navy/30 backdrop-blur-sm transition-all hover:bg-white sm:px-5 sm:py-4 sm:max-w-xl"
+                aria-label={t("home.heroSearchAria")}
               >
-                Find a Department
-                <svg
-                  aria-hidden="true"
-                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  strokeWidth={2}
-                >
-                  <title>Arrow</title>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </Link>
-              <div className="mt-5 flex items-center gap-3 font-body text-xs font-medium tracking-wide">
-                <a
-                  href="https://sullivantntrustee.gov/property-tax/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center rounded-full border border-white/20 px-4 py-1.5 text-white/70 backdrop-blur-sm transition-all hover:border-brand-brass/40 hover:text-brand-brass-light"
-                >
-                  Pay Property Taxes
-                </a>
-                <Link
-                  to="/history"
-                  className="inline-flex items-center rounded-full border border-white/20 px-4 py-1.5 text-white/70 backdrop-blur-sm transition-all hover:border-brand-brass/40 hover:text-brand-brass-light"
-                >
-                  Our History
-                </Link>
-              </div>
+                <Search aria-hidden="true" className="size-4 shrink-0 text-brand-stone sm:size-5" />
+                <span className="flex-1 font-body text-sm text-brand-stone sm:text-base">
+                  {t("home.heroSearchPlaceholder")}
+                </span>
+                <kbd className="hidden sm:inline-flex items-center rounded border border-brand-surface bg-brand-parchment px-1.5 py-0.5 font-mono text-[10px] font-medium text-brand-stone">
+                  &#8984; K
+                </kbd>
+              </button>
             </div>
-          </div>
 
-          <div className="hidden lg:block absolute right-12 top-1/2 -translate-y-1/2">
-            <div
-              className="opacity-0 animate-fade-in"
-              style={{ animationDelay: "1s", writingMode: "vertical-rl" }}
+            {/* Top-task chips — citizens come hunting; these are the answers. */}
+            <nav
+              aria-label={t("home.topTasksLabel")}
+              className="mt-5 opacity-0 animate-fade-up"
+              style={{ animationDelay: "0.65s" }}
             >
-              <span className="text-xs font-body font-light tracking-[0.4em] uppercase text-white/25">
-                Appalachian Highlands
-              </span>
-            </div>
+              <ul className="flex flex-wrap gap-2 sm:gap-2.5">
+                {TOP_TASKS.map((task) => {
+                  const Icon = task.icon;
+                  const chipClass =
+                    "inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2.5 font-body text-sm font-medium text-white backdrop-blur-sm transition-all hover:border-brand-brass-light/70 hover:bg-white/15 hover:text-brand-brass-light min-h-[44px]";
+                  const label = t(`home.heroChips.${task.labelKey}`);
+                  if (task.kind === "external") {
+                    return (
+                      <li key={task.labelKey}>
+                        <a
+                          href={task.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`${label} ${t("home.opensInNewTab")}`}
+                          className={chipClass}
+                        >
+                          <Icon aria-hidden className="size-4" />
+                          {label}
+                          <ExternalLink aria-hidden className="size-3 opacity-60" />
+                        </a>
+                      </li>
+                    );
+                  }
+                  return (
+                    <li key={task.labelKey}>
+                      <Link to={task.to} className={chipClass}>
+                        <Icon aria-hidden className="size-4" />
+                        {label}
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            </nav>
           </div>
         </div>
       </div>
 
+      {/* Almanac strip — utility-first stat + status row. */}
       <div className="absolute bottom-[50px] sm:bottom-[65px] lg:bottom-[80px] left-0 right-0 z-30">
         <div
-          className="mx-auto max-w-4xl px-6 opacity-0 animate-fade-up"
-          style={{ animationDelay: "0.95s" }}
+          className="mx-auto max-w-5xl px-4 sm:px-6 opacity-0 animate-fade-up"
+          style={{ animationDelay: "0.85s" }}
         >
-          <div className="rounded-sm border border-white/10 bg-brand-navy/40 backdrop-blur-md px-6 py-4 sm:px-8 sm:py-5">
-            <div className="grid grid-cols-4 gap-2 sm:gap-6 lg:gap-10 justify-items-center">
-              <StatItem
-                end={158000}
-                suffix="+"
-                label="Residents"
-                icon={
-                  <svg
-                    className="hidden sm:block h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <title>Residents</title>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128H9m6 0a5.98 5.98 0 00-.786-3.07M9 19.128A9.38 9.38 0 016.375 19.5a9.337 9.337 0 01-4.121-.952 4.125 4.125 0 017.533-2.493M9 19.128v-.003c0-1.113.285-2.16.786-3.07m0 0a5.97 5.97 0 014.428 0M12 9.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z"
-                    />
-                  </svg>
-                }
-              />
-              <StatItem
-                end={430}
-                label="Square Miles"
-                icon={
-                  <svg
-                    className="hidden sm:block h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <title>Area</title>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z"
-                    />
-                  </svg>
-                }
-              />
-              <StatItem
-                end={25}
-                label="Departments"
-                icon={
-                  <svg
-                    className="hidden sm:block h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <title>Departments</title>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z"
-                    />
-                  </svg>
-                }
-              />
-              <StatItem
-                end={1779}
-                label="Established"
-                icon={
-                  <svg
-                    className="hidden sm:block h-5 w-5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    strokeWidth={2}
-                  >
-                    <title>Established</title>
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                }
-              />
+          <div className="rounded-sm border border-white/10 bg-brand-navy/50 backdrop-blur-md px-4 py-3.5 sm:px-6 sm:py-4">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-6 lg:grid-cols-5 lg:gap-8 items-center justify-items-center">
+              <StatItem end={158000} suffix="+" label={t("home.heroAlmanac.residents")} />
+              <StatItem end={430} label={t("home.heroAlmanac.squareMiles")} />
+              <StatItem end={25} label={t("home.heroAlmanac.departments")} />
+
+              {/* Next meeting tile — replaces "Established 1779" (already in eyebrow). */}
+              <NextMeetingTile />
+
+              {/* Live office status — hydration-stable via useOpenStatus placeholder. */}
+              <div className="col-span-2 sm:col-span-3 lg:col-span-1 text-center lg:text-left flex items-center justify-center lg:justify-start gap-2 border-t border-white/10 pt-3 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-6 w-full">
+                <span
+                  aria-hidden="true"
+                  className={`block size-2 rounded-full ${
+                    status.isOpen === true
+                      ? "bg-emerald-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]"
+                      : status.isOpen === false
+                        ? "bg-white/50"
+                        : "bg-white/30"
+                  }`}
+                />
+                <div>
+                  <div className="font-display text-xs font-bold text-white sm:text-sm leading-none">
+                    {status.label}
+                  </div>
+                  <div className="font-body text-[9px] font-medium tracking-widest uppercase text-white/50 sm:text-[10px]">
+                    {t("home.heroAlmanac.countyOffices")}
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 z-20">
-        <MountainDivider fill="#ffffff" />
+        <MountainDivider fill="var(--color-brand-cream)" />
       </div>
     </section>
   );

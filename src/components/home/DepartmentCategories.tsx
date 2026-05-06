@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Building2, DollarSign, Heart, Scale, Shield, Wrench } from "lucide-react";
+import { useTranslation } from "react-i18next";
 import {
   DEPARTMENT_CATEGORIES,
   type DepartmentCategory,
@@ -36,6 +37,7 @@ const CATEGORY_COLORS: Record<DepartmentCategory, string> = {
 
 export function DepartmentCategories() {
   const containerRef = useScrollReveal<HTMLDivElement>();
+  const { t } = useTranslation();
 
   return (
     <section className="relative bg-brand-parchment py-20 sm:py-24">
@@ -46,11 +48,10 @@ export function DepartmentCategories() {
         {/* Heading — centered editorial */}
         <div className="mb-14 text-center" data-reveal>
           <h2 className="font-display text-3xl font-bold text-brand-navy sm:text-4xl">
-            County Departments
+            {t("home.departments.heading")}
           </h2>
           <p className="mx-auto mt-4 max-w-xl font-body text-base text-brand-slate-light leading-relaxed sm:text-lg">
-            Sullivan County government is organized into six service areas to better serve our
-            community
+            {t("home.departments.description")}
           </p>
         </div>
 
@@ -67,11 +68,8 @@ export function DepartmentCategories() {
                 search={{ category: key }}
                 data-reveal
                 data-reveal-delay={index * 60}
-                className="group card-lift relative flex flex-col rounded-sm border border-brand-surface bg-white p-6 overflow-hidden transition-all duration-300 hover:shadow-lg"
+                className="group card-lift relative flex flex-col rounded-sm border border-brand-surface bg-white p-6 overflow-hidden transition-all duration-300 hover:border-brand-navy/15 hover:shadow-lg"
               >
-                {/* Top accent bar */}
-                <div className="absolute top-0 left-0 right-0 h-0.5 bg-brand-copper scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
-
                 <div className="flex items-start gap-4">
                   {/* Category icon */}
                   <div
@@ -94,7 +92,7 @@ export function DepartmentCategories() {
                   </div>
                 </div>
                 <div className="mt-5 flex items-center font-body text-sm font-semibold text-brand-copper transition-colors group-hover:text-brand-copper-light">
-                  <span>Browse departments</span>
+                  <span>{t("home.departments.browse")}</span>
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
                 </div>
               </Link>

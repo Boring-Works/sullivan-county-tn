@@ -5,7 +5,7 @@ test.describe("homepage", () => {
     await page.goto("/");
     await expect(page.locator("nav")).toBeVisible();
     await expect(page.locator("body")).toContainText("Sullivan County");
-    await expect(page.locator("body")).toContainText("Quick Services");
+    await expect(page.locator("body")).toContainText("Most-used services");
   });
 
   test("footer renders", async ({ page }) => {

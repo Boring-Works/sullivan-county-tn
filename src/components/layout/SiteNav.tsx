@@ -107,7 +107,7 @@ export function SiteNav() {
     };
   }, [mobileOpen]);
 
-  // Cmd+K search shortcut
+  // Cmd+K search shortcut + custom event so other components can open the same dialog.
   useEffect(() => {
     function handleKeyDown(e: KeyboardEvent) {
       if ((e.metaKey || e.ctrlKey) && e.key === "k") {
@@ -115,8 +115,15 @@ export function SiteNav() {
         setSearchOpen(true);
       }
     }
+    function handleOpenSearch() {
+      setSearchOpen(true);
+    }
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    window.addEventListener("sullivan:open-search", handleOpenSearch as EventListener);
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("sullivan:open-search", handleOpenSearch as EventListener);
+    };
   }, []);
 
   // Close mega-menu on outside pointer down (touch + click)
@@ -220,8 +227,9 @@ export function SiteNav() {
     <>
       <nav
         aria-label="Main navigation"
+        style={{ top: "var(--banner-height, 0px)" }}
         className={cn(
-          "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+          "fixed left-0 right-0 z-50 transition-all duration-300",
           solid
             ? "bg-white/80 backdrop-blur-lg shadow-sm border-b border-brand-surface"
             : "bg-transparent",
@@ -511,7 +519,8 @@ export function SiteNav() {
       {mobileOpen && (
         <div
           ref={mobileMenuRef}
-          className="lg:hidden fixed top-16 right-0 bottom-0 left-0 z-40 bg-brand-navy overflow-y-auto"
+          style={{ top: "calc(var(--banner-height, 0px) + 4rem)" }}
+          className="lg:hidden fixed right-0 bottom-0 left-0 z-40 bg-brand-navy overflow-y-auto"
           role="dialog"
           aria-modal="true"
           aria-label="Navigation menu"

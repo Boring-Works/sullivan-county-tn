@@ -1,6 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
+import { CountySeal } from "~/components/shared/CountySeal";
+import { InstallPrompt } from "~/components/shared/InstallPrompt";
 import { MountainDividerInverted } from "~/components/shared/MountainDivider";
+import { TelLink } from "~/components/shared/TelLink";
 import { CURRENT_YEAR } from "~/data/site-config";
 
 const QUICK_LINKS = [
@@ -37,9 +40,7 @@ export function SiteFooter() {
           {/* Column 1: County Branding */}
           <div className="md:col-span-1">
             <div className="flex items-center gap-3 mb-6">
-              <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-brand-navy-light border border-brand-brass/20">
-                <span className="font-display text-sm font-bold text-brand-brass-light">SC</span>
-              </div>
+              <CountySeal size={48} className="invert opacity-90 shrink-0" decorative={false} />
               <div>
                 <div className="font-display text-sm font-bold text-brand-cream leading-tight">
                   Sullivan County
@@ -52,9 +53,7 @@ export function SiteFooter() {
             <address className="not-italic space-y-2 font-body text-sm leading-relaxed">
               <p>3411 TN-126, Blountville, TN 37617</p>
               <p>
-                <a href="tel:+14233236417" className="hover:text-brand-cream transition-colors">
-                  (423) 323-6417
-                </a>
+                <TelLink phone="(423) 323-6417" className="hover:text-brand-cream" />
               </p>
               <p className="text-brand-cream/50">Monday&ndash;Friday, 8am&ndash;5pm</p>
             </address>
@@ -146,7 +145,8 @@ export function SiteFooter() {
               <span className="hidden sm:inline text-brand-cream/20">&middot;</span>
               <span className="italic font-accent">Est. 1779</span>
             </div>
-            <div className="flex items-center gap-6">
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 justify-center sm:justify-end">
+              <InstallPrompt />
               <Link to="/ada-compliance" className="hover:text-brand-cream/60 transition-colors">
                 {t("footer.ada")}
               </Link>

@@ -1,0 +1,1 @@
+ALTER TABLE `announcements` ADD `severity` text DEFAULT 'info' NOT NULL;

@@ -10,98 +10,177 @@
     "minutes": "Actas",
     "forms": "Formularios",
     "contact": "Contacto",
-    "payTaxes": "Pagar Impuestos",
+    "payTaxes": "Pagar impuestos",
     "search": "Buscar",
-    "viewAll": "Ver Todos",
-    "viewAllDepartments": "Ver Todos los Departamentos",
-    "countyDepartments": "Departamentos del Condado"
+    "viewAll": "Ver todo",
+    "viewAllDepartments": "Ver todos los departamentos",
+    "countyDepartments": "Departamentos del condado"
   },
   "home": {
-    "heroTitle": "Condado de Sullivan",
-    "heroSubtitle": "Tennessee",
-    "heroTagline": "Donde Comenzó Tennessee",
-    "quickServices": "Servicios Rápidos",
-    "departmentCategories": "Categorías de Departamentos",
-    "latestNews": "Últimas Noticias",
-    "viewAllNews": "Ver Todas las Noticias",
-    "communityHighlights": "Destacados de la Comunidad",
-    "about": "Sobre el Condado de Sullivan"
+    "heroEyebrow": "Condado de Sullivan, Tennessee",
+    "heroEyebrowEst": "Establecido en 1779",
+    "heroH1": "¿Cómo podemos ayudarle hoy?",
+    "heroSearchPlaceholder": "Buscar departamentos, servicios, personas…",
+    "heroSearchAria": "Buscar departamentos, servicios y personas del Condado de Sullivan",
+    "heroChips": {
+      "payTaxes": "Pagar impuestos a la propiedad",
+      "forms": "Formularios",
+      "propertyLookup": "Consulta de propiedades",
+      "meetings": "Reuniones",
+      "contact": "Contacto"
+    },
+    "heroAlmanac": {
+      "residents": "Residentes",
+      "squareMiles": "Millas cuadradas",
+      "departments": "Departamentos",
+      "nextMeeting": "Próxima reunión",
+      "countyOffices": "Oficinas del condado"
+    },
+    "topTasksLabel": "Tareas principales para residentes",
+    "opensInNewTab": "(se abre en una pestaña nueva)",
+    "emergency": {
+      "eyebrow": "Emergencia",
+      "heading": "En caso de emergencia",
+      "body": "Guarde estos números en su teléfono hoy.",
+      "moreResources": "Más recursos",
+      "lifeThreatening": "Emergencia con riesgo de vida",
+      "callNow": "Llame ahora",
+      "sheriff": "Oficina del Alguacil",
+      "sheriffSub": "Asuntos policiales no urgentes",
+      "emergencyMgmt": "Gestión de Emergencias",
+      "emergencyMgmtSub": "Tormentas, cierres de carreteras, evacuaciones"
+    },
+    "services": {
+      "heading": "Servicios más usados",
+      "description": "Pague impuestos, solicite permisos, regístrese para votar y más."
+    },
+    "departments": {
+      "heading": "Encuentre su departamento",
+      "description": "Elija una categoría para encontrar la oficina, el teléfono y los horarios correctos.",
+      "browse": "Ver departamentos"
+    },
+    "promises": {
+      "eyebrow": "Lo que puede esperar",
+      "heading": "Horarios abiertos. Reuniones abiertas. Actualizaciones honestas.",
+      "p1Title": "Horarios y teléfonos reales",
+      "p1Body": "Cada departamento publica sus horarios reales y un teléfono directo. Sin árboles telefónicos.",
+      "p2Title": "Reuniones abiertas, archivo público",
+      "p2Body": "Todas las reuniones de la Comisión del condado son públicas y se transmiten en vivo en YouTube.",
+      "p3Title": "Escuchamos y actualizamos",
+      "p3Body": "Publicamos actualizaciones cada semana. Use el formulario de comentarios en las páginas de departamentos y servicios para decirnos qué falta."
+    },
+    "nextMeeting": {
+      "eyebrow": "Reunión pública",
+      "heading": "Próxima reunión de la Comisión del condado",
+      "body": "Abierta al público. Transmitida en vivo.",
+      "seeFullSchedule": "Ver calendario completo",
+      "addToCalendar": "Agregar al calendario",
+      "watchLive": "Ver en vivo"
+    },
+    "newsSection": {
+      "heading": "Últimas actualizaciones",
+      "description": "Noticias del condado, actas de reuniones y avisos públicos.",
+      "viewAll": "Ver todo",
+      "viewAllMobile": "Ver todas las noticias"
+    },
+    "communities": {
+      "eyebrow": "Explore la región",
+      "heading": "Descubra el Condado de Sullivan",
+      "explore": "Explorar"
+    },
+    "communityMap": {
+      "eyebrow": "Dónde vive",
+      "heading": "Las seis comunidades del Condado de Sullivan",
+      "description": "Toque una comunidad para ver sus servicios, historia e información de contacto.",
+      "svgAria": "Mapa del Condado de Sullivan, Tennessee, mostrando seis comunidades: Kingsport, Bristol, Blountville, Bluff City, Piney Flats y Colonial Heights.",
+      "viewCommunity": "Ver comunidad",
+      "boundarySource": "Datos de límites: U.S. Census TIGER/Line. Los marcadores indican el centro aproximado de cada comunidad."
+    },
+    "about": {
+      "eyebrow": "Su gobierno del condado",
+      "headingPart1": "Sirviendo al Condado de Sullivan",
+      "headingPart2": "Desde 1779",
+      "body": "El segundo condado más antiguo de Tennessee. En 1790, el gobernador William Blount estableció la capital del Territorio del Suroeste en Rocky Mount, la sede política de la que nació Tennessee. Hoy cubrimos 430 millas cuadradas de las Tierras Altas de los Apalaches y servimos a más de 158,000 residentes.",
+      "readFoundingStory": "Lea nuestra historia fundacional",
+      "contactUs": "Contáctenos",
+      "meetCommissioners": "Conozca a sus comisionados"
+    }
   },
   "news": {
-    "title": "Noticias del Condado",
-    "description": "Manténgase al día con los últimos anuncios, eventos y avisos públicos del gobierno del Condado de Sullivan.",
-    "backToNews": "Volver a Noticias",
+    "title": "Noticias del condado",
+    "description": "Manténgase al día con los anuncios, eventos y avisos públicos del gobierno del condado de Sullivan.",
+    "backToNews": "Volver a noticias",
     "articleNotFound": "Artículo no encontrado",
-    "articleNotFoundDesc": "El artículo de noticias que busca no existe o puede haber sido movido."
+    "articleNotFoundDesc": "El artículo de noticias que busca no existe o pudo haber sido movido."
   },
   "forms": {
-    "title": "Formularios en Línea",
-    "description": "Envíe solicitudes, aplicaciones y comentarios al gobierno del Condado de Sullivan en línea. Todas las presentaciones son revisadas por el departamento correspondiente.",
-    "startForm": "Iniciar Formulario",
-    "yourInfo": "Su Información",
-    "fullName": "Nombre Completo",
-    "email": "Correo Electrónico",
-    "phone": "Número de Teléfono",
+    "title": "Formularios en línea",
+    "description": "Envíe solicitudes, peticiones y comentarios al gobierno del condado de Sullivan en línea. Todas las solicitudes son revisadas por el departamento correspondiente.",
+    "startForm": "Comenzar formulario",
+    "yourInfo": "Su información",
+    "fullName": "Nombre completo",
+    "email": "Correo electrónico",
+    "phone": "Número de teléfono",
     "optional": "opcional",
     "required": "Campos obligatorios",
     "submit": "Enviar",
     "submitting": "Enviando...",
-    "submitted": "Presentación Recibida",
-    "submittedDesc": "Gracias por su presentación. El departamento correspondiente la revisará y se comunicará con usted si se necesita información adicional.",
-    "backToForms": "Volver a Formularios",
-    "allForms": "Todos los Formularios",
+    "submitted": "Solicitud recibida",
+    "submittedDesc": "Gracias por su solicitud. El departamento correspondiente la revisará y se comunicará con usted si necesita información adicional.",
+    "backToForms": "Volver a formularios",
+    "allForms": "Todos los formularios",
     "formNotFound": "Formulario no encontrado",
     "formNotFoundDesc": "El formulario que busca no existe.",
     "details": "Detalles"
   },
   "minutes": {
-    "title": "Actas de Reuniones",
-    "description": "Archivo de reuniones de la comisión del Condado de Sullivan, sesiones de comités y audiencias públicas. Descargue agendas y actas como documentos PDF.",
+    "title": "Actas de reuniones",
+    "description": "Archivo de las reuniones de la Comisión del condado de Sullivan, sesiones de comités y audiencias públicas. Descargue agendas y actas en formato PDF.",
     "searchPlaceholder": "Buscar actas...",
-    "allCommittees": "Todos los Comités",
+    "allCommittees": "Todos los comités",
     "records": "registros",
     "record": "registro",
-    "noResults": "No se encontraron actas de reuniones que coincidan con su búsqueda."
+    "noResults": "No se encontraron actas que coincidan con su búsqueda."
   },
   "contact": {
-    "title": "Contactar al Condado de Sullivan",
-    "sendMessage": "Enviar un Mensaje",
-    "name": "Su Nombre",
-    "email": "Correo Electrónico",
+    "title": "Contactar al condado de Sullivan",
+    "sendMessage": "Enviar un mensaje",
+    "name": "Su nombre",
+    "email": "Correo electrónico",
     "subject": "Asunto",
     "message": "Mensaje",
-    "send": "Enviar Mensaje",
+    "send": "Enviar mensaje",
     "sending": "Enviando..."
   },
   "documents": {
-    "title": "Biblioteca de Documentos",
-    "description": "Acceda a documentos oficiales, formularios, agendas y publicaciones del Condado de Sullivan.",
+    "title": "Biblioteca de documentos",
+    "description": "Acceda a documentos oficiales, formularios, agendas y publicaciones del condado de Sullivan.",
     "searchPlaceholder": "Buscar documentos...",
-    "allCategories": "Todas las Categorías"
+    "allCategories": "Todas las categorías"
   },
   "calendar": {
-    "title": "Calendario y Reuniones",
-    "description": "Próximas reuniones, audiencias públicas y eventos del gobierno del Condado de Sullivan."
+    "title": "Calendario y reuniones",
+    "description": "Reuniones próximas, audiencias públicas y eventos del gobierno del condado de Sullivan."
   },
   "commissioners": {
-    "title": "Comisionados del Condado",
-    "description": "El Condado de Sullivan está gobernado por una Comisión del Condado de 24 miembros que representan 11 distritos."
+    "title": "Comisionados del condado",
+    "description": "El condado de Sullivan es gobernado por una Comisión de 24 miembros que representa 11 distritos."
   },
   "footer": {
     "government": "Gobierno",
     "resources": "Recursos",
-    "connect": "Conéctese Con Nosotros",
+    "connect": "Conéctese con nosotros",
     "copyright": "Condado de Sullivan, Tennessee. Todos los derechos reservados.",
-    "ada": "Cumplimiento ADA",
-    "privacy": "Política de Privacidad",
-    "employeeServices": "Servicios para Empleados"
+    "ada": "Cumplimiento de la ADA",
+    "privacy": "Política de privacidad",
+    "employeeServices": "Servicios para empleados"
   },
   "common": {
-    "backToHome": "Ir al Inicio",
-    "refreshPage": "Actualizar Página",
+    "backToHome": "Ir al inicio",
+    "refreshPage": "Actualizar página",
     "errorTitle": "Algo salió mal",
-    "errorDesc": "Encontramos un error inesperado. Intente actualizar la página o regrese a la página de inicio.",
-    "notFoundTitle": "Página No Encontrada",
+    "errorDesc": "Ocurrió un error inesperado. Por favor, actualice la página o vuelva a la página de inicio.",
+    "notFoundTitle": "Página no encontrada",
     "loading": "Cargando...",
     "select": "Seleccionar...",
     "pdf": "PDF",

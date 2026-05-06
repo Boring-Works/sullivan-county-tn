@@ -1,5 +1,7 @@
-import { Clock, Mail, MapPin, Phone, Printer } from "lucide-react";
+import { Clock, Contact, Mail, MapPin, Phone, Printer } from "lucide-react";
+import { TelLink } from "~/components/shared/TelLink";
 import type { ContactInfo, DepartmentCategory } from "~/data/departments";
+import { buildVCard, vCardDataHref } from "~/lib/vcard";
 
 const categoryAccents: Record<DepartmentCategory, string> = {
   administrative: "bg-brand-navy",
@@ -17,6 +19,19 @@ interface ContactCardProps {
 }
 
 export function ContactCard({ head, contact, category }: ContactCardProps) {
+  const vcardHref = vCardDataHref(
+    buildVCard({
+      fullName: head.name,
+      title: head.title,
+      organization: "Sullivan County, Tennessee",
+      phone: contact.phone,
+      email: contact.email,
+      address: contact.address,
+      url: "https://sullivan-county-tn.codyboring.workers.dev",
+    }),
+  );
+  const vcardFile = `${head.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.vcf`;
+
   return (
     <div className="group rounded-sm border border-brand-surface bg-white overflow-hidden shadow-md ring-1 ring-black/5">
       {/* Category accent line */}
@@ -48,10 +63,8 @@ export function ContactCard({ head, contact, category }: ContactCardProps) {
       {/* Contact details */}
       <div className="p-6 flex flex-col gap-4 font-body text-sm">
         <div className="flex items-start gap-2.5">
-          <Phone className="mt-0.5 size-4 shrink-0 text-brand-copper" />
-          <a href={`tel:${contact.phone}`} className="hover:text-brand-navy hover:underline">
-            {contact.phone}
-          </a>
+          <Phone aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-brand-copper" />
+          <TelLink phone={contact.phone} className="hover:text-brand-navy hover:underline" />
         </div>
 
         {contact.fax && (
@@ -79,9 +92,18 @@ export function ContactCard({ head, contact, category }: ContactCardProps) {
         </div>
 
         <div className="flex items-start gap-2.5">
-          <Clock className="mt-0.5 size-4 shrink-0 text-brand-copper" />
+          <Clock aria-hidden="true" className="mt-0.5 size-4 shrink-0 text-brand-copper" />
           <span>{contact.hours}</span>
         </div>
+
+        <a
+          href={vcardHref}
+          download={vcardFile}
+          className="mt-1 inline-flex items-center gap-2 self-start rounded-sm border border-brand-navy/15 bg-brand-parchment px-3 py-1.5 font-body text-xs font-medium text-brand-navy hover:border-brand-copper/40 hover:text-brand-copper transition-colors"
+        >
+          <Contact aria-hidden="true" className="size-3.5" />
+          Save contact
+        </a>
       </div>
     </div>
   );

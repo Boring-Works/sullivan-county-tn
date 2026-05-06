@@ -3,6 +3,7 @@ import { useCallback, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FormField } from "~/components/forms/FormField";
 import { FormLayout } from "~/components/forms/FormLayout";
+import { PageFeedback } from "~/components/shared/PageFeedback";
 import { getFormDefinition } from "~/data/form-definitions";
 import { submitForm } from "~/server/forms";
 import { seo, seoLinks } from "~/utils/seo";
@@ -224,6 +225,7 @@ function FormPage() {
           </button>
         </div>
       </form>
+      <PageFeedback />
     </FormLayout>
   );
 }

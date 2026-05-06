@@ -90,6 +90,8 @@
   --animate-line-grow: lineGrow 1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   --animate-slide-in-right: slideInRight 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
   --animate-scale-in: scaleIn 0.5s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  --animate-emergency-pulse: emergencyPulse 2.4s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  --animate-status-pulse: statusPulse 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite;
 
   @keyframes fadeUp {
     from {
@@ -135,6 +137,28 @@
     to {
       opacity: 1;
       transform: scale(1);
+    }
+  }
+  @keyframes emergencyPulse {
+    0%,
+    100% {
+      opacity: 0.55;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0;
+      transform: scale(1.6);
+    }
+  }
+  @keyframes statusPulse {
+    0%,
+    100% {
+      opacity: 0.7;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 0;
+      transform: scale(2.2);
     }
   }
 }
@@ -225,6 +249,18 @@
       "liga" 1;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* When AnnouncementBanner is active, sets --banner-height; pushes nav + content down. */
+    padding-top: var(--banner-height, 0px);
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 }
 
@@ -258,17 +294,39 @@
   );
 }
 
-/* Card hover lift */
+/* Card hover lift — translate, soft outer shadow, inset depth, and a brass
+   underline that fades in. Adds tactile feel without copper overuse. */
 .card-lift {
+  position: relative;
   transition:
     transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
     box-shadow 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 }
+.card-lift::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-brand-brass) 35%,
+    var(--color-brand-copper) 65%,
+    transparent 100%
+  );
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
 .card-lift:hover {
   transform: translateY(-3px);
   box-shadow:
-    0 12px 40px rgba(12, 30, 51, 0.08),
-    0 4px 12px rgba(12, 30, 51, 0.04);
+    0 14px 44px rgba(12, 30, 51, 0.1),
+    0 4px 12px rgba(12, 30, 51, 0.04),
+    inset 0 0 0 1px rgba(12, 30, 51, 0.04);
+}
+.card-lift:hover::after {
+  opacity: 0.7;
 }
 
 /* Official headshot treatment — unified look for all portraits */
@@ -303,6 +361,57 @@
 }
 [data-reveal="scale"].revealed {
   transform: scale(1);
+}
+
+/* Native scroll-driven reveal — replaces JS IntersectionObserver where supported.
+   Browsers without `animation-timeline: view()` keep the JS fallback above. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    [data-reveal]:not(.revealed) {
+      animation: scrollReveal linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 25%;
+    }
+    [data-reveal="slide-left"]:not(.revealed) {
+      animation-name: scrollRevealSlide;
+    }
+    [data-reveal="scale"]:not(.revealed) {
+      animation-name: scrollRevealScale;
+    }
+    @keyframes scrollReveal {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes scrollRevealSlide {
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+    @keyframes scrollRevealScale {
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+  }
+}
+
+/* View transitions on cross-document navigation — wired via __root.tsx meta. */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+}
+
+/* Department list -> detail transition: shared name lives on the heading. */
+.dept-name-target {
+  view-transition-name: dept-name;
 }
 
 /* Respect user motion preferences */
@@ -349,6 +458,7 @@
     background: white !important;
     color: black !important;
     font-size: 12pt;
+    padding-top: 0 !important;
   }
   * {
     animation: none !important;
@@ -358,6 +468,9 @@
   [data-reveal] {
     break-inside: avoid;
     transform: none !important;
+  }
+  .card-lift::after {
+    display: none !important;
   }
   img {
     max-width: 100% !important;
@@ -372,10 +485,59 @@
   nav a[href]::after {
     content: none !important;
   }
+
+  /* Department detail: PrintableContactCard takes over the page; hide the
+     screen layout entirely. The card itself uses `print:block` to appear. */
+  .dept-detail-main .dept-detail-screen {
+    display: none !important;
+  }
+  .dept-detail-main {
+    padding: 0 !important;
+  }
 }
 
 /* Defer rendering for off-screen sections */
 .content-auto {
   content-visibility: auto;
   contain-intrinsic-size: auto 500px;
+}
+
+/* Interactive county map pins. */
+.map-pin {
+  cursor: pointer;
+}
+.map-pin a {
+  outline: none;
+}
+.map-pin .map-pin-ring {
+  transition:
+    r 0.25s cubic-bezier(0.22, 1, 0.36, 1),
+    stroke-width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.map-pin .map-pin-dot {
+  transition: r 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.map-pin .map-pin-label {
+  transition:
+    fill 0.2s ease,
+    font-size 0.2s ease;
+}
+.map-pin:hover .map-pin-ring,
+.map-pin:focus-within .map-pin-ring {
+  r: 14;
+  stroke-width: 2.5;
+}
+.map-pin:hover .map-pin-dot,
+.map-pin:focus-within .map-pin-dot {
+  r: 7;
+}
+.map-pin:hover .map-pin-label,
+.map-pin:focus-within .map-pin-label {
+  fill: var(--color-brand-copper);
+}
+.map-pin a:focus-visible .map-pin-hit {
+  fill: var(--color-brand-copper);
+  fill-opacity: 0.12;
 }

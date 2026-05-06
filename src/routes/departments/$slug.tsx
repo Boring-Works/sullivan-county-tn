@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { DepartmentDetail } from "~/components/departments/DepartmentDetail";
 import { getDepartmentBySlug } from "~/data/departments";
+import { breadcrumbList, jsonLdString } from "~/lib/jsonld";
 import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/departments/$slug")({
@@ -44,5 +45,22 @@ function DepartmentPage() {
     );
   }
 
-  return <DepartmentDetail department={department} />;
+  const breadcrumbs = jsonLdString(
+    breadcrumbList([
+      { name: "Home", path: "/" },
+      { name: "Departments", path: "/departments" },
+      { name: department.name, path: `/departments/${department.slug}` },
+    ]),
+  );
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data
+        dangerouslySetInnerHTML={{ __html: breadcrumbs }}
+      />
+      <DepartmentDetail department={department} />
+    </>
+  );
 }

@@ -1,6 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Calendar, Clock, ExternalLink, MapPin } from "lucide-react";
+import { Calendar, Clock, Download, ExternalLink, MapPin } from "lucide-react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
+import {
+  COMMISSION_REGULAR_SESSION_NAME,
+  COMMISSION_REGULAR_SESSION_RULE,
+  COURTHOUSE,
+} from "~/data/meetings";
+import { eventJsonLd, jsonLdString } from "~/lib/jsonld";
+import { buildIcs, formatNyDateTime, nextOccurrence, type RecurrenceRule } from "~/lib/recurrence";
 import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/calendar")({
@@ -16,44 +24,58 @@ export const Route = createFileRoute("/calendar")({
   }),
 });
 
-const recurringMeetings = [
+interface RecurringMeeting {
+  name: string;
+  schedule: string;
+  time: string;
+  location: string;
+  notes?: string;
+  link?: string;
+  rule?: RecurrenceRule;
+}
+
+const recurringMeetings: RecurringMeeting[] = [
   {
-    name: "County Commission Regular Session",
+    name: COMMISSION_REGULAR_SESSION_NAME,
     schedule: "3rd Thursday of each month",
     time: "6:30 PM",
-    location: "Sullivan County Courthouse, Blountville",
+    location: COURTHOUSE,
     notes: "Streamed live on YouTube",
     link: "https://www.youtube.com/@sullivancountycommission",
+    rule: COMMISSION_REGULAR_SESSION_RULE,
   },
   {
     name: "County Commission Work Session",
     schedule: "1st Thursday of each month",
     time: "6:30 PM",
-    location: "Sullivan County Courthouse, Blountville",
+    location: COURTHOUSE,
+    rule: { dayOfWeek: 4, nthOfMonth: 1, time: "18:30", durationMinutes: 120 },
   },
   {
     name: "Budget Committee",
     schedule: "As scheduled during budget season (May–June)",
     time: "Varies",
-    location: "Sullivan County Courthouse, Blountville",
+    location: COURTHOUSE,
   },
   {
     name: "Beer Board",
     schedule: "As needed",
     time: "Varies",
-    location: "Sullivan County Courthouse, Blountville",
+    location: COURTHOUSE,
   },
   {
     name: "Planning Commission",
     schedule: "2nd Tuesday of each month",
     time: "6:00 PM",
-    location: "Sullivan County Courthouse, Blountville",
+    location: COURTHOUSE,
+    rule: { dayOfWeek: 2, nthOfMonth: 2, time: "18:00", durationMinutes: 90 },
   },
   {
     name: "Board of Zoning Appeals",
     schedule: "4th Tuesday of each month (as needed)",
     time: "6:00 PM",
-    location: "Sullivan County Courthouse, Blountville",
+    location: COURTHOUSE,
+    rule: { dayOfWeek: 2, nthOfMonth: 4, time: "18:00", durationMinutes: 90 },
   },
 ];
 
@@ -70,6 +92,95 @@ const countyHolidays = [
   { name: "Thanksgiving", date: "4th Thursday & Friday in November" },
   { name: "Christmas Eve & Day", date: "December 24–25" },
 ];
+
+function MeetingRow({ meeting }: { meeting: RecurringMeeting }) {
+  // Computed once on initial render so it ships in SSR HTML (powers Event JSON-LD).
+  const [next] = useState<Date | null>(() => (meeting.rule ? nextOccurrence(meeting.rule) : null));
+
+  const jsonLd = next
+    ? jsonLdString(
+        eventJsonLd({
+          name: meeting.name,
+          start: next,
+          end: new Date(next.getTime() + (meeting.rule?.durationMinutes ?? 60) * 60_000),
+          location: meeting.location,
+          description: meeting.notes,
+        }),
+      )
+    : null;
+
+  function buildIcsHref(start: Date): string {
+    const ics = buildIcs({
+      uid: `${meeting.name.toLowerCase().replace(/\s+/g, "-")}-${start.toISOString()}@sullivancountytn.gov`,
+      title: meeting.name,
+      description: meeting.notes ?? "",
+      location: meeting.location,
+      start,
+      durationMinutes: meeting.rule?.durationMinutes ?? 60,
+    });
+    return `data:text/calendar;charset=utf-8,${encodeURIComponent(ics)}`;
+  }
+
+  return (
+    <div className="group rounded-sm border border-brand-surface bg-white p-5 hover:border-brand-copper/20 transition-colors">
+      {jsonLd && (
+        <script
+          type="application/ld+json"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data
+          dangerouslySetInnerHTML={{ __html: jsonLd }}
+        />
+      )}
+      <div className="flex flex-col sm:flex-row sm:items-start gap-4">
+        <div className="flex size-10 shrink-0 items-center justify-center rounded bg-brand-navy/5">
+          <Calendar aria-hidden="true" className="size-5 text-brand-navy/60" />
+        </div>
+        <div className="flex-1 min-w-0">
+          <h3 className="font-display text-base font-bold text-brand-navy mb-2">{meeting.name}</h3>
+          {next && (
+            <p className="font-body text-sm font-semibold text-brand-copper mb-1.5">
+              Next: {formatNyDateTime(next)}
+            </p>
+          )}
+          <div className="flex flex-col gap-1.5 font-body text-sm text-brand-slate-light">
+            <div className="flex items-center gap-2">
+              <Clock aria-hidden="true" className="size-3.5 shrink-0 text-brand-stone" />
+              <span>
+                {meeting.schedule} — {meeting.time}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <MapPin aria-hidden="true" className="size-3.5 shrink-0 text-brand-stone" />
+              <span>{meeting.location}</span>
+            </div>
+          </div>
+          <div className="mt-3 flex flex-wrap gap-3">
+            {next && (
+              <a
+                href={buildIcsHref(next)}
+                download={`${meeting.name.toLowerCase().replace(/\s+/g, "-")}-${next.toISOString().slice(0, 10)}.ics`}
+                className="inline-flex items-center gap-1.5 font-body text-xs font-medium text-brand-copper hover:text-brand-copper-light hover:underline"
+              >
+                <Download aria-hidden="true" className="size-3" />
+                Add to calendar
+              </a>
+            )}
+            {meeting.link && (
+              <a
+                href={meeting.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 font-body text-xs font-medium text-brand-copper hover:text-brand-copper-light hover:underline"
+              >
+                <ExternalLink aria-hidden="true" className="size-3" />
+                Watch live on YouTube
+              </a>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function CalendarPage() {
   const { t } = useTranslation();
@@ -91,44 +202,7 @@ function CalendarPage() {
           </h2>
           <div className="space-y-3">
             {recurringMeetings.map((meeting) => (
-              <div
-                key={meeting.name}
-                className="group rounded-sm border border-brand-surface bg-white p-5 hover:border-brand-copper/20 transition-colors"
-              >
-                <div className="flex flex-col sm:flex-row sm:items-start gap-4">
-                  <div className="flex size-10 shrink-0 items-center justify-center rounded bg-brand-navy/5">
-                    <Calendar className="size-5 text-brand-navy/60" />
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <h3 className="font-display text-base font-bold text-brand-navy mb-2">
-                      {meeting.name}
-                    </h3>
-                    <div className="flex flex-col gap-1.5 font-body text-sm text-brand-slate-light">
-                      <div className="flex items-center gap-2">
-                        <Clock className="size-3.5 shrink-0 text-brand-stone" />
-                        <span>
-                          {meeting.schedule} — {meeting.time}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <MapPin className="size-3.5 shrink-0 text-brand-stone" />
-                        <span>{meeting.location}</span>
-                      </div>
-                    </div>
-                    {meeting.link && (
-                      <a
-                        href={meeting.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 mt-3 font-body text-xs text-brand-copper hover:text-brand-copper-light hover:underline"
-                      >
-                        <ExternalLink className="size-3" />
-                        Watch Live on YouTube
-                      </a>
-                    )}
-                  </div>
-                </div>
-              </div>
+              <MeetingRow key={meeting.name} meeting={meeting} />
             ))}
           </div>
         </section>

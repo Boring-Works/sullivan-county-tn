@@ -1,5 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight, Phone } from "lucide-react";
+import { OpenStatusPill } from "~/components/shared/OpenStatusPill";
+import { TelLink } from "~/components/shared/TelLink";
 import { Badge } from "~/components/ui/badge";
 import type { Department, DepartmentCategory } from "~/data/departments";
 import { DEPARTMENT_CATEGORIES } from "~/data/departments";
@@ -26,15 +28,19 @@ export function DepartmentCard({ department }: DepartmentCardProps) {
       <div className="h-0.5 bg-brand-copper scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
 
       <div className="p-6 flex-1 flex flex-col">
-        <div className="mb-3">
+        <div className="mb-3 flex flex-wrap items-center gap-2">
           <Badge
             className={`rounded-sm font-body text-[10px] font-medium ${categoryColors[department.category]}`}
           >
             {categoryMeta.label}
           </Badge>
+          <OpenStatusPill hours={department.contact.hours} variant="light" />
         </div>
 
-        <h3 className="font-display text-lg font-bold mb-1">
+        <h3
+          className="font-display text-lg font-bold mb-1"
+          style={{ viewTransitionName: `dept-${department.slug}` }}
+        >
           <Link
             to="/departments/$slug"
             params={{ slug: department.slug }}
@@ -50,13 +56,11 @@ export function DepartmentCard({ department }: DepartmentCardProps) {
 
         <div className="mt-auto flex items-center justify-between">
           <div className="flex items-center gap-2 font-body text-sm text-brand-slate">
-            <Phone className="size-3.5 shrink-0 text-brand-navy/50" />
-            <a
-              href={`tel:${department.contact.phone}`}
+            <Phone aria-hidden="true" className="size-3.5 shrink-0 text-brand-navy/50" />
+            <TelLink
+              phone={department.contact.phone}
               className="hover:text-brand-navy hover:underline"
-            >
-              {department.contact.phone}
-            </a>
+            />
           </div>
 
           <Link
