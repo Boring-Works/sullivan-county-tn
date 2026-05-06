@@ -101,6 +101,10 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
             inputRef.current?.focus();
           }}
         >
+          <Dialog.Title className="sr-only">Search Sullivan County</Dialog.Title>
+          <Dialog.Description className="sr-only">
+            Search across departments, services, news, commissioners, and documents.
+          </Dialog.Description>
           {/* Search input */}
           <div className="flex items-center gap-3 border-b border-brand-surface px-4 py-3">
             <Search className="size-4 shrink-0 text-brand-stone" />
