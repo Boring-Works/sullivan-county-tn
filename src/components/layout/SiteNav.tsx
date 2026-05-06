@@ -241,9 +241,8 @@ export function SiteNav() {
           {/* Center: Desktop Nav */}
           <div className="hidden lg:flex items-center gap-0.5">
             {/* Departments Dropdown */}
-            {/* biome-ignore lint/a11y/noStaticElementInteractions: dropdown container requires mouse handlers for hover interaction */}
             <div
-              className="relative"
+              className="relative group"
               onMouseEnter={() => setMegaMenuOpen(true)}
               onMouseLeave={() => setMegaMenuOpen(false)}
               onKeyDown={handleMegaKeyDown}
@@ -290,8 +289,12 @@ export function SiteNav() {
               </button>
 
               {/* Mega Menu */}
-              {megaMenuOpen && (
-                <div className="absolute left-1/2 -translate-x-1/2 top-full pt-3">
+              <div
+                className={cn(
+                  "absolute left-1/2 -translate-x-1/2 top-full pt-3",
+                  megaMenuOpen ? "block" : "hidden group-hover:block",
+                )}
+              >
                   <div
                     ref={megaMenuRef}
                     className="w-[920px] rounded-md border border-brand-surface bg-white p-8 shadow-2xl shadow-brand-navy/8 animate-scale-in"
@@ -343,9 +346,8 @@ export function SiteNav() {
                         );
                       })}
                     </div>
-                  </div>
                 </div>
-              )}
+              </div>
             </div>
 
             {/* Static Nav Links */}
