@@ -136,9 +136,7 @@ function RootComponent() {
       <RootDocument>
         <AnnouncementBanner />
         <SiteNav />
-        <main id="main-content" tabIndex={-1}>
-          <Outlet />
-        </main>
+        <Outlet />
         <SiteFooter />
       </RootDocument>
     </I18nextProvider>
@@ -176,6 +174,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         {children}
         <script
           type="speculationrules"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: speculation rules requires inline JSON
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               prefetch: [
@@ -190,6 +189,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
         />
         <script
           type="application/ld+json"
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data must be inline JSON
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",

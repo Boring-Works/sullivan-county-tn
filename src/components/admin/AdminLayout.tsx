@@ -114,7 +114,7 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
           })}
         </nav>
 
-        <main className="flex-1 p-6 lg:p-8">
+        <main id="main-content" tabIndex={-1} className="flex-1 p-6 lg:p-8">
           <h1 className="text-2xl font-bold text-gray-900 mb-6">{title}</h1>
           {children}
         </main>
