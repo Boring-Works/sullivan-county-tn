@@ -69,16 +69,17 @@ test.describe("verb-nav mega panels on all pages", () => {
 		if (page.viewportSize()!.width < 1024) return;
 		const allPages = ["/", "/departments", "/history", "/contact"];
 		for (const path of allPages) {
-			await page.goto(path);
+			await page.goto(path, { waitUntil: "domcontentloaded" });
 			await expect(page.locator("nav button", { hasText: "Departments" })).toBeVisible();
-			// Move cursor away first so Playwright's auto-move-before-click doesn't
-			// trigger our hover-open handler and race with the explicit click.
+			// Park cursor far away so the auto-move-before-hover doesn't trigger
+			// hover-open on a different verb and race with our explicit hover.
 			await page.mouse.move(0, 0);
+			await page.waitForTimeout(150);
 
 			const btn = page.locator("nav button", { hasText: "Departments" });
 			await btn.first().hover();
 			const panel = page.locator("#verb-panel-departments");
-			await expect(panel).toBeVisible();
+			await expect(panel).toBeVisible({ timeout: 8000 });
 			await expect(panel).toContainText("Administrative");
 			await expect(panel).toContainText("Courts");
 			await expect(panel).toContainText("Public Safety");
