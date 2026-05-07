@@ -4,12 +4,122 @@ export interface NewsItem {
   author: string;
   slug: string;
   summary: string;
-  url: string;
+  url?: string;
   pdfUrl?: string;
   content?: string[];
+  /** Sanitized HTML content from admin-managed D1 articles. */
+  htmlContent?: string;
 }
 
 export const news: NewsItem[] = [
+  {
+    title: "County Offices Closed Monday, May 25 for Memorial Day",
+    date: "2026-05-07",
+    author: "County Mayor's Office",
+    slug: "memorial-day-2026-office-closures",
+    summary:
+      "All Sullivan County government offices will be closed Monday, May 25, 2026 in observance of Memorial Day. Offices reopen Tuesday, May 26 at 8:00 AM. Emergency services and 911 dispatch are not affected.",
+    content: [
+      "All Sullivan County government offices will be closed on Monday, May 25, 2026 in observance of Memorial Day. This includes the historic courthouse in Blountville and the County Clerk's offices in Blountville, Bristol, and Kingsport.",
+      "Offices will reopen at 8:00 AM on Tuesday, May 26. Emergency services, including 911 dispatch and the Sheriff's Office, are not affected and remain available 24 hours a day.",
+      "Memorial Day is a federal holiday honoring American service members who died while serving in the United States military. Local Memorial Day ceremonies are typically held at veterans' memorials and cemeteries throughout the county.",
+      "If you have a routine matter that needs to be handled in person, please plan to visit the courthouse before Friday, May 22 or after Tuesday, May 26.",
+      "For non-emergency Sheriff matters, call (423) 279-7500. For emergency management questions, call (423) 323-6912. For all other county business, contact the County Mayor's office at (423) 323-6417.",
+    ],
+  },
+  {
+    title: "Grand Opening: Blountville Athletic Park Opens Saturday, May 9",
+    date: "2026-05-04",
+    author: "Sullivan County Communications",
+    slug: "blountville-athletic-park-grand-opening-2026",
+    summary:
+      "Sullivan County will officially open the new Blountville Athletic Park to the public on Saturday, May 9, 2026. The County Mayor's office invites residents to attend the ribbon-cutting ceremony and family activities.",
+    content: [
+      "Sullivan County will officially open the new Blountville Athletic Park to the public on Saturday, May 9, 2026. The County Mayor's office invites all residents to attend the ribbon-cutting ceremony and the family activities scheduled to follow.",
+      "The park serves as a home field for Blountville Little League and as a recreational space for surrounding neighborhoods. It includes ball fields, walking paths, picnic areas, and family-friendly amenities.",
+      "A full schedule for opening day, including the ribbon-cutting time and event details, will be posted at sullivancountytn.gov in the days leading up to the event.",
+      "Volunteers from Blountville Little League will be on-site to answer questions about the upcoming youth baseball and softball season for ages 4 through 16. Coaches, scorekeepers, and field-prep helpers are still needed.",
+      "For questions about the event or directions, contact the County Mayor's office at (423) 323-6417.",
+    ],
+  },
+  {
+    title: "Public Hearing on the 2026-2027 County Budget Set for May 21",
+    date: "2026-05-01",
+    author: "County Mayor's Office",
+    slug: "fy-2027-budget-hearing-may-21",
+    summary:
+      "The Sullivan County Board of Commission will hear public comment on the proposed Fiscal Year 2026-2027 budget at its regular May session on Thursday, May 21 at 6:00 PM at the historic courthouse in Blountville.",
+    content: [
+      "The Sullivan County Board of Commission will receive public comment on the proposed Fiscal Year 2026-2027 county budget at its regular May session, scheduled for Thursday, May 21, 2026 at 6:00 PM at the historic courthouse in Blountville (3411 TN-126).",
+      "Tennessee counties operate on a fiscal year that runs July 1 through June 30. The Commission must adopt a balanced budget before the new fiscal year begins on July 1, 2026. The proposed budget covers operations of all county offices, the Sheriff's Department, the Highway Department, the local match for the school system, and capital projects.",
+      "Residents who wish to speak should sign in at the Clerk's table when they arrive. Written comments may be submitted to the County Mayor's office in advance at (423) 323-6417 or in person at the courthouse during business hours.",
+      "The proposed budget document and proposed property tax rate are posted at sullivancountytn.gov in the days leading up to the hearing, in keeping with state notice requirements.",
+      "Final adoption of the FY 2026-2027 budget is scheduled for the June 2026 regular session.",
+    ],
+  },
+  {
+    title: "Outdoor Burn Permits Required Through May 15",
+    date: "2026-04-28",
+    author: "Sullivan County Communications",
+    slug: "burn-permit-season-ends-may-15-2026",
+    summary:
+      "Anyone planning to burn leaves, brush, or yard debris in Sullivan County must obtain a free burn permit from the Tennessee Division of Forestry through May 15, 2026. Permits take about a minute to obtain at BurnSafeTN.org or in the MyTN app.",
+    content: [
+      "Anyone planning to burn leaves, brush, or yard debris outdoors in Sullivan County must obtain a free burn permit from the Tennessee Division of Forestry through May 15, 2026. State law requires a permit for any open-air fire within 500 feet of a forest, grassland, or woodland during burn-permit season (October 15 through May 15).",
+      "Permits are free. Apply online at BurnSafeTN.org or through the MyTN mobile app. Each permit expires at midnight on the day it is issued, so apply on the day you plan to burn.",
+      "After May 15, permits are not required from the Division of Forestry through the summer months. However, basic fire-safety rules still apply: never burn on a windy day, keep a water source nearby, and stay with the fire until it is fully extinguished.",
+      "Burning household trash, tires, plastics, or treated wood is illegal at all times under state environmental rules and may result in a citation.",
+      "For broadcast burning (forestry, agricultural, or land-clearing applications), call the state burn line at 877-350-BURN (2876).",
+      "Local volunteer fire departments, including East Sullivan County Volunteer Fire Department, can answer questions about safe burning practices and respond to escaped fires. In an emergency, always call 911.",
+    ],
+  },
+  {
+    title: "Memorial Boulevard (SR 126) Improvement Project: What to Expect This Spring",
+    date: "2026-04-21",
+    author: "Sullivan County Communications",
+    slug: "sr-126-memorial-boulevard-project-update-2026",
+    summary:
+      "Phase 1 of the long-planned Memorial Boulevard (SR 126) improvement project began in March 2026. The 8.3-mile project runs from East Center Street in Kingsport to Interstate 81. Drivers should expect daytime lane closures through the spring.",
+    content: [
+      "The Tennessee Department of Transportation (TDOT) began Phase 1 of the Memorial Boulevard (State Route 126) improvement project in March 2026. The 8.3-mile project will reshape the corridor between East Center Street in Kingsport and Interstate 81.",
+      "Drivers should expect possible lane closures between East Center Street and John B. Dennis Highway daily between 9:00 AM and 3:00 PM. Plan extra travel time during peak shopping, school, and commute hours.",
+      "A separate signal upgrade is underway at SR 93 and Bloomingdale Road. Drivers in that area should also expect possible lane closures at various times.",
+      "Sullivan County government does not directly manage state route construction. For project specifics, schedules, and detour information, visit tn.gov/tdot or call the TDOT Region 1 office. For local routing questions, contact the Sullivan County Highway Department.",
+      "Citizens are encouraged to check the weekly TDOT East Tennessee construction reports before long trips on SR 93, SR 126, I-26, or I-81. Reports are published every Thursday at tn.gov/tdot.",
+    ],
+  },
+  {
+    title: "April Commission Meeting: 2026 Budget Discussions, Road Project Updates",
+    date: "2026-04-17",
+    author: "County Mayor's Office",
+    slug: "april-2026-commission-meeting-recap",
+    summary:
+      "The Sullivan County Board of Commission held its regular April session Thursday at the historic courthouse in Blountville. Commissioners reviewed the proposed 2026-2027 budget, received road project updates, and approved routine measures. The next regular session is scheduled for May 21.",
+    content: [
+      "The Sullivan County Board of Commission held its regular April session on Thursday, April 16, 2026 at 6:00 PM at the historic courthouse in Blountville (3411 TN-126). The meeting was open to the public and recorded for the official record.",
+      "The proposed Fiscal Year 2026-2027 budget was the main topic of discussion. Commissioners reviewed department-level requests, debated several line items, and heard from the County Mayor's office about expected revenue. No final vote was taken; budget adoption is scheduled for the June regular session.",
+      "The Highway Department reported on ongoing state and county road projects in Sullivan County, including the Memorial Boulevard (SR 126) improvement project now in Phase 1 between East Center Street in Kingsport and I-81.",
+      "Commissioners approved routine consent items, including monthly financial reports and minor administrative resolutions.",
+      "The next regular session is scheduled for Thursday, May 21, 2026 at 6:00 PM at the historic courthouse. Meetings are open to the public; final agendas are posted at sullivancountyclerktn.com one week before each meeting.",
+      "Citizens with questions about the meeting or the budget process may contact the County Mayor's office at (423) 323-6417.",
+    ],
+  },
+  {
+    title: "Spring Severe Weather: How Sullivan County Residents Can Prepare",
+    date: "2026-04-10",
+    author: "Sullivan County Emergency Management",
+    slug: "spring-severe-weather-preparedness-2026",
+    summary:
+      "April and May are the peak months for severe thunderstorms and tornadoes in Tennessee. Sullivan County Emergency Management urges every household to have a plan, a kit, and a way to receive warnings before the next storm arrives.",
+    content: [
+      "Spring is the most active severe-weather season in East Tennessee. Strong thunderstorms, hail, and tornadoes are most common in April and May. Sullivan County Emergency Management urges every household to be ready before a warning is issued.",
+      "Have a plan. Decide where everyone in your home will go if a tornado warning is issued. The safest place is an interior room on the lowest floor — a bathroom, closet, or hallway with no windows. Mobile homes are not safe; identify a sturdy nearby structure in advance and know how you will reach it.",
+      "Have a kit. Keep at least three days of water, non-perishable food, medications, a flashlight, extra batteries, a battery- or hand-crank radio, and copies of important documents in a waterproof bag. Check it twice a year and replace anything that has expired.",
+      "Have a way to receive warnings. A NOAA weather radio is the most reliable; smartphone weather apps are a strong second line. Outdoor sirens are designed to be heard outdoors and may not wake you indoors at night.",
+      "If a tornado warning is issued for your area, take shelter immediately. Do not wait to see the storm. Most fatal injuries from tornadoes occur to people who were in mobile homes or vehicles.",
+      "For local emergency information, contact Sullivan County Emergency Management at (423) 323-6912. For life-threatening emergencies, always call 911. Free preparedness guides are available at ready.gov and tn.gov/tema.",
+    ],
+  },
   {
     title: "Sullivan County Employee Food Drive",
     date: "2025-11-18",

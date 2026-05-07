@@ -1,16 +1,44 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NewsCard } from "~/components/shared/NewsCard";
-import { news } from "~/data/news";
+import { type NewsItem, news } from "~/data/news";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
+import { listPublicNews } from "~/server/public-news";
+
+const STATIC_FALLBACK = [...news]
+  .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+  .slice(0, 3);
+
+function mergeLatest(d1Items: NewsItem[]): NewsItem[] {
+  const d1Slugs = new Set(d1Items.map((a) => a.slug));
+  const staticItems = news.filter((a) => !d1Slugs.has(a.slug));
+  return [...d1Items, ...staticItems]
+    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
+    .slice(0, 3);
+}
 
 export function NewsSection() {
   const containerRef = useScrollReveal<HTMLDivElement>();
   const { t } = useTranslation();
-  const latestNews = [...news]
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 3);
+  const [latestNews, setLatestNews] = useState<NewsItem[]>(STATIC_FALLBACK);
+
+  useEffect(() => {
+    let cancelled = false;
+    listPublicNews()
+      .then((d1Items) => {
+        if (!cancelled && d1Items.length > 0) {
+          setLatestNews(mergeLatest(d1Items));
+        }
+      })
+      .catch(() => {
+        // D1 unavailable — static fallback already showing.
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   return (
     <section className="bg-white py-20 sm:py-24">

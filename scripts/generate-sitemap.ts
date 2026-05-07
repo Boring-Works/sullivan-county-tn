@@ -6,6 +6,7 @@
 
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { news } from "../src/data/news";
 
 const SITE_URL = "https://sullivan-county-tn.codyboring.workers.dev";
 
@@ -38,16 +39,8 @@ const departmentSlugs = [
   "veterans-office",
 ];
 
-// News slugs (all 7)
-const newsSlugs = [
-  "sullivan-county-employee-food-drive",
-  "blountville-little-league-volunteers-needed",
-  "affidavit-sullivan-co-public-notice",
-  "hotel-motel-tax-law-update",
-  "building-inspector-code-enforcement-job-opening",
-  "household-hazardous-waste-collection",
-  "gis-interactive-zoning-map",
-];
+// News slugs — sourced from src/data/news.ts so additions stay in sync.
+const newsSlugs = news.map((article) => article.slug);
 
 // Heritage site slugs — must match src/data/heritage-sites.ts
 const heritageSiteSlugs = [

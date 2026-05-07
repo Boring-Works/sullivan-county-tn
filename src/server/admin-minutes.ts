@@ -9,16 +9,9 @@ import {
   deleteMinutesEntrySchema,
   updateMinutesEntrySchema,
 } from "~/lib/schemas/minutes";
+import { getDB } from "~/server/env";
 import { requireAdmin } from "~/server/guard";
 import { rateLimit } from "~/server/rate-limit";
-
-function getD1() {
-  return import("cloudflare:workers").then(({ env }) => {
-    const d1 = (env as Record<string, unknown>).DB as D1Database | undefined;
-    if (!d1) throw new Error("D1 not available");
-    return d1;
-  });
-}
 
 function sanitize(content: string): string {
   return sanitizeHtml(content, { allowedTags: [], allowedAttributes: {} });
@@ -27,7 +20,7 @@ function sanitize(content: string): string {
 export const listMinutes = createServerFn({ method: "GET" }).handler(async () => {
   await requireAdmin();
 
-  const d1 = await getD1();
+  const d1 = getDB();
   const db = getDb(d1);
   return db.select().from(meetingMinutes).orderBy(desc(meetingMinutes.date)).all();
 });
@@ -38,7 +31,7 @@ export const createMinutesEntry = createServerFn({ method: "POST" })
     await requireAdmin();
     rateLimit("admin-minutes-mutate", 30, 60000);
 
-    const d1 = await getD1();
+    const d1 = getDB();
     const db = getDb(d1);
     const id = ulid();
     const now = new Date().toISOString();
@@ -64,7 +57,7 @@ export const updateMinutesEntry = createServerFn({ method: "POST" })
     await requireAdmin();
     rateLimit("admin-minutes-mutate", 30, 60000);
 
-    const d1 = await getD1();
+    const d1 = getDB();
     const db = getDb(d1);
 
     const existing = await db
@@ -98,7 +91,7 @@ export const deleteMinutesEntry = createServerFn({ method: "POST" })
     await requireAdmin();
     rateLimit("admin-minutes-mutate", 30, 60000);
 
-    const d1 = await getD1();
+    const d1 = getDB();
     const db = getDb(d1);
 
     const existing = await db

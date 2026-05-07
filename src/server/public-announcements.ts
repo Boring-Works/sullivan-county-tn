@@ -2,13 +2,10 @@ import { createServerFn } from "@tanstack/react-start";
 import { and, desc, eq, isNull, lte, or } from "drizzle-orm";
 import { getDb } from "~/db";
 import { announcements } from "~/db/schema";
+import { getEnv } from "~/server/env";
 
-function getD1() {
-  return import("cloudflare:workers").then(({ env }) => {
-    const d1 = (env as Record<string, unknown>).DB as D1Database | undefined;
-    if (!d1) return null;
-    return d1;
-  });
+function getD1Optional(): D1Database | null {
+  return getEnv().DB ?? null;
 }
 
 export interface PublicAnnouncement {
@@ -21,7 +18,7 @@ export interface PublicAnnouncement {
 
 export const listPublicAnnouncements = createServerFn({ method: "GET" }).handler(
   async (): Promise<PublicAnnouncement[]> => {
-    const d1 = await getD1();
+    const d1 = getD1Optional();
     if (!d1) return [];
     const db = getDb(d1);
     const now = new Date().toISOString();

@@ -1,10 +1,19 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { NewsCard } from "~/components/shared/NewsCard";
-import { news } from "~/data/news";
+import { type NewsItem, news } from "~/data/news";
+import { listPublicNews } from "~/server/public-news";
 import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/news/")({
+  loader: async () => {
+    try {
+      const d1News = await listPublicNews();
+      return { d1News };
+    } catch {
+      return { d1News: [] as NewsItem[] };
+    }
+  },
   component: NewsPage,
   head: () => ({
     meta: seo({
@@ -18,12 +27,19 @@ export const Route = createFileRoute("/news/")({
   }),
 });
 
-const sortedNews = [...news].sort(
-  (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
-);
+function mergeAndSort(d1Items: NewsItem[]): NewsItem[] {
+  const d1Slugs = new Set(d1Items.map((a) => a.slug));
+  const staticItems = news.filter((a) => !d1Slugs.has(a.slug));
+  return [...d1Items, ...staticItems].sort(
+    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime(),
+  );
+}
 
 function NewsPage() {
   const { t } = useTranslation();
+  const { d1News } = Route.useLoaderData();
+  const allNews = mergeAndSort(d1News);
+
   return (
     <main id="main-content" className="pt-24 pb-14">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -35,7 +51,7 @@ function NewsPage() {
           {t("news.description")}
         </p>
         <div className="flex flex-col gap-6 max-w-3xl">
-          {sortedNews.map((item) => (
+          {allNews.map((item) => (
             <NewsCard key={item.slug} item={item} />
           ))}
         </div>

@@ -1,29 +1,42 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { Button } from "~/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
+import { loginSchema } from "~/lib/schemas/auth";
 import { login } from "~/server/auth";
 
 export const Route = createFileRoute("/admin/login")({
   component: LoginPage,
 });
 
+type LoginValues = { password: string };
+
 function LoginPage() {
   const navigate = useNavigate();
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
+  const form = useForm<LoginValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: { password: "" },
+  });
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
+  async function onSubmit(values: LoginValues) {
     try {
-      await login({ data: { password } });
+      await login({ data: values });
+      toast.success("Signed in");
       navigate({ to: "/admin" });
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Login failed");
-    } finally {
-      setLoading(false);
+      const message = err instanceof Error ? err.message : "Login failed";
+      toast.error(message);
+      form.setError("password", { message });
     }
   }
 
@@ -31,45 +44,41 @@ function LoginPage() {
     <main
       id="main-content"
       tabIndex={-1}
-      className="flex min-h-screen items-center justify-center bg-gray-50 px-4"
+      className="flex min-h-screen items-center justify-center bg-brand-cream px-4"
     >
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-lg bg-brand-navy">
-            <span className="font-display text-lg font-bold text-brand-brass">SC</span>
+          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-sm bg-brand-navy">
+            <span className="font-display text-lg font-bold text-brand-brass-light">SC</span>
           </div>
-          <h1 className="text-xl font-bold text-gray-900">Admin Login</h1>
-          <p className="mt-1 text-sm text-gray-500">Sullivan County CMS</p>
+          <h1 className="font-display text-xl font-bold text-brand-navy">Admin Login</h1>
+          <p className="mt-1 font-body text-sm text-brand-stone">Sullivan County CMS</p>
         </div>
 
-        <form
-          onSubmit={handleSubmit}
-          className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm"
-        >
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1.5">
-            Password
-          </label>
-          <input
-            id="password"
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            className="mb-4 w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
-          />
-
-          {error && (
-            <p className="mb-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>
-          )}
-
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full rounded-md bg-brand-navy px-4 py-2 text-sm font-semibold text-white hover:bg-brand-navy/90 disabled:opacity-50 transition-colors"
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="rounded-sm border border-brand-surface bg-white p-6 shadow-sm space-y-4"
           >
-            {loading ? "Signing in..." : "Sign In"}
-          </button>
-        </form>
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Password</FormLabel>
+                  <FormControl>
+                    <Input type="password" autoComplete="current-password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
+              {form.formState.isSubmitting ? "Signing in..." : "Sign In"}
+            </Button>
+          </form>
+        </Form>
       </div>
     </main>
   );

@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { ulid } from "ulidx";
 import { contactFormSchema } from "~/lib/schemas/contact";
+import { getKV } from "~/server/env";
 import { rateLimit } from "~/server/rate-limit";
 
 export const submitContactForm = createServerFn({ method: "POST" })
@@ -22,13 +23,10 @@ export const submitContactForm = createServerFn({ method: "POST" })
     };
 
     try {
-      const { env } = await import("cloudflare:workers");
-      const kv = (env as Record<string, unknown>).CONTACT_SUBMISSIONS as KVNamespace | undefined;
-      if (kv) {
-        await kv.put(`submission:${id}`, JSON.stringify(submission), {
-          expirationTtl: 60 * 60 * 24 * 90,
-        });
-      }
+      const kv = getKV();
+      await kv.put(`submission:${id}`, JSON.stringify(submission), {
+        expirationTtl: 60 * 60 * 24 * 90,
+      });
     } catch {
       console.error(
         JSON.stringify({ event: "contact_submission_store_failed", reason: "KV unavailable" }),

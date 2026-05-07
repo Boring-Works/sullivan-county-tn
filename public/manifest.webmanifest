@@ -1,18 +1,75 @@
 {
+  "id": "/",
   "name": "Sullivan County, Tennessee",
   "short_name": "Sullivan County TN",
-  "description": "Official government website for Sullivan County, Tennessee",
+  "description": "Official government website for Sullivan County, Tennessee — citizen services, departments, public records, and emergency information.",
   "start_url": "/",
+  "scope": "/",
+  "lang": "en-US",
+  "dir": "ltr",
   "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "orientation": "portrait-primary",
   "background_color": "#faf8f5",
   "theme_color": "#0c1e33",
+  "categories": ["government", "education", "lifestyle"],
+  "handle_links": "preferred",
+  "launch_handler": {
+    "client_mode": "navigate-existing"
+  },
   "icons": [
-    { "src": "/android-chrome-192x192.png", "sizes": "192x192", "type": "image/png" },
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
     {
       "src": "/android-chrome-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
-  ]
+  ],
+  "shortcuts": [
+    {
+      "name": "Pay property taxes",
+      "short_name": "Pay Taxes",
+      "url": "/property-taxes",
+      "description": "Look up your parcel and pay your county property taxes"
+    },
+    {
+      "name": "Weather & alerts",
+      "short_name": "Weather",
+      "url": "/weather",
+      "description": "Current conditions, 7-day forecast, and active severe-weather alerts"
+    },
+    {
+      "name": "Contact a department",
+      "short_name": "Contact",
+      "url": "/contact",
+      "description": "Phone numbers, hours, and a contact form for every county office"
+    },
+    {
+      "name": "Calendar & meetings",
+      "short_name": "Calendar",
+      "url": "/calendar",
+      "description": "Upcoming county commission meetings and committee schedules"
+    }
+  ],
+  "share_target": {
+    "action": "/contact",
+    "method": "GET",
+    "params": {
+      "title": "subject",
+      "text": "message",
+      "url": "url"
+    }
+  }
 }

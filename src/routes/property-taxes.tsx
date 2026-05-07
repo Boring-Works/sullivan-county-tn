@@ -15,6 +15,12 @@ import { ParcelLookup } from "~/components/property-taxes/ParcelLookup";
 import { OpenStatusPill } from "~/components/shared/OpenStatusPill";
 import { PageFeedback } from "~/components/shared/PageFeedback";
 import { TelLink } from "~/components/shared/TelLink";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "~/components/ui/accordion";
 import { breadcrumbList } from "~/lib/jsonld";
 import { SITE_URL, seo, seoLinks } from "~/utils/seo";
 
@@ -268,24 +274,26 @@ function PropertyTaxesPage() {
           <h2 id="faq-heading" className="font-display text-2xl font-bold text-brand-navy">
             Common questions
           </h2>
-          <div className="mt-5 divide-y divide-brand-surface rounded-sm border border-brand-surface bg-white">
-            {FAQ.map((item) => (
-              <details key={item.question} className="group">
-                <summary className="flex cursor-pointer items-center justify-between gap-4 px-5 py-4 font-display text-base font-semibold text-brand-navy hover:bg-brand-parchment/40">
-                  <span>{item.question}</span>
-                  <span
-                    aria-hidden="true"
-                    className="text-brand-stone transition-transform group-open:rotate-90"
-                  >
-                    <ArrowRight className="size-4" />
-                  </span>
-                </summary>
-                <div className="px-5 pb-5 font-body text-sm text-brand-slate-light leading-relaxed">
+          <Accordion
+            type="single"
+            collapsible
+            className="mt-5 rounded-sm border border-brand-surface bg-white"
+          >
+            {FAQ.map((item, i) => (
+              <AccordionItem
+                key={item.question}
+                value={`faq-${i}`}
+                className="border-b last:border-b-0"
+              >
+                <AccordionTrigger className="px-5 py-4 font-display text-base font-semibold text-brand-navy hover:bg-brand-parchment/40 hover:no-underline">
+                  {item.question}
+                </AccordionTrigger>
+                <AccordionContent className="px-5 pb-5 font-body text-sm text-brand-slate-light leading-relaxed">
                   {item.answer}
-                </div>
-              </details>
+                </AccordionContent>
+              </AccordionItem>
             ))}
-          </div>
+          </Accordion>
         </section>
 
         {/* Help / who to call */}

@@ -5,14 +5,11 @@ import { ulid } from "ulidx";
 import { getDb } from "~/db";
 import { adminSessions } from "~/db/schema";
 import { loginSchema } from "~/lib/schemas/auth";
+import { getDB, getEnv } from "~/server/env";
 import { rateLimit } from "~/server/rate-limit";
 
 const SESSION_COOKIE = "admin_session";
 const SESSION_TTL_MS = 24 * 60 * 60 * 1000;
-
-function getEnv() {
-  return import("cloudflare:workers").then(({ env }) => env as Record<string, unknown>);
-}
 
 async function timingSafeEqual(a: string, b: string): Promise<boolean> {
   // crypto.subtle has no timingSafeEqual on Workers (Node-only API). Hash
@@ -40,8 +37,7 @@ export const login = createServerFn({ method: "POST" })
 
     let adminPassword: string | undefined;
     try {
-      const env = await getEnv();
-      adminPassword = env.ADMIN_PASSWORD as string | undefined;
+      adminPassword = getEnv().ADMIN_PASSWORD;
     } catch {
       adminPassword = process.env.ADMIN_PASSWORD;
     }
@@ -55,17 +51,13 @@ export const login = createServerFn({ method: "POST" })
     const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString();
 
     try {
-      const env = await getEnv();
-      const d1 = env.DB as D1Database | undefined;
-      if (d1) {
-        const db = getDb(d1);
-        await db.delete(adminSessions).where(lt(adminSessions.expiresAt, now));
-        await db.insert(adminSessions).values({
-          id: sessionId,
-          createdAt: now,
-          expiresAt,
-        });
-      }
+      const db = getDb(getDB());
+      await db.delete(adminSessions).where(lt(adminSessions.expiresAt, now));
+      await db.insert(adminSessions).values({
+        id: sessionId,
+        createdAt: now,
+        expiresAt,
+      });
     } catch {
       console.error(JSON.stringify({ event: "session_create_failed", reason: "D1 unavailable" }));
     }
@@ -88,27 +80,21 @@ export const validateAdmin = createServerFn({ method: "GET" }).handler(async () 
   }
 
   try {
-    const env = await getEnv();
-    const d1 = env.DB as D1Database | undefined;
-    if (d1) {
-      const db = getDb(d1);
-      const session = await db
-        .select()
-        .from(adminSessions)
-        .where(eq(adminSessions.id, sessionId))
-        .get();
+    const db = getDb(getDB());
+    const session = await db
+      .select()
+      .from(adminSessions)
+      .where(eq(adminSessions.id, sessionId))
+      .get();
 
-      if (!session || new Date(session.expiresAt) < new Date()) {
-        return { valid: false };
-      }
-      return { valid: true };
+    if (!session || new Date(session.expiresAt) < new Date()) {
+      return { valid: false };
     }
+    return { valid: true };
   } catch {
     console.error(JSON.stringify({ event: "auth_validation_failed", reason: "D1 unavailable" }));
     return { valid: false };
   }
-
-  return { valid: false };
 });
 
 export const logout = createServerFn({ method: "POST" }).handler(async () => {
@@ -116,12 +102,8 @@ export const logout = createServerFn({ method: "POST" }).handler(async () => {
 
   if (sessionId) {
     try {
-      const env = await getEnv();
-      const d1 = env.DB as D1Database | undefined;
-      if (d1) {
-        const db = getDb(d1);
-        await db.delete(adminSessions).where(eq(adminSessions.id, sessionId));
-      }
+      const db = getDb(getDB());
+      await db.delete(adminSessions).where(eq(adminSessions.id, sessionId));
     } catch {
       // Session cleanup best-effort
     }

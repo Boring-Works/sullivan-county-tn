@@ -13,6 +13,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { CountySeal } from "~/components/shared/CountySeal";
 import { MountainDivider } from "~/components/shared/MountainDivider";
+import { WeatherBadge } from "~/components/shared/WeatherBadge";
 import { COMMISSION_REGULAR_SESSION_RULE } from "~/data/meetings";
 import { useOpenStatus } from "~/hooks/useOpenStatus";
 import { formatNyDateShort, formatNyTime, nextOccurrence } from "~/lib/recurrence";
@@ -119,7 +120,7 @@ export function HeroBanner() {
     <section
       ref={heroRef}
       aria-labelledby="hero-heading"
-      className="relative min-h-screen flex flex-col overflow-hidden bg-brand-navy"
+      className="relative min-h-[85vh] flex flex-col overflow-hidden bg-brand-navy"
     >
       <picture>
         <source
@@ -282,7 +283,7 @@ export function HeroBanner() {
               className="mt-4 flex flex-wrap items-center gap-2 opacity-0 animate-fade-up"
               style={{ animationDelay: "0.8s" }}
             >
-              <span className="font-body text-[11px] font-medium tracking-widest uppercase text-white/50">
+              <span className="font-body text-[11px] font-medium tracking-widest uppercase text-white/50 mr-1">
                 {t("home.heroSuggestionsLabel")}
               </span>
               {SUGGESTED_HERO_QUERIES.map((q) => (
@@ -290,7 +291,7 @@ export function HeroBanner() {
                   key={q}
                   type="button"
                   onClick={() => openSearch(q)}
-                  className="font-body text-xs text-white/80 underline decoration-white/30 underline-offset-4 transition-colors hover:text-white hover:decoration-brand-brass-light"
+                  className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1.5 font-body text-xs font-medium text-white/90 backdrop-blur-sm transition-all hover:border-brand-brass-light/60 hover:bg-white/15 hover:text-brand-brass-light min-h-[36px]"
                 >
                   {q}
                 </button>
@@ -343,6 +344,11 @@ export function HeroBanner() {
               <StatItem value="158,000+" label={t("home.heroAlmanac.residents")} />
               <StatItem value="430" label={t("home.heroAlmanac.squareMiles")} />
               <StatItem value="25" label={t("home.heroAlmanac.departments")} />
+            </div>
+
+            {/* Live weather badge — small "the site is alive" cue. */}
+            <div className="mt-3 flex justify-center lg:justify-start">
+              <WeatherBadge />
             </div>
           </div>
         </div>

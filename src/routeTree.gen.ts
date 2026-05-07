@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WeatherRouteImport } from './routes/weather'
 import { Route as VisitRouteImport } from './routes/visit'
 import { Route as TransportationRouteImport } from './routes/transportation'
 import { Route as PropertyTaxesRouteImport } from './routes/property-taxes'
@@ -47,6 +48,11 @@ import { Route as AdminNewsIdRouteImport } from './routes/admin/news/$id'
 import { Route as AdminMinutesNewRouteImport } from './routes/admin/minutes/new'
 import { Route as AdminMinutesIdRouteImport } from './routes/admin/minutes/$id'
 
+const WeatherRoute = WeatherRouteImport.update({
+  id: '/weather',
+  path: '/weather',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VisitRoute = VisitRouteImport.update({
   id: '/visit',
   path: '/visit',
@@ -250,6 +256,7 @@ export interface FileRoutesByFullPath {
   '/property-taxes': typeof PropertyTaxesRoute
   '/transportation': typeof TransportationRoute
   '/visit': typeof VisitRoute
+  '/weather': typeof WeatherRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/submissions': typeof AdminSubmissionsRoute
@@ -289,6 +296,7 @@ export interface FileRoutesByTo {
   '/property-taxes': typeof PropertyTaxesRoute
   '/transportation': typeof TransportationRoute
   '/visit': typeof VisitRoute
+  '/weather': typeof WeatherRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/submissions': typeof AdminSubmissionsRoute
@@ -329,6 +337,7 @@ export interface FileRoutesById {
   '/property-taxes': typeof PropertyTaxesRoute
   '/transportation': typeof TransportationRoute
   '/visit': typeof VisitRoute
+  '/weather': typeof WeatherRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/submissions': typeof AdminSubmissionsRoute
@@ -370,6 +379,7 @@ export interface FileRouteTypes {
     | '/property-taxes'
     | '/transportation'
     | '/visit'
+    | '/weather'
     | '/admin/announcements'
     | '/admin/login'
     | '/admin/submissions'
@@ -409,6 +419,7 @@ export interface FileRouteTypes {
     | '/property-taxes'
     | '/transportation'
     | '/visit'
+    | '/weather'
     | '/admin/announcements'
     | '/admin/login'
     | '/admin/submissions'
@@ -448,6 +459,7 @@ export interface FileRouteTypes {
     | '/property-taxes'
     | '/transportation'
     | '/visit'
+    | '/weather'
     | '/admin/announcements'
     | '/admin/login'
     | '/admin/submissions'
@@ -488,6 +500,7 @@ export interface RootRouteChildren {
   PropertyTaxesRoute: typeof PropertyTaxesRoute
   TransportationRoute: typeof TransportationRoute
   VisitRoute: typeof VisitRoute
+  WeatherRoute: typeof WeatherRoute
   AdminAnnouncementsRoute: typeof AdminAnnouncementsRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminSubmissionsRoute: typeof AdminSubmissionsRoute
@@ -513,6 +526,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/weather': {
+      id: '/weather'
+      path: '/weather'
+      fullPath: '/weather'
+      preLoaderRoute: typeof WeatherRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/visit': {
       id: '/visit'
       path: '/visit'
@@ -792,6 +812,7 @@ const rootRouteChildren: RootRouteChildren = {
   PropertyTaxesRoute: PropertyTaxesRoute,
   TransportationRoute: TransportationRoute,
   VisitRoute: VisitRoute,
+  WeatherRoute: WeatherRoute,
   AdminAnnouncementsRoute: AdminAnnouncementsRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminSubmissionsRoute: AdminSubmissionsRoute,

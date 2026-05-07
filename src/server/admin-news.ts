@@ -10,16 +10,9 @@ import {
   deleteNewsArticleSchema,
   updateNewsArticleSchema,
 } from "~/lib/schemas/news";
+import { getDB } from "~/server/env";
 import { requireAdmin } from "~/server/guard";
 import { rateLimit } from "~/server/rate-limit";
-
-function getD1() {
-  return import("cloudflare:workers").then(({ env }) => {
-    const d1 = (env as Record<string, unknown>).DB as D1Database | undefined;
-    if (!d1) throw new Error("D1 not available");
-    return d1;
-  });
-}
 
 function sanitize(content: string): string {
   return sanitizeHtml(content, { allowedTags: [], allowedAttributes: {} });
@@ -27,7 +20,7 @@ function sanitize(content: string): string {
 
 export const listNews = createServerFn({ method: "GET" }).handler(async () => {
   await requireAdmin();
-  const d1 = await getD1();
+  const d1 = getDB();
   const db = getDb(d1);
   return db.select().from(newsArticles).orderBy(desc(newsArticles.publishedAt)).all();
 });
@@ -36,7 +29,7 @@ export const getNewsArticle = createServerFn({ method: "GET" })
   .inputValidator(z.object({ id: z.string().min(1, "ID is required") }))
   .handler(async ({ data }) => {
     await requireAdmin();
-    const d1 = await getD1();
+    const d1 = getDB();
     const db = getDb(d1);
     return db.select().from(newsArticles).where(eq(newsArticles.id, data.id)).get();
   });
@@ -46,7 +39,7 @@ export const createNewsArticle = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await requireAdmin();
     rateLimit("admin-news-mutate", 30, 60000);
-    const d1 = await getD1();
+    const d1 = getDB();
     const db = getDb(d1);
     const existingSlug = await db
       .select({ id: newsArticles.id })
@@ -84,7 +77,7 @@ export const updateNewsArticle = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await requireAdmin();
     rateLimit("admin-news-mutate", 30, 60000);
-    const d1 = await getD1();
+    const d1 = getDB();
     const db = getDb(d1);
 
     const existing = await db
@@ -126,7 +119,7 @@ export const deleteNewsArticle = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await requireAdmin();
     rateLimit("admin-news-mutate", 30, 60000);
-    const d1 = await getD1();
+    const d1 = getDB();
     const db = getDb(d1);
 
     const existing = await db

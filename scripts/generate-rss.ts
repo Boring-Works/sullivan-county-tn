@@ -6,60 +6,7 @@
 
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-
-// Inline the news data since we can't import from src with path aliases
-const news = [
-  {
-    title: "Sullivan County Employee Food Drive",
-    date: "2025-11-18",
-    author: "Nick Johnson",
-    slug: "sullivan-county-employee-food-drive",
-    summary:
-      "Sullivan County employees organize a food drive to support the local community during the holiday season.",
-  },
-  {
-    title: "Blountville Little League Volunteers Needed",
-    date: "2025-10-31",
-    author: "Nick Johnson",
-    slug: "blountville-little-league-volunteers-needed",
-    summary: "Blountville Little League is seeking volunteers for the upcoming season.",
-  },
-  {
-    title: "Affidavit Sullivan Co Public Notice",
-    date: "2025-10-02",
-    author: "Nick Johnson",
-    slug: "affidavit-sullivan-co-public-notice",
-    summary: "Public notice affidavit issued by Sullivan County for official county business.",
-  },
-  {
-    title: "Hotel/Motel Tax Law Update",
-    date: "2025-07-10",
-    author: "Nick Johnson",
-    slug: "hotel-motel-tax-law-update",
-    summary: "New law regarding hotel/motel tax effective July 1, 2025.",
-  },
-  {
-    title: "Building Inspector & Code Enforcement Job Opening",
-    date: "2025-06-05",
-    author: "Nick Johnson",
-    slug: "building-inspector-code-enforcement-job-opening",
-    summary: "Sullivan County is hiring a Building Inspector and Code Enforcement Officer.",
-  },
-  {
-    title: "Household Hazardous Waste Collection Event",
-    date: "2024-08-30",
-    author: "Sullivan County",
-    slug: "household-hazardous-waste-collection",
-    summary: "Free household hazardous waste collection event for Sullivan County residents.",
-  },
-  {
-    title: "GIS Interactive Zoning Map Now Available",
-    date: "2022-05-17",
-    author: "Sullivan County",
-    slug: "gis-interactive-zoning-map",
-    summary: "Sullivan County's interactive GIS zoning map is now available online.",
-  },
-];
+import { news } from "../src/data/news";
 
 const SITE_URL = "https://sullivan-county-tn.codyboring.workers.dev";
 
@@ -72,7 +19,10 @@ function escapeXml(str: string): string {
     .replace(/'/g, "&apos;");
 }
 
-const items = news
+// Sort by date descending so newest articles render first.
+const sorted = [...news].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+const items = sorted
   .map(
     (article) => `    <item>
       <title>${escapeXml(article.title)}</title>
@@ -101,4 +51,4 @@ ${items}
 
 const outPath = resolve(import.meta.dirname, "../public/rss.xml");
 writeFileSync(outPath, rss, "utf-8");
-console.log(`RSS feed written to ${outPath} (${news.length} items)`);
+console.log(`RSS feed written to ${outPath} (${sorted.length} items)`);

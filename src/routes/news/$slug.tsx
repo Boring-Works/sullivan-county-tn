@@ -1,31 +1,44 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { NewsDetail } from "~/components/news/NewsDetail";
 import { getNewsBySlug } from "~/data/news";
+import { getPublicNewsArticle } from "~/server/public-news";
 import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/news/$slug")({
+  loader: async ({ params }) => {
+    // Static articles take precedence (existing URLs remain stable).
+    const staticArticle = getNewsBySlug(params.slug);
+    if (staticArticle) return { article: staticArticle };
+
+    // Fall through to D1 for admin-published articles.
+    try {
+      const d1Article = await getPublicNewsArticle({ data: { slug: params.slug } });
+      return { article: d1Article ?? null };
+    } catch {
+      return { article: null };
+    }
+  },
   component: NewsArticlePage,
-  head: ({ params }) => {
-    const article = getNewsBySlug(params.slug);
+  head: ({ loaderData }) => {
+    const article = loaderData?.article;
     return {
       meta: article
         ? seo({
             title: `${article.title} — Sullivan County, TN`,
             description: article.summary,
             image: "/images/og/og-courthouse.jpg",
-            url: `/news/${params.slug}`,
+            url: `/news/${article.slug}`,
             type: "article",
             publishedTime: article.date,
           })
         : [],
-      links: article ? seoLinks(`/news/${params.slug}`) : [],
+      links: article ? seoLinks(`/news/${article.slug}`) : [],
     };
   },
 });
 
 function NewsArticlePage() {
-  const { slug } = Route.useParams();
-  const article = getNewsBySlug(slug);
+  const { article } = Route.useLoaderData();
 
   if (!article) {
     return (

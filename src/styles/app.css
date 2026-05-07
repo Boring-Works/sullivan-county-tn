@@ -164,25 +164,29 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
+  /* Sharp corners — civic restraint, not SaaS. shadcn primitives inherit this. */
+  --radius: 0.125rem;
+  /* Cream page background to match brand-cream, not pure white. */
+  --background: oklch(0.984 0.005 80);
+  --foreground: oklch(0.225 0.012 250); /* ~brand-slate */
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --card-foreground: oklch(0.225 0.012 250);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
+  --popover-foreground: oklch(0.225 0.012 250);
+  /* Brand-navy as primary */
+  --primary: oklch(0.252 0.046 247);
+  --primary-foreground: oklch(0.984 0.005 80);
+  --secondary: oklch(0.94 0.01 80); /* parchment */
+  --secondary-foreground: oklch(0.252 0.046 247);
+  --muted: oklch(0.94 0.01 80);
+  --muted-foreground: oklch(0.5 0.02 80); /* ~brand-stone */
+  /* Brand-copper as accent */
+  --accent: oklch(0.55 0.13 38);
+  --accent-foreground: oklch(0.984 0.005 80);
+  --destructive: oklch(0.55 0.13 38); /* same as accent — copper signals caution civically */
+  --border: oklch(0.9 0.01 80);
+  --input: oklch(0.9 0.01 80);
+  --ring: oklch(0.55 0.13 38);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -346,17 +350,31 @@
   filter: saturate(1) contrast(1.05) brightness(1.02);
 }
 
-/* Scroll-reveal animation system */
+/* Scroll-reveal animation system.
+ *
+ * Default state is VISIBLE — accessibility + no-JS + reduced-motion + headless
+ * snapshots all see content. The hide-then-reveal effect is opt-in via the
+ * `.js-reveal-armed` class on <html> that useScrollReveal adds at hook init.
+ * If JS fails to add it, content is visible. */
 [data-reveal] {
-  opacity: 0;
-  transform: translateY(24px);
   transition:
     opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1),
     transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
 }
+.js-reveal-armed [data-reveal]:not(.revealed) {
+  opacity: 0;
+  transform: translateY(24px);
+}
 [data-reveal].revealed {
   opacity: 1;
   transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .js-reveal-armed [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
 }
 [data-reveal="slide-left"] {
   transform: translateX(-24px);

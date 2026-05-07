@@ -4,6 +4,7 @@ import { getFormDefinition } from "~/data/form-definitions";
 import { getDb } from "~/db";
 import { formSubmissions } from "~/db/schema";
 import { submitFormSchema } from "~/lib/schemas/forms";
+import { getDB } from "~/server/env";
 import { rateLimit } from "~/server/rate-limit";
 
 export const submitForm = createServerFn({ method: "POST" })
@@ -32,22 +33,18 @@ export const submitForm = createServerFn({ method: "POST" })
     const now = new Date().toISOString();
 
     try {
-      const { env } = await import("cloudflare:workers");
-      const d1 = (env as Record<string, unknown>).DB as D1Database | undefined;
-      if (d1) {
-        const db = getDb(d1);
-        await db.insert(formSubmissions).values({
-          id,
-          formType: data.formType,
-          status: "new",
-          name: data.name,
-          email: data.email,
-          phone: data.phone ?? null,
-          data: JSON.stringify(data.fields),
-          createdAt: now,
-          updatedAt: now,
-        });
-      }
+      const db = getDb(getDB());
+      await db.insert(formSubmissions).values({
+        id,
+        formType: data.formType,
+        status: "new",
+        name: data.name,
+        email: data.email,
+        phone: data.phone ?? null,
+        data: JSON.stringify(data.fields),
+        createdAt: now,
+        updatedAt: now,
+      });
     } catch {
       console.error(
         JSON.stringify({ event: "form_submission_store_failed", reason: "D1 unavailable" }),

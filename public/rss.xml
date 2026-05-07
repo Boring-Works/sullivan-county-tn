@@ -6,8 +6,64 @@
     <atom:link href="https://sullivan-county-tn.codyboring.workers.dev/rss.xml" rel="self" type="application/rss+xml"/>
     <description>Official news and announcements from Sullivan County, Tennessee government.</description>
     <language>en-us</language>
-    <lastBuildDate>Mon, 02 Mar 2026 05:25:22 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 07 May 2026 21:13:33 GMT</lastBuildDate>
     <managingEditor>mayor@sullivancountytn.gov (Sullivan County Mayor's Office)</managingEditor>
+    <item>
+      <title>County Offices Closed Monday, May 25 for Memorial Day</title>
+      <link>https://sullivan-county-tn.codyboring.workers.dev/news/memorial-day-2026-office-closures</link>
+      <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/memorial-day-2026-office-closures</guid>
+      <description>All Sullivan County government offices will be closed Monday, May 25, 2026 in observance of Memorial Day. Offices reopen Tuesday, May 26 at 8:00 AM. Emergency services and 911 dispatch are not affected.</description>
+      <pubDate>Thu, 07 May 2026 00:00:00 GMT</pubDate>
+      <dc:creator>County Mayor&apos;s Office</dc:creator>
+    </item>
+    <item>
+      <title>Grand Opening: Blountville Athletic Park Opens Saturday, May 9</title>
+      <link>https://sullivan-county-tn.codyboring.workers.dev/news/blountville-athletic-park-grand-opening-2026</link>
+      <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/blountville-athletic-park-grand-opening-2026</guid>
+      <description>Sullivan County will officially open the new Blountville Athletic Park to the public on Saturday, May 9, 2026. The County Mayor&apos;s office invites residents to attend the ribbon-cutting ceremony and family activities.</description>
+      <pubDate>Mon, 04 May 2026 00:00:00 GMT</pubDate>
+      <dc:creator>Sullivan County Communications</dc:creator>
+    </item>
+    <item>
+      <title>Public Hearing on the 2026-2027 County Budget Set for May 21</title>
+      <link>https://sullivan-county-tn.codyboring.workers.dev/news/fy-2027-budget-hearing-may-21</link>
+      <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/fy-2027-budget-hearing-may-21</guid>
+      <description>The Sullivan County Board of Commission will hear public comment on the proposed Fiscal Year 2026-2027 budget at its regular May session on Thursday, May 21 at 6:00 PM at the historic courthouse in Blountville.</description>
+      <pubDate>Fri, 01 May 2026 00:00:00 GMT</pubDate>
+      <dc:creator>County Mayor&apos;s Office</dc:creator>
+    </item>
+    <item>
+      <title>Outdoor Burn Permits Required Through May 15</title>
+      <link>https://sullivan-county-tn.codyboring.workers.dev/news/burn-permit-season-ends-may-15-2026</link>
+      <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/burn-permit-season-ends-may-15-2026</guid>
+      <description>Anyone planning to burn leaves, brush, or yard debris in Sullivan County must obtain a free burn permit from the Tennessee Division of Forestry through May 15, 2026. Permits take about a minute to obtain at BurnSafeTN.org or in the MyTN app.</description>
+      <pubDate>Tue, 28 Apr 2026 00:00:00 GMT</pubDate>
+      <dc:creator>Sullivan County Communications</dc:creator>
+    </item>
+    <item>
+      <title>Memorial Boulevard (SR 126) Improvement Project: What to Expect This Spring</title>
+      <link>https://sullivan-county-tn.codyboring.workers.dev/news/sr-126-memorial-boulevard-project-update-2026</link>
+      <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/sr-126-memorial-boulevard-project-update-2026</guid>
+      <description>Phase 1 of the long-planned Memorial Boulevard (SR 126) improvement project began in March 2026. The 8.3-mile project runs from East Center Street in Kingsport to Interstate 81. Drivers should expect daytime lane closures through the spring.</description>
+      <pubDate>Tue, 21 Apr 2026 00:00:00 GMT</pubDate>
+      <dc:creator>Sullivan County Communications</dc:creator>
+    </item>
+    <item>
+      <title>April Commission Meeting: 2026 Budget Discussions, Road Project Updates</title>
+      <link>https://sullivan-county-tn.codyboring.workers.dev/news/april-2026-commission-meeting-recap</link>
+      <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/april-2026-commission-meeting-recap</guid>
+      <description>The Sullivan County Board of Commission held its regular April session Thursday at the historic courthouse in Blountville. Commissioners reviewed the proposed 2026-2027 budget, received road project updates, and approved routine measures. The next regular session is scheduled for May 21.</description>
+      <pubDate>Fri, 17 Apr 2026 00:00:00 GMT</pubDate>
+      <dc:creator>County Mayor&apos;s Office</dc:creator>
+    </item>
+    <item>
+      <title>Spring Severe Weather: How Sullivan County Residents Can Prepare</title>
+      <link>https://sullivan-county-tn.codyboring.workers.dev/news/spring-severe-weather-preparedness-2026</link>
+      <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/spring-severe-weather-preparedness-2026</guid>
+      <description>April and May are the peak months for severe thunderstorms and tornadoes in Tennessee. Sullivan County Emergency Management urges every household to have a plan, a kit, and a way to receive warnings before the next storm arrives.</description>
+      <pubDate>Fri, 10 Apr 2026 00:00:00 GMT</pubDate>
+      <dc:creator>Sullivan County Emergency Management</dc:creator>
+    </item>
     <item>
       <title>Sullivan County Employee Food Drive</title>
       <link>https://sullivan-county-tn.codyboring.workers.dev/news/sullivan-county-employee-food-drive</link>
@@ -20,7 +76,7 @@
       <title>Blountville Little League Volunteers Needed</title>
       <link>https://sullivan-county-tn.codyboring.workers.dev/news/blountville-little-league-volunteers-needed</link>
       <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/blountville-little-league-volunteers-needed</guid>
-      <description>Blountville Little League is seeking volunteers for the upcoming season.</description>
+      <description>Blountville Little League is seeking volunteers for the upcoming season. Community members are encouraged to get involved.</description>
       <pubDate>Fri, 31 Oct 2025 00:00:00 GMT</pubDate>
       <dc:creator>Nick Johnson</dc:creator>
     </item>
@@ -36,7 +92,7 @@
       <title>Hotel/Motel Tax Law Update</title>
       <link>https://sullivan-county-tn.codyboring.workers.dev/news/hotel-motel-tax-law-update</link>
       <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/hotel-motel-tax-law-update</guid>
-      <description>New law regarding hotel/motel tax effective July 1, 2025.</description>
+      <description>New law regarding hotel/motel tax effective July 1, 2025. Important update for hospitality businesses in Sullivan County.</description>
       <pubDate>Thu, 10 Jul 2025 00:00:00 GMT</pubDate>
       <dc:creator>Nick Johnson</dc:creator>
     </item>
@@ -44,7 +100,7 @@
       <title>Building Inspector &amp; Code Enforcement Job Opening</title>
       <link>https://sullivan-county-tn.codyboring.workers.dev/news/building-inspector-code-enforcement-job-opening</link>
       <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/building-inspector-code-enforcement-job-opening</guid>
-      <description>Sullivan County is hiring a Building Inspector and Code Enforcement Officer.</description>
+      <description>Sullivan County is hiring a Building Inspector and Code Enforcement Officer. Qualified candidates are encouraged to apply.</description>
       <pubDate>Thu, 05 Jun 2025 00:00:00 GMT</pubDate>
       <dc:creator>Nick Johnson</dc:creator>
     </item>
@@ -52,7 +108,7 @@
       <title>Household Hazardous Waste Collection Event</title>
       <link>https://sullivan-county-tn.codyboring.workers.dev/news/household-hazardous-waste-collection</link>
       <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/household-hazardous-waste-collection</guid>
-      <description>Free household hazardous waste collection event for Sullivan County residents.</description>
+      <description>Free household hazardous waste collection event at Sullivan Central Middle School. Residents can safely dispose of hazardous materials.</description>
       <pubDate>Fri, 30 Aug 2024 00:00:00 GMT</pubDate>
       <dc:creator>Sullivan County</dc:creator>
     </item>
@@ -60,7 +116,7 @@
       <title>GIS Interactive Zoning Map Now Available</title>
       <link>https://sullivan-county-tn.codyboring.workers.dev/news/gis-interactive-zoning-map</link>
       <guid isPermaLink="true">https://sullivan-county-tn.codyboring.workers.dev/news/gis-interactive-zoning-map</guid>
-      <description>Sullivan County&apos;s interactive GIS zoning map is now available online.</description>
+      <description>Sullivan County&apos;s interactive GIS zoning map is now available online. Search by address and view zoning designations.</description>
       <pubDate>Tue, 17 May 2022 00:00:00 GMT</pubDate>
       <dc:creator>Sullivan County</dc:creator>
     </item>

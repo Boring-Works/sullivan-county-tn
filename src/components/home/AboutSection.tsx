@@ -63,22 +63,20 @@ export function AboutSection() {
                 {t("home.about.readFoundingStory")} &rarr;
               </Link>
             </p>
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div className="mt-6 flex flex-wrap gap-6">
               <Link
                 to="/contact"
-                className="group inline-flex items-center gap-3 rounded-sm bg-brand-copper px-7 py-3 font-body text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:bg-brand-copper-light hover:shadow-lg hover:shadow-brand-copper/20"
+                className="inline-flex items-center gap-1.5 font-body text-sm font-semibold text-brand-copper transition-colors hover:text-brand-copper-light"
               >
                 {t("home.about.contactUs")}
-                <ArrowRight
-                  aria-hidden="true"
-                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1"
-                />
+                <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
               </Link>
               <Link
                 to="/commissioners"
-                className="inline-flex items-center rounded-sm border border-brand-navy/15 px-7 py-3 font-body text-sm font-medium tracking-wide text-brand-navy transition-all duration-300 hover:border-brand-navy/30 hover:bg-brand-navy/5"
+                className="inline-flex items-center gap-1.5 font-body text-sm font-medium text-brand-slate transition-colors hover:text-brand-navy"
               >
                 {t("home.about.meetCommissioners")}
+                <ArrowRight aria-hidden="true" className="h-3.5 w-3.5" />
               </Link>
             </div>
           </div>

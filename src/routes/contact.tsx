@@ -1,9 +1,31 @@
+import { zodResolver } from "@hookform/resolvers/zod";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { AlertCircle, CheckCircle, Clock, ExternalLink, MapPin, Phone, Send } from "lucide-react";
-import { type FormEvent, useState } from "react";
+import { CheckCircle, Clock, ExternalLink, MapPin, Phone, Send } from "lucide-react";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { toast } from "sonner";
 import { PageFeedback } from "~/components/shared/PageFeedback";
 import { TelLink } from "~/components/shared/TelLink";
+import { Button } from "~/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "~/components/ui/form";
+import { Input } from "~/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "~/components/ui/select";
+import { Textarea } from "~/components/ui/textarea";
+import { contactFormSchema } from "~/lib/schemas/contact";
 import { submitContactForm } from "~/server/contact";
 import { seo, seoLinks } from "~/utils/seo";
 
@@ -239,33 +261,35 @@ const SUBJECT_OPTIONS = [
   "Other",
 ] as const;
 
+type ContactFormValues = {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
+  website?: string;
+};
+
 function ContactForm() {
   const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
-  const [sending, setSending] = useState(false);
-  const [error, setError] = useState("");
 
-  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    setSending(true);
-    setError("");
+  const form = useForm<ContactFormValues>({
+    resolver: zodResolver(contactFormSchema),
+    defaultValues: { name: "", email: "", subject: "", message: "", website: "" },
+  });
 
-    const formData = new FormData(e.currentTarget);
+  async function onSubmit(values: ContactFormValues) {
     try {
-      await submitContactForm({
-        data: {
-          name: formData.get("name") as string,
-          email: formData.get("email") as string,
-          subject: formData.get("subject") as string,
-          message: formData.get("message") as string,
-          website: formData.get("website") as string,
-        },
-      });
+      await submitContactForm({ data: values });
       setSubmitted(true);
+      toast.success("Message sent", {
+        description: "A staff member will respond within 2 business days.",
+      });
+      form.reset();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong. Please try again.");
-    } finally {
-      setSending(false);
+      const message =
+        err instanceof Error ? err.message : "Something went wrong. Please try again.";
+      toast.error("Couldn't send message", { description: message });
     }
   }
 
@@ -298,103 +322,103 @@ function ContactForm() {
         Have a question or need assistance? Fill out the form below and a county staff member will
         respond within 2 business days.
       </p>
-      <form onSubmit={handleSubmit} className="space-y-5">
-        {/* Honeypot — hidden from humans, bots fill it and get rejected */}
-        <div className="absolute -left-[9999px]" aria-hidden="true">
-          <label htmlFor="contact-website">Website</label>
-          <input type="text" id="contact-website" name="website" tabIndex={-1} autoComplete="off" />
-        </div>
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <div>
-            <label
-              htmlFor="contact-name"
-              className="block font-body text-sm font-medium text-brand-navy mb-1.5"
-            >
-              {t("contact.name")} <span className="text-brand-copper">*</span>
-            </label>
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
+          {/* Honeypot — hidden from humans, bots fill it and get rejected */}
+          <div className="absolute -left-[9999px]" aria-hidden="true">
+            <label htmlFor="contact-website">Website</label>
             <input
-              id="contact-name"
-              name="name"
+              {...form.register("website")}
               type="text"
-              required
-              className="w-full rounded-sm border border-brand-surface bg-brand-cream px-3.5 py-2.5 font-body text-sm text-brand-slate placeholder:text-brand-stone/60 focus:border-brand-copper focus:outline-none focus:ring-1 focus:ring-brand-copper/30 transition-colors"
-              placeholder="Your full name"
+              id="contact-website"
+              tabIndex={-1}
+              autoComplete="off"
             />
           </div>
-          <div>
-            <label
-              htmlFor="contact-email"
-              className="block font-body text-sm font-medium text-brand-navy mb-1.5"
-            >
-              {t("contact.email")} <span className="text-brand-copper">*</span>
-            </label>
-            <input
-              id="contact-email"
+          <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    {t("contact.name")} <span className="text-brand-copper">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input placeholder="Your full name" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="email"
-              type="email"
-              required
-              className="w-full rounded-sm border border-brand-surface bg-brand-cream px-3.5 py-2.5 font-body text-sm text-brand-slate placeholder:text-brand-stone/60 focus:border-brand-copper focus:outline-none focus:ring-1 focus:ring-brand-copper/30 transition-colors"
-              placeholder="your.email@example.com"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>
+                    {t("contact.email")} <span className="text-brand-copper">*</span>
+                  </FormLabel>
+                  <FormControl>
+                    <Input type="email" placeholder="your.email@example.com" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
-        </div>
-        <div>
-          <label
-            htmlFor="contact-subject"
-            className="block font-body text-sm font-medium text-brand-navy mb-1.5"
-          >
-            {t("contact.subject")} <span className="text-brand-copper">*</span>
-          </label>
-          <select
-            id="contact-subject"
+          <FormField
+            control={form.control}
             name="subject"
-            required
-            className="w-full rounded-sm border border-brand-surface bg-brand-cream px-3.5 py-2.5 font-body text-sm text-brand-slate focus:border-brand-copper focus:outline-none focus:ring-1 focus:ring-brand-copper/30 transition-colors"
-          >
-            <option value="">Select a topic...</option>
-            {SUBJECT_OPTIONS.map((opt) => (
-              <option key={opt} value={opt}>
-                {opt}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div>
-          <label
-            htmlFor="contact-message"
-            className="block font-body text-sm font-medium text-brand-navy mb-1.5"
-          >
-            {t("contact.message")} <span className="text-brand-copper">*</span>
-          </label>
-          <textarea
-            id="contact-message"
-            name="message"
-            required
-            rows={5}
-            className="w-full rounded-sm border border-brand-surface bg-brand-cream px-3.5 py-2.5 font-body text-sm text-brand-slate placeholder:text-brand-stone/60 focus:border-brand-copper focus:outline-none focus:ring-1 focus:ring-brand-copper/30 transition-colors resize-y"
-            placeholder="How can we help you?"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  {t("contact.subject")} <span className="text-brand-copper">*</span>
+                </FormLabel>
+                <Select onValueChange={field.onChange} value={field.value}>
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a topic..." />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    {SUBJECT_OPTIONS.map((opt) => (
+                      <SelectItem key={opt} value={opt}>
+                        {opt}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+                <FormMessage />
+              </FormItem>
+            )}
           />
-        </div>
-        {error && (
-          <div className="flex items-start gap-2.5 rounded-sm border border-red-200 bg-red-50 p-4">
-            <AlertCircle className="mt-0.5 size-4 shrink-0 text-red-600" />
-            <p className="font-body text-sm text-red-700">{error}</p>
+          <FormField
+            control={form.control}
+            name="message"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  {t("contact.message")} <span className="text-brand-copper">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Textarea rows={5} placeholder="How can we help you?" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <div className="flex items-center justify-between gap-4 pt-1">
+            <p className="font-body text-xs text-brand-stone">
+              <span className="text-brand-copper">*</span> Required fields
+            </p>
+            <Button type="submit" disabled={form.formState.isSubmitting}>
+              <Send className="size-3.5" />
+              {form.formState.isSubmitting ? t("contact.sending") : t("contact.send")}
+            </Button>
           </div>
-        )}
-        <div className="flex items-center justify-between gap-4 pt-1">
-          <p className="font-body text-xs text-brand-stone">
-            <span className="text-brand-copper">*</span> Required fields
-          </p>
-          <button
-            type="submit"
-            disabled={sending}
-            className="inline-flex items-center gap-2 rounded-sm bg-brand-copper px-6 py-2.5 font-body text-sm font-semibold text-white transition-colors hover:bg-brand-copper-light disabled:opacity-60 disabled:cursor-not-allowed"
-          >
-            <Send className="size-3.5" />
-            {sending ? t("contact.sending") : t("contact.send")}
-          </button>
-        </div>
-      </form>
+        </form>
+      </Form>
     </div>
   );
 }

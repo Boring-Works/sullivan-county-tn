@@ -9,16 +9,9 @@ import {
   deleteAnnouncementSchema,
   updateAnnouncementSchema,
 } from "~/lib/schemas/announcements";
+import { getDB } from "~/server/env";
 import { requireAdmin } from "~/server/guard";
 import { rateLimit } from "~/server/rate-limit";
-
-function getD1() {
-  return import("cloudflare:workers").then(({ env }) => {
-    const d1 = (env as Record<string, unknown>).DB as D1Database | undefined;
-    if (!d1) throw new Error("D1 not available");
-    return d1;
-  });
-}
 
 function sanitize(content: string): string {
   return sanitizeHtml(content, { allowedTags: [], allowedAttributes: {} });
@@ -26,7 +19,7 @@ function sanitize(content: string): string {
 
 export const listAnnouncements = createServerFn({ method: "GET" }).handler(async () => {
   await requireAdmin();
-  const d1 = await getD1();
+  const d1 = getDB();
   const db = getDb(d1);
   return db.select().from(announcements).orderBy(desc(announcements.createdAt)).all();
 });
@@ -36,7 +29,7 @@ export const createAnnouncement = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await requireAdmin();
     rateLimit("admin-announcements-mutate", 30, 60000);
-    const d1 = await getD1();
+    const d1 = getDB();
     const db = getDb(d1);
     const id = ulid();
     const now = new Date().toISOString();
@@ -62,7 +55,7 @@ export const updateAnnouncement = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await requireAdmin();
     rateLimit("admin-announcements-mutate", 30, 60000);
-    const d1 = await getD1();
+    const d1 = getDB();
     const db = getDb(d1);
 
     const existing = await db
@@ -94,7 +87,7 @@ export const deleteAnnouncement = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await requireAdmin();
     rateLimit("admin-announcements-mutate", 30, 60000);
-    const d1 = await getD1();
+    const d1 = getDB();
     const db = getDb(d1);
 
     const existing = await db

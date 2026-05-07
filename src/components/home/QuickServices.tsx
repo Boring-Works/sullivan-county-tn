@@ -91,7 +91,7 @@ export function QuickServices() {
                 <h3 className="font-display text-sm font-bold text-brand-slate group-hover:text-brand-navy transition-colors">
                   {service.title}
                 </h3>
-                <p className="mt-1.5 font-body text-xs leading-relaxed text-brand-slate-light">
+                <p className="hidden sm:block mt-1.5 font-body text-xs leading-relaxed text-brand-slate-light">
                   {service.description}
                 </p>
                 {service.submission && (

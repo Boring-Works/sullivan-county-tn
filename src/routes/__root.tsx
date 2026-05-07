@@ -16,6 +16,9 @@ import { MobileBottomTabBar } from "~/components/layout/MobileBottomTabBar";
 import { NotFound } from "~/components/layout/NotFound";
 import { SiteFooter } from "~/components/layout/SiteFooter";
 import { SiteNav } from "~/components/layout/SiteNav";
+import { OfflineBanner } from "~/components/shared/OfflineBanner";
+import { Toaster } from "~/components/ui/sonner";
+import { TooltipProvider } from "~/components/ui/tooltip";
 import i18n, { syncStoredLocale } from "~/lib/i18n";
 import { governmentOrganizationJsonLd, jsonLdString } from "~/lib/jsonld";
 import appCss from "~/styles/app.css?url";
@@ -128,15 +131,29 @@ export const Route = createRootRoute({
 });
 
 function RootComponent() {
+  // Register the service worker once, in production only.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (!("serviceWorker" in navigator)) return;
+    if (!import.meta.env.PROD) return;
+    navigator.serviceWorker.register("/sw.js").catch((err) => {
+      console.error("[sw] registration failed", err);
+    });
+  }, []);
+
   return (
     <I18nextProvider i18n={i18n}>
-      <RootDocument>
-        <AnnouncementBanner />
-        <SiteNav />
-        <Outlet />
-        <SiteFooter />
-        <MobileBottomTabBar />
-      </RootDocument>
+      <TooltipProvider delayDuration={300}>
+        <RootDocument>
+          <OfflineBanner />
+          <AnnouncementBanner />
+          <SiteNav />
+          <Outlet />
+          <SiteFooter />
+          <MobileBottomTabBar />
+          <Toaster richColors position="bottom-right" closeButton />
+        </RootDocument>
+      </TooltipProvider>
     </I18nextProvider>
   );
 }

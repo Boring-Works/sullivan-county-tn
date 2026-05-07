@@ -44,7 +44,13 @@ export function NewsDetail({ article }: NewsDetailProps) {
 
       {/* Article body */}
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10">
-        {article.content && article.content.length > 0 ? (
+        {article.htmlContent ? (
+          <div
+            className="prose prose-slate max-w-none font-body text-base leading-relaxed text-brand-slate [&_p]:mb-4 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-bold [&_h2]:text-brand-navy [&_h2]:mt-8 [&_h2]:mb-3 [&_ul]:list-disc [&_ul]:pl-5 [&_ul]:space-y-1 [&_a]:text-brand-copper [&_a]:underline [&_a]:hover:text-brand-copper-light"
+            // biome-ignore lint/security/noDangerouslySetInnerHtml: pre-sanitized by sanitize-html on ingest
+            dangerouslySetInnerHTML={{ __html: article.htmlContent }}
+          />
+        ) : article.content && article.content.length > 0 ? (
           <div className="space-y-5">
             {article.content.map((paragraph) => (
               <p
