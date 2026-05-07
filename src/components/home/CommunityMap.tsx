@@ -55,12 +55,11 @@ export function CommunityMap() {
         </div>
 
         <div data-reveal className="relative">
-          <svg
-            viewBox={VIEW_BOX}
-            className="block w-full h-auto"
-            role="img"
-            aria-label={t("home.communityMap.svgAria")}
-          >
+          {/* No role="img" — the SVG contains focusable <a> children, so it must
+              behave as a navigation surface, not a single image. The <title>
+              below provides the accessible name; per-pin links are independently
+              focusable. */}
+          <svg viewBox={VIEW_BOX} className="block w-full h-auto">
             <title>{t("home.communityMap.svgAria")}</title>
 
             {/* Faint topo grid behind the county shape. */}

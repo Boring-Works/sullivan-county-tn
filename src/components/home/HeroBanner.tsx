@@ -238,14 +238,14 @@ export function HeroBanner() {
               <button
                 type="button"
                 onClick={openSearch}
-                className="group flex w-full items-center gap-3 rounded-sm border border-white/15 bg-white/95 px-4 py-3.5 text-left shadow-lg shadow-brand-navy/30 backdrop-blur-sm transition-all hover:bg-white sm:px-5 sm:py-4 sm:max-w-xl"
+                className="group flex w-full items-center gap-3 rounded-sm border border-white/15 bg-white px-4 py-3.5 text-left shadow-lg shadow-brand-navy/30 transition-all hover:bg-white sm:px-5 sm:py-4 sm:max-w-xl"
                 aria-label={t("home.heroSearchAria")}
               >
                 <Search aria-hidden="true" className="size-4 shrink-0 text-brand-stone sm:size-5" />
                 <span className="flex-1 font-body text-sm text-brand-stone sm:text-base">
                   {t("home.heroSearchPlaceholder")}
                 </span>
-                <kbd className="hidden sm:inline-flex items-center rounded border border-brand-surface bg-brand-parchment px-1.5 py-0.5 font-mono text-[10px] font-medium text-brand-stone">
+                <kbd className="hidden sm:inline-flex items-center rounded border border-brand-surface bg-brand-parchment px-1.5 py-0.5 font-mono text-[10px] font-semibold text-brand-slate">
                   &#8984; K
                 </kbd>
               </button>

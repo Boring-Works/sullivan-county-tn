@@ -577,7 +577,14 @@ export function SiteNav() {
                 aria-label="Search"
               >
                 <Search className="size-3.5" />
-                <kbd className="text-[10px] text-brand-slate-light font-mono">&#8984;K</kbd>
+                <kbd
+                  className={cn(
+                    "text-[10px] font-mono font-semibold",
+                    solid ? "text-brand-slate" : "text-white",
+                  )}
+                >
+                  &#8984;K
+                </kbd>
               </button>
               <div className="hidden lg:block">
                 <LanguageToggle solid={solid} />
@@ -588,9 +595,11 @@ export function SiteNav() {
                 rel="noopener noreferrer"
                 className={cn(
                   "hidden sm:inline-flex items-center rounded-sm px-5 py-2 font-body text-sm font-semibold tracking-wide transition-all duration-300",
+                  // Copper bg in both states guarantees AA contrast even when
+                  // the nav floats over a light hero (e.g. /history scroll-top).
                   solid
                     ? "bg-brand-copper text-white hover:bg-brand-copper-light shadow-sm"
-                    : "bg-white/10 text-white border border-white/20 hover:bg-white/20 backdrop-blur-sm",
+                    : "bg-brand-copper/95 text-white border border-white/20 hover:bg-brand-copper backdrop-blur-sm shadow-sm",
                 )}
               >
                 {t("nav.payTaxes")}

@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test.describe("homepage", () => {
   test("loads with nav and content", async ({ page }) => {
     await page.goto("/");
-    await expect(page.locator("nav")).toBeVisible();
+    await expect(page.locator('nav[aria-label="Main navigation"]')).toBeVisible();
     await expect(page.locator("body")).toContainText("Sullivan County");
     await expect(page.locator("body")).toContainText("Most-used services");
   });
@@ -68,7 +68,7 @@ test.describe("404 page", () => {
 test.describe("language toggle", () => {
   test("Spanish toggle available in nav", async ({ page }) => {
     await page.goto("/");
-    const navText = await page.locator("nav").textContent();
+    const navText = await page.locator('nav[aria-label="Main navigation"]').textContent();
     expect(navText?.toLowerCase()).toContain("es");
   });
 });

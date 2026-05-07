@@ -9,14 +9,18 @@ test.describe("user flows", () => {
     const deptTrigger = page.locator("nav button", { hasText: "Departments" });
     await deptTrigger.hover();
 
-    await expect(page.locator("nav")).toContainText("Administrative");
-    await expect(page.locator("nav")).toContainText("County Mayor");
-    await expect(page.locator("nav")).toContainText("Finance & Property");
-    await expect(page.locator("nav")).toContainText("Public Safety");
+    await expect(page.locator('nav[aria-label="Main navigation"]')).toContainText("Administrative");
+    await expect(page.locator('nav[aria-label="Main navigation"]')).toContainText("County Mayor");
+    await expect(page.locator('nav[aria-label="Main navigation"]')).toContainText("Finance & Property");
+    await expect(page.locator('nav[aria-label="Main navigation"]')).toContainText("Public Safety");
 
-    await page.locator("nav a", { hasText: "County Mayor" }).first().click();
+    await page
+      .locator('nav[aria-label="Main navigation"] a', { hasText: "County Mayor" })
+      .first()
+      .click();
     await expect(page).toHaveURL(/\/departments\/county-mayor/);
-    await expect(page.locator("h1")).toContainText("County Mayor");
+    // Two h1s exist on dept detail (hero + printable contact card); scope to first.
+    await expect(page.locator("h1").first()).toContainText("County Mayor");
   });
 
   test("mega-menu closes on mouse leave", async ({ page }) => {
@@ -25,22 +29,27 @@ test.describe("user flows", () => {
 
     const deptTrigger = page.locator("nav button", { hasText: "Departments" });
     await deptTrigger.hover();
-    await expect(page.locator("nav")).toContainText("Administrative");
+    await expect(page.locator('nav[aria-label="Main navigation"]')).toContainText("Administrative");
 
     await page.locator("body").hover({ position: { x: 10, y: 10 } });
     await page.waitForTimeout(400);
   });
 
   // ===== MOBILE MENU =====
-  test("mobile hamburger opens and contains links", async ({ page }) => {
+  test("mobile hamburger opens and contains verb links", async ({ page }) => {
     if (page.viewportSize()!.width >= 1024) return;
     await page.goto("/");
 
     const hamburger = page.locator('button[aria-label="Open menu"]');
     await hamburger.click();
 
-    await expect(page.locator("nav")).toContainText("Departments");
-    await expect(page.locator("nav")).toContainText("Contact");
+    // Mobile drawer is a sibling dialog, not inside the main nav.
+    const drawer = page.locator('[role="dialog"][aria-label="Navigation menu"]');
+    await expect(drawer).toBeVisible();
+    await expect(drawer).toContainText("Pay");
+    await expect(drawer).toContainText("Apply");
+    await expect(drawer).toContainText("Departments");
+    await expect(drawer).toContainText("About");
   });
 
   test("mobile menu closes with Escape", async ({ page }) => {
