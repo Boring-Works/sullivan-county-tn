@@ -189,12 +189,6 @@ const CITIZEN_LANGUAGE_ALIASES: Array<{
   type: SearchItem["type"];
   aliases: string[];
 }> = [
-  // Health & social services
-  {
-    url: "/departments/health-department",
-    type: "department",
-    aliases: ["food stamps", "snap benefits", "wic", "medicaid", "tenncare", "vaccines"],
-  },
   // County Clerk — vehicle, marriage, business
   {
     url: "/departments/county-clerk",
@@ -233,9 +227,9 @@ const CITIZEN_LANGUAGE_ALIASES: Array<{
       "police",
     ],
   },
-  // Election Commission
+  // Election Office
   {
-    url: "/departments/election-commission",
+    url: "/departments/election-office",
     type: "department",
     aliases: [
       "vote",
@@ -249,7 +243,7 @@ const CITIZEN_LANGUAGE_ALIASES: Array<{
   },
   // Highway / Road
   {
-    url: "/departments/highway-department",
+    url: "/departments/highway",
     type: "department",
     aliases: ["pothole", "road work", "road closure", "snow plow", "street", "roadside"],
   },
@@ -259,6 +253,8 @@ const CITIZEN_LANGUAGE_ALIASES: Array<{
     type: "department",
     aliases: [
       "trash",
+      "trash pickup",
+      "garbage",
       "garbage pickup",
       "recycling",
       "yard waste",
@@ -266,12 +262,6 @@ const CITIZEN_LANGUAGE_ALIASES: Array<{
       "dump",
       "convenience center",
     ],
-  },
-  // Animal Control
-  {
-    url: "/departments/animal-control",
-    type: "department",
-    aliases: ["dog", "cat", "stray", "lost pet", "adopt pet", "rabies shot", "animal shelter"],
   },
   // Planning & Codes / Building Permits
   {
@@ -302,6 +292,12 @@ const CITIZEN_LANGUAGE_ALIASES: Array<{
       "burial benefits",
     ],
   },
+  // Emergency Management
+  {
+    url: "/departments/emergency-management",
+    type: "department",
+    aliases: ["storm", "tornado warning", "flood", "evacuation", "ema", "emergency"],
+  },
   // Trustee / Property Tax — also points to dedicated landing page
   {
     url: "/property-taxes",
@@ -314,6 +310,29 @@ const CITIZEN_LANGUAGE_ALIASES: Array<{
       "tax relief",
       "elderly tax relief",
       "disabled veteran tax relief",
+    ],
+  },
+  // Contact page absorbs orphan citizen terms whose owners are external
+  // resources (animal shelter, library, schools, state-run health programs).
+  // The contact page lists these under "Community Resources."
+  {
+    url: "/contact",
+    type: "page",
+    aliases: [
+      "animal shelter",
+      "stray dog",
+      "lost pet",
+      "rabies",
+      "library",
+      "schools",
+      "k-12",
+      "food stamps",
+      "snap",
+      "wic",
+      "medicaid",
+      "tenncare",
+      "vaccines",
+      "health department",
     ],
   },
 ];
