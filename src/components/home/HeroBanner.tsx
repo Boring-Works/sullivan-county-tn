@@ -14,9 +14,16 @@ import { useTranslation } from "react-i18next";
 import { CountySeal } from "~/components/shared/CountySeal";
 import { MountainDivider } from "~/components/shared/MountainDivider";
 import { COMMISSION_REGULAR_SESSION_RULE } from "~/data/meetings";
-import { useCountUp } from "~/hooks/useCountUp";
 import { useOpenStatus } from "~/hooks/useOpenStatus";
 import { formatNyDateShort, formatNyTime, nextOccurrence } from "~/lib/recurrence";
+
+const SUGGESTED_HERO_QUERIES = [
+  "pay taxes",
+  "marriage license",
+  "trash pickup",
+  "pothole",
+  "voter registration",
+] as const;
 
 const COUNTY_OFFICE_HOURS = "Monday-Friday, 8am-4:30pm";
 
@@ -56,15 +63,14 @@ const TOP_TASKS: TopTask[] = [
   { kind: "internal", labelKey: "contact", to: "/contact", icon: Phone },
 ];
 
-function StatItem({ end, suffix, label }: { end: number; suffix?: string; label: string }) {
-  const { ref, display } = useCountUp<HTMLDivElement>({ end, suffix, duration: 2200 });
+function StatItem({ value, label }: { value: string; label: string }) {
+  // Static render — no count-up animation. The blueprint's civic-restraint rule
+  // wins here; an animating "0+ Residents" was a real correctness bug during
+  // hydration on slow clients and with prefers-reduced-motion.
   return (
     <div className="text-center sm:text-left">
-      <div
-        ref={ref}
-        className="font-display text-base font-bold text-white sm:text-xl leading-none"
-      >
-        {display}
+      <div className="font-display text-base font-bold text-white sm:text-xl leading-none">
+        {value}
       </div>
       <div className="font-body text-[9px] font-medium tracking-widest uppercase text-white/50 sm:text-[10px]">
         {label}
@@ -73,38 +79,13 @@ function StatItem({ end, suffix, label }: { end: number; suffix?: string; label:
   );
 }
 
-function NextMeetingTile() {
-  const { t } = useTranslation();
-  // Computed once on initial render so the date renders during SSR.
-  // suppressHydrationWarning protects against the edge case where SSR and
-  // client compute the date across a midnight boundary.
-  const [next] = useState(() => nextOccurrence(COMMISSION_REGULAR_SESSION_RULE));
-  return (
-    <Link
-      to="/calendar"
-      className="group flex flex-col items-center sm:items-start gap-0.5 transition-colors hover:text-brand-brass-light"
-    >
-      <span
-        suppressHydrationWarning
-        className="font-display text-base font-bold text-white sm:text-xl leading-none group-hover:text-brand-brass-light"
-      >
-        {formatNyDateShort(next)}
-      </span>
-      <span
-        suppressHydrationWarning
-        className="font-body text-[9px] font-medium tracking-widest uppercase text-white/50 sm:text-[10px]"
-      >
-        {t("home.heroAlmanac.nextMeeting")} · {formatNyTime(next)}
-      </span>
-    </Link>
-  );
-}
-
 const PARALLAX_SPEED = 0.5;
 
-function openSearch() {
+function openSearch(query?: string) {
   if (typeof window === "undefined") return;
-  window.dispatchEvent(new CustomEvent("sullivan:open-search"));
+  window.dispatchEvent(
+    new CustomEvent("sullivan:open-search", { detail: query ? { query } : undefined }),
+  );
 }
 
 export function HeroBanner() {
@@ -112,6 +93,9 @@ export function HeroBanner() {
   const rafRef = useRef<number>(0);
   const status = useOpenStatus(COUNTY_OFFICE_HOURS);
   const { t } = useTranslation();
+  // Computed once so the date renders during SSR. Stable across server/client
+  // because the meeting is always days+ in the future.
+  const [meetingDate] = useState<Date>(() => nextOccurrence(COMMISSION_REGULAR_SESSION_RULE));
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -237,7 +221,7 @@ export function HeroBanner() {
             <div className="mt-7 opacity-0 animate-fade-up" style={{ animationDelay: "0.4s" }}>
               <button
                 type="button"
-                onClick={openSearch}
+                onClick={() => openSearch()}
                 className="group flex w-full items-center gap-3 rounded-sm border border-white/15 bg-white px-4 py-3.5 text-left shadow-lg shadow-brand-navy/30 transition-all hover:bg-white sm:px-5 sm:py-4 sm:max-w-xl"
                 aria-label={t("home.heroSearchAria")}
               >
@@ -291,49 +275,74 @@ export function HeroBanner() {
                 })}
               </ul>
             </nav>
+
+            {/* Suggested searches — converts "I don't know what I'm looking for"
+                into a one-tap completed task. Each chip prefills SearchDialog. */}
+            <div
+              className="mt-4 flex flex-wrap items-center gap-2 opacity-0 animate-fade-up"
+              style={{ animationDelay: "0.8s" }}
+            >
+              <span className="font-body text-[11px] font-medium tracking-widest uppercase text-white/50">
+                {t("home.heroSuggestionsLabel")}
+              </span>
+              {SUGGESTED_HERO_QUERIES.map((q) => (
+                <button
+                  key={q}
+                  type="button"
+                  onClick={() => openSearch(q)}
+                  className="font-body text-xs text-white/80 underline decoration-white/30 underline-offset-4 transition-colors hover:text-white hover:decoration-brand-brass-light"
+                >
+                  {q}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Almanac strip — utility-first stat + status row. */}
-      <div className="absolute bottom-[50px] sm:bottom-[65px] lg:bottom-[80px] left-0 right-0 z-30">
+      {/* Almanac strip — leads with the readable "open until / next meeting"
+          line, falls back to identity stats below for visual reinforcement. */}
+      <div className="absolute bottom-[40px] sm:bottom-[55px] lg:bottom-[70px] left-0 right-0 z-30">
         <div
           className="mx-auto max-w-5xl px-4 sm:px-6 opacity-0 animate-fade-up"
-          style={{ animationDelay: "0.85s" }}
+          style={{ animationDelay: "0.95s" }}
         >
-          <div className="rounded-sm border border-white/10 bg-brand-navy/50 backdrop-blur-md px-4 py-3.5 sm:px-6 sm:py-4">
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-6 lg:grid-cols-5 lg:gap-8 items-center justify-items-center">
-              <StatItem end={158000} suffix="+" label={t("home.heroAlmanac.residents")} />
-              <StatItem end={430} label={t("home.heroAlmanac.squareMiles")} />
-              <StatItem end={25} label={t("home.heroAlmanac.departments")} />
+          <div className="rounded-sm border border-white/10 bg-brand-navy/55 backdrop-blur-md px-4 py-3.5 sm:px-6 sm:py-4">
+            {/* Top: human-readable status line. */}
+            <Link
+              to="/calendar"
+              className="group flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center lg:justify-start lg:text-left"
+            >
+              <span
+                aria-hidden="true"
+                className={`block size-2 rounded-full ${
+                  status.isOpen === true
+                    ? "bg-emerald-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]"
+                    : status.isOpen === false
+                      ? "bg-white/50"
+                      : "bg-white/30"
+                }`}
+              />
+              <span
+                suppressHydrationWarning
+                className="font-display text-sm font-bold text-white sm:text-base"
+              >
+                {t("home.heroAlmanac.officesPrefix")} {status.label}.
+              </span>
+              <span
+                suppressHydrationWarning
+                className="font-body text-xs text-white/75 sm:text-sm group-hover:text-brand-brass-light"
+              >
+                {t("home.heroAlmanac.nextMeeting")}: {formatNyDateShort(meetingDate)}{" "}
+                {t("home.heroAlmanac.at")} {formatNyTime(meetingDate)}.
+              </span>
+            </Link>
 
-              {/* Next meeting tile — replaces "Established 1779" (already in eyebrow). */}
-              <NextMeetingTile />
-
-              {/* Live office status — hydration-stable via useOpenStatus placeholder. */}
-              <div className="col-span-2 sm:col-span-3 lg:col-span-1 text-center lg:text-left flex items-center justify-center lg:justify-start gap-2 border-t border-white/10 pt-3 lg:border-t-0 lg:pt-0 lg:border-l lg:pl-6 w-full">
-                <span
-                  aria-hidden="true"
-                  className={`block size-2 rounded-full ${
-                    status.isOpen === true
-                      ? "bg-emerald-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]"
-                      : status.isOpen === false
-                        ? "bg-white/50"
-                        : "bg-white/30"
-                  }`}
-                />
-                <div>
-                  <div
-                    suppressHydrationWarning
-                    className="font-display text-xs font-bold text-white sm:text-sm leading-none"
-                  >
-                    {status.label}
-                  </div>
-                  <div className="font-body text-[9px] font-medium tracking-widest uppercase text-white/50 sm:text-[10px]">
-                    {t("home.heroAlmanac.countyOffices")}
-                  </div>
-                </div>
-              </div>
+            {/* Bottom: identity stats — quieter, reinforcement only. */}
+            <div className="mt-3 grid grid-cols-3 gap-3 border-t border-white/10 pt-3 sm:gap-6 items-center justify-items-center">
+              <StatItem value="158,000+" label={t("home.heroAlmanac.residents")} />
+              <StatItem value="430" label={t("home.heroAlmanac.squareMiles")} />
+              <StatItem value="25" label={t("home.heroAlmanac.departments")} />
             </div>
           </div>
         </div>

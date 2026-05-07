@@ -33,11 +33,20 @@
       "residents": "Residentes",
       "squareMiles": "Millas cuadradas",
       "departments": "Departamentos",
-      "nextMeeting": "Próxima reunión",
-      "countyOffices": "Oficinas del condado"
+      "nextMeeting": "Próxima reunión de la Comisión",
+      "countyOffices": "Oficinas del condado",
+      "officesPrefix": "Oficinas del condado",
+      "at": "a las"
     },
     "topTasksLabel": "Tareas principales para residentes",
+    "heroSuggestionsLabel": "Intente",
     "opensInNewTab": "(se abre en una pestaña nueva)",
+    "seasonal": {
+      "ribbonLabel": "Aviso de temporada de impuestos",
+      "taxesDue": "Los impuestos a la propiedad vencen el 28 de febrero.",
+      "taxesHint": "Pague en línea, por correo o en la oficina del Trustee.",
+      "findBill": "Encuentre su factura"
+    },
     "emergency": {
       "eyebrow": "Emergencia",
       "heading": "En caso de emergencia",

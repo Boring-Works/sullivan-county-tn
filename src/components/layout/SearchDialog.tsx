@@ -25,10 +25,12 @@ const TYPE_COLORS: Record<SearchItem["type"], string> = {
 interface SearchDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  /** Pre-fills the search input on open — used by suggested-query chips. */
+  initialQuery?: string;
 }
 
-export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
-  const [query, setQuery] = useState("");
+export function SearchDialog({ open, onOpenChange, initialQuery = "" }: SearchDialogProps) {
+  const [query, setQuery] = useState(initialQuery);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();

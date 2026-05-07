@@ -33,11 +33,20 @@
       "residents": "Residents",
       "squareMiles": "Square Miles",
       "departments": "Departments",
-      "nextMeeting": "Next meeting",
-      "countyOffices": "County offices"
+      "nextMeeting": "Next commission meeting",
+      "countyOffices": "County offices",
+      "officesPrefix": "County offices",
+      "at": "at"
     },
     "topTasksLabel": "Top citizen tasks",
+    "heroSuggestionsLabel": "Try",
     "opensInNewTab": "(opens in a new tab)",
+    "seasonal": {
+      "ribbonLabel": "Property tax season notice",
+      "taxesDue": "Property tax bills are due February 28.",
+      "taxesHint": "Pay online, by mail, or at the Trustee's office.",
+      "findBill": "Find your tax bill"
+    },
     "emergency": {
       "eyebrow": "Emergency",
       "heading": "In an emergency",

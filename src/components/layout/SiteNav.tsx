@@ -160,6 +160,7 @@ export function SiteNav() {
   const [activePanel, setActivePanel] = useState<string | null>(null);
   const [mobilePanel, setMobilePanel] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [searchInitialQuery, setSearchInitialQuery] = useState("");
   const [panelFocusIndex, setPanelFocusIndex] = useState(-1);
   // Coarse pointers (touch) get click-to-toggle only; fine pointers also get hover.
   const [canHover, setCanHover] = useState(false);
@@ -226,7 +227,11 @@ export function SiteNav() {
         setSearchOpen(true);
       }
     }
-    function handleOpenSearch() {
+    function handleOpenSearch(e: Event) {
+      // Suggested-search chips may dispatch with detail.query; otherwise the
+      // event is a no-op trigger (e.g. from the hero search button).
+      const detail = (e as CustomEvent<{ query?: string }>).detail;
+      setSearchInitialQuery(typeof detail?.query === "string" ? detail.query : "");
       setSearchOpen(true);
     }
     window.addEventListener("keydown", handleKeyDown);
@@ -814,7 +819,11 @@ export function SiteNav() {
       {/* Lazy-loaded search dialog — only fetched when opened */}
       {searchOpen && (
         <Suspense fallback={null}>
-          <LazySearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+          <LazySearchDialog
+            open={searchOpen}
+            onOpenChange={setSearchOpen}
+            initialQuery={searchInitialQuery}
+          />
         </Suspense>
       )}
     </>

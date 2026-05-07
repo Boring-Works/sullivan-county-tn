@@ -9,6 +9,10 @@ export interface QuickService {
   submission?: ServiceSubmissionMode;
 }
 
+// Six most-used services, ordered by citizen demand (blueprint top-tasks pattern).
+// EmergencyModule above the fold + the verb nav cover Animal Shelter, Emergency
+// Management, and Veterans Office; that's why those three were dropped from the
+// homepage card list. They're still in search and the verb nav.
 export const quickServices: QuickService[] = [
   {
     title: "Pay property taxes",
@@ -43,20 +47,6 @@ export const quickServices: QuickService[] = [
     submission: "hybrid",
   },
   {
-    title: "Animal shelter",
-    description: "Adopt a pet, report a stray, or learn about animal services.",
-    href: "https://animalshelter-sullivancounty.org/",
-    icon: "Dog",
-    external: true,
-  },
-  {
-    title: "Emergency services",
-    description: "Preparedness, alerts, and emergency management resources.",
-    href: "/departments/emergency-management",
-    icon: "Siren",
-    external: false,
-  },
-  {
     title: "Elections & voting",
     description: "Voter registration, polling locations, and election schedules.",
     href: "https://www.scelect.org/",
@@ -65,17 +55,9 @@ export const quickServices: QuickService[] = [
     submission: "online",
   },
   {
-    title: "Veterans benefits",
-    description: "Help with compensation, pension, health, education, and burial benefits.",
-    href: "/departments/veterans-office",
-    icon: "Medal",
-    external: false,
-    submission: "hybrid",
-  },
-  {
     title: "Property & GIS lookup",
     description: "Search property records, view zoning maps, and explore county GIS data.",
-    href: "https://gis.sullivancountytn.gov/",
+    href: "https://sullcotngis.maps.arcgis.com/apps/mapviewer/index.html?webmap=2004721405af4dd0952a592b42e6f5b6",
     icon: "Map",
     external: true,
     submission: "online",

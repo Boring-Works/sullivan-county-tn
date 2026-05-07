@@ -1,14 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AboutSection } from "~/components/home/AboutSection";
-import { AudiencePathways } from "~/components/home/AudiencePathways";
 import { CommunityMap } from "~/components/home/CommunityMap";
-import { DepartmentCategories } from "~/components/home/DepartmentCategories";
 import { EmergencyModule } from "~/components/home/EmergencyModule";
 import { HeroBanner } from "~/components/home/HeroBanner";
 import { NewsSection } from "~/components/home/NewsSection";
 import { NextMeetingCard } from "~/components/home/NextMeetingCard";
-import { PromisesSection } from "~/components/home/PromisesSection";
 import { QuickServices } from "~/components/home/QuickServices";
+import { SeasonalRibbon } from "~/components/home/SeasonalRibbon";
 import { MountainDivider } from "~/components/shared/MountainDivider";
 import { governmentOrganizationJsonLd, jsonLdString } from "~/lib/jsonld";
 import { seo, seoLinks } from "~/utils/seo";
@@ -45,14 +43,12 @@ function HomePage() {
         dangerouslySetInnerHTML={{ __html: jsonLdString(governmentOrganizationJsonLd) }}
       />
       <HeroBanner />
+      <SeasonalRibbon />
       <EmergencyModule />
       <QuickServices />
-      <MountainDivider fill="var(--color-brand-parchment)" />
-      <DepartmentCategories />
-      <AudiencePathways />
-      <PromisesSection />
       <NextMeetingCard />
       <NewsSection />
+      <MountainDivider fill="var(--color-brand-parchment)" />
       <CommunityMap />
       <AboutSection />
     </main>
