@@ -1,180 +1,164 @@
 # Component Inventory — Sullivan County TN
 
-**Platform:** Web-only (TanStack Start)  
-**Total Components:** 37 | **Hooks:** 3 | **Generated:** 2026-05-06  
-**Audit Result:** No duplicates. No removals. No renames. All 37 in active use.
+**Platform:** Web-only (TanStack Start on Cloudflare Workers)
+**Total components:** 50 | **Hooks:** 4 | **Last refreshed:** 2026-05-07
+
+All components below are in active use. Two unused shadcn primitives (`card.tsx`, `button.tsx`) were deleted on 2026-05-07.
 
 ---
 
-## Layout Components (6)
+## Layout (7)
 
-| # | Component | File Path | Purpose | Used In | Platform | Duplicate? | Recommendation |
-|---|-----------|-----------|---------|---------|----------|------------|----------------|
-| 1 | `SiteNav` | `src/components/layout/SiteNav.tsx` | Primary navigation with disclosure-pattern mega-menu (click-outside close, hover-capability gating, active-page indicators), mobile drawer hoisted out of `<nav>` (sibling of nav so fixed positioning resolves to viewport, not the `backdrop-blur` containing block), Cmd+K search trigger, glass-morphism scroll effect | `__root.tsx` | Web | No | KEEP |
-| 2 | `SiteFooter` | `src/components/layout/SiteFooter.tsx` | Four-column footer with mountain SVG, links, copyright | `__root.tsx` | Web | No | KEEP |
-| 3 | `SearchDialog` | `src/components/layout/SearchDialog.tsx` | Fuse.js fuzzy search modal, ARIA combobox pattern, lazy-loaded, visually-hidden `Dialog.Title`/`Dialog.Description` for SR | `SiteNav` | Web | No | KEEP |
-| 4 | `AnnouncementBanner` | `src/components/layout/AnnouncementBanner.tsx` | Dismissible alert banner with localStorage persistence | `__root.tsx` | Web | No | KEEP |
-| 5 | `LanguageToggle` | `src/components/layout/LanguageToggle.tsx` | EN/ES toggle button with i18next | `SiteNav` | Web | No | KEEP |
-| 6 | `NotFound` | `src/components/layout/NotFound.tsx` | Custom 404 page with quick links + search hint | `router.tsx` as `notFoundComponent` | Web | No | KEEP |
-
----
-
-## Home Components (6)
-
-| # | Component | File Path | Purpose | Used In | Platform | Duplicate? | Recommendation |
-|---|-----------|-----------|---------|---------|----------|------------|----------------|
-| 1 | `HeroBanner` | `src/components/home/HeroBanner.tsx` | Cinematic hero with WebP picture sources, parallax, stat counters, CTA | `index.tsx` | Web | No | KEEP |
-| 2 | `QuickServices` | `src/components/home/QuickServices.tsx` | 8-card service grid with scroll reveals | `index.tsx` | Web | No | KEEP |
-| 3 | `DepartmentCategories` | `src/components/home/DepartmentCategories.tsx` | 6 category cards with color-coded badges | `index.tsx` | Web | No | KEEP |
-| 4 | `CommunityHighlights` | `src/components/home/CommunityHighlights.tsx` | 3 tourism/regional attraction cards | `index.tsx` | Web | No | KEEP |
-| 5 | `NewsSection` | `src/components/home/NewsSection.tsx` | Editorial news layout with featured first item | `index.tsx` | Web | No | KEEP |
-| 6 | `AboutSection` | `src/components/home/AboutSection.tsx` | "Where Tennessee Began" section with courthouse photos | `index.tsx` | Web | No | KEEP |
+| Component | File | Purpose |
+|-----------|------|---------|
+| `SiteNav` | `layout/SiteNav.tsx` | Verb-based primary nav (Pay · Apply · Report · Records · Meetings · Departments · About). Each verb opens a mega-panel of concrete tasks. Hover-open gated to fine pointers, click-outside closes, arrow-key navigation inside the open panel. Departments mega-menu preserved as one verb. |
+| `SiteFooter` | `layout/SiteFooter.tsx` | Four-column footer with mountain SVG, county seal, links, copyright. |
+| `SearchDialog` | `layout/SearchDialog.tsx` | Fuse.js fuzzy search modal (Cmd+K). ARIA combobox + listbox. Citizen-language aliases indexed at weight 1.8. Suggested queries on zero result. Lazy-loaded. |
+| `AnnouncementBanner` | `layout/AnnouncementBanner.tsx` | Reads from D1 via `listPublicAnnouncements`. Sets `--banner-height` so SiteNav offsets correctly. localStorage dismissal. |
+| `LanguageToggle` | `layout/LanguageToggle.tsx` | EN/ES toggle, persists via cookie. |
+| `MobileBottomTabBar` | `layout/MobileBottomTabBar.tsx` | Three-action thumb-zone bar at <md: Pay · Search · Call. Hides when soft keyboard is open via `visualViewport` ratio detection. |
+| `NotFound` | `layout/NotFound.tsx` | Custom 404 with quick links + search hint. |
 
 ---
 
-## Department Components (2)
+## Home (10)
 
-| # | Component | File Path | Purpose | Used In | Platform | Duplicate? | Recommendation |
-|---|-----------|-----------|---------|---------|----------|------------|----------------|
-| 1 | `DepartmentCard` | `src/components/departments/DepartmentCard.tsx` | Department listing card with category badge + phone | `departments/index.tsx` | Web | No | KEEP |
-| 2 | `DepartmentDetail` | `src/components/departments/DepartmentDetail.tsx` | Full department page with banner, contacts, staff, services, FAQs | `departments/$slug.tsx` | Web | No | KEEP |
-
----
-
-## Commissioner Components (2)
-
-| # | Component | File Path | Purpose | Used In | Platform | Duplicate? | Recommendation |
-|---|-----------|-----------|---------|---------|----------|------------|----------------|
-| 1 | `CommissionerGrid` | `src/components/commissioners/CommissionerGrid.tsx` | District-grouped grid layout | `commissioners.tsx` | Web | No | KEEP |
-| 2 | `CommissionerCard` | `src/components/commissioners/CommissionerCard.tsx` | Individual commissioner with photo, name, district, contact | `CommissionerGrid` | Web | No | KEEP |
-
----
-
-## News Components (2)
-
-| # | Component | File Path | Purpose | Used In | Platform | Duplicate? | Recommendation |
-|---|-----------|-----------|---------|---------|----------|------------|----------------|
-| 1 | `NewsCard` | `src/components/shared/NewsCard.tsx` | News article card with date, summary, PDF badge | `news/index.tsx`, `NewsSection` | Web | No | KEEP |
-| 2 | `NewsDetail` | `src/components/news/NewsDetail.tsx` | Full article with header, body, PDF/source links | `news/$slug.tsx` | Web | No | KEEP |
-
-> **Note:** `NewsCard` is housed in `src/components/shared/` but conceptually part of the News domain. It is also listed under Shared/Utility below for directory completeness.
+| Component | File | Purpose |
+|-----------|------|---------|
+| `HeroBanner` | `home/HeroBanner.tsx` | Cinematic hero (WebP `<picture>` sources, parallax, stat counters), visible search trigger, 5 task chips, Open-Now almanac with Next-Meeting tile. |
+| `EmergencyModule` | `home/EmergencyModule.tsx` | Always-visible emergency contacts (911, Sheriff non-emergency, EMA) with elevated 911 tile. |
+| `QuickServices` | `home/QuickServices.tsx` | 9-service grid with online/in-person submission badges. |
+| `DepartmentCategories` | `home/DepartmentCategories.tsx` | 6 color-coded category cards. |
+| `AudiencePathways` | `home/AudiencePathways.tsx` | Three audience tiles (Residents / Businesses / Visitors) per blueprint Brunswick/Greenville hybrid pattern. |
+| `PromisesSection` | `home/PromisesSection.tsx` | "What you can expect" — three plain-language promises. |
+| `NextMeetingCard` | `home/NextMeetingCard.tsx` | Computes next County Commission meeting via `nextOccurrence()`; offers `.ics` download + watch-live link. |
+| `NewsSection` | `home/NewsSection.tsx` | Editorial news layout with featured first item. |
+| `CommunityMap` | `home/CommunityMap.tsx` | Interactive 6-community SVG map (US Census TIGER/Line projection). Mobile fallback list. |
+| `AboutSection` | `home/AboutSection.tsx` | "Where Tennessee Began" section with courthouse photos. |
 
 ---
 
-## History / Heritage Components (5)
+## Departments (3)
 
-| # | Component | File Path | Purpose | Used In | Platform | Duplicate? | Recommendation |
-|---|-----------|-----------|---------|---------|----------|------------|----------------|
-| 1 | `HeritageHero` | `src/components/history/HeritageHero.tsx` | Hero with brand tagline + year date device | 12+ route files | Web | No | KEEP |
-| 2 | `HistoryNarrative` | `src/components/history/HistoryNarrative.tsx` | Editorial content section with eyebrow/title/body | `history/index.tsx`, about, economic-development, etc. | Web | No | KEEP |
-| 3 | `HeritageSiteCard` | `src/components/history/HeritageSiteCard.tsx` | Heritage site card with NRHP/NHL badges | `history/index.tsx` | Web | No | KEEP |
-| 4 | `TimelineSection` | `src/components/history/TimelineSection.tsx` | Alternating vertical timeline with colored era dots | `history/timeline.tsx` | Web | No | KEEP |
-| 5 | `VisitorInfoCard` | `src/components/history/VisitorInfoCard.tsx` | Visitor info sidebar (hours, admission, location, website) | `history/$slug.tsx` | Web | No | KEEP |
+| Component | File | Purpose |
+|-----------|------|---------|
+| `DepartmentCard` | `departments/DepartmentCard.tsx` | Listing card with category badge, phone (TelLink), Open-Now pill. |
+| `DepartmentDetail` | `departments/DepartmentDetail.tsx` | Full dept page: hero banner, contacts, staff, services, FAQs, publications. |
+| `PrintableContactCard` | `departments/PrintableContactCard.tsx` | Print-only contact card with QR code linking back to the live page. |
 
 ---
 
-## Community Components (1)
+## Property taxes (1)
 
-| # | Component | File Path | Purpose | Used In | Platform | Duplicate? | Recommendation |
-|---|-----------|-----------|---------|---------|----------|------------|----------------|
-| 1 | `CommunityCard` | `src/components/communities/CommunityCard.tsx` | Community card with type badge, population, highlights | `communities/index.tsx` | Web | No | KEEP |
-
----
-
-## People Components (1)
-
-| # | Component | File Path | Purpose | Used In | Platform | Duplicate? | Recommendation |
-|---|-----------|-----------|---------|---------|----------|------------|----------------|
-| 1 | `PersonCard` | `src/components/people/PersonCard.tsx` | Notable person card with category badge + achievement | `people.tsx` | Web | No | KEEP |
+| Component | File | Purpose |
+|-----------|------|---------|
+| `ParcelLookup` | `property-taxes/ParcelLookup.tsx` | Single-box typeahead on `/property-taxes`. Calls `lookupParcelSuggestions` server fn (TPAD autocomplete proxy). Three side-by-side CTAs route to TPAD assessment / Trustee payment / ArcGIS web map. ARIA combobox + listbox, debounced 280ms, graceful "couldn't reach the state database" copy on upstream failure. |
 
 ---
 
-## Form Components (2)
+## Commissioners (2)
 
-| # | Component | File Path | Purpose | Used In | Platform | Duplicate? | Recommendation |
-|---|-----------|-----------|---------|---------|----------|------------|----------------|
-| 1 | `FormLayout` | `src/components/forms/FormLayout.tsx` | Form page wrapper with loading/error states | `forms/$type.tsx` | Web | No | KEEP |
-| 2 | `FormField` | `src/components/forms/FormField.tsx` | Reusable form input with label, help text, error (`role="alert"`) | `FormLayout` | Web | No | KEEP |
-
----
-
-## Minutes Components (2)
-
-| # | Component | File Path | Purpose | Used In | Platform | Duplicate? | Recommendation |
-|---|-----------|-----------|---------|---------|----------|------------|----------------|
-| 1 | `MinutesList` | `src/components/minutes/MinutesList.tsx` | Year-grouped meeting minutes with expand/collapse | `minutes.tsx` | Web | No | KEEP |
-| 2 | `MinutesFilter` | `src/components/minutes/MinutesFilter.tsx` | Committee filter chips with `aria-pressed` | `minutes.tsx` | Web | No | KEEP |
+| Component | File | Purpose |
+|-----------|------|---------|
+| `CommissionerGrid` | `commissioners/CommissionerGrid.tsx` | District-grouped grid layout. |
+| `CommissionerCard` | `commissioners/CommissionerCard.tsx` | Individual card with photo, name, district, contact, vCard "Save Contact" download. |
 
 ---
 
-## Admin Components (2)
+## Communities (1)
 
-| # | Component | File Path | Purpose | Used In | Platform | Duplicate? | Recommendation |
-|---|-----------|-----------|---------|---------|----------|------------|----------------|
-| 1 | `AdminLayout` | `src/components/admin/AdminLayout.tsx` | Admin sidebar + mobile nav with auth-aware links | All `admin/` routes | Web | No | KEEP |
-| 2 | `StatusBadge` | `src/components/admin/StatusBadge.tsx` | Colored status badge (new/reviewed/resolved) | `admin/submissions.tsx` | Web | No | KEEP |
-
----
-
-## Shared / Utility Components (4)
-
-| # | Component | File Path | Purpose | Used In | Platform | Duplicate? | Recommendation |
-|---|-----------|-----------|---------|---------|----------|------------|----------------|
-| 1 | `NewsCard` | `src/components/shared/NewsCard.tsx` | News article card with date, summary, PDF badge | `news/index.tsx`, `NewsSection` | Web | No | KEEP (cross-referenced from News) |
-| 2 | `ContactCard` | `src/components/shared/ContactCard.tsx` | Reusable contact info card with photo | `DepartmentDetail`, `contact.tsx` | Web | No | KEEP |
-| 3 | `MountainDivider` | `src/components/shared/MountainDivider.tsx` | SVG mountain ridge section divider | 15+ routes | Web | No | KEEP |
-| 4 | `VideoEmbed` | `src/components/shared/VideoEmbed.tsx` | Privacy-enhanced YouTube click-to-load player | `calendar.tsx`, `employee-services.tsx` | Web | No | KEEP |
+| Component | File | Purpose |
+|-----------|------|---------|
+| `CommunityCard` | `communities/CommunityCard.tsx` | Community listing card with type badge, population, highlights. |
 
 ---
 
-## UI Primitives — shadcn/ui (3)
+## News (2)
 
-All authenticated through `components.json` registry.
-
-| # | Component | File Path | Purpose | Used In | Platform | Duplicate? | Recommendation |
-|---|-----------|-----------|---------|---------|----------|------------|----------------|
-| 1 | `Badge` | `src/components/ui/badge.tsx` | Styled badge component | `DepartmentCard`, `HeritageSiteCard`, etc. | Web | No | KEEP (shadcn) |
-| 2 | `Button` | `src/components/ui/button.tsx` | Styled button component | Forms, admin | Web | No | KEEP (shadcn) |
-| 3 | `Card` | `src/components/ui/card.tsx` | Styled card component | Throughout | Web | No | KEEP (shadcn) |
+| Component | File | Purpose |
+|-----------|------|---------|
+| `NewsCard` | `shared/NewsCard.tsx` | News article card with date, summary, PDF badge. |
+| `NewsDetail` | `news/NewsDetail.tsx` | Full article view with header, body, PDF/source links. |
 
 ---
 
-## Hooks (3)
+## History / heritage (5)
 
-*Reusable logic, not components, documented here for completeness.*
-
-| # | Hook | File Path | Purpose | Used In | Platform | Recommendation |
-|---|------|-----------|---------|---------|----------|----------------|
-| 1 | `useScrollReveal` | `src/hooks/useScrollReveal.ts` | Intersection Observer scroll-reveal | 20+ components | Web | KEEP |
-| 2 | `useCountUp` | `src/hooks/useCountUp.ts` | Animated stat counter | `HeroBanner` | Web | KEEP |
-| 3 | `useLocale` | `src/hooks/useLocale.ts` | Locale get/set from i18next | `LanguageToggle` | Web | KEEP |
-
----
-
-## Component Usage Audit
-
-| Question | Answer |
-|----------|--------|
-| Duplicate components? | **None found.** Each component serves a distinct purpose. |
-| Merge or rename candidates? | **None.** No overlapping responsibilities. |
-| Removal candidates? | **None.** All 37 are in active use. |
-| shadcn/ui primitives authenticated? | **Yes.** `Badge`, `Button`, `Card` are registered via `components.json`. |
+| Component | File | Purpose |
+|-----------|------|---------|
+| `HeritageHero` | `history/HeritageHero.tsx` | Hero with brand tagline + 1779/CURRENT_YEAR date device. |
+| `HistoryNarrative` | `history/HistoryNarrative.tsx` | Long-form editorial sections with scroll-reveal. |
+| `HeritageSiteCard` | `history/HeritageSiteCard.tsx` | Heritage site card with NRHP/NHL badges. |
+| `VisitorInfoCard` | `history/VisitorInfoCard.tsx` | Visitor info sidebar (hours, admission, location, website). |
+| `TimelineSection` | `history/TimelineSection.tsx` | Alternating vertical timeline with color-coded era dots. |
 
 ---
 
-## Recommended Future Use
+## People (1)
 
-When building new features, follow this precedence order:
+| Component | File | Purpose |
+|-----------|------|---------|
+| `PersonCard` | `people/PersonCard.tsx` | Notable person card with category badge + achievement. |
 
-| Priority | Use Case | Existing Component(s) |
-|----------|----------|----------------------|
-| 1 | Any page needing a brand hero | `HeritageHero` |
-| 2 | Long-form content sections | `HistoryNarrative` |
-| 3 | Section separation | `MountainDivider` |
-| 4 | Card-based content listings | `NewsCard` |
-| 5 | Staff/official profile displays | `ContactCard` |
-| 6 | Forms | `FormField` + `FormLayout` |
-| 7 | Status indicators | `StatusBadge` |
-| 8 | New UI elements | shadcn/ui primitives (`Badge`, `Button`, `Card`) |
+---
 
-**Rule:** Do not create new card, hero, layout, or form components without first exhausting existing options. Layout components (`SiteNav`, `SiteFooter`, `SearchDialog`, `NotFound`) should be reused via `__root.tsx` and `router.tsx` — never duplicated.
+## Forms (2)
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| `FormLayout` | `forms/FormLayout.tsx` | Form page wrapper with title, breadcrumb, validation states. |
+| `FormField` | `forms/FormField.tsx` | Reusable form input with label, help text, `role="alert"` error. |
+
+---
+
+## Minutes (2)
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| `MinutesList` | `minutes/MinutesList.tsx` | Meeting minutes list rendering, paginated. |
+| `MinutesFilter` | `minutes/MinutesFilter.tsx` | Search + committee filter for minutes archive. |
+
+---
+
+## Admin (2)
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| `AdminLayout` | `admin/AdminLayout.tsx` | Admin sidebar + mobile nav with auth-aware links. |
+| `StatusBadge` | `admin/StatusBadge.tsx` | Submission status badge (new / reviewed / resolved). |
+
+---
+
+## Shared (8)
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| `TelLink` | `shared/TelLink.tsx` | Normalizes phone numbers to `tel:+1XXXXXXXXXX`. Used everywhere a phone number is rendered. |
+| `OpenStatusPill` | `shared/OpenStatusPill.tsx` | Live "Open until 4:30 PM" / "Closed · Holiday" pill via `useOpenStatus(hours)`. |
+| `PageFeedback` | `shared/PageFeedback.tsx` | "Was this page helpful?" widget. Yes/No + optional comment → D1. Mounted on dept detail / forms / contact / property-taxes. |
+| `ContactCard` | `shared/ContactCard.tsx` | Reusable contact info card with vCard download. |
+| `InstallPrompt` | `shared/InstallPrompt.tsx` | PWA install hint with iOS Safari-aware modal. |
+| `MountainDivider` | `shared/MountainDivider.tsx` | Three-layer parallax mountain ridge SVG dividers. |
+| `CountySeal` | `shared/CountySeal.tsx` | Official Sullivan County seal. SVG (47 KB) + raster fallbacks at 64/128/256/512px. |
+| `VideoEmbed` | `shared/VideoEmbed.tsx` | Privacy-enhanced YouTube (click-to-load, nocookie). |
+
+---
+
+## ui (1)
+
+| Component | File | Purpose |
+|-----------|------|---------|
+| `Badge` | `ui/badge.tsx` | shadcn primitive. Used in 4 places (DepartmentCard, DepartmentDetail, NewsCard, NewsDetail). |
+
+> Two other shadcn primitives (`card.tsx`, `button.tsx`) were deleted on 2026-05-07 — they had zero imports.
+
+---
+
+## Hooks (4)
+
+| Hook | File | Purpose |
+|------|------|---------|
+| `useOpenStatus` | `hooks/useOpenStatus.ts` | Parses dept `contact.hours` strings ("Monday-Friday, 8am-4:30pm" format) and returns `{ isOpen, label, nextChange }`. Honors all 13 county holidays. SSR-safe (returns stable placeholder before hydration). |
+| `useScrollReveal` | `hooks/useScrollReveal.ts` | Intersection-observer scroll-reveal system. Adds `.revealed` to elements with `[data-reveal]` as they enter the viewport. CSS `animation-timeline: view()` is the no-JS fallback. |
+| `useCountUp` | `hooks/useCountUp.ts` | Animated stat counter with rAF-driven easing. Respects `prefers-reduced-motion`. |
+| `useLocale` | `hooks/useLocale.ts` | Cookie-based locale toggle with `document.documentElement.lang` sync. |

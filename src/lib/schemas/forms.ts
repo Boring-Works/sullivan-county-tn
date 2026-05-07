@@ -5,7 +5,7 @@ export const submitFormSchema = z.object({
   name: z.string().min(1, "Name is required").max(200, "Name too long"),
   email: z.string().email("Valid email is required").max(320, "Email too long"),
   phone: z.string().optional(),
-  fields: z.record(z.string()).default({}),
+  fields: z.record(z.string(), z.string()).default({}),
   honeypot: z.string().optional(),
 });
 

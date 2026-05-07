@@ -28,18 +28,41 @@ describe("departments data", () => {
     }
   });
 
-  it("all phone numbers follow valid format", () => {
+  it("every dept has a valid phone number on contact", () => {
+    // Allow optional " Extension N" / " ext N" / " x N" suffix.
+    const phoneRe = /^\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}(\s+(extension|ext|x)\s*\d+)?$/i;
     for (const dept of departments) {
-      if (dept.head.phone) {
-        expect(dept.head.phone).toMatch(/^\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}$/);
+      expect(dept.contact.phone, dept.slug).toMatch(phoneRe);
+    }
+  });
+
+  it("staff phones, when present, follow valid format", () => {
+    const phoneRe = /^\(?\d{3}\)?[\s-]?\d{3}[\s-]?\d{4}(\s+(extension|ext|x)\s*\d+)?$/i;
+    for (const dept of departments) {
+      for (const member of dept.staff ?? []) {
+        if (member.phone) {
+          expect(member.phone, `${dept.slug}/${member.name}`).toMatch(phoneRe);
+        }
       }
     }
   });
 
-  it("all emails contain @", () => {
+  it("contact emails contain @ and a TLD", () => {
     for (const dept of departments) {
-      if (dept.head.email) {
-        expect(dept.head.email).toContain("@");
+      if (dept.contact.email) {
+        expect(dept.contact.email, dept.slug).toMatch(/^[^@\s]+@[^@\s]+\.[^@\s]+$/);
+      }
+    }
+  });
+
+  it("staff emails, when present, are well-formed", () => {
+    for (const dept of departments) {
+      for (const member of dept.staff ?? []) {
+        if (member.email) {
+          expect(member.email, `${dept.slug}/${member.name}`).toMatch(
+            /^[^@\s]+@[^@\s]+\.[^@\s]+$/,
+          );
+        }
       }
     }
   });

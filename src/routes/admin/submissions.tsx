@@ -34,7 +34,7 @@ function SubmissionsPage() {
     load();
   }, [load]);
 
-  async function handleStatusChange(id: string, status: string) {
+  async function handleStatusChange(id: string, status: "new" | "reviewed" | "resolved") {
     await updateSubmissionStatus({ data: { id, status } });
     load();
   }

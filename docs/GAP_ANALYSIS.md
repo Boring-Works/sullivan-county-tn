@@ -1,169 +1,136 @@
 # Sullivan County TN — Gap Analysis
 
-## Critical
-
-### CSRF Module Is Dead Code
-- **Status:** `server/csrf.ts` defined but never imported or called from any endpoint.
-- **Impact:** All 10 POST mutation handlers lack CSRF protection.
-- **Fix:** Integrate `requireCsrf()` into every mutation handler.
-
-### Rate Limiting Broken on Workers
-- **Status:** In-memory `Map` in `rate-limit.ts` doesn't work across Cloudflare Workers isolates.
-- **Impact:** Every cold start or different colo gets a fresh map. Rate limits are effectively nonexistent.
-- **Fix:** Migrate to D1 or KV-backed atomic counters, or use Cloudflare WAF rate limiting rules.
+**Last refreshed:** 2026-05-07
 
 ---
 
-## High
+## Active gaps
 
-### Announcement Data Empty
-- **Status:** `announcements` array in `AnnouncementBanner.tsx` is `[]`.
-- **Impact:** No way to display urgent alerts.
-- **Fix:** Load announcements from D1 and populate seed data.
+### Medium
 
-### Admin Seed Data Missing
-- **Status:** `meeting_minutes` and `announcements` tables exist with schema but no data has been loaded.
-- **Impact:** Admin dashboards show empty states.
-- **Fix:** Create seed scripts or admin UI for data entry.
+#### Cross-isolate rate limit enforcement
+- **Status:** Per-IP composite keys (2026-05-07) prevent intra-isolate quota sharing, but Cloudflare may run multiple isolates under load.
+- **Impact:** Determined attacker could spread requests across isolates to bypass limits.
+- **Fix when traffic warrants:** Migrate `rate-limit.ts` to a Durable Object atomic counter, or wire Cloudflare's WAF rate-limiting rules at the platform level. Not pressing for current traffic.
 
-### Global Rate Limit Keys
-- **Status:** Contact and form endpoints use static keys (`"contact"`, `"form"`).
-- **Impact:** All users share one quota. One abuser blocks everyone.
-- **Fix:** Derive keys from `CF-Connecting-IP` header.
+#### CSRF integration deferred
+- **Status:** `server/csrf.ts` defines double-submit-cookie helpers but they're not invoked from any endpoint.
+- **Defense in place:** SameSite=Strict cookies on the admin session + same-origin-only `_serverFn/*` endpoints prevent CSRF in modern browsers without an explicit token.
+- **Fix as defense-in-depth:** Wire `validateCsrf()` into all POST mutation handlers if/when cross-origin embeds are introduced.
 
-### ~~Scroll-Driven Hero Parallax~~ ✅ FIXED (2026-05-06)
-- **Status:** `translate3d` GPU-composited with rAF throttle, `will-change: transform`, 130% image scale to prevent clipping, respects `prefers-reduced-motion`.
-- **Impact:** None — resolved.
+#### CF Web Analytics not configured
+- **Status:** Beacon script ready in `__root.tsx`; needs a token from the CF dashboard.
+- **Fix:** Generate token, paste, deploy.
 
-### ~~Site Navigation (Mega-Menu)~~ ✅ FIXED (2026-05-06)
-- **Status:** Full audit + rebuild against 2026 best practices. Dead `megaContainerRef` effect removed. `Link to="/departments"` now passes required `search` prop. Mega-menu closes on outside `pointerdown`. Hover open is gated behind `matchMedia("(hover: hover) and (pointer: fine)")` so touch devices use click-only. Desktop static links, the Departments trigger, mobile static links, and the current department in the mega-menu all show active-page styling (`aria-current="page"` + visual underline / left border / parchment fill). `hasDarkHeader` regex anchored with `(\/|$)`. ARIA upgraded from incorrect `role="menu"`/`menuitem` to a proper disclosure with `aria-expanded` + `aria-controls` + matching `id`; links are now naturally tabbable. `expandedCategory: string|null` renamed to `mobileDeptsOpen: boolean`. `prefers-reduced-motion` snaps animated entries to opacity 1 with no delay.
-- **Verification:** 15/15 mega-menu E2E tests pass against local preview, 24/24 unit tests pass, 0 typecheck errors in SiteNav.tsx, 0 Biome lint errors, build 4.20s / 747 KB worker entry.
+#### Service worker / offline emergency
+- **Status:** PWA manifest complete (192/512 icons, theme colors, install prompt). No service worker yet.
+- **Fix:** Workbox precache for `/`, `/property-taxes`, `/contact`, `/calendar`, `/departments/emergency-management`, `/departments/sheriff`, plus the EmergencyModule + seal assets. Stale-while-revalidate on content; cache-first on hashed assets. Critical for storm scenarios where citizens lose mobile signal.
 
-### ~~Mobile Drawer Rendering with `height: 0`~~ ✅ FIXED (2026-05-06)
-- **Status:** Critical bug found via Playwright MCP audit on the deployed site. The `<nav>` uses `backdrop-blur-lg`, which in CSS establishes a containing block for `position: fixed` descendants. The mobile drawer was a child of `<nav>`, so its `top: 64px; bottom: 0` was computed relative to the 64-px-tall nav rather than the viewport — collapsing to height 0. Drawer content (681px tall) was effectively invisible and the first interactive button (mobile Departments toggle) was unclickable. Fix: hoisted the mobile drawer and the lazy `<SearchDialog />` out of `<nav>` as fragment siblings so `position: fixed` resolves against the viewport.
-- **Verification:** Live `getComputedStyle` check on the deployed worker confirms `drawer.offsetHeight = 100dvh - 64px`, parent is `<body>`, the Departments collapsible expands and shows all 25 departments + "View all".
+#### Spanish translation native review
+- **Status:** `es.json` covers ~150 UI keys; machine-translated.
+- **Impact:** Awkward phrasing in places. Should not be claimed as "bilingual" in marketing yet.
+- **Fix:** Pay a native Spanish-speaker for a review pass, particularly on the property-taxes lookup copy and FAQ answers.
 
-### ~~Duplicate `<main id="main-content">` Nesting~~ ✅ FIXED (2026-05-06)
-- **Status:** `__root.tsx` rendered `<main id="main-content">` around `<Outlet />` while every route component also rendered its own `<main id="main-content">`. Result: every page emitted nested `<main>` elements with duplicate IDs (invalid HTML, suspected hydration noise). Removed the wrapper from `__root.tsx`; ensured `AdminLayout` and `admin/login.tsx` carry the id themselves so the skip-link target stays in place for admin routes.
-
-### ~~Missing PWA Icons (404 in console)~~ ✅ FIXED (2026-05-06)
-- **Status:** `manifest.webmanifest` referenced `/android-chrome-192x192.png` and `/android-chrome-512x512.png`, neither of which existed in `public/`. Generated both from `favicon.svg` via `rsvg-convert`. 404 console error gone.
-
-### ~~SearchDialog Missing `DialogTitle`~~ ✅ FIXED (2026-05-06)
-- **Status:** Radix `DialogContent` requires a `DialogTitle` for screen-reader accessibility, and a Radix console error was firing every time the search dialog opened. Added visually hidden `Dialog.Title` ("Search Sullivan County") + `Dialog.Description` for SR context.
-
-### ~~Hero Image Preloaded Sitewide~~ ✅ FIXED (2026-05-06)
-- **Status:** `<link rel="preload" href="/images/hero/boone-lake-1920.webp">` lived in `__root.tsx`, but the image only renders on `/`. Browser console warned "preloaded but not used" on every other page. Moved the preload into the home route's `head()` so it only fires when the image is actually rendered.
-
-### ~~Speculation-Rules Script Ignored~~ ✅ FIXED (2026-05-06)
-- **Status:** Console: "speculation rule set ... will be ignored ... if it was created using the innerHTML setter." React `dangerouslySetInnerHTML` rewrites the script element on hydration, which the browser's speculation-rules engine treats as innerHTML insertion and rejects. The rule set was therefore never actually prefetching anything — removed for now. To reinstate, the script must be emitted as static HTML outside React's tree.
-
-### Code-Split Bundle Size Not Verified
-- **Status:** `SearchDialog` is lazy-loaded via `React.lazy` but actual bundle split and size reduction not measured.
-- **Impact:** Unknown whether code splitting provides meaningful savings.
-- **Fix:** Add bundle analyzer, measure split impact.
-
-### Google Maps Click-to-Load Not Tested
-- **Status:** Placeholder exists on contact page but actual map iframe load after click not verified.
-- **Impact:** Map may never load.
-- **Fix:** Add E2E test for map load.
-
-### CF Web Analytics Not Configured
-- **Status:** Token placeholder exists but no analytics flow.
-- **Impact:** No visitor analytics.
-- **Fix:** Create CF Web Analytics site, add token.
+#### No staging/QA environment
+- **Status:** Only production deployment. `wrangler.jsonc` has a `preview` env but no separate Cloudflare Worker / D1.
+- **Fix:** Provision `sullivan-county-tn-preview` worker + a separate D1 for QA.
 
 ---
 
-## Medium
+### Low
 
-### No Wildcard SSL / Custom Domain
-- **Status:** Deployed to `codyboring.workers.dev` subdomain. No custom domain configured.
-- **Impact:** Unprofessional URL, no custom SSL.
-- **Fix:** Set up `sullivancountytn.gov` domain in Cloudflare.
+#### "Sullivan County" hard-coded in 14 places
+- **Status:** Components like `AboutSection`, `SiteFooter`, `NextMeetingCard`, `CommissionerCard` use string literals instead of `SITE_NAME` from `data/site-config.ts`.
+- **Impact:** Stylistic; mostly fine since the literal copy is sentence-level (e.g., "Sullivan County Commission Regular Session"), but a brand rename would touch all of these.
+- **Fix:** Audit and replace where the name is a generic placeholder rather than part of the literal copy.
 
-### No Monitoring / Alerting
-- **Status:** Health check endpoint exists (`/api/health`) but no uptime monitoring or alerting configured.
-- **Impact:** Downtime goes unnoticed.
-- **Fix:** Set up Cloudflare dashboard alerts.
+#### `as Record<string, unknown>` env access
+- **Status:** Eight server functions cast `env` to `Record<string, unknown>` to access bindings (D1, KV) because the `cloudflare:workers` `env` import isn't auto-typed against the global `Env` interface.
+- **Impact:** Loses some type safety on env-binding access.
+- **Fix:** Augment the `cloudflare:workers` module declaration to type `env` as `Cloudflare.Env`, or write a small `getEnv()` helper that does the cast once.
 
-### No CI Verification
-- **Status:** GitHub Actions CI workflow exists but has never been run or verified.
-- **Impact:** Unknown whether CI passes.
-- **Fix:** Trigger CI run, fix any failures.
+#### NewsCard / NewsSection layout duplication
+- **Status:** Two slightly different card layouts in `NewsCard` (used on `/news`) and `NewsSection` (homepage).
+- **Fix:** Consolidate into one component with size variants if/when redesigning the news area.
 
-### Client-Side Form Validation Incomplete
-- **Status:** `forms/$type.tsx` uses raw `useState` instead of React Hook Form or TanStack Form.
-- **Impact:** No field-level validation until submit.
-- **Fix:** Integrate form library.
+#### No automated Lighthouse CI
+- **Status:** Performance / a11y scores not tracked over time.
+- **Fix:** Add `lighthouserc.json` + GitHub Action when there's a meaningful baseline to defend.
 
-### No Error Tracking Service
-- **Status:** No Sentry, LogRocket, or equivalent.
-- **Impact:** Production errors are invisible.
-- **Fix:** Add error tracking.
+#### No visual regression testing
+- **Status:** CSS changes aren't caught unless they break layout enough to fail a Playwright assertion.
+- **Fix:** Playwright `screenshot` snapshots on the home, dept-detail, calendar, and forms pages.
 
-### No Offline Capability
-- **Status:** No service worker.
-- **Impact:** Documents and static pages could benefit from offline caching.
-- **Fix:** Add simple precache service worker.
+#### No "last updated" stamps on pages
+- **Status:** Per the blueprint and GOV.UK pattern, public-facing pages should show a freshness signal.
+- **Fix:** Add `lastUpdated: ISO-date` to the `Department` interface and surface at the bottom of each detail page.
 
----
-
-## Low
-
-### NewsCard Component Duplication
-- **Status:** `NewsCard` and `NewsSection` both render news cards differently.
-- **Impact:** Slight duplication in layout logic.
-- **Fix:** Consolidate into single `NewsCard` component for all contexts.
-
-### No Automated Lighthouse CI
-- **Status:** Scores not tracked over time.
-- **Fix:** Add Lighthouse CI to GitHub Actions.
-
-### Hardcoded "Sullivan County" Strings
-- **Status:** Some components use string literals instead of `SITE_NAME` from `site-config.ts`.
-- **Fix:** Audit and replace.
-
-### No Loading Skeletons
-- **Status:** Pages show blank during navigation.
-- **Fix:** Add skeleton components for key pages.
-
-### No Visual Regression Testing
-- **Status:** CSS changes aren't caught by tests.
-- **Fix:** Add screenshot comparison testing.
+#### No table of contents on long pages
+- **Status:** ADA compliance, privacy policy, and history narrative pages would benefit.
+- **Fix:** Optional enhancement, not pressing.
 
 ---
 
-## Security Gaps
+## Test gaps
 
-- No audit logging for admin actions: who created/edited/deleted what isn't tracked. Add audit log table to D1.
-- No session revocation: admin can't force-logout other sessions. Add session management to admin dashboard.
-- No 2FA for admin: single password authentication. Consider TOTP or WebAuthn for admin.
-
----
-
-## UX Gaps
-
-- No breadcrumb navigation
-- No "last updated" dates on pages
-- No print-specific styles for form pages
-- No table of contents on long pages (ADA compliance, privacy policy)
+- No server-fn integration tests against real D1/KV bindings (using `@cloudflare/vitest-pool-workers`).
+- No admin workflow E2E tests (create → edit → delete cycle on news, minutes, announcements). The current admin-auth tests verify login/logout only.
+- No mobile hamburger flow E2E beyond "drawer opens with verb labels" — the per-verb expansion + link clicks aren't exercised.
+- No performance regression tests.
 
 ---
 
-## Test Gaps
+## UX gaps
 
-- No server function integration tests with real D1/KV bindings
-- No admin workflow E2E tests (create/edit/delete cycles)
-- No form validation E2E tests (field-level error messages)
-- No mobile navigation E2E tests (hamburger menu flows)
-- No performance regression tests
+- No breadcrumb navigation on dept detail or other deep routes (each page is one click from home, but breadcrumbs help orientation on shared links).
+- No print-specific styles for `/forms/$type` form pages.
 
 ---
 
-## Deployment Gaps
+## Security gaps
 
-- No staging/QA environment: only production deployment
-- No blue-green deployment strategy
-- No automated rollback
-- No deployment approval gate
+- No audit logging table for admin mutations: who created/edited/deleted what isn't recorded. Consider a `audit_log` D1 table with `actor`, `action`, `resource`, `metadata`, `ip`, `timestamp`.
+- No session revocation: admin can't force-logout other sessions. Add session list + delete in `/admin/sessions`.
+- Single-factor admin auth. TOTP or WebAuthn would harden against password leaks.
+
+---
+
+## Deployment gaps
+
+- No staging environment (covered above under Medium).
+- No blue-green deploys / automated rollback.
+- No deployment approval gate.
+
+---
+
+## Recently fixed (kept for reference)
+
+| Item | Fixed |
+|------|-------|
+| Verb-based primary nav (replaces dept-led nav, blueprint Insight on services-first IA) | 2026-05-07 |
+| Parcel lookup on `/property-taxes` (TPAD typeahead + 3-portal CTAs) — closes blueprint Insight 11 | 2026-05-07 |
+| Per-IP rate limit keys (was global, one user could block all) | 2026-05-07 |
+| WCAG AA contrast on hero kbd hint + Pay Taxes CTA over light hero (`/history` was 1.05:1) | 2026-05-07 |
+| CommunityMap `role="img"` removed (anchors inside need to be focusable) | 2026-05-07 |
+| Unused shadcn Card + Button deleted (zero imports) | 2026-05-07 |
+| FAQPage + GovernmentService JSON-LD on every dept detail | 2026-05-06 |
+| GovernmentService JSON-LD on every form | 2026-05-06 |
+| AudiencePathways homepage section (Brunswick / Greenville hybrid pattern) | 2026-05-06 |
+| MobileBottomTabBar (Pay / Search / Call thumb-zone bar at <md) | 2026-05-06 |
+| Property-tax landing page with FAQ + plain-language steps | 2026-05-06 |
+| Citizen-language search aliases + suggested zero-result queries | 2026-05-06 |
+| AnnouncementBanner D1 wiring with severity dropdown | 2026-05-06 |
+| Open-Now status pill (holiday-aware via Computus) | 2026-05-06 |
+| Next-Meeting computation + .ics export | 2026-05-06 |
+| "Was this page helpful?" feedback widget (D1-backed) | 2026-05-06 |
+| vCard "Save Contact" exports on departments + commissioners | 2026-05-06 |
+| Interactive 6-community Sullivan County SVG map | 2026-05-06 |
+| Official Sullivan County seal (potrace-traced from sullivancountytn.gov) | 2026-05-06 |
+| Spanish locale populated across home/nav/footer/forms | 2026-05-06 |
+| Mega-menu disclosure rebuild + click-outside + hover gating | 2026-05-06 |
+| Mobile drawer hoisted out of `<nav>` (was rendering with height: 0) | 2026-05-06 |
+| Admin login with ULID sessions + timing-safe compare + rate limiting | 2026-05-06 |
+| Zod validation on every server function | 2026-05-06 |
+| sanitize-html on stored content | 2026-05-06 |
+| Structured JSON logging (no PII) | 2026-05-06 |
+| All D1 migrations applied to remote (`page_feedback` + `announcement_severity`) | 2026-05-07 |

@@ -69,7 +69,7 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
           <div className="relative z-10 mx-auto max-w-7xl px-4 pt-24 pb-14 sm:px-6 sm:pb-20 lg:px-8">
             <Link
               to="/departments"
-              search={{}}
+              search={{ category: undefined }}
               className="inline-flex items-center gap-1.5 font-body text-sm font-medium text-brand-brass hover:text-brand-brass/80 transition-colors mb-6"
             >
               <ArrowLeft className="size-4" />

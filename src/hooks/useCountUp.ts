@@ -7,10 +7,15 @@ interface UseCountUpOptions {
   prefix?: string;
 }
 
-export function useCountUp({ end, duration = 2000, suffix = "", prefix = "" }: UseCountUpOptions) {
+export function useCountUp<T extends HTMLElement = HTMLElement>({
+  end,
+  duration = 2000,
+  suffix = "",
+  prefix = "",
+}: UseCountUpOptions) {
   const [value, setValue] = useState(0);
   const [hasStarted, setHasStarted] = useState(false);
-  const ref = useRef<HTMLElement>(null);
+  const ref = useRef<T>(null);
 
   const animate = useCallback(() => {
     // Skip animation for users who prefer reduced motion

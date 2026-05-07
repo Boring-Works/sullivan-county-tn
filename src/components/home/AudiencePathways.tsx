@@ -1,16 +1,26 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, Briefcase, Compass, Home } from "lucide-react";
+import { ArrowRight, Briefcase, Compass, Home, type LucideIcon } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
 
-const PATHWAYS = [
+interface Pathway {
+  key: string;
+  icon: LucideIcon;
+  titleKey: string;
+  bodyKey: string;
+  ctaKey: string;
+  to: "/departments" | "/economic-development" | "/visit";
+  search?: { category: string };
+}
+
+const PATHWAYS: Pathway[] = [
   {
     key: "residents",
     icon: Home,
     titleKey: "home.audiences.residentsTitle",
     bodyKey: "home.audiences.residentsBody",
     ctaKey: "home.audiences.residentsCta",
-    to: "/departments" as const,
+    to: "/departments",
     search: { category: "community" },
   },
   {
@@ -19,7 +29,7 @@ const PATHWAYS = [
     titleKey: "home.audiences.businessesTitle",
     bodyKey: "home.audiences.businessesBody",
     ctaKey: "home.audiences.businessesCta",
-    to: "/economic-development" as const,
+    to: "/economic-development",
   },
   {
     key: "visitors",
@@ -27,9 +37,9 @@ const PATHWAYS = [
     titleKey: "home.audiences.visitorsTitle",
     bodyKey: "home.audiences.visitorsBody",
     ctaKey: "home.audiences.visitorsCta",
-    to: "/visit" as const,
+    to: "/visit",
   },
-] as const;
+];
 
 export function AudiencePathways() {
   const ref = useScrollReveal<HTMLElement>();

@@ -57,7 +57,7 @@ const TOP_TASKS: TopTask[] = [
 ];
 
 function StatItem({ end, suffix, label }: { end: number; suffix?: string; label: string }) {
-  const { ref, display } = useCountUp({ end, suffix, duration: 2200 });
+  const { ref, display } = useCountUp<HTMLDivElement>({ end, suffix, duration: 2200 });
   return (
     <div className="text-center sm:text-left">
       <div

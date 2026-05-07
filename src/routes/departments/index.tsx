@@ -51,7 +51,7 @@ function DepartmentsPage() {
       <div className="mb-10 flex flex-wrap gap-2">
         <Link
           to="/departments"
-          search={{}}
+          search={{ category: undefined }}
           className={`rounded-sm px-4 py-2 font-body text-sm font-medium transition-all duration-200 ${
             !category
               ? "bg-brand-navy text-white"

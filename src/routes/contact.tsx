@@ -145,7 +145,7 @@ function ContactPage() {
             For specific department information, visit our{" "}
             <Link
               to="/departments"
-              search={{}}
+              search={{ category: undefined }}
               className="text-brand-copper hover:text-brand-copper-light hover:underline font-medium"
             >
               department directory

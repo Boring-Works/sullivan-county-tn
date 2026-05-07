@@ -18,7 +18,7 @@ function NewArticlePage() {
   const [author, setAuthor] = useState("Sullivan County");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
-  const [status, setStatus] = useState("draft");
+  const [status, setStatus] = useState<"draft" | "published" | "archived">("draft");
   const [url, setUrl] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -103,7 +103,7 @@ function NewArticlePage() {
             <select
               id="status"
               value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              onChange={(e) => setStatus(e.target.value as "draft" | "published" | "archived")}
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
             >
               <option value="draft">Draft</option>

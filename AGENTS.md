@@ -77,23 +77,32 @@ Cloudflare Workers (TanStack Start SSR). Config in wrangler.jsonc.
 - Use offset-based pagination
 - Hardcode codyboring.workers.dev URL in new code (use site config)
 
-## Routes (23 total)
-Government portal: /, /departments, /departments/$slug, /commissioners, /news, /news/$slug, /calendar, /contact, /documents, /ada-compliance, /privacy-policy, /employee-services
-Heritage layer: /history, /history/timeline, /history/$slug, /communities, /communities/$slug, /about, /economic-development, /education, /transportation, /people, /visit
-Admin: /admin, /admin/login, /admin/news, /admin/news/new, /admin/news/$id, /admin/submissions, /admin/minutes, /admin/minutes/new, /admin/minutes/$id, /admin/announcements, /admin/announcements/new, /admin/announcements/$id
-Forms: /forms, /forms/$type
+## Routes (40 total)
+Citizen-facing: `/`, `/property-taxes`, `/departments`, `/departments/$slug`, `/commissioners`, `/news`, `/news/$slug`, `/calendar`, `/contact`, `/documents`, `/forms`, `/forms/$type`, `/ada-compliance`, `/privacy-policy`, `/employee-services`
+Heritage / civic: `/history`, `/history/timeline`, `/history/$slug`, `/communities`, `/communities/$slug`, `/about`, `/economic-development`, `/education`, `/transportation`, `/people`, `/visit`
+Admin (auth-gated): `/admin/login`, `/admin`, `/admin/news{,/new,/$id}`, `/admin/minutes{,/new,/$id}`, `/admin/announcements`, `/admin/submissions`
+API: `/api/health`
 
-## Data Files (14)
-departments, commissioners, news, documents, quick-services, search-index, heritage-sites, timeline, communities, notable-people, employers, education, form-definitions, meeting-minutes
+## Primary nav (verb-based)
+Pay · Apply · Report · Records · Meetings · Departments · About — defined in `src/data/nav-verbs.ts`. Each verb opens a mega-panel of concrete tasks (GOV.UK / Cook County "I Want To" pattern). Departments verb keeps the existing 6-category mega-menu.
 
-## Server Functions
+## Data Files (17)
+departments, commissioners, news, documents, quick-services, search-index, heritage-sites, timeline, communities, notable-people, employers, education, form-definitions, meeting-minutes, meetings, holidays, nav-verbs, site-config
+
+## Server Functions (12)
 - auth (login, validateAdmin, logout)
-- contact (submitContactForm)
-- forms (submitForm)
+- contact (submitContactForm → KV)
+- forms (submitForm → D1)
+- parcel-lookup (lookupParcelSuggestions — proxies TN Comptroller TPAD)
+- page-feedback (submitPageFeedback, listPageFeedback, deletePageFeedback)
+- public-announcements (listPublicAnnouncements)
 - admin-news (CRUD)
 - admin-minutes (CRUD)
 - admin-announcements (CRUD)
 - admin-submissions (list, updateStatus)
+- guard (requireAdmin shared helper)
+- csrf (token issue + validate — defined; primary defense is SameSite=Strict cookies)
+- rate-limit (per-IP composite-key in-memory limiter)
 
 ## Cloudflare Bindings
 - DB: D1 database (sullivan-county-db)

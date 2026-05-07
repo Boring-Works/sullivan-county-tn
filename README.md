@@ -10,7 +10,7 @@
 |-----|---------|
 | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Full architecture: frontend, backend, data flow, security, Cloudflare services |
 | [CURRENT_STATE.md](docs/CURRENT_STATE.md) | What exists, what's mocked, what's broken |
-| [COMPONENT_INVENTORY.md](docs/COMPONENT_INVENTORY.md) | All 37 components, their usage, and reuse guidance |
+| [COMPONENT_INVENTORY.md](docs/COMPONENT_INVENTORY.md) | All 50 components, their usage, and reuse guidance |
 | [DEVELOPMENT_WORKFLOW.md](docs/DEVELOPMENT_WORKFLOW.md) | Local setup, commands, deployment, testing, admin access |
 | [GAP_ANALYSIS.md](docs/GAP_ANALYSIS.md) | All known gaps by severity (critical → low) |
 | [NEXT_IMPLEMENTATION_PLAN.md](docs/NEXT_IMPLEMENTATION_PLAN.md) | Prioritized plan for future work (6 phases) |
@@ -19,11 +19,11 @@
 
 ---
 
-- **Tests:** 24 unit + 164 E2E across desktop/tablet/mobile (all passing)
-- **A11y:** WCAG AA compliant (7 brand tokens optimized for 4.5:1+ contrast, 13 ARIA violations resolved)
-- **Lint:** 0 errors (Biome)
-- **Build:** 3.4s, 747KB worker entry
-- **Security:** Auth gates, CSRF, rate limiting, timing-safe compare, Zod validation, ULIDs, XSS sanitization
+- **Tests:** 69 unit + 260 E2E local / 251 E2E live across desktop/tablet/mobile (0 failures)
+- **A11y:** WCAG AA compliant (kbd contrast hardened, axe-core scans clean across 14 routes × 3 viewports)
+- **Lint:** 0 errors (Biome) — 1 pre-existing cookie warning in `src/lib/i18n.ts`
+- **Build:** ~3.2s, 749KB worker entry
+- **Security:** Auth gates, per-IP rate limiting, timing-safe compare, Zod validation on every server fn, ULIDs, XSS sanitization, structured JSON logging
 
 ---
 
@@ -51,7 +51,8 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 
 | Route | Description |
 |-------|-------------|
-| `/` | Homepage — cinematic hero with parallax, animated stat counters, quick services (8), department categories (6), community highlights (3), latest news |
+| `/` | Homepage — cinematic hero with parallax + visible search + 5 task chips + Open-Now almanac, EmergencyModule, QuickServices (9), DepartmentCategories (6), AudiencePathways (Residents / Businesses / Visitors), Promises, NextMeetingCard with .ics export, NewsSection, interactive 6-community CommunityMap, AboutSection |
+| `/property-taxes` | "Pay your property taxes" landing page with `ParcelLookup` typeahead (TPAD-backed), three-portal CTAs (TPAD assessment / Trustee payment / ArcGIS map), plain-language steps, 6-question FAQ, FAQPage + GovernmentService + BreadcrumbList JSON-LD |
 | `/departments` | 25 departments organized into 6 color-coded categories with filtering |
 | `/departments/$slug` | Individual department pages with contacts, staff, services, offices, FAQs, publications, bid thresholds |
 | `/commissioners` | 24 county commissioners organized by 11 districts with headshots |

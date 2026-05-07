@@ -262,7 +262,7 @@ export function SiteNav() {
       if (e.key === "Escape") {
         e.preventDefault();
         setMobileOpen(false);
-        setMobileDeptsOpen(false);
+        setMobilePanel(null);
         hamburgerRef.current?.focus();
         return;
       }

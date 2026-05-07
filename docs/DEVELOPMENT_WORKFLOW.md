@@ -113,7 +113,7 @@ Note: Drizzle dialect is `sqlite`. Migrations output to `src/db/migrations/`.
 - 3 viewport projects: desktop (1920x1080), tablet (iPad Pro 1024x1366), mobile (iPhone 14 Pro 390x844)
 - Base URL defaults to production; override with `BASE_URL` env var
 - Timeout: 30s per test, 1 retry
-- 198 total tests across viewports
+- 260 local / 251 live total E2E cases across viewports (as of 2026-05-07)
 
 ### Accessibility
 

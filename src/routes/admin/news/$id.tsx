@@ -20,7 +20,7 @@ function EditArticlePage() {
   const [author, setAuthor] = useState("");
   const [summary, setSummary] = useState("");
   const [content, setContent] = useState("");
-  const [status, setStatus] = useState("draft");
+  const [status, setStatus] = useState<"draft" | "published" | "archived">("draft");
   const [url, setUrl] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
   const [loading, setLoading] = useState(true);
@@ -40,7 +40,7 @@ function EditArticlePage() {
         } catch {
           setContent(article.content);
         }
-        setStatus(article.status);
+        setStatus(article.status as "draft" | "published" | "archived");
         setUrl(article.url ?? "");
         setPdfUrl(article.pdfUrl ?? "");
       }
@@ -133,7 +133,7 @@ function EditArticlePage() {
             <select
               id="status"
               value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              onChange={(e) => setStatus(e.target.value as "draft" | "published" | "archived")}
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
             >
               <option value="draft">Draft</option>

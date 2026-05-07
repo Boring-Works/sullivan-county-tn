@@ -7,19 +7,24 @@ Brand: **"Where Tennessee Began and Begins"**
 See `/docs/` for complete architecture audit:
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md) — Full stack architecture
 - [CURRENT_STATE.md](docs/CURRENT_STATE.md) — Current project state
-- [COMPONENT_INVENTORY.md](docs/COMPONENT_INVENTORY.md) — All 37 components
+- [COMPONENT_INVENTORY.md](docs/COMPONENT_INVENTORY.md) — All 50 components
 - [DEVELOPMENT_WORKFLOW.md](docs/DEVELOPMENT_WORKFLOW.md) — Dev workflow
 - [GAP_ANALYSIS.md](docs/GAP_ANALYSIS.md) — Known gaps
 - [NEXT_IMPLEMENTATION_PLAN.md](docs/NEXT_IMPLEMENTATION_PLAN.md) — Future plan
 
-## State (2026-05-06 — citizen-utility + graphics refresh)
-- **Tests:** 58 unit + 164 E2E across desktop/tablet/mobile (all green)
-- **A11y:** WCAG AA compliant
+## State (2026-05-07 — verb nav + parcel lookup + e2e green across viewports)
+- **Tests:** 69 unit + 260 E2E local / 251 E2E live, across desktop/tablet/mobile (all green; 12 sensible skips locally for admin auth + touch keyboard tests)
+- **A11y:** WCAG AA compliant — kbd contrast fixed on hero, `bg-white/95` → `bg-white` on hero search button, `Pay Taxes` CTA always copper-on-white, CommunityMap SVG no longer has `role="img"` (anchors inside are independently focusable), reveal-on-scroll elements pre-revealed in axe scans
 - **Lint:** 0 blocking errors (1 pre-existing cookie warning in `src/lib/i18n.ts`)
-- **Build:** ~3s, ~748 KB worker entry
-- **Security:** Auth gates, CSRF, rate limiting, timing-safe compare, Zod validation, ULIDs, XSS sanitization, structured logging
-- **Citizen-utility shipped:** Hero search + 5 task chips, EmergencyModule with elevated 911 tile (pulse halo, copper glow), AnnouncementBanner wired to D1 with banner-aware nav offset + severity dropdown in admin, Open-Now status pill (hydration-stable, holiday-aware, live pulse when open), Next-Meeting computation with .ics download, online/in-person service badges, "Was this helpful?" feedback widget on dept/forms/contact pages, vCard "Save Contact" exports on dept + commissioners, PWA install hint with iOS Safari-aware modal, native scroll-driven CSS animations, view transitions on dept list → detail, BreadcrumbList + Event JSON-LD, Spanish locale populated and wired across home components (machine translation — needs native review).
-- **Graphics shipped:** Official Sullivan County seal (sourced from sullivancountytn.gov, traced via potrace into a clean 47KB SVG, wired into footer mark + AboutSection + hero corner watermark), three-layer parallax mountain dividers, hero photo treatment cleanup (single cohesive overlay + soft inset vignette), card-lift hover refinement (brass-gradient bottom underline + inset depth shadow), printable dept-detail contact card with QR code, **interactive 6-community Sullivan County map** (US Census TIGER/Line boundary projected to a 700-char SVG path with pinned communities linking to existing /communities/$slug pages).
+- **Build:** ~3.2s, ~749 KB worker entry
+- **Security:** Auth gates, Zod validation on every server fn, ULIDs, XSS sanitization, structured logging, timing-safe password compare, **per-IP rate limiting** (composite `key:ip` keys via `getRequestIP()` + `cf-connecting-ip`), CSRF module defined (SameSite=Strict cookies provide primary protection)
+- **Citizen-utility shipped (2026-05-06):** Hero search + 5 task chips, EmergencyModule with elevated 911 tile, AnnouncementBanner wired to D1 with banner-aware nav offset + severity dropdown in admin, Open-Now status pill (hydration-stable, holiday-aware), Next-Meeting computation with .ics download, online/in-person service badges, "Was this helpful?" feedback widget, vCard "Save Contact" exports on dept + commissioners, PWA install hint with iOS Safari-aware modal, native scroll-driven CSS animations, view transitions on dept list → detail, BreadcrumbList + Event JSON-LD, Spanish locale populated.
+- **Graphics shipped (2026-05-06):** Official Sullivan County seal traced from sullivancountytn.gov, three-layer parallax mountain dividers, hero photo treatment cleanup, card-lift hover refinement, printable dept-detail contact card with QR code, interactive 6-community Sullivan County map (US Census TIGER/Line boundary projected to a 700-char SVG path).
+- **Blueprint round (2026-05-06):** FAQPage JSON-LD + GovernmentService JSON-LD on every department detail, GovernmentService JSON-LD on every form, AudiencePathways homepage section (Residents / Businesses / Visitors), citizen-language search aliases on Fuse.js, suggested queries on zero-result, MobileBottomTabBar (Pay / Search / Call thumb-zone bar at <md), property-taxes landing page with FAQ + plain-language steps.
+- **2026-05-07 ship — verb-based primary nav + parcel lookup:**
+  - **Verb nav:** Top nav replaced with **Pay · Apply · Report · Records · Meetings · Departments · About**. Each verb opens a mega-panel of concrete tasks (GOV.UK / Cook County "I Want To" pattern; blueprint cites 81% failure rate of dept-only nav). Departments mega-menu preserved as one of seven verbs. Heritage routes consolidated under About (Heritage / Region / Government columns). Data lives in `src/data/nav-verbs.ts` and is unit-tested for valid internal targets and Hick's-Law-compliant list lengths.
+  - **Parcel lookup:** New `<ParcelLookup />` on `/property-taxes` proxies the Tennessee Comptroller's TPAD autocomplete (`https://assessment.cot.tn.gov/TPAD/Search/Autocomplete/082/{q}`) for typeahead suggestions and routes the user to one of three official portals — TPAD assessment, County Trustee payment, ArcGIS web map. No HTML scraping. Server fn rate-limited 30/min and 4s timeout. GIS link upgraded from generic `gis.sullivancountytn.gov/` to the actual ArcGIS Online web map (`sullcotngis.maps.arcgis.com/.../webmap=2004721405af4dd0952a592b42e6f5b6`).
+  - **Cleanup:** Unused shadcn `card.tsx` + `button.tsx` deleted (Badge stays, used in 4 places). Stale e2e selectors scoped to `nav[aria-label="Main navigation"]` (3 nav landmarks now exist).
 
 ## Tech Stack
 - TanStack Start (full-stack React framework)
@@ -45,7 +50,8 @@ See `/docs/` for complete architecture audit:
 ## Routes
 | Route | File | Purpose |
 |-------|------|---------|
-| `/` | `routes/index.tsx` | Homepage dashboard (hero, quick services, dept categories, news) |
+| `/` | `routes/index.tsx` | Homepage (hero with task chips, EmergencyModule, QuickServices, DepartmentCategories, AudiencePathways, PromisesSection, NextMeetingCard, NewsSection, CommunityMap, AboutSection) |
+| `/property-taxes` | `routes/property-taxes.tsx` | "Pay your property taxes" landing page with `ParcelLookup` typeahead, three-portal CTAs (TPAD/Trustee/GIS), FAQ + GovernmentService JSON-LD |
 | `/departments` | `routes/departments/index.tsx` | Department directory with category filter |
 | `/departments/$slug` | `routes/departments/$slug.tsx` | Individual department detail (25 departments) |
 | `/commissioners` | `routes/commissioners.tsx` | Commissioner grid by district (11 districts) |
@@ -87,6 +93,8 @@ See `/docs/` for complete architecture audit:
 | `data/meeting-minutes.ts` | Meeting minutes with committee, date, titles, PDF attachments |
 | `data/form-definitions.ts` | 4 form types with field definitions and validation |
 | `data/site-config.ts` | Centralized SITE_URL, SITE_NAME, CURRENT_YEAR constants |
+| `data/nav-verbs.ts` | 7 verb-based primary nav definitions (Pay/Apply/Report/Records/Meetings/Departments/About) — each verb maps to concrete citizen tasks with internal/external link tags |
+| `data/holidays.ts` | 13 county holidays computed annually (fixed dates + Easter via Computus + observed-on-nearest-weekday for fixed-date holidays falling on weekends) |
 
 ## Key Components
 | Component | Location | Purpose |
@@ -199,7 +207,7 @@ See `/docs/` for complete architecture audit:
   ```sh
   npx wrangler d1 migrations apply --remote sullivan-county-db
   ```
-  As of 2026-05-06 two pending remote migrations: `0001_page_feedback.sql` (creates the `page_feedback` table that backs the "Was this page helpful?" widget) and `0002_announcement_severity.sql` (adds the `severity` column to `announcements` so the urgent/info dropdown in /admin works). Without these, feedback submissions and severity-tagged banners error with HTTP 500 in production.
+  As of 2026-05-07 all migrations (`0000`, `0001_page_feedback`, `0002_announcement_severity`) are applied to remote. PageFeedback writes succeed, severity-tagged announcements render. Verified via `wrangler d1 execute --remote PRAGMA table_info(announcements)` and `SELECT name FROM sqlite_master`.
 - **Spanish locale** in `src/locales/es.json` is machine-translated. Schedule a native Spanish-speaker review before claiming bilingual support in marketing. Spanish renders **client-side only** — `syncStoredLocale()` reads the `locale` cookie in a `useEffect`, so the first paint is always English. The Spanish UI flashes in immediately after hydration. To eliminate the flash, plumb cookie-aware language detection into the server entry in `__root.tsx` (out of scope for this pass).
 - **Service worker / offline** is not yet shipped — the manifest is complete and Android Chrome installs cleanly via `beforeinstallprompt`. A future PR should ship a Workbox SW for the emergency module.
 
@@ -214,6 +222,8 @@ This is a county government website. The reference points are GOV.UK, NYC.gov, t
 - **Identity earns its place; utility earns the citizen's time.** Hero is "How can we help today?" + search + 5 top tasks; heritage tagline is the quiet final line.
 
 ## Architecture notes for new components
+- **Verb-based primary nav (`SiteNav.tsx` + `data/nav-verbs.ts`)** — top nav is seven verbs: Pay · Apply · Report · Records · Meetings · Departments · About. Each verb opens a mega-panel of concrete tasks. Hover-open is gated behind `matchMedia("(hover: hover) and (pointer: fine)")` so touch devices use click-only. Click-outside closes via `pointerdown`. Arrow keys cycle through `data-panel-link` items inside the open panel; Escape closes and returns focus to the trigger. The Departments verb keeps the existing 6-category mega-menu layout; About uses three columns (Heritage / Region / Government). Adding a new task = edit `nav-verbs.ts`; the unit test in `tests/data/nav-verbs.test.ts` validates that internal targets resolve to real routes.
+- **Parcel lookup (`components/property-taxes/ParcelLookup.tsx` + `server/parcel-lookup.ts`)** — single-box typeahead on `/property-taxes`. Calls `lookupParcelSuggestions` server fn which proxies the Tennessee Comptroller's TPAD autocomplete (`assessment.cot.tn.gov/TPAD/Search/Autocomplete/082/{q}`). No HTML scraping. Submitting deep-links to TPAD search results in a new tab. Three side-by-side CTAs: View assessment → TPAD, Pay your taxes → Trustee, View on map → ArcGIS Online web map. Rate-limited 30/min per IP, 4s upstream timeout, graceful "we couldn't reach the state database" copy on failure.
 - **`useOpenStatus(hours)`** parses department `contact.hours` strings. Format **must** look like `"Monday-Friday, 8am-4:30pm"` (additional clauses after the period are ignored). Strings starting with `"24/7"` always resolve to "Open 24/7." Unparseable strings render no pill (graceful fallback). On SSR (no `now`), the hook returns a stable hours summary placeholder ("Mon–Fri · 8:00 AM–4:30 PM") so the pill is visible immediately; client hydration upgrades to live "Open until 4:30 PM" / "Closed · Holiday Name". The hook honors all 13 county holidays (computed in `src/data/holidays.ts`, including Easter via Computus + observed-on-nearest-weekday for fixed-date holidays) — government offices show "Closed · {Holiday}" on observed-closure days even within business hours.
 - **Interactive county map (`src/components/home/CommunityMap.tsx`)** — boundary path derived once from US Census TIGER/Line FIPS 47163 polygon, equirectangular-projected at the county's center latitude into a 1000×373 viewBox (700-char SVG path committed; no runtime GeoJSON parsing). Six community pins computed from each municipality's lat/lng using the same projection. `Link to="/communities/$slug"` per pin; mobile fallback list when SVG pins are too small to tap. Replaces the old heritage trio of cards on the homepage.
 - **County seal (`src/components/shared/CountySeal.tsx`)** — sourced from sullivancountytn.gov's official artwork, traced via potrace into `public/images/seal/sullivan-seal.svg` (47KB, brand-navy tinted) plus rastered fallbacks at 64/128/256/512px. Wired into the footer mark, the AboutSection heading row, the hero corner watermark (`mix-blend-screen` at 8% opacity, `lg:` only), and the printable dept-detail card.
@@ -278,6 +288,15 @@ This is a county government website. The reference points are GOV.UK, NYC.gov, t
 | SearchDialog a11y | Added visually-hidden `Dialog.Title` + `Dialog.Description` to satisfy Radix's "DialogContent requires a DialogTitle" requirement; was logging a console error every time the search dialog opened. | 2026-05-06 |
 | Hero preload scoped to home route | `<link rel="preload" href="boone-lake-1920.webp">` lived in `__root.tsx` but the image only renders on `/`. Browser warned "preloaded but not used" on every other page. Moved preload into the home route's `head()` only. | 2026-05-06 |
 | Speculation rules removed | React `dangerouslySetInnerHTML` rewrites `<script>` elements during hydration; the browser treats this as `innerHTML` insertion and ignores speculation-rules sets, so the script was never prefetching. Removed; reinstate only as static HTML outside React's tree. | 2026-05-06 |
+| Property-tax landing page | Standalone `/property-taxes` route per blueprint Insight 11 (Property Tax-GIS-Mobile Convergence). Plain-language steps, 6-question FAQ accordion, "three offices three jobs" disambiguation, late-payment safety notice, FAQ + GovernmentService + BreadcrumbList JSON-LD. | 2026-05-06 |
+| Search citizen-language aliases | Added `aliases?: string[]` to `SearchItem`. Fuse.js indexes them at weight 1.8. Maps "food stamps" → SNAP, "tags" → County Clerk, "deed" → Register of Deeds, etc. | 2026-05-06 |
+| Mobile bottom tab bar | USWDS thumb-zone pattern: Pay · Search · Call. Hides itself when the soft keyboard is up via `visualViewport` ratio detection. `padding-bottom: env(safe-area-inset-bottom)` to clear the iOS notch. | 2026-05-06 |
+| AudiencePathways homepage section | Brunswick / Greenville hybrid pattern: three audience tiles (Residents / Businesses / Visitors) below DepartmentCategories. Routes to `/departments?category=community`, `/economic-development`, `/visit`. | 2026-05-06 |
+| FAQPage + GovernmentService JSON-LD | Every `/departments/$slug` emits a combined JSON-LD block (BreadcrumbList + GovernmentService + optional FAQPage when the dept has `faqItems`). Every `/forms/$type` emits GovernmentService with a `potentialAction` back to the form URL. | 2026-05-06 |
+| Verb-based primary nav | Replaces heritage-led top nav with **Pay · Apply · Report · Records · Meetings · Departments · About**. Each verb opens its own mega-panel of concrete tasks (GOV.UK / Cook County "I Want To" pattern). Departments mega-menu preserved. Heritage routes consolidated under About. Data in `src/data/nav-verbs.ts`, validated by `tests/data/nav-verbs.test.ts`. | 2026-05-07 |
+| Parcel lookup on /property-taxes | Single-box typeahead routes citizens to TPAD (state assessment) / Trustee (payment) / ArcGIS (map). Server fn proxies TPAD autocomplete; no HTML scraping. Closes the GIS-Trustee gap that blueprint Insight 11 calls "the highest-ROI integration available to most counties." | 2026-05-07 |
+| Per-IP rate limit keys | `rate-limit.ts` now derives composite `key:ip` keys via `getRequestIP()` + CF-Connecting-IP. Previously global keys (`"contact"`, `"form-submit"`) meant one user blocked everyone in the same isolate. | 2026-05-07 |
+| Unused shadcn primitives removed | `components/ui/card.tsx` and `components/ui/button.tsx` had zero imports. Deleted. Badge stays (used in 4 places). | 2026-05-07 |
 
 ## Heritage Content Layer — COMPLETE (2026-03-01)
 

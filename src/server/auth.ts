@@ -15,12 +15,22 @@ function getEnv() {
 }
 
 async function timingSafeEqual(a: string, b: string): Promise<boolean> {
+  // crypto.subtle has no timingSafeEqual on Workers (Node-only API). Hash
+  // both inputs to a fixed length, then compare byte-by-byte in constant
+  // time over the digest output.
   const encoder = new TextEncoder();
   const [hashA, hashB] = await Promise.all([
     crypto.subtle.digest("SHA-256", encoder.encode(a)),
     crypto.subtle.digest("SHA-256", encoder.encode(b)),
   ]);
-  return crypto.subtle.timingSafeEqual(hashA, hashB);
+  const viewA = new Uint8Array(hashA);
+  const viewB = new Uint8Array(hashB);
+  if (viewA.length !== viewB.length) return false;
+  let diff = 0;
+  for (let i = 0; i < viewA.length; i++) {
+    diff |= viewA[i] ^ viewB[i];
+  }
+  return diff === 0;
 }
 
 export const login = createServerFn({ method: "POST" })

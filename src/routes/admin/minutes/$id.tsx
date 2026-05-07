@@ -22,7 +22,7 @@ function EditMinutesPage() {
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
   const [pdfUrl, setPdfUrl] = useState("");
-  const [status, setStatus] = useState("published");
+  const [status, setStatus] = useState<"draft" | "published" | "archived">("published");
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -37,7 +37,7 @@ function EditMinutesPage() {
         setTitle(item.title);
         setSummary(item.summary ?? "");
         setPdfUrl(item.pdfUrl ?? "");
-        setStatus(item.status);
+        setStatus(item.status as "draft" | "published" | "archived");
       }
     } catch {
       setError("Failed to load");
@@ -164,7 +164,7 @@ function EditMinutesPage() {
             <select
               id="status"
               value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              onChange={(e) => setStatus(e.target.value as "draft" | "published" | "archived")}
               className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
             >
               <option value="published">Published</option>
