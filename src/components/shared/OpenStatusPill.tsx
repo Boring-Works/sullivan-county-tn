@@ -30,6 +30,7 @@ export function OpenStatusPill({ hours, variant = "dark", className }: OpenStatu
 
   return (
     <span
+      suppressHydrationWarning
       className={cn(
         "inline-flex items-center gap-2 rounded-full border px-3 py-1 font-body text-xs font-medium",
         wrap,
@@ -40,13 +41,13 @@ export function OpenStatusPill({ hours, variant = "dark", className }: OpenStatu
         aria-hidden="true"
         className="relative inline-flex shrink-0 items-center justify-center"
       >
-        {status.isOpen === true && (
-          <span
-            className={cn(
-              "absolute inline-block size-3 rounded-full bg-emerald-500/40 motion-safe:animate-status-pulse",
-            )}
-          />
-        )}
+        {/* Pulse halo always rendered so the SSR and client DOM trees match;
+            visibility is toggled via data-attr to avoid hydration mismatches. */}
+        <span
+          data-pulse={status.isOpen === true ? "on" : "off"}
+          aria-hidden="true"
+          className="absolute inline-block size-3 rounded-full bg-emerald-500/40 motion-safe:animate-status-pulse data-[pulse=off]:hidden"
+        />
         <span className={cn("relative block size-1.5 rounded-full", dotClass)} />
       </span>
       <span className="sr-only">Office hours: </span>

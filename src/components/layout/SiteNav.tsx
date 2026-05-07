@@ -3,6 +3,7 @@ import { Search } from "lucide-react";
 import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LanguageToggle } from "~/components/layout/LanguageToggle";
+import { CountySeal } from "~/components/shared/CountySeal";
 import {
   DEPARTMENT_CATEGORIES,
   type DepartmentCategory,
@@ -239,23 +240,15 @@ export function SiteNav() {
           <div className="flex h-16 items-center justify-between lg:h-18">
             {/* Left: Logo + Branding */}
             <Link to="/" className="flex items-center gap-3 shrink-0" onClick={closeMobile}>
-              <div
+              <CountySeal
+                size={40}
+                variant="raster"
+                decorative={false}
                 className={cn(
-                  "flex h-10 w-10 items-center justify-center rounded-sm transition-all duration-300",
-                  solid
-                    ? "bg-brand-navy border border-brand-brass/20"
-                    : "bg-white border border-white/80",
+                  "transition-all duration-300 shrink-0",
+                  solid ? "" : "invert opacity-95",
                 )}
-              >
-                <span
-                  className={cn(
-                    "font-display text-sm font-bold tracking-tight transition-colors duration-300",
-                    solid ? "text-brand-brass" : "text-brand-navy",
-                  )}
-                >
-                  SC
-                </span>
-              </div>
+              />
               <div className="hidden sm:block">
                 <div
                   className={cn(

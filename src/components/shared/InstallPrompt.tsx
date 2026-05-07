@@ -1,5 +1,5 @@
 import { Download, Share, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface BeforeInstallPromptEvent extends Event {
   prompt: () => Promise<void>;
@@ -42,11 +42,13 @@ export function InstallPrompt() {
   const [event, setEvent] = useState<BeforeInstallPromptEvent | null>(null);
   const [hidden, setHidden] = useState(false);
   const [iosOpen, setIosOpen] = useState(false);
-  const iosAvailable = useRef(false);
+  // Stored as state (not ref) so detecting iOS triggers a re-render.
+  const [iosAvailable, setIosAvailable] = useState(false);
 
   useEffect(() => {
-    iosAvailable.current = isIosSafari() && !isRecentlyDismissed(IOS_DISMISS_KEY);
-    if (!iosAvailable.current && isRecentlyDismissed(DISMISS_KEY)) {
+    const onIos = isIosSafari() && !isRecentlyDismissed(IOS_DISMISS_KEY);
+    setIosAvailable(onIos);
+    if (!onIos && isRecentlyDismissed(DISMISS_KEY)) {
       setHidden(true);
       return;
     }
@@ -58,8 +60,7 @@ export function InstallPrompt() {
     return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
-  // Re-render so iOS path picks up after mount.
-  const showIos = !hidden && !event && iosAvailable.current;
+  const showIos = !hidden && !event && iosAvailable;
 
   if (hidden) return null;
 
@@ -84,7 +85,7 @@ export function InstallPrompt() {
       // ignore
     }
     setIosOpen(false);
-    iosAvailable.current = false;
+    setIosAvailable(false);
     setHidden(true);
   }
 

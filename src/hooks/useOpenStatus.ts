@@ -168,17 +168,23 @@ export function computeOpenStatus(hours: string, at: Date): OpenStatus {
 }
 
 export function useOpenStatus(hours: string | undefined): OpenStatus {
+  // `mounted` is the canonical hydration-safe gate: it stays false on the
+  // server AND on the very first client render, then flips to true via
+  // useEffect. Until that flip, both sides render the static placeholder, so
+  // the SSR HTML and the first client commit are byte-for-byte identical.
+  const [mounted, setMounted] = useState(false);
   const [now, setNow] = useState<Date | null>(null);
 
   useEffect(() => {
+    setMounted(true);
     setNow(new Date());
     const id = setInterval(() => setNow(new Date()), 60_000);
     return () => clearInterval(id);
   }, []);
 
   if (!hours) return { isOpen: null, label: "See hours", nextChange: null };
-  // SSR + first paint: render a stable hours summary so the pill is visible
-  // immediately. Hydration swaps to live "Open until 4:30 PM" / "Closed · …".
-  if (!now) return { isOpen: null, label: formatHoursSummary(hours), nextChange: null };
+  if (!mounted || !now) {
+    return { isOpen: null, label: formatHoursSummary(hours), nextChange: null };
+  }
   return computeOpenStatus(hours, now);
 }

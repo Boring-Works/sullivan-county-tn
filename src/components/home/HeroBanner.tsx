@@ -76,16 +76,24 @@ function StatItem({ end, suffix, label }: { end: number; suffix?: string; label:
 function NextMeetingTile() {
   const { t } = useTranslation();
   // Computed once on initial render so the date renders during SSR.
+  // suppressHydrationWarning protects against the edge case where SSR and
+  // client compute the date across a midnight boundary.
   const [next] = useState(() => nextOccurrence(COMMISSION_REGULAR_SESSION_RULE));
   return (
     <Link
       to="/calendar"
       className="group flex flex-col items-center sm:items-start gap-0.5 transition-colors hover:text-brand-brass-light"
     >
-      <span className="font-display text-base font-bold text-white sm:text-xl leading-none group-hover:text-brand-brass-light">
+      <span
+        suppressHydrationWarning
+        className="font-display text-base font-bold text-white sm:text-xl leading-none group-hover:text-brand-brass-light"
+      >
         {formatNyDateShort(next)}
       </span>
-      <span className="font-body text-[9px] font-medium tracking-widest uppercase text-white/50 sm:text-[10px]">
+      <span
+        suppressHydrationWarning
+        className="font-body text-[9px] font-medium tracking-widest uppercase text-white/50 sm:text-[10px]"
+      >
         {t("home.heroAlmanac.nextMeeting")} · {formatNyTime(next)}
       </span>
     </Link>
@@ -315,7 +323,10 @@ export function HeroBanner() {
                   }`}
                 />
                 <div>
-                  <div className="font-display text-xs font-bold text-white sm:text-sm leading-none">
+                  <div
+                    suppressHydrationWarning
+                    className="font-display text-xs font-bold text-white sm:text-sm leading-none"
+                  >
                     {status.label}
                   </div>
                   <div className="font-body text-[9px] font-medium tracking-widest uppercase text-white/50 sm:text-[10px]">

@@ -70,7 +70,10 @@ export function NextMeetingCard() {
                   <p className="font-body text-[11px] font-medium tracking-widest uppercase text-brand-stone">
                     {MEETING_NAME}
                   </p>
-                  <p className="mt-1 font-display text-lg font-bold text-brand-navy sm:text-xl">
+                  <p
+                    suppressHydrationWarning
+                    className="mt-1 font-display text-lg font-bold text-brand-navy sm:text-xl"
+                  >
                     {formatNyDateTime(next)}
                   </p>
                   <p className="mt-1 font-body text-sm text-brand-slate-light">

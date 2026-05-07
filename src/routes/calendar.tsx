@@ -137,7 +137,10 @@ function MeetingRow({ meeting }: { meeting: RecurringMeeting }) {
         <div className="flex-1 min-w-0">
           <h3 className="font-display text-base font-bold text-brand-navy mb-2">{meeting.name}</h3>
           {next && (
-            <p className="font-body text-sm font-semibold text-brand-copper mb-1.5">
+            <p
+              suppressHydrationWarning
+              className="font-body text-sm font-semibold text-brand-copper mb-1.5"
+            >
               Next: {formatNyDateTime(next)}
             </p>
           )}

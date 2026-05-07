@@ -176,7 +176,10 @@ export function buildIcs(event: {
     "METHOD:PUBLISH",
     "BEGIN:VEVENT",
     `UID:${event.uid}`,
-    `DTSTAMP:${fmt(new Date())}`,
+    // DTSTAMP must be deterministic so the .ics href doesn't differ between
+    // SSR and client hydration. We use the event start instant — it identifies
+    // the same logical occurrence on both sides and remains a valid ICS stamp.
+    `DTSTAMP:${fmt(event.start)}`,
     `DTSTART:${fmt(event.start)}`,
     `DTEND:${fmt(end)}`,
     `SUMMARY:${escapeIcs(event.title)}`,
