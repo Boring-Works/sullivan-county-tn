@@ -96,6 +96,19 @@
       "viewCommunity": "View community",
       "boundarySource": "Boundary data: U.S. Census TIGER/Line. Pins approximate community centers."
     },
+    "audiences": {
+      "eyebrow": "Find what you need",
+      "heading": "Who are you visiting as today?",
+      "residentsTitle": "Residents",
+      "residentsBody": "Pay taxes, get a permit, register to vote, find your district commissioner, or check trash pickup days.",
+      "residentsCta": "Resident services",
+      "businessesTitle": "Businesses",
+      "businessesBody": "Apply for licenses, find zoning info, look up incentives, or connect with the Industrial Development Board.",
+      "businessesCta": "Doing business here",
+      "visitorsTitle": "Visitors",
+      "visitorsBody": "Heritage trails, parks, lakes, fishing, festivals, and the places where Tennessee began.",
+      "visitorsCta": "Plan your visit"
+    },
     "about": {
       "eyebrow": "Your County Government",
       "headingPart1": "Serving Sullivan County",

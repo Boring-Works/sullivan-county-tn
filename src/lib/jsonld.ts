@@ -86,9 +86,72 @@ export function eventJsonLd(input: {
 }
 
 /**
+ * FAQPage schema. Featured snippets from FAQPage rich results have ~35% CTR
+ * — and that rich-result type is restricted to government and health sites,
+ * which makes it a unique advantage for county pages. Blueprint Insight 12.
+ */
+export function faqPageJsonLd(
+  items: Array<{ question: string; answer: string }>,
+): Record<string, unknown> {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((f) => ({
+      "@type": "Question",
+      name: f.question,
+      acceptedAnswer: { "@type": "Answer", text: f.answer },
+    })),
+  };
+}
+
+/**
+ * GovernmentService schema for an individual citizen service. Use for permits,
+ * payments, records requests — anything a citizen "does" with the county.
+ */
+export function governmentServiceJsonLd(input: {
+  name: string;
+  serviceType: string;
+  description?: string;
+  url?: string;
+  audienceType?: string;
+  potentialActionUrl?: string;
+  potentialActionName?: string;
+}): Record<string, unknown> {
+  const action =
+    input.potentialActionUrl && input.potentialActionName
+      ? {
+          "@type": "Action",
+          target: input.potentialActionUrl,
+          name: input.potentialActionName,
+        }
+      : undefined;
+  return {
+    "@context": "https://schema.org",
+    "@type": "GovernmentService",
+    name: input.name,
+    serviceType: input.serviceType,
+    description: input.description,
+    url: input.url,
+    provider: {
+      "@type": "GovernmentOrganization",
+      name: "Sullivan County, Tennessee",
+      url: SITE_URL,
+    },
+    areaServed: {
+      "@type": "AdministrativeArea",
+      name: "Sullivan County, Tennessee",
+    },
+    audience: input.audienceType
+      ? { "@type": "Audience", audienceType: input.audienceType }
+      : undefined,
+    potentialAction: action,
+  };
+}
+
+/**
  * Inline JSON-LD as a string for `dangerouslySetInnerHTML`.
  * Filters out undefined values so the rendered JSON stays tidy.
  */
-export function jsonLdString(value: Record<string, unknown>): string {
+export function jsonLdString(value: Record<string, unknown> | Record<string, unknown>[]): string {
   return JSON.stringify(value, (_, v) => (v === undefined ? undefined : v));
 }

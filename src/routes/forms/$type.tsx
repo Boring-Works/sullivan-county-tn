@@ -5,8 +5,9 @@ import { FormField } from "~/components/forms/FormField";
 import { FormLayout } from "~/components/forms/FormLayout";
 import { PageFeedback } from "~/components/shared/PageFeedback";
 import { getFormDefinition } from "~/data/form-definitions";
+import { governmentServiceJsonLd, jsonLdString } from "~/lib/jsonld";
 import { submitForm } from "~/server/forms";
-import { seo, seoLinks } from "~/utils/seo";
+import { SITE_URL, seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/forms/$type")({
   component: FormPage,
@@ -110,8 +111,24 @@ function FormPage() {
     );
   }
 
+  const serviceLd = jsonLdString(
+    governmentServiceJsonLd({
+      name: form.title,
+      serviceType: form.type,
+      description: form.description,
+      url: `${SITE_URL}/forms/${form.type}`,
+      potentialActionUrl: `${SITE_URL}/forms/${form.type}`,
+      potentialActionName: t("forms.startForm"),
+    }),
+  );
+
   return (
     <FormLayout title={form.title} description={form.description}>
+      <script
+        type="application/ld+json"
+        // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data
+        dangerouslySetInnerHTML={{ __html: serviceLd }}
+      />
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Contact Information */}
         <div className="rounded-md border border-brand-surface bg-white p-6">

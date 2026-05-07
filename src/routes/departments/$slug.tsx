@@ -1,8 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { DepartmentDetail } from "~/components/departments/DepartmentDetail";
 import { getDepartmentBySlug } from "~/data/departments";
-import { breadcrumbList, jsonLdString } from "~/lib/jsonld";
-import { seo, seoLinks } from "~/utils/seo";
+import { breadcrumbList, faqPageJsonLd, governmentServiceJsonLd, jsonLdString } from "~/lib/jsonld";
+import { SITE_URL, seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/departments/$slug")({
   component: DepartmentPage,
@@ -45,20 +45,30 @@ function DepartmentPage() {
     );
   }
 
-  const breadcrumbs = jsonLdString(
+  const blocks: Record<string, unknown>[] = [
     breadcrumbList([
       { name: "Home", path: "/" },
       { name: "Departments", path: "/departments" },
       { name: department.name, path: `/departments/${department.slug}` },
     ]),
-  );
+    governmentServiceJsonLd({
+      name: department.name,
+      serviceType: department.category,
+      description: department.description,
+      url: `${SITE_URL}/departments/${department.slug}`,
+    }),
+  ];
+  if (department.faqItems && department.faqItems.length > 0) {
+    blocks.push(faqPageJsonLd(department.faqItems));
+  }
+  const ldString = jsonLdString(blocks);
 
   return (
     <>
       <script
         type="application/ld+json"
         // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data
-        dangerouslySetInnerHTML={{ __html: breadcrumbs }}
+        dangerouslySetInnerHTML={{ __html: ldString }}
       />
       <DepartmentDetail department={department} />
     </>

@@ -96,6 +96,19 @@
       "viewCommunity": "Ver comunidad",
       "boundarySource": "Datos de límites: U.S. Census TIGER/Line. Los marcadores indican el centro aproximado de cada comunidad."
     },
+    "audiences": {
+      "eyebrow": "Encuentre lo que necesita",
+      "heading": "¿Quién es usted hoy?",
+      "residentsTitle": "Residentes",
+      "residentsBody": "Pague impuestos, obtenga un permiso, regístrese para votar, encuentre a su comisionado de distrito o consulte los días de recolección de basura.",
+      "residentsCta": "Servicios para residentes",
+      "businessesTitle": "Empresas",
+      "businessesBody": "Solicite licencias, consulte información de zonificación, busque incentivos o contacte a la Junta de Desarrollo Industrial.",
+      "businessesCta": "Hacer negocios aquí",
+      "visitorsTitle": "Visitantes",
+      "visitorsBody": "Rutas patrimoniales, parques, lagos, pesca, festivales y los lugares donde comenzó Tennessee.",
+      "visitorsCta": "Planee su visita"
+    },
     "about": {
       "eyebrow": "Su gobierno del condado",
       "headingPart1": "Sirviendo al Condado de Sullivan",
