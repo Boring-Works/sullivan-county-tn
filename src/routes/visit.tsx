@@ -5,6 +5,7 @@ import { HeritageHero } from "~/components/history/HeritageHero";
 import { HeritageSiteCard } from "~/components/history/HeritageSiteCard";
 import { HistoryNarrative } from "~/components/history/HistoryNarrative";
 import { MountainDivider, MountainDividerInverted } from "~/components/shared/MountainDivider";
+import { PageFeedback } from "~/components/shared/PageFeedback";
 import { getTrailStops } from "~/data/heritage-sites";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
 import { seo, seoLinks } from "~/utils/seo";
@@ -185,6 +186,8 @@ function VisitPage() {
               Contact Us
             </Link>
           </div>
+
+          <PageFeedback />
         </div>
       </section>
     </main>

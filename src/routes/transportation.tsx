@@ -4,6 +4,7 @@ import { ExternalLink, Plane, Route as RouteIcon, Train } from "lucide-react";
 import { HeritageHero } from "~/components/history/HeritageHero";
 import { HistoryNarrative } from "~/components/history/HistoryNarrative";
 import { MountainDivider } from "~/components/shared/MountainDivider";
+import { PageFeedback } from "~/components/shared/PageFeedback";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
 import { seo, seoLinks } from "~/utils/seo";
 
@@ -151,6 +152,8 @@ function TransportationPage() {
               Economic Development
             </Link>
           </div>
+
+          <PageFeedback />
         </div>
       </section>
     </main>

@@ -16,6 +16,7 @@ import { NotFound } from "~/components/layout/NotFound";
 import { SiteFooter } from "~/components/layout/SiteFooter";
 import { SiteNav } from "~/components/layout/SiteNav";
 import i18n, { syncStoredLocale } from "~/lib/i18n";
+import { governmentOrganizationJsonLd, jsonLdString } from "~/lib/jsonld";
 import appCss from "~/styles/app.css?url";
 import { seo, seoLinks } from "~/utils/seo";
 
@@ -154,23 +155,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
           type="application/ld+json"
           // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data must be inline JSON
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "GovernmentOrganization",
-              name: "Sullivan County, Tennessee",
-              url: "https://sullivan-county-tn.codyboring.workers.dev",
-              description:
-                "Official government website for Sullivan County, Tennessee. Find departments, services, contact information, and county resources. Established 1779.",
-              address: {
-                "@type": "PostalAddress",
-                streetAddress: "3411 Highway 126",
-                addressLocality: "Blountville",
-                addressRegion: "TN",
-                postalCode: "37617",
-                addressCountry: "US",
-              },
-              foundingDate: "1779",
-            }),
+            __html: jsonLdString(governmentOrganizationJsonLd),
           }}
         />
       </head>

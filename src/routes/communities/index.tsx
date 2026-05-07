@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { CommunityCard } from "~/components/communities/CommunityCard";
 import { HeritageHero } from "~/components/history/HeritageHero";
+import { PageFeedback } from "~/components/shared/PageFeedback";
 import { communities } from "~/data/communities";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
 import { seo, seoLinks } from "~/utils/seo";
@@ -35,6 +36,8 @@ function CommunitiesPage() {
               <CommunityCard key={community.slug} community={community} index={i} />
             ))}
           </div>
+
+          <PageFeedback />
         </div>
       </section>
     </main>

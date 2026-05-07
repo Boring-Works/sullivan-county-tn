@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ExternalLink } from "lucide-react";
 
 import { HeritageHero } from "~/components/history/HeritageHero";
+import { PageFeedback } from "~/components/shared/PageFeedback";
 import { schoolSystems } from "~/data/education";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
 import { seo, seoLinks } from "~/utils/seo";
@@ -108,6 +109,8 @@ function EducationPage() {
               </div>
             </div>
           </div>
+
+          <PageFeedback />
         </div>
       </section>
     </main>

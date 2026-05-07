@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { CommissionerGrid } from "~/components/commissioners/CommissionerGrid";
+import { PageFeedback } from "~/components/shared/PageFeedback";
 import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/commissioners")({
@@ -79,6 +80,8 @@ function CommissionersPage() {
             </div>
           </div>
         </div>
+
+        <PageFeedback />
       </div>
     </main>
   );

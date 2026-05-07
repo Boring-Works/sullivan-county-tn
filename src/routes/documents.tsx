@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ChevronDown, Download, Search } from "lucide-react";
 import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { PageFeedback } from "~/components/shared/PageFeedback";
 import { VideoEmbed } from "~/components/shared/VideoEmbed";
 import type { DocumentFileType } from "~/data/documents";
 import { CATEGORIES, documents } from "~/data/documents";
@@ -251,6 +252,8 @@ function DocumentsPage() {
             </Link>
           </div>
         </div>
+
+        <PageFeedback />
       </div>
     </main>
   );

@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { HeritageHero } from "~/components/history/HeritageHero";
 import { HistoryNarrative } from "~/components/history/HistoryNarrative";
 import { MountainDivider } from "~/components/shared/MountainDivider";
+import { PageFeedback } from "~/components/shared/PageFeedback";
 import { sectorEmployment, topEmployers } from "~/data/employers";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
 import { seo, seoLinks } from "~/utils/seo";
@@ -128,6 +129,8 @@ function EconomicDevelopmentPage() {
               Transportation
             </Link>
           </div>
+
+          <PageFeedback />
         </div>
       </section>
     </main>

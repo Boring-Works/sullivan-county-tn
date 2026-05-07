@@ -3,6 +3,7 @@ import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { MinutesFilter } from "~/components/minutes/MinutesFilter";
 import { MinutesList } from "~/components/minutes/MinutesList";
+import { PageFeedback } from "~/components/shared/PageFeedback";
 import { meetingMinutes } from "~/data/meeting-minutes";
 import { seo, seoLinks } from "~/utils/seo";
 
@@ -91,6 +92,8 @@ function MinutesPage() {
         </div>
 
         <MinutesList items={filtered} />
+
+        <PageFeedback />
       </div>
     </main>
   );

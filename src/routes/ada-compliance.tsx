@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Download, Mail, MapPin, Phone } from "lucide-react";
+import { PageFeedback } from "~/components/shared/PageFeedback";
+import { TelLink } from "~/components/shared/TelLink";
 import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/ada-compliance")({
@@ -156,10 +158,14 @@ function AdaCompliancePage() {
                     <span>Sullivan County Justice Center, Blountville, TN 37617</span>
                   </div>
                   <div className="flex items-start gap-2.5">
-                    <Phone className="mt-0.5 size-4 shrink-0 text-brand-copper" />
-                    <a href="tel:+14232792752" className="hover:text-brand-navy hover:underline">
-                      (423) 279-2752
-                    </a>
+                    <Phone
+                      aria-hidden="true"
+                      className="mt-0.5 size-4 shrink-0 text-brand-copper"
+                    />
+                    <TelLink
+                      phone="(423) 279-2752"
+                      className="hover:text-brand-navy hover:underline"
+                    />
                   </div>
                 </div>
               </div>
@@ -190,6 +196,8 @@ function AdaCompliancePage() {
               </div>
             </div>
           </section>
+
+          <PageFeedback />
         </div>
       </div>
     </main>

@@ -1,5 +1,33 @@
 import { SITE_URL } from "~/utils/seo";
 
+/**
+ * Canonical GovernmentOrganization JSON-LD for Sullivan County. Single source
+ * of truth used by the root layout and the homepage.
+ */
+export const governmentOrganizationJsonLd: Record<string, unknown> = {
+  "@context": "https://schema.org",
+  "@type": "GovernmentOrganization",
+  name: "Sullivan County, Tennessee",
+  url: SITE_URL,
+  logo: `${SITE_URL}/images/seal/sullivan-seal.svg`,
+  description:
+    "Official government website for Sullivan County, Tennessee. Find departments, services, contact information, and county resources. Established 1779.",
+  address: {
+    "@type": "PostalAddress",
+    streetAddress: "3411 TN-126",
+    addressLocality: "Blountville",
+    addressRegion: "TN",
+    postalCode: "37617",
+    addressCountry: "US",
+  },
+  telephone: "+1-423-323-6417",
+  foundingDate: "1779",
+  areaServed: {
+    "@type": "AdministrativeArea",
+    name: "Sullivan County, Tennessee",
+  },
+};
+
 export interface BreadcrumbItem {
   name: string;
   /** Path-only URL, e.g. "/departments". Joined to SITE_URL. */

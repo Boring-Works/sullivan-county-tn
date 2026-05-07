@@ -9,29 +9,8 @@ import { NextMeetingCard } from "~/components/home/NextMeetingCard";
 import { PromisesSection } from "~/components/home/PromisesSection";
 import { QuickServices } from "~/components/home/QuickServices";
 import { MountainDivider } from "~/components/shared/MountainDivider";
-import { SITE_URL, seo, seoLinks } from "~/utils/seo";
-
-const governmentJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "GovernmentOrganization",
-  name: "Sullivan County Government",
-  url: SITE_URL,
-  logo: `${SITE_URL}/favicon.svg`,
-  address: {
-    "@type": "PostalAddress",
-    streetAddress: "3411 TN-126",
-    addressLocality: "Blountville",
-    addressRegion: "TN",
-    postalCode: "37617",
-    addressCountry: "US",
-  },
-  telephone: "+1-423-323-6417",
-  foundingDate: "1779",
-  areaServed: {
-    "@type": "AdministrativeArea",
-    name: "Sullivan County, Tennessee",
-  },
-};
+import { governmentOrganizationJsonLd, jsonLdString } from "~/lib/jsonld";
+import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/")({
   component: HomePage,
@@ -62,7 +41,7 @@ function HomePage() {
       <script
         type="application/ld+json"
         // biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD structured data
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(governmentJsonLd) }}
+        dangerouslySetInnerHTML={{ __html: jsonLdString(governmentOrganizationJsonLd) }}
       />
       <HeroBanner />
       <EmergencyModule />

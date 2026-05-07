@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
-
 import { MountainDivider } from "~/components/shared/MountainDivider";
+import { CURRENT_YEAR } from "~/data/site-config";
 
 interface HeritageHeroProps {
   title: string;
@@ -30,7 +30,10 @@ export function HeritageHero({
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const currentYear = new Date().getFullYear();
+  // Site-wide constant rather than `new Date().getFullYear()` to avoid the
+  // hydration mismatch when SSR and client render across a year boundary.
+  // Bump in `src/data/site-config.ts` once a year.
+  const currentYear = CURRENT_YEAR;
 
   return (
     <section
