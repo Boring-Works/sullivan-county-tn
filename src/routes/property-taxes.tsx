@@ -11,6 +11,7 @@ import {
   Mail,
   MapPin,
 } from "lucide-react";
+import { ParcelLookup } from "~/components/property-taxes/ParcelLookup";
 import { OpenStatusPill } from "~/components/shared/OpenStatusPill";
 import { PageFeedback } from "~/components/shared/PageFeedback";
 import { TelLink } from "~/components/shared/TelLink";
@@ -35,7 +36,8 @@ const TRUSTEE_PHONE = "(423) 323-6440";
 const TRUSTEE_HOURS = "Monday-Friday, 8am-4:30pm";
 const TRUSTEE_ADDRESS = "3411 TN-126, Blountville, TN 37617";
 const ASSESSOR_PHONE = "(423) 323-6455";
-const GIS_URL = "https://gis.sullivancountytn.gov/";
+const GIS_URL =
+  "https://sullcotngis.maps.arcgis.com/apps/mapviewer/index.html?webmap=2004721405af4dd0952a592b42e6f5b6";
 
 const FAQ: { question: string; answer: string }[] = [
   {
@@ -137,6 +139,9 @@ function PropertyTaxesPage() {
           Sullivan County property taxes are collected by the County Trustee. You can pay online, by
           mail, or in person. Most people pay online — it takes about 3 minutes.
         </p>
+
+        {/* Parcel lookup — single-box entry that routes to the right official portal */}
+        <ParcelLookup />
 
         {/* Primary CTA card */}
         <div className="mt-8 rounded-sm border-2 border-brand-copper bg-white p-6 sm:p-8 shadow-sm">

@@ -146,6 +146,86 @@
     "formNotFoundDesc": "El formulario que busca no existe.",
     "details": "Detalles"
   },
+  "verbNav": {
+    "pay": {
+      "label": "Pagar",
+      "propertyTaxes": "Impuestos a la propiedad",
+      "courtFines": "Multas y costos judiciales",
+      "permitFees": "Tarifas de permisos",
+      "businessTaxes": "Impuestos comerciales",
+      "vehicleTags": "Placas y registro de vehículos"
+    },
+    "apply": {
+      "label": "Solicitar",
+      "buildingPermit": "Permiso de construcción",
+      "marriageLicense": "Licencia de matrimonio",
+      "businessLicense": "Licencia comercial",
+      "publicRecords": "Solicitud de registros públicos",
+      "employment": "Empleo en el condado",
+      "allForms": "Todos los formularios"
+    },
+    "report": {
+      "label": "Reportar",
+      "pothole": "Bache o problema vial",
+      "codeViolation": "Violación de código",
+      "strayAnimal": "Animal perdido o callejero",
+      "feedback": "Comentarios o sugerencias",
+      "emergency": "Tormenta, inundación o emergencia"
+    },
+    "records": {
+      "label": "Registros",
+      "propertyDeeds": "Registros y escrituras",
+      "courtRecords": "Registros judiciales",
+      "minutes": "Actas de reuniones",
+      "documents": "Biblioteca de documentos",
+      "gisMap": "GIS / mapa de propiedades"
+    },
+    "meetings": {
+      "label": "Reuniones",
+      "calendar": "Calendario y próxima reunión",
+      "minutes": "Actas anteriores",
+      "commissioners": "Sus comisionados",
+      "news": "Noticias y anuncios"
+    },
+    "departments": {
+      "label": "Departamentos"
+    },
+    "about": {
+      "label": "Conozca",
+      "headingHeritage": "Patrimonio",
+      "headingRegion": "Región",
+      "headingGovernment": "Gobierno",
+      "history": "Historia fundacional",
+      "timeline": "Línea de tiempo",
+      "people": "Personas notables",
+      "visit": "Visite",
+      "communities": "Comunidades",
+      "economicDev": "Desarrollo económico",
+      "transportation": "Transporte",
+      "education": "Educación",
+      "aboutCounty": "Sobre el condado",
+      "commissioners": "Comisionados",
+      "contact": "Contáctenos",
+      "employees": "Servicios para empleados",
+      "ada": "Cumplimiento de la ADA"
+    }
+  },
+  "propertyTaxes": {
+    "lookup": {
+      "heading": "Encuentre su propiedad en 30 segundos",
+      "subheading": "Escriba una dirección, nombre del dueño o número de parcela. Le indicaremos el portal oficial correcto: avalúo, pago o mapa.",
+      "inputLabel": "Buscar registros de propiedad del Condado de Sullivan",
+      "placeholder": "Dirección, nombre del dueño o número de parcela",
+      "suggestionsLabel": "Dueños de propiedad coincidentes",
+      "minChars": "Escriba al menos 3 caracteres.",
+      "noResults": "Sin resultados. Intente solo un apellido o el nombre de una calle.",
+      "offline": "No pudimos acceder a la base de datos estatal. Inténtelo en un minuto o use los botones de abajo.",
+      "viewAssessment": "Ver avalúo",
+      "payNow": "Pagar impuestos",
+      "viewOnMap": "Ver en el mapa",
+      "disclosure": "Tres oficinas, tres portales: el Contralor del Estado guarda los avalúos, el Trustee del Condado recibe los pagos y el GIS del condado muestra el mapa. Cada enlace abre en el sitio oficial."
+    }
+  },
   "minutes": {
     "title": "Actas de reuniones",
     "description": "Archivo de las reuniones de la Comisión del condado de Sullivan, sesiones de comités y audiencias públicas. Descargue agendas y actas en formato PDF.",

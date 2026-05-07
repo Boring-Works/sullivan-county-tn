@@ -146,6 +146,86 @@
     "formNotFoundDesc": "The form you're looking for doesn't exist.",
     "details": "Details"
   },
+  "verbNav": {
+    "pay": {
+      "label": "Pay",
+      "propertyTaxes": "Property taxes",
+      "courtFines": "Court fines & costs",
+      "permitFees": "Permit fees",
+      "businessTaxes": "Business taxes",
+      "vehicleTags": "Vehicle tags & registration"
+    },
+    "apply": {
+      "label": "Apply",
+      "buildingPermit": "Building permit",
+      "marriageLicense": "Marriage license",
+      "businessLicense": "Business license",
+      "publicRecords": "Public records request",
+      "employment": "County employment",
+      "allForms": "All forms"
+    },
+    "report": {
+      "label": "Report",
+      "pothole": "Pothole or road issue",
+      "codeViolation": "Code violation",
+      "strayAnimal": "Stray or lost animal",
+      "feedback": "Feedback or suggestion",
+      "emergency": "Storm, flood, or emergency"
+    },
+    "records": {
+      "label": "Records",
+      "propertyDeeds": "Property records & deeds",
+      "courtRecords": "Court records",
+      "minutes": "Meeting minutes",
+      "documents": "Document library",
+      "gisMap": "GIS / property map"
+    },
+    "meetings": {
+      "label": "Meetings",
+      "calendar": "Calendar & next meeting",
+      "minutes": "Past meeting minutes",
+      "commissioners": "Your commissioners",
+      "news": "News & announcements"
+    },
+    "departments": {
+      "label": "Departments"
+    },
+    "about": {
+      "label": "About",
+      "headingHeritage": "Heritage",
+      "headingRegion": "Region",
+      "headingGovernment": "Government",
+      "history": "Founding story",
+      "timeline": "Timeline",
+      "people": "Notable people",
+      "visit": "Visit",
+      "communities": "Communities",
+      "economicDev": "Economic development",
+      "transportation": "Transportation",
+      "education": "Education",
+      "aboutCounty": "About the county",
+      "commissioners": "Commissioners",
+      "contact": "Contact us",
+      "employees": "Employee services",
+      "ada": "ADA compliance"
+    }
+  },
+  "propertyTaxes": {
+    "lookup": {
+      "heading": "Find your property in 30 seconds",
+      "subheading": "Type an address, owner name, or parcel ID. We'll point you to the right official portal — assessment, payment, or map.",
+      "inputLabel": "Search Sullivan County property records",
+      "placeholder": "Address, owner name, or parcel ID",
+      "suggestionsLabel": "Matching property owners",
+      "minChars": "Type at least 3 characters.",
+      "noResults": "No matches yet. Try just a last name or street name.",
+      "offline": "Couldn't reach the state property database. Try again in a minute, or use the buttons below.",
+      "viewAssessment": "View assessment",
+      "payNow": "Pay your taxes",
+      "viewOnMap": "View on map",
+      "disclosure": "Three offices, three portals: the State Comptroller stores assessments, the County Trustee takes payment, and the County GIS shows the map. Each link opens on the official site."
+    }
+  },
   "minutes": {
     "title": "Meeting Minutes",
     "description": "Archive of Sullivan County commission meetings, committee sessions, and public hearings. Download agendas and minutes as PDF documents.",
