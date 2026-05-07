@@ -1,10 +1,10 @@
 # Next Implementation Plan — Sullivan County TN
 
-**Last refreshed:** 2026-05-07
+**Last refreshed:** 2026-05-07 (PM)
 **Current state:** see [`CURRENT_STATE.md`](CURRENT_STATE.md)
 **Active gaps:** see [`GAP_ANALYSIS.md`](GAP_ANALYSIS.md)
 
-The site is in a strong, fully-deployed state. The two highest-impact blueprint fixes (verb-based primary nav + parcel lookup on `/property-taxes`) shipped 2026-05-07. This plan covers the remaining material work in priority order.
+The site is in a strong, fully-deployed state. Three rounds of blueprint-aligned fixes shipped 2026-05-07: verb-based primary nav, parcel lookup on `/property-taxes`, and a homepage trim with seasonal awareness. This plan covers the remaining material work in priority order.
 
 ---
 

@@ -19,7 +19,7 @@
 
 ---
 
-- **Tests:** 69 unit + 260 E2E local / 251 E2E live across desktop/tablet/mobile (0 failures)
+- **Tests:** 79 unit + 260 E2E local / 269 E2E live across desktop/tablet/mobile (0 failures)
 - **A11y:** WCAG AA compliant (kbd contrast hardened, axe-core scans clean across 14 routes × 3 viewports)
 - **Lint:** 0 errors (Biome) — 1 pre-existing cookie warning in `src/lib/i18n.ts`
 - **Build:** ~3.2s, 749KB worker entry
@@ -51,7 +51,7 @@ A ground-up rebuild of the Sullivan County TN government website. The old WordPr
 
 | Route | Description |
 |-------|-------------|
-| `/` | Homepage — cinematic hero with parallax + visible search + 5 task chips + Open-Now almanac, EmergencyModule, QuickServices (9), DepartmentCategories (6), AudiencePathways (Residents / Businesses / Visitors), Promises, NextMeetingCard with .ics export, NewsSection, interactive 6-community CommunityMap, AboutSection |
+| `/` | Homepage — 7 sections: HeroBanner (parallax + search + 5 task chips + 5 suggested-query chips + readable Open-Now line + identity stats), SeasonalRibbon (only visible Oct 1 – Mar 1), EmergencyModule, QuickServices (6 cards), NextMeetingCard (slim banner with .ics export + watch-live), NewsSection (3 cards), CommunityMap, AboutSection. |
 | `/property-taxes` | "Pay your property taxes" landing page with `ParcelLookup` typeahead (TPAD-backed), three-portal CTAs (TPAD assessment / Trustee payment / ArcGIS map), plain-language steps, 6-question FAQ, FAQPage + GovernmentService + BreadcrumbList JSON-LD |
 | `/departments` | 25 departments organized into 6 color-coded categories with filtering |
 | `/departments/$slug` | Individual department pages with contacts, staff, services, offices, FAQs, publications, bid thresholds |

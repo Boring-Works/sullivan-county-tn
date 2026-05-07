@@ -1,9 +1,9 @@
 # Component Inventory — Sullivan County TN
 
 **Platform:** Web-only (TanStack Start on Cloudflare Workers)
-**Total components:** 50 | **Hooks:** 4 | **Last refreshed:** 2026-05-07
+**Total components:** 51 | **Hooks:** 4 | **Last refreshed:** 2026-05-07 (PM)
 
-All components below are in active use. Two unused shadcn primitives (`card.tsx`, `button.tsx`) were deleted on 2026-05-07.
+All components below are in active use except where flagged as **unmounted** (kept for possible reuse, not on the homepage). Two unused shadcn primitives (`card.tsx`, `button.tsx`) were deleted on 2026-05-07.
 
 ---
 
@@ -21,20 +21,21 @@ All components below are in active use. Two unused shadcn primitives (`card.tsx`
 
 ---
 
-## Home (10)
+## Home (8 mounted + 3 unmounted)
 
 | Component | File | Purpose |
 |-----------|------|---------|
-| `HeroBanner` | `home/HeroBanner.tsx` | Cinematic hero (WebP `<picture>` sources, parallax, stat counters), visible search trigger, 5 task chips, Open-Now almanac with Next-Meeting tile. |
+| `HeroBanner` | `home/HeroBanner.tsx` | Cinematic hero (WebP `<picture>` sources, parallax), visible search trigger, 5 task chips, 5 suggested-query chips, single readable Open-Now / Next-Meeting line, identity stats (static SSR-rendered, no count-up). |
+| `SeasonalRibbon` | `home/SeasonalRibbon.tsx` | Date-aware banner. Visible Oct 1 – Mar 1 only. Links to `/property-taxes` with the Feb 28 deadline. Pure deterministic check via `Intl.DateTimeFormat` in America/New_York. |
 | `EmergencyModule` | `home/EmergencyModule.tsx` | Always-visible emergency contacts (911, Sheriff non-emergency, EMA) with elevated 911 tile. |
-| `QuickServices` | `home/QuickServices.tsx` | 9-service grid with online/in-person submission badges. |
-| `DepartmentCategories` | `home/DepartmentCategories.tsx` | 6 color-coded category cards. |
-| `AudiencePathways` | `home/AudiencePathways.tsx` | Three audience tiles (Residents / Businesses / Visitors) per blueprint Brunswick/Greenville hybrid pattern. |
-| `PromisesSection` | `home/PromisesSection.tsx` | "What you can expect" — three plain-language promises. |
-| `NextMeetingCard` | `home/NextMeetingCard.tsx` | Computes next County Commission meeting via `nextOccurrence()`; offers `.ics` download + watch-live link. |
-| `NewsSection` | `home/NewsSection.tsx` | Editorial news layout with featured first item. |
+| `QuickServices` | `home/QuickServices.tsx` | 6-card grid (3-col) with online/in-person submission badges. |
+| `NextMeetingCard` | `home/NextMeetingCard.tsx` | Slim navy banner row with the next commission meeting date + `.ics` download + watch-live + see-full-schedule. |
+| `NewsSection` | `home/NewsSection.tsx` | Editorial news layout with featured first item (3 cards). |
 | `CommunityMap` | `home/CommunityMap.tsx` | Interactive 6-community SVG map (US Census TIGER/Line projection). Mobile fallback list. |
 | `AboutSection` | `home/AboutSection.tsx` | "Where Tennessee Began" section with courthouse photos. |
+| `DepartmentCategories` | `home/DepartmentCategories.tsx` | **Unmounted (was on /, removed 2026-05-07).** 6 color-coded category cards. Kept for possible reuse; verb nav + Departments mega-menu now cover this work twice over. |
+| `AudiencePathways` | `home/AudiencePathways.tsx` | **Unmounted (was on /, removed 2026-05-07).** Three audience tiles (Residents / Businesses / Visitors). Verb nav implicitly routes by audience. |
+| `PromisesSection` | `home/PromisesSection.tsx` | **Unmounted (was on /, removed 2026-05-07).** "Open hours. Open meetings. Honest updates." was banned consultant prose per the voice rules. |
 
 ---
 

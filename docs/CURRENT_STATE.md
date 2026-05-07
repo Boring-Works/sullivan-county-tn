@@ -1,15 +1,24 @@
 # Current State — Sullivan County TN Government Website
 
-**Date:** May 7, 2026
-**Live:** https://sullivan-county-tn.codyboring.workers.dev (version `d6966620-b071-4754-8ba7-0069d76dc521`)
+**Date:** May 7, 2026 (PM)
+**Live:** https://sullivan-county-tn.codyboring.workers.dev (version `2785a527-e822-4fdd-827a-9521a9a12892`)
 **Repo:** https://github.com/Boring-Works/sullivan-county-tn
-**Latest commit:** `93cf3dd` (test: stabilize Departments-panel iteration test)
+**Latest commit:** `9665ba9` (feat(home): trim to 7 sections + static stats + seasonal ribbon + search chips + promoted Open-Now line)
 
 ---
 
 ## Last sessions (2026-05-06 → 2026-05-07)
 
-### 2026-05-07 — verb nav + parcel lookup + e2e green
+### 2026-05-07 PM — homepage trim + static stats + seasonal ribbon
+1. **Homepage trimmed from 11 → 7 sections.** Removed `DepartmentCategories`, `AudiencePathways`, `PromisesSection` from `/`. The verb nav + EmergencyModule already cover this work; the three sections were three competing IA models stacked on the same page.
+2. **QuickServices tightened from 9 → 6 cards** (3-col grid). Animal shelter, emergency services, veterans benefits dropped — reachable via verb nav and search; emergency services is duplicated by EmergencyModule above.
+3. **NextMeetingCard** slimmed from a two-column hero card to a single navy banner row.
+4. **Hero stat-counter removed.** `useCountUp` was rendering "0+ Residents 0 Square Miles 0 Departments" in SSR until JS hydrated and IntersectionObserver fired — real correctness bug for slow JS / reduced motion / screen readers. Stats now render final values directly.
+5. **Suggested-search chips** under the hero search input (`pay taxes · marriage license · trash pickup · pothole · voter registration`). Each chip dispatches `sullivan:open-search` with `detail.query`; `SearchDialog` accepts `initialQuery` and pre-fills.
+6. **Open-Now / Next-Meeting promoted** to a single readable sentence above the identity stats — was 5 small 9-pt-uppercase tiles competing for attention.
+7. **`SeasonalRibbon` component** — date-aware (Oct 1 – Mar 1) banner below hero linking to `/property-taxes` with the Feb 28 deadline. Out of season (May), correctly hidden. Unit-tested across 8 month boundaries.
+
+### 2026-05-07 AM — verb nav + parcel lookup + e2e green
 1. **Verb-based primary nav** — replaced heritage-led top nav (History/Communities/Commissioners/News/Calendar/Documents/Contact) with **Pay · Apply · Report · Records · Meetings · Departments · About**. Each verb opens a mega-panel of concrete tasks (GOV.UK / Cook County "I Want To" pattern). Heritage routes consolidated under About. Departments mega-menu preserved as one verb. Definitions in `src/data/nav-verbs.ts`.
 2. **Parcel lookup on `/property-taxes`** — single-box typeahead routes citizens to the right official portal. Server fn proxies the TN Comptroller's TPAD autocomplete (no HTML scraping). Three side-by-side CTAs: View assessment (TPAD) · Pay your taxes (Trustee) · View on map (ArcGIS Online web map). GIS link upgraded from generic `gis.sullivancountytn.gov/` to the actual web map.
 3. **A11y hardening** — kbd contrast (search shortcut hint), `bg-white/95` → `bg-white` on hero search button, Pay Taxes CTA always copper-on-white (was failing 1.05:1 on `/history`), CommunityMap SVG dropped `role="img"` so the focusable anchors inside aren't double-wrapped.
@@ -56,7 +65,8 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 | Area | Notable |
 |------|---------|
 | Layout | `SiteNav` (verb-based mega-panels), `SiteFooter`, `AnnouncementBanner` (D1-wired), `SearchDialog` (Cmd+K, lazy-loaded), `MobileBottomTabBar`, `LanguageToggle`, `NotFound` |
-| Home | `HeroBanner`, `EmergencyModule`, `QuickServices`, `DepartmentCategories`, `AudiencePathways`, `PromisesSection`, `NextMeetingCard`, `NewsSection`, `CommunityMap`, `AboutSection` |
+| Home (mounted on /) | `HeroBanner`, `SeasonalRibbon`, `EmergencyModule`, `QuickServices` (6 cards), `NextMeetingCard` (slim banner), `NewsSection`, `CommunityMap`, `AboutSection` |
+| Home (built but unmounted) | `DepartmentCategories`, `AudiencePathways`, `PromisesSection` — kept in the repo for possible reuse on other pages but no longer on the homepage |
 | Departments | `DepartmentCard`, `DepartmentDetail`, `PrintableContactCard` |
 | Commissioners | `CommissionerGrid`, `CommissionerCard` |
 | Communities | `CommunityCard` |
@@ -111,8 +121,8 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 
 | Type | Files | Tests | Notes |
 |------|-------|-------|-------|
-| Unit (Vitest) | 11 | 69 | data integrity, hooks, utils, vcard, recurrence, openStatus, holidays, nav-verbs, parcel-lookup schema |
-| E2E (Playwright) | 6 specs | 255 cases × 3 projects | desktop / tablet (iPad Pro) / mobile (iPhone 14 Pro). Local: 260 passed / 12 skipped. Live: 251 passed / 4 skipped. |
+| Unit (Vitest) | 12 | 79 | data integrity, hooks, utils, vcard, recurrence, openStatus, holidays, nav-verbs, parcel-lookup schema, seasonal-ribbon |
+| E2E (Playwright) | 6 specs | 255+ cases × 3 projects | desktop / tablet (iPad Pro) / mobile (iPhone 14 Pro). Local: 260 passed / 12 skipped. Live: 269 passed / 4 skipped. |
 
 ### Design system
 
@@ -176,8 +186,8 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 | Data files | 17 |
 | Server functions | 12 |
 | Zod schemas | 9 |
-| Unit tests | 69 |
-| E2E tests | 260 local / 251 live (passing) |
+| Unit tests | 79 |
+| E2E tests | 260 local / 269 live (passing) |
 | i18n keys | ~150 |
 | Build size | 749 KB worker entry |
 | Build time | ~3.2s |

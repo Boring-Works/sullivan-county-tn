@@ -1,6 +1,6 @@
 # Sullivan County TN — Gap Analysis
 
-**Last refreshed:** 2026-05-07
+**Last refreshed:** 2026-05-07 (PM)
 
 ---
 
@@ -107,6 +107,13 @@
 
 | Item | Fixed |
 |------|-------|
+| Homepage trimmed from 11 → 7 sections (drop DepartmentCategories / AudiencePathways / PromisesSection from /) | 2026-05-07 PM |
+| QuickServices tightened from 9 → 6 cards (3-col grid) | 2026-05-07 PM |
+| NextMeetingCard slimmed to single navy banner row | 2026-05-07 PM |
+| Hero stat-counter 0+ cold-start fixed (static SSR render replaces useCountUp) | 2026-05-07 PM |
+| Suggested-search chips under hero (`pay taxes · marriage license · trash pickup · pothole · voter registration`) | 2026-05-07 PM |
+| Open-Now / Next-Meeting promoted to readable sentence above identity stats | 2026-05-07 PM |
+| SeasonalRibbon (date-aware property-tax notice, Oct 1 – Mar 1) | 2026-05-07 PM |
 | Verb-based primary nav (replaces dept-led nav, blueprint Insight on services-first IA) | 2026-05-07 |
 | Parcel lookup on `/property-taxes` (TPAD typeahead + 3-portal CTAs) — closes blueprint Insight 11 | 2026-05-07 |
 | Per-IP rate limit keys (was global, one user could block all) | 2026-05-07 |

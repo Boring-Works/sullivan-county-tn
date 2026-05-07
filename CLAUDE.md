@@ -12,8 +12,8 @@ See `/docs/` for complete architecture audit:
 - [GAP_ANALYSIS.md](docs/GAP_ANALYSIS.md) — Known gaps
 - [NEXT_IMPLEMENTATION_PLAN.md](docs/NEXT_IMPLEMENTATION_PLAN.md) — Future plan
 
-## State (2026-05-07 — verb nav + parcel lookup + e2e green across viewports)
-- **Tests:** 69 unit + 260 E2E local / 251 E2E live, across desktop/tablet/mobile (all green; 12 sensible skips locally for admin auth + touch keyboard tests)
+## State (2026-05-07 PM — homepage trim + static stats + seasonal ribbon)
+- **Tests:** 79 unit + 260 E2E local / 269 E2E live, across desktop/tablet/mobile (all green; 12 sensible skips locally for admin auth + touch keyboard tests)
 - **A11y:** WCAG AA compliant — kbd contrast fixed on hero, `bg-white/95` → `bg-white` on hero search button, `Pay Taxes` CTA always copper-on-white, CommunityMap SVG no longer has `role="img"` (anchors inside are independently focusable), reveal-on-scroll elements pre-revealed in axe scans
 - **Lint:** 0 blocking errors (1 pre-existing cookie warning in `src/lib/i18n.ts`)
 - **Build:** ~3.2s, ~749 KB worker entry
@@ -50,7 +50,7 @@ See `/docs/` for complete architecture audit:
 ## Routes
 | Route | File | Purpose |
 |-------|------|---------|
-| `/` | `routes/index.tsx` | Homepage (hero with task chips, EmergencyModule, QuickServices, DepartmentCategories, AudiencePathways, PromisesSection, NextMeetingCard, NewsSection, CommunityMap, AboutSection) |
+| `/` | `routes/index.tsx` | Homepage — 7 sections: HeroBanner (search + 5 task chips + 5 suggested-query chips + Open-Now line + static stats), SeasonalRibbon (date-aware, Oct 1 – Mar 1 only), EmergencyModule, QuickServices (6 cards), NextMeetingCard (slim navy banner), NewsSection (3 cards), CommunityMap, AboutSection. DepartmentCategories / AudiencePathways / PromisesSection were removed 2026-05-07 — verb nav + EmergencyModule already cover the work. |
 | `/property-taxes` | `routes/property-taxes.tsx` | "Pay your property taxes" landing page with `ParcelLookup` typeahead, three-portal CTAs (TPAD/Trustee/GIS), FAQ + GovernmentService JSON-LD |
 | `/departments` | `routes/departments/index.tsx` | Department directory with category filter |
 | `/departments/$slug` | `routes/departments/$slug.tsx` | Individual department detail (25 departments) |
@@ -297,6 +297,13 @@ This is a county government website. The reference points are GOV.UK, NYC.gov, t
 | Parcel lookup on /property-taxes | Single-box typeahead routes citizens to TPAD (state assessment) / Trustee (payment) / ArcGIS (map). Server fn proxies TPAD autocomplete; no HTML scraping. Closes the GIS-Trustee gap that blueprint Insight 11 calls "the highest-ROI integration available to most counties." | 2026-05-07 |
 | Per-IP rate limit keys | `rate-limit.ts` now derives composite `key:ip` keys via `getRequestIP()` + CF-Connecting-IP. Previously global keys (`"contact"`, `"form-submit"`) meant one user blocked everyone in the same isolate. | 2026-05-07 |
 | Unused shadcn primitives removed | `components/ui/card.tsx` and `components/ui/button.tsx` had zero imports. Deleted. Badge stays (used in 4 places). | 2026-05-07 |
+| Homepage trimmed from 11 → 7 sections | Three competing IA models (QuickServices, DepartmentCategories, AudiencePathways) were stacked on the same page; verb nav already covers audience + departments. PromisesSection was banned consultant prose. Cuts ~45% of vertical scroll on mobile. | 2026-05-07 |
+| QuickServices: 9 → 6 cards | Animal shelter, emergency services, veterans benefits dropped — all reachable via verb nav and search; emergency services is duplicated by EmergencyModule above. Grid widened from 4-col to 3-col so 6 cards fit cleanly in 2 rows. | 2026-05-07 |
+| NextMeetingCard slimmed to single banner | Was a two-column hero card. Now a navy-banner row with date + .ics + watch-live + see-full-schedule actions. | 2026-05-07 |
+| Hero stat-counter removed (static SSR render) | `useCountUp` was rendering "0+ Residents 0 Square Miles 0 Departments" in SSR HTML until JS hydrated and IntersectionObserver fired. Real correctness bug for slow JS / reduced motion / screen readers. Stats now render their final values directly. The hook is still around for other contexts; HeroBanner just doesn't call it. | 2026-05-07 |
+| Suggested-search chips under hero | Five static chips ("pay taxes · marriage license · trash pickup · pothole · voter registration") below the search input. Each dispatches `sullivan:open-search` with `detail.query`; `SearchDialog` accepts an `initialQuery` prop and pre-fills. | 2026-05-07 |
+| Open-Now / Next-Meeting promoted | Almanac strip restructured: top row is one human sentence ("County offices Open until 4:30 PM today. Next commission meeting Thu May 21 at 6:30 PM."); identity stats stay below as quieter reinforcement. | 2026-05-07 |
+| SeasonalRibbon (date-aware property-tax notice) | Component visible Oct 1 – Mar 1 only. Linked to `/property-taxes` with the Feb 28 deadline. Pure deterministic date check via `Intl.DateTimeFormat` in America/New_York. Unit-tested across 8 month boundaries. | 2026-05-07 |
 
 ## Heritage Content Layer — COMPLETE (2026-03-01)
 
