@@ -32,7 +32,7 @@ interface ExternalTask {
 interface InternalTask {
   kind: "internal";
   labelKey: ChipKey;
-  to: "/forms" | "/calendar" | "/contact";
+  to: "/forms" | "/calendar" | "/contact" | "/property-taxes";
   icon: LucideIcon;
 }
 
@@ -40,9 +40,9 @@ type TopTask = ExternalTask | InternalTask;
 
 const TOP_TASKS: TopTask[] = [
   {
-    kind: "external",
+    kind: "internal",
     labelKey: "payTaxes",
-    href: "https://sullivantntrustee.gov/property-tax/",
+    to: "/property-taxes",
     icon: DollarSign,
   },
   { kind: "internal", labelKey: "forms", to: "/forms", icon: FileText },

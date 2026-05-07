@@ -13,7 +13,29 @@ export interface SearchItem {
   description: string;
   url: string;
   category?: string;
+  /**
+   * Citizen-language aliases — terms people actually type that don't appear in
+   * the official title or description. Indexed by Fuse.js so a search for
+   * "food stamps" finds the Health Department's SNAP info even though the
+   * department page never uses that phrase.
+   */
+  aliases?: string[];
 }
+
+/**
+ * Suggested searches shown when a query returns zero results. Mix of common
+ * citizen tasks and seasonal priorities.
+ */
+export const SUGGESTED_QUERIES = [
+  "property taxes",
+  "permits",
+  "marriage license",
+  "voter registration",
+  "trash pickup",
+  "court records",
+  "animal shelter",
+  "pothole",
+];
 
 const staticPages: SearchItem[] = [
   {
@@ -135,6 +157,165 @@ const staticPages: SearchItem[] = [
       "County commission meetings, public hearings, planning commission, zoning board, and community events.",
     url: "/calendar",
   },
+  {
+    type: "page",
+    title: "Pay Your Property Taxes",
+    description:
+      "How to pay your Sullivan County property taxes online, by mail, or in person. Due dates, what you'll need, and answers to common questions.",
+    url: "/property-taxes",
+    aliases: [
+      "property tax",
+      "real estate tax",
+      "pay taxes",
+      "tax bill",
+      "tax payment",
+      "trustee",
+      "delinquent tax",
+      "tax sale",
+      "tax due date",
+      "parcel tax",
+    ],
+  },
+];
+
+/**
+ * Citizen-language aliases for high-traffic search terms. Each entry maps a
+ * way people actually search to the department/page that owns the answer.
+ * Source: Search.gov guidance — "people rarely search using official program
+ * names." Any term added here is indexed by Fuse.js as a searchable alias.
+ */
+const CITIZEN_LANGUAGE_ALIASES: Array<{
+  url: string;
+  type: SearchItem["type"];
+  aliases: string[];
+}> = [
+  // Health & social services
+  {
+    url: "/departments/health-department",
+    type: "department",
+    aliases: ["food stamps", "snap benefits", "wic", "medicaid", "tenncare", "vaccines"],
+  },
+  // County Clerk — vehicle, marriage, business
+  {
+    url: "/departments/county-clerk",
+    type: "department",
+    aliases: [
+      "tags",
+      "license plate",
+      "car registration",
+      "renew tags",
+      "marriage license",
+      "wedding license",
+      "business license",
+      "notary",
+      "title",
+    ],
+  },
+  // Register of Deeds
+  {
+    url: "/departments/register-of-deeds",
+    type: "department",
+    aliases: ["deed", "property record", "title search", "lien", "mortgage record", "ucc"],
+  },
+  // Sheriff
+  {
+    url: "/departments/sheriff",
+    type: "department",
+    aliases: [
+      "warrant",
+      "inmate search",
+      "jail",
+      "report a crime",
+      "concealed carry",
+      "carry permit",
+      "handgun permit",
+      "sex offender",
+      "police",
+    ],
+  },
+  // Election Commission
+  {
+    url: "/departments/election-commission",
+    type: "department",
+    aliases: [
+      "vote",
+      "voter registration",
+      "polling place",
+      "absentee ballot",
+      "early voting",
+      "register to vote",
+      "voting",
+    ],
+  },
+  // Highway / Road
+  {
+    url: "/departments/highway-department",
+    type: "department",
+    aliases: ["pothole", "road work", "road closure", "snow plow", "street", "roadside"],
+  },
+  // Solid Waste
+  {
+    url: "/departments/solid-waste",
+    type: "department",
+    aliases: [
+      "trash",
+      "garbage pickup",
+      "recycling",
+      "yard waste",
+      "bulk pickup",
+      "dump",
+      "convenience center",
+    ],
+  },
+  // Animal Control
+  {
+    url: "/departments/animal-control",
+    type: "department",
+    aliases: ["dog", "cat", "stray", "lost pet", "adopt pet", "rabies shot", "animal shelter"],
+  },
+  // Planning & Codes / Building Permits
+  {
+    url: "/departments/planning-and-codes",
+    type: "department",
+    aliases: [
+      "build a house",
+      "addition",
+      "remodel",
+      "shed permit",
+      "deck permit",
+      "fence permit",
+      "code violation",
+      "zoning",
+      "variance",
+    ],
+  },
+  // Veterans Services
+  {
+    url: "/departments/veterans-office",
+    type: "department",
+    aliases: [
+      "va benefits",
+      "veterans benefits",
+      "disabled veteran",
+      "dd-214",
+      "military discharge",
+      "burial benefits",
+    ],
+  },
+  // Trustee / Property Tax — also points to dedicated landing page
+  {
+    url: "/property-taxes",
+    type: "page",
+    aliases: [
+      "property tax bill",
+      "tax due",
+      "trustee office",
+      "real estate tax",
+      "tax relief",
+      "elderly tax relief",
+      "disabled veteran tax relief",
+    ],
+  },
 ];
 
 export function buildSearchIndex(): SearchItem[] {
@@ -230,6 +411,25 @@ export function buildSearchIndex(): SearchItem[] {
 
   // Static pages
   items.push(...staticPages);
+
+  // Apply citizen-language aliases. For each known url match, attach the
+  // aliases so Fuse.js indexes them as searchable text.
+  for (const alias of CITIZEN_LANGUAGE_ALIASES) {
+    const target = items.find((it) => it.url === alias.url);
+    if (target) {
+      target.aliases = [...(target.aliases ?? []), ...alias.aliases];
+    } else {
+      // No item with that URL yet — push a synthetic alias-only entry so the
+      // search still resolves to the right destination.
+      items.push({
+        type: alias.type,
+        title: alias.url.replace(/^\//, "").replace(/-/g, " ").replace(/\//g, " · "),
+        description: "",
+        url: alias.url,
+        aliases: alias.aliases,
+      });
+    }
+  }
 
   return items;
 }

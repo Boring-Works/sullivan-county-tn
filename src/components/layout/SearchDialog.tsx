@@ -3,7 +3,7 @@ import { useNavigate } from "@tanstack/react-router";
 import Fuse from "fuse.js";
 import { Search, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { buildSearchIndex, type SearchItem } from "~/data/search-index";
+import { buildSearchIndex, type SearchItem, SUGGESTED_QUERIES } from "~/data/search-index";
 import { cn } from "~/lib/utils";
 
 const TYPE_LABELS: Record<SearchItem["type"], string> = {
@@ -39,6 +39,10 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
       new Fuse(searchIndex, {
         keys: [
           { name: "title", weight: 2 },
+          // Citizen-language aliases (e.g. "food stamps", "tags", "deed")
+          // weighted nearly as high as the title — Search.gov guidance:
+          // citizens rarely use official program names.
+          { name: "aliases", weight: 1.8 },
           { name: "description", weight: 1 },
           { name: "category", weight: 0.5 },
         ],
@@ -138,9 +142,48 @@ export function SearchDialog({ open, onOpenChange }: SearchDialogProps) {
 
           {/* Results */}
           <div className="max-h-80 overflow-y-auto p-2" aria-live="polite" aria-atomic="true">
+            {!query.trim() && (
+              <div className="px-3 py-4">
+                <p className="font-body text-[10px] font-semibold tracking-widest uppercase text-brand-stone mb-2">
+                  Try one of these
+                </p>
+                <ul className="flex flex-wrap gap-1.5">
+                  {SUGGESTED_QUERIES.map((q) => (
+                    <li key={q}>
+                      <button
+                        type="button"
+                        onClick={() => setQuery(q)}
+                        className="rounded-full border border-brand-surface bg-brand-parchment px-3 py-1 font-body text-xs text-brand-slate hover:border-brand-copper/40 hover:text-brand-copper transition-colors"
+                      >
+                        {q}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
             {query.trim() && results.length === 0 && (
-              <div className="px-3 py-8 text-center">
-                <p className="font-body text-sm text-brand-stone">No results found for "{query}"</p>
+              <div className="px-3 py-6">
+                <p className="font-body text-sm text-brand-slate mb-3">
+                  No results for <strong className="text-brand-navy">"{query}"</strong>.
+                </p>
+                <p className="font-body text-xs text-brand-stone mb-2">
+                  Try a different phrase, or one of these:
+                </p>
+                <ul className="flex flex-wrap gap-1.5">
+                  {SUGGESTED_QUERIES.map((q) => (
+                    <li key={q}>
+                      <button
+                        type="button"
+                        onClick={() => setQuery(q)}
+                        className="rounded-full border border-brand-surface bg-brand-parchment px-3 py-1 font-body text-xs text-brand-slate hover:border-brand-copper/40 hover:text-brand-copper transition-colors"
+                      >
+                        {q}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
 

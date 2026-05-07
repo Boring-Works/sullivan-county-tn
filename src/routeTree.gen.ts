@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as VisitRouteImport } from './routes/visit'
 import { Route as TransportationRouteImport } from './routes/transportation'
+import { Route as PropertyTaxesRouteImport } from './routes/property-taxes'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as PeopleRouteImport } from './routes/people'
 import { Route as MinutesRouteImport } from './routes/minutes'
@@ -54,6 +55,11 @@ const VisitRoute = VisitRouteImport.update({
 const TransportationRoute = TransportationRouteImport.update({
   id: '/transportation',
   path: '/transportation',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PropertyTaxesRoute = PropertyTaxesRouteImport.update({
+  id: '/property-taxes',
+  path: '/property-taxes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
@@ -241,6 +247,7 @@ export interface FileRoutesByFullPath {
   '/minutes': typeof MinutesRoute
   '/people': typeof PeopleRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/property-taxes': typeof PropertyTaxesRoute
   '/transportation': typeof TransportationRoute
   '/visit': typeof VisitRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
@@ -279,6 +286,7 @@ export interface FileRoutesByTo {
   '/minutes': typeof MinutesRoute
   '/people': typeof PeopleRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/property-taxes': typeof PropertyTaxesRoute
   '/transportation': typeof TransportationRoute
   '/visit': typeof VisitRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
@@ -318,6 +326,7 @@ export interface FileRoutesById {
   '/minutes': typeof MinutesRoute
   '/people': typeof PeopleRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
+  '/property-taxes': typeof PropertyTaxesRoute
   '/transportation': typeof TransportationRoute
   '/visit': typeof VisitRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
@@ -358,6 +367,7 @@ export interface FileRouteTypes {
     | '/minutes'
     | '/people'
     | '/privacy-policy'
+    | '/property-taxes'
     | '/transportation'
     | '/visit'
     | '/admin/announcements'
@@ -396,6 +406,7 @@ export interface FileRouteTypes {
     | '/minutes'
     | '/people'
     | '/privacy-policy'
+    | '/property-taxes'
     | '/transportation'
     | '/visit'
     | '/admin/announcements'
@@ -434,6 +445,7 @@ export interface FileRouteTypes {
     | '/minutes'
     | '/people'
     | '/privacy-policy'
+    | '/property-taxes'
     | '/transportation'
     | '/visit'
     | '/admin/announcements'
@@ -473,6 +485,7 @@ export interface RootRouteChildren {
   MinutesRoute: typeof MinutesRoute
   PeopleRoute: typeof PeopleRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  PropertyTaxesRoute: typeof PropertyTaxesRoute
   TransportationRoute: typeof TransportationRoute
   VisitRoute: typeof VisitRoute
   AdminAnnouncementsRoute: typeof AdminAnnouncementsRoute
@@ -512,6 +525,13 @@ declare module '@tanstack/react-router' {
       path: '/transportation'
       fullPath: '/transportation'
       preLoaderRoute: typeof TransportationRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/property-taxes': {
+      id: '/property-taxes'
+      path: '/property-taxes'
+      fullPath: '/property-taxes'
+      preLoaderRoute: typeof PropertyTaxesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/privacy-policy': {
@@ -769,6 +789,7 @@ const rootRouteChildren: RootRouteChildren = {
   MinutesRoute: MinutesRoute,
   PeopleRoute: PeopleRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
+  PropertyTaxesRoute: PropertyTaxesRoute,
   TransportationRoute: TransportationRoute,
   VisitRoute: VisitRoute,
   AdminAnnouncementsRoute: AdminAnnouncementsRoute,

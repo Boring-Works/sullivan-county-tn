@@ -251,6 +251,14 @@
     -moz-osx-font-smoothing: grayscale;
     /* When AnnouncementBanner is active, sets --banner-height; pushes nav + content down. */
     padding-top: var(--banner-height, 0px);
+    /* Reserve space for the mobile bottom tab bar so footer/content doesn't
+       sit under it. Hidden at md+ where the tab bar is itself hidden. */
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  @media (max-width: 767px) {
+    body {
+      padding-bottom: calc(72px + env(safe-area-inset-bottom));
+    }
   }
 
   h1,

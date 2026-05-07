@@ -12,10 +12,10 @@ export interface QuickService {
 export const quickServices: QuickService[] = [
   {
     title: "Pay property taxes",
-    description: "Pay your county property taxes through the Trustee's office.",
-    href: "https://sullivantntrustee.gov/property-tax/",
+    description: "How to pay online, by mail, or in person — plus answers to common questions.",
+    href: "/property-taxes",
     icon: "DollarSign",
-    external: true,
+    external: false,
     submission: "online",
   },
   {

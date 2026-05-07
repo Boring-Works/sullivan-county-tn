@@ -12,6 +12,7 @@ import type { ReactNode } from "react";
 import { useEffect } from "react";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import { AnnouncementBanner } from "~/components/layout/AnnouncementBanner";
+import { MobileBottomTabBar } from "~/components/layout/MobileBottomTabBar";
 import { NotFound } from "~/components/layout/NotFound";
 import { SiteFooter } from "~/components/layout/SiteFooter";
 import { SiteNav } from "~/components/layout/SiteNav";
@@ -134,6 +135,7 @@ function RootComponent() {
         <SiteNav />
         <Outlet />
         <SiteFooter />
+        <MobileBottomTabBar />
       </RootDocument>
     </I18nextProvider>
   );
