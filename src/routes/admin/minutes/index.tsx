@@ -42,7 +42,7 @@ function MinutesListPage() {
   return (
     <AdminLayout title="Meeting Minutes">
       <div className="mb-4 flex items-center justify-between">
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-brand-warm-gray">
           {minutes.length} {minutes.length === 1 ? "entry" : "entries"}
         </p>
         <Link
@@ -55,41 +55,41 @@ function MinutesListPage() {
       </div>
 
       {loading ? (
-        <p className="text-sm text-gray-500">Loading...</p>
+        <p className="text-sm text-brand-warm-gray">Loading...</p>
       ) : minutes.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-gray-300 p-8 text-center">
-          <p className="text-sm text-gray-500">No minutes in the database.</p>
+        <div className="rounded-lg border border-dashed border-brand-surface p-8 text-center">
+          <p className="text-sm text-brand-warm-gray">No minutes in the database.</p>
         </div>
       ) : (
-        <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
+        <div className="rounded-lg border border-brand-surface bg-white overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="border-b border-gray-200 bg-gray-50">
+            <thead className="border-b border-brand-surface bg-brand-cream">
               <tr>
-                <th className="px-4 py-3 text-left font-medium text-gray-500">Title</th>
-                <th className="hidden sm:table-cell px-4 py-3 text-left font-medium text-gray-500">
+                <th className="px-4 py-3 text-left font-medium text-brand-warm-gray">Title</th>
+                <th className="hidden sm:table-cell px-4 py-3 text-left font-medium text-brand-warm-gray">
                   Committee
                 </th>
-                <th className="hidden sm:table-cell px-4 py-3 text-left font-medium text-gray-500">
+                <th className="hidden sm:table-cell px-4 py-3 text-left font-medium text-brand-warm-gray">
                   Date
                 </th>
-                <th className="px-4 py-3 text-left font-medium text-gray-500">Status</th>
-                <th className="px-4 py-3 text-right font-medium text-gray-500">Actions</th>
+                <th className="px-4 py-3 text-left font-medium text-brand-warm-gray">Status</th>
+                <th className="px-4 py-3 text-right font-medium text-brand-warm-gray">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-brand-surface">
               {minutes.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-50">
+                <tr key={item.id} className="hover:bg-brand-cream">
                   <td className="px-4 py-3">
                     <Link
                       to="/admin/minutes/$id"
                       params={{ id: item.id }}
-                      className="font-medium text-gray-900 hover:text-brand-navy"
+                      className="font-medium text-brand-navy hover:text-brand-navy"
                     >
                       {item.title}
                     </Link>
                   </td>
-                  <td className="hidden sm:table-cell px-4 py-3 text-gray-500">{item.committee}</td>
-                  <td className="hidden sm:table-cell px-4 py-3 text-gray-500">{item.date}</td>
+                  <td className="hidden sm:table-cell px-4 py-3 text-brand-warm-gray">{item.committee}</td>
+                  <td className="hidden sm:table-cell px-4 py-3 text-brand-warm-gray">{item.date}</td>
                   <td className="px-4 py-3">
                     <StatusBadge status={item.status} />
                   </td>

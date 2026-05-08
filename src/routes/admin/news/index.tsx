@@ -42,7 +42,7 @@ function NewsListPage() {
   return (
     <AdminLayout title="News Articles">
       <div className="mb-4 flex items-center justify-between">
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-brand-warm-gray">
           {articles.length} {articles.length === 1 ? "article" : "articles"}
         </p>
         <Link
@@ -55,40 +55,40 @@ function NewsListPage() {
       </div>
 
       {loading ? (
-        <p className="text-sm text-gray-500">Loading...</p>
+        <p className="text-sm text-brand-warm-gray">Loading...</p>
       ) : articles.length === 0 ? (
-        <div className="rounded-lg border border-dashed border-gray-300 p-8 text-center">
-          <p className="text-sm text-gray-500 mb-3">No news articles in the database.</p>
-          <p className="text-xs text-gray-400">
+        <div className="rounded-lg border border-dashed border-brand-surface p-8 text-center">
+          <p className="text-sm text-brand-warm-gray mb-3">No news articles in the database.</p>
+          <p className="text-xs text-brand-warm-gray">
             Run the seed script to import from static data, or create articles manually.
           </p>
         </div>
       ) : (
-        <div className="rounded-lg border border-gray-200 bg-white overflow-hidden">
+        <div className="rounded-lg border border-brand-surface bg-white overflow-hidden">
           <table className="w-full text-sm">
-            <thead className="border-b border-gray-200 bg-gray-50">
+            <thead className="border-b border-brand-surface bg-brand-cream">
               <tr>
-                <th className="px-4 py-3 text-left font-medium text-gray-500">Title</th>
-                <th className="hidden sm:table-cell px-4 py-3 text-left font-medium text-gray-500">
+                <th className="px-4 py-3 text-left font-medium text-brand-warm-gray">Title</th>
+                <th className="hidden sm:table-cell px-4 py-3 text-left font-medium text-brand-warm-gray">
                   Date
                 </th>
-                <th className="px-4 py-3 text-left font-medium text-gray-500">Status</th>
-                <th className="px-4 py-3 text-right font-medium text-gray-500">Actions</th>
+                <th className="px-4 py-3 text-left font-medium text-brand-warm-gray">Status</th>
+                <th className="px-4 py-3 text-right font-medium text-brand-warm-gray">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-brand-surface">
               {articles.map((article) => (
-                <tr key={article.id} className="hover:bg-gray-50">
+                <tr key={article.id} className="hover:bg-brand-cream">
                   <td className="px-4 py-3">
                     <Link
                       to="/admin/news/$id"
                       params={{ id: article.id }}
-                      className="font-medium text-gray-900 hover:text-brand-navy"
+                      className="font-medium text-brand-navy hover:text-brand-navy"
                     >
                       {article.title}
                     </Link>
                   </td>
-                  <td className="hidden sm:table-cell px-4 py-3 text-gray-500">
+                  <td className="hidden sm:table-cell px-4 py-3 text-brand-warm-gray">
                     {article.publishedAt ? new Date(article.publishedAt).toLocaleDateString() : "—"}
                   </td>
                   <td className="px-4 py-3">

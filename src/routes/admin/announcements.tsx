@@ -1,6 +1,7 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { AdminLayout } from "~/components/admin/AdminLayout";
+import { Badge } from "~/components/ui/badge";
 import {
   createAnnouncement,
   deleteAnnouncement,
@@ -74,8 +75,11 @@ function AnnouncementsPage() {
   return (
     <AdminLayout title="Announcements">
       {/* Create form */}
-      <form onSubmit={handleCreate} className="mb-8 rounded-lg border border-gray-200 bg-white p-5">
-        <h2 className="text-sm font-semibold text-gray-900 mb-3">New Announcement</h2>
+      <form
+        onSubmit={handleCreate}
+        className="mb-8 rounded-lg border border-brand-surface bg-white p-5"
+      >
+        <h2 className="text-sm font-semibold text-brand-navy mb-3">New Announcement</h2>
         <div className="space-y-3">
           <input
             type="text"
@@ -83,7 +87,7 @@ function AnnouncementsPage() {
             onChange={(e) => setTitle(e.target.value)}
             required
             placeholder="Title"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
+            className="w-full rounded-md border border-brand-surface px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
           />
           <textarea
             value={body}
@@ -91,18 +95,18 @@ function AnnouncementsPage() {
             required
             placeholder="Body text"
             rows={2}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
+            className="w-full rounded-md border border-brand-surface px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
           />
           <input
             type="url"
             value={linkUrl}
             onChange={(e) => setLinkUrl(e.target.value)}
             placeholder="Link URL (optional)"
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
+            className="w-full rounded-md border border-brand-surface px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
           />
           <fieldset className="flex items-center gap-4">
             <legend className="sr-only">Severity</legend>
-            <span className="text-xs font-semibold text-gray-700">Severity:</span>
+            <span className="text-xs font-semibold text-brand-slate">Severity:</span>
             <label className="inline-flex items-center gap-1.5 text-sm">
               <input
                 type="radio"
@@ -136,37 +140,36 @@ function AnnouncementsPage() {
 
       {/* List */}
       {loading ? (
-        <p className="text-sm text-gray-500">Loading...</p>
+        <p className="text-sm text-brand-warm-gray">Loading...</p>
       ) : items.length === 0 ? (
-        <p className="text-sm text-gray-500">No announcements.</p>
+        <p className="text-sm text-brand-warm-gray">No announcements.</p>
       ) : (
         <div className="space-y-3">
           {items.map((item) => (
             <div
               key={item.id}
-              className="flex items-start justify-between gap-4 rounded-lg border border-gray-200 bg-white p-4"
+              className="flex items-start justify-between gap-4 rounded-lg border border-brand-surface bg-white p-4"
             >
               <div>
                 <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-semibold text-gray-900">{item.title}</h3>
-                  <span
-                    className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-medium ${item.active ? "bg-green-50 text-green-700" : "bg-gray-100 text-gray-500"}`}
-                  >
+                  <h3 className="text-sm font-semibold text-brand-navy">{item.title}</h3>
+                  <Badge variant={item.active ? "default" : "secondary"} className="text-[10px]">
                     {item.active ? "Active" : "Inactive"}
-                  </span>
-                  <span
-                    className={`inline-flex rounded-full px-2 py-0.5 text-[10px] font-medium ${item.severity === "urgent" ? "bg-red-50 text-red-700" : "bg-blue-50 text-blue-700"}`}
+                  </Badge>
+                  <Badge
+                    variant={item.severity === "urgent" ? "destructive" : "outline"}
+                    className="text-[10px]"
                   >
                     {item.severity === "urgent" ? "Urgent" : "Info"}
-                  </span>
+                  </Badge>
                 </div>
-                <p className="mt-0.5 text-xs text-gray-500">{item.body}</p>
+                <p className="mt-0.5 text-xs text-brand-warm-gray">{item.body}</p>
               </div>
               <div className="flex shrink-0 gap-2">
                 <button
                   type="button"
                   onClick={() => handleToggle(item.id, item.active)}
-                  className="text-xs text-gray-500 hover:text-gray-700"
+                  className="text-xs text-brand-warm-gray hover:text-brand-slate"
                 >
                   {item.active ? "Deactivate" : "Activate"}
                 </button>

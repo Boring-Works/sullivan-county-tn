@@ -27,13 +27,13 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
   }
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
+    <div className="flex min-h-screen bg-brand-cream">
       {/* Sidebar */}
-      <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-gray-200 lg:bg-white">
-        <div className="flex h-16 items-center px-6 border-b border-gray-200">
+      <aside className="hidden lg:flex lg:w-64 lg:flex-col lg:border-r lg:border-brand-surface lg:bg-white">
+        <div className="flex h-16 items-center px-6 border-b border-brand-surface">
           <Link to="/admin" className="flex items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded bg-brand-navy">
-              <span className="font-display text-xs font-bold text-brand-brass">SC</span>
+            <div className="flex h-8 w-8 items-center justify-center rounded-sm bg-brand-navy">
+              <span className="font-display text-xs font-bold text-brand-brass-light">SC</span>
             </div>
             <span className="font-display text-sm font-bold text-brand-navy">Admin</span>
           </Link>
@@ -47,10 +47,10 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                 key={item.href}
                 to={item.href}
                 className={cn(
-                  "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
+                  "flex items-center gap-3 rounded-sm px-3 py-2 text-sm font-medium transition-colors",
                   isActive
                     ? "bg-brand-navy/5 text-brand-navy"
-                    : "text-gray-600 hover:bg-gray-100 hover:text-gray-900",
+                    : "text-brand-stone hover:bg-brand-cream hover:text-brand-navy",
                 )}
               >
                 <item.icon className="size-4" />
@@ -59,18 +59,18 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
             );
           })}
         </nav>
-        <div className="border-t border-gray-200 px-3 py-4">
+        <div className="border-t border-brand-surface px-3 py-4">
           <button
             type="button"
             onClick={handleLogout}
-            className="flex w-full items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-colors"
+            className="flex w-full items-center gap-3 rounded-sm px-3 py-2 text-sm font-medium text-brand-stone hover:bg-brand-cream hover:text-brand-navy transition-colors"
           >
             <LogOut className="size-4" />
             Sign Out
           </button>
           <Link
             to="/"
-            className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-400 hover:text-gray-600 transition-colors mt-0.5"
+            className="flex items-center gap-3 rounded-sm px-3 py-2 text-sm font-medium text-brand-warm-gray hover:text-brand-navy transition-colors mt-0.5"
           >
             &larr; Back to Site
           </Link>
@@ -80,21 +80,21 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
       {/* Main Content */}
       <div className="flex-1 flex flex-col">
         {/* Mobile header */}
-        <header className="lg:hidden flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4">
+        <header className="lg:hidden flex h-16 items-center justify-between border-b border-brand-surface bg-white px-4">
           <Link to="/admin" className="font-display text-sm font-bold text-brand-navy">
             SC Admin
           </Link>
           <button
             type="button"
             onClick={handleLogout}
-            className="text-sm text-gray-600 hover:text-gray-900"
+            className="text-sm text-brand-stone hover:text-brand-navy"
           >
             Sign Out
           </button>
         </header>
 
         {/* Mobile nav */}
-        <nav className="lg:hidden flex gap-1 overflow-x-auto border-b border-gray-200 bg-white px-4 py-2">
+        <nav className="lg:hidden flex gap-1 overflow-x-auto border-b border-brand-surface bg-white px-4 py-2">
           {ADMIN_NAV.map((item) => {
             const isActive =
               pathname === item.href || (item.href !== "/admin" && pathname.startsWith(item.href));
@@ -104,7 +104,7 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
                 to={item.href}
                 className={cn(
                   "flex items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-xs font-medium",
-                  isActive ? "bg-brand-navy text-white" : "text-gray-600 hover:bg-gray-100",
+                  isActive ? "bg-brand-navy text-white" : "text-brand-stone hover:bg-brand-cream",
                 )}
               >
                 <item.icon className="size-3" />
@@ -115,7 +115,7 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
         </nav>
 
         <main id="main-content" tabIndex={-1} className="flex-1 p-6 lg:p-8">
-          <h1 className="text-2xl font-bold text-gray-900 mb-6">{title}</h1>
+          <h1 className="font-display text-2xl font-bold text-brand-navy mb-6">{title}</h1>
           {children}
         </main>
       </div>

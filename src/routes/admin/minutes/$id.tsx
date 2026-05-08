@@ -1,6 +1,8 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useCallback, useEffect, useState } from "react";
 import { AdminLayout } from "~/components/admin/AdminLayout";
+import { Alert, AlertDescription } from "~/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 import { COMMITTEES } from "~/data/meeting-minutes";
 import { listMinutes, updateMinutesEntry } from "~/server/admin-minutes";
 import { validateAdmin } from "~/server/auth";
@@ -78,7 +80,7 @@ function EditMinutesPage() {
   if (loading) {
     return (
       <AdminLayout title="Edit Minutes">
-        <p className="text-sm text-gray-500">Loading...</p>
+        <p className="text-sm text-brand-warm-gray">Loading...</p>
       </AdminLayout>
     );
   }
@@ -88,7 +90,7 @@ function EditMinutesPage() {
       <form onSubmit={handleSubmit} className="max-w-2xl space-y-4">
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="committee" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="committee" className="block text-sm font-medium text-brand-slate mb-1">
               Committee
             </label>
             <select
@@ -96,7 +98,7 @@ function EditMinutesPage() {
               value={committee}
               onChange={(e) => setCommittee(e.target.value)}
               required
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
+              className="w-full rounded-md border border-brand-surface px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
             >
               {COMMITTEES.map((c) => (
                 <option key={c} value={c}>
@@ -106,7 +108,7 @@ function EditMinutesPage() {
             </select>
           </div>
           <div>
-            <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="date" className="block text-sm font-medium text-brand-slate mb-1">
               Date
             </label>
             <input
@@ -115,12 +117,12 @@ function EditMinutesPage() {
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
+              className="w-full rounded-md border border-brand-surface px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
             />
           </div>
         </div>
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="title" className="block text-sm font-medium text-brand-slate mb-1">
             Title
           </label>
           <input
@@ -129,11 +131,11 @@ function EditMinutesPage() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
+            className="w-full rounded-md border border-brand-surface px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
           />
         </div>
         <div>
-          <label htmlFor="summary" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="summary" className="block text-sm font-medium text-brand-slate mb-1">
             Summary
           </label>
           <textarea
@@ -141,12 +143,12 @@ function EditMinutesPage() {
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
             rows={2}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
+            className="w-full rounded-md border border-brand-surface px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
           />
         </div>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="pdfUrl" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="pdfUrl" className="block text-sm font-medium text-brand-slate mb-1">
               PDF URL
             </label>
             <input
@@ -154,18 +156,18 @@ function EditMinutesPage() {
               type="text"
               value={pdfUrl}
               onChange={(e) => setPdfUrl(e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
+              className="w-full rounded-md border border-brand-surface px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
             />
           </div>
           <div>
-            <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="status" className="block text-sm font-medium text-brand-slate mb-1">
               Status
             </label>
             <select
               id="status"
               value={status}
               onChange={(e) => setStatus(e.target.value as "draft" | "published" | "archived")}
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
+              className="w-full rounded-md border border-brand-surface px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
             >
               <option value="published">Published</option>
               <option value="draft">Draft</option>
@@ -173,7 +175,7 @@ function EditMinutesPage() {
             </select>
           </div>
         </div>
-        {error && <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>}
+        {error && (<Alert variant="destructive"><AlertCircle /><AlertDescription>{error}</AlertDescription></Alert>)}
         <div className="flex gap-3 pt-2">
           <button
             type="submit"
@@ -185,7 +187,7 @@ function EditMinutesPage() {
           <button
             type="button"
             onClick={() => navigate({ to: "/admin/minutes" })}
-            className="rounded-md border border-gray-300 px-6 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="rounded-md border border-brand-surface px-6 py-2 text-sm font-medium text-brand-slate hover:bg-brand-cream"
           >
             Cancel
           </button>

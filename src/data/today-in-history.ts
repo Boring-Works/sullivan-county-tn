@@ -74,6 +74,11 @@ export const TODAY_IN_HISTORY: HistoryFact[] = [
     text: "The North Carolina General Assembly established Sullivan County, named for Major General John Sullivan of the Continental Army; Sullivan County is Tennessee's second-oldest county.",
   },
   {
+    date: "05-08",
+    year: 1945,
+    text: "V-E Day — Nazi Germany's unconditional surrender ended World War II in Europe; Sullivan County families gathered at Blountville's courthouse and on Bristol's State Street to mark the day.",
+  },
+  {
     date: "05-15",
     year: 2026,
     text: "Tennessee's burn-permit season ended; from May 16 through October 14, debris burning does not require a state Division of Forestry permit.",

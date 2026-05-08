@@ -52,7 +52,7 @@ function AdminDashboard() {
           <Link
             key={item.href}
             to={item.href}
-            className="group flex items-start gap-4 rounded-lg border border-gray-200 bg-white p-5 shadow-sm hover:shadow-md hover:border-gray-300 transition-all"
+            className="group flex items-start gap-4 rounded-lg border border-brand-surface bg-white p-5 shadow-sm hover:shadow-md hover:border-brand-surface transition-all"
           >
             <div
               className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg ${item.color}`}
@@ -60,10 +60,10 @@ function AdminDashboard() {
               <item.icon className="size-5" />
             </div>
             <div>
-              <h2 className="text-sm font-semibold text-gray-900 group-hover:text-brand-navy">
+              <h2 className="text-sm font-semibold text-brand-navy group-hover:text-brand-navy">
                 {item.label}
               </h2>
-              <p className="mt-0.5 text-xs text-gray-500">{item.description}</p>
+              <p className="mt-0.5 text-xs text-brand-warm-gray">{item.description}</p>
             </div>
           </Link>
         ))}

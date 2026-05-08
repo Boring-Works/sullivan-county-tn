@@ -1,6 +1,8 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
 import { AdminLayout } from "~/components/admin/AdminLayout";
+import { Alert, AlertDescription } from "~/components/ui/alert";
+import { AlertCircle } from "lucide-react";
 import { COMMITTEES } from "~/data/meeting-minutes";
 import { createMinutesEntry } from "~/server/admin-minutes";
 import { validateAdmin } from "~/server/auth";
@@ -51,7 +53,7 @@ function NewMinutesPage() {
       <form onSubmit={handleSubmit} className="max-w-2xl space-y-4">
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="committee" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="committee" className="block text-sm font-medium text-brand-slate mb-1">
               Committee
             </label>
             <select
@@ -59,7 +61,7 @@ function NewMinutesPage() {
               value={committee}
               onChange={(e) => setCommittee(e.target.value)}
               required
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
+              className="w-full rounded-md border border-brand-surface px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
             >
               <option value="">Select...</option>
               {COMMITTEES.map((c) => (
@@ -70,7 +72,7 @@ function NewMinutesPage() {
             </select>
           </div>
           <div>
-            <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="date" className="block text-sm font-medium text-brand-slate mb-1">
               Date
             </label>
             <input
@@ -79,13 +81,13 @@ function NewMinutesPage() {
               value={date}
               onChange={(e) => setDate(e.target.value)}
               required
-              className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
+              className="w-full rounded-md border border-brand-surface px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
             />
           </div>
         </div>
 
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="title" className="block text-sm font-medium text-brand-slate mb-1">
             Title
           </label>
           <input
@@ -94,26 +96,26 @@ function NewMinutesPage() {
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             required
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
+            className="w-full rounded-md border border-brand-surface px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
           />
         </div>
 
         <div>
-          <label htmlFor="summary" className="block text-sm font-medium text-gray-700 mb-1">
-            Summary <span className="text-gray-400 font-normal">(optional)</span>
+          <label htmlFor="summary" className="block text-sm font-medium text-brand-slate mb-1">
+            Summary <span className="text-brand-warm-gray font-normal">(optional)</span>
           </label>
           <textarea
             id="summary"
             value={summary}
             onChange={(e) => setSummary(e.target.value)}
             rows={2}
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
+            className="w-full rounded-md border border-brand-surface px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
           />
         </div>
 
         <div>
-          <label htmlFor="pdfUrl" className="block text-sm font-medium text-gray-700 mb-1">
-            PDF URL <span className="text-gray-400 font-normal">(optional)</span>
+          <label htmlFor="pdfUrl" className="block text-sm font-medium text-brand-slate mb-1">
+            PDF URL <span className="text-brand-warm-gray font-normal">(optional)</span>
           </label>
           <input
             id="pdfUrl"
@@ -121,11 +123,11 @@ function NewMinutesPage() {
             value={pdfUrl}
             onChange={(e) => setPdfUrl(e.target.value)}
             placeholder="/documents/agendas/..."
-            className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
+            className="w-full rounded-md border border-brand-surface px-3 py-2 text-sm focus:border-brand-copper focus:ring-1 focus:ring-brand-copper focus:outline-none"
           />
         </div>
 
-        {error && <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>}
+        {error && (<Alert variant="destructive"><AlertCircle /><AlertDescription>{error}</AlertDescription></Alert>)}
 
         <div className="flex gap-3 pt-2">
           <button
@@ -138,7 +140,7 @@ function NewMinutesPage() {
           <button
             type="button"
             onClick={() => navigate({ to: "/admin/minutes" })}
-            className="rounded-md border border-gray-300 px-6 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+            className="rounded-md border border-brand-surface px-6 py-2 text-sm font-medium text-brand-slate hover:bg-brand-cream"
           >
             Cancel
           </button>

@@ -42,9 +42,9 @@ function SubmissionsPage() {
   return (
     <AdminLayout title="Form Submissions">
       {loading ? (
-        <p className="text-sm text-gray-500">Loading...</p>
+        <p className="text-sm text-brand-warm-gray">Loading...</p>
       ) : submissions.length === 0 ? (
-        <p className="text-sm text-gray-500">No submissions yet.</p>
+        <p className="text-sm text-brand-warm-gray">No submissions yet.</p>
       ) : (
         <div className="space-y-3">
           {submissions.map((sub) => {
@@ -58,7 +58,7 @@ function SubmissionsPage() {
             }
 
             return (
-              <div key={sub.id} className="rounded-lg border border-gray-200 bg-white">
+              <div key={sub.id} className="rounded-lg border border-brand-surface bg-white">
                 <button
                   type="button"
                   onClick={() => setExpandedId(isExpanded ? null : sub.id)}
@@ -66,17 +66,17 @@ function SubmissionsPage() {
                 >
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-sm font-semibold text-gray-900">
+                      <span className="text-sm font-semibold text-brand-navy">
                         {form?.title ?? sub.formType}
                       </span>
                       <StatusBadge status={sub.status} />
                     </div>
-                    <p className="mt-0.5 text-xs text-gray-500">
+                    <p className="mt-0.5 text-xs text-brand-warm-gray">
                       {sub.name} &middot; {new Date(sub.createdAt).toLocaleDateString()}
                     </p>
                   </div>
                   <svg
-                    className={`size-4 text-gray-400 transition-transform ${isExpanded ? "rotate-180" : ""}`}
+                    className={`size-4 text-brand-warm-gray transition-transform ${isExpanded ? "rotate-180" : ""}`}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -88,30 +88,30 @@ function SubmissionsPage() {
                 </button>
 
                 {isExpanded && (
-                  <div className="border-t border-gray-100 px-5 py-4 space-y-3">
+                  <div className="border-t border-brand-surface px-5 py-4 space-y-3">
                     <div className="grid gap-2 sm:grid-cols-2 text-sm">
                       <div>
-                        <span className="text-gray-500">Name:</span>{" "}
-                        <span className="text-gray-900">{sub.name}</span>
+                        <span className="text-brand-warm-gray">Name:</span>{" "}
+                        <span className="text-brand-navy">{sub.name}</span>
                       </div>
                       <div>
-                        <span className="text-gray-500">Email:</span>{" "}
-                        <span className="text-gray-900">{sub.email}</span>
+                        <span className="text-brand-warm-gray">Email:</span>{" "}
+                        <span className="text-brand-navy">{sub.email}</span>
                       </div>
                       {sub.phone && (
                         <div>
-                          <span className="text-gray-500">Phone:</span>{" "}
-                          <span className="text-gray-900">{sub.phone}</span>
+                          <span className="text-brand-warm-gray">Phone:</span>{" "}
+                          <span className="text-brand-navy">{sub.phone}</span>
                         </div>
                       )}
                     </div>
                     <div className="space-y-1">
                       {Object.entries(parsedData).map(([key, val]) => (
                         <div key={key} className="text-sm">
-                          <span className="text-gray-500 capitalize">
+                          <span className="text-brand-warm-gray capitalize">
                             {key.replace(/([A-Z])/g, " $1").trim()}:
                           </span>{" "}
-                          <span className="text-gray-900">{val}</span>
+                          <span className="text-brand-navy">{val}</span>
                         </div>
                       ))}
                     </div>
