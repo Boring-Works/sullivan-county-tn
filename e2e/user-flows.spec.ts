@@ -1,23 +1,31 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("user flows", () => {
-  // ===== MEGA MENU =====
-  test("desktop mega-menu opens on hover and navigates", async ({ page }) => {
+  // ===== MEGA MENU (Phase 1 verb consolidation: 7→5; Departments folded into Find) =====
+  test("desktop mega-menu opens on hover and navigates to a department", async ({ page }) => {
     if (page.viewportSize()!.width < 1024) return;
     await page.goto("/");
 
-    const deptTrigger = page.locator("nav button", { hasText: "Departments" });
-    await deptTrigger.hover();
+    const findTrigger = page.locator("nav button", { hasText: /^Find$/ });
+    await findTrigger.first().hover();
+    await page.waitForTimeout(400);
 
-    await expect(page.locator('nav[aria-label="Main navigation"]')).toContainText("Administrative");
-    await expect(page.locator('nav[aria-label="Main navigation"]')).toContainText("County Mayor");
-    await expect(page.locator('nav[aria-label="Main navigation"]')).toContainText("Finance & Property");
-    await expect(page.locator('nav[aria-label="Main navigation"]')).toContainText("Public Safety");
+    // FIND panel groups: Records · Meetings & people · Departments
+    const panel = page.locator("#verb-panel-find");
+    await expect(panel).toBeVisible();
+    await expect(panel).toContainText(/Records|Registros/);
+    await expect(panel).toContainText(/Departments|Departamentos/);
 
+    // Browse-all link routes to /departments (the canonical browse experience).
     await page
-      .locator('nav[aria-label="Main navigation"] a', { hasText: "County Mayor" })
+      .locator("#verb-panel-find a")
+      .filter({ hasText: /Browse all 25 departments|Ver los 25 departamentos/ })
       .first()
       .click();
+    await expect(page).toHaveURL(/\/departments(\?|$)/);
+
+    // From the directory, navigate into County Mayor and assert arrival.
+    await page.locator("a[href='/departments/county-mayor']").first().click();
     await expect(page).toHaveURL(/\/departments\/county-mayor/);
     // Two h1s exist on dept detail (hero + printable contact card); scope to first.
     await expect(page.locator("h1").first()).toContainText("County Mayor");
@@ -27,9 +35,12 @@ test.describe("user flows", () => {
     if (page.viewportSize()!.width < 1024) return;
     await page.goto("/");
 
-    const deptTrigger = page.locator("nav button", { hasText: "Departments" });
-    await deptTrigger.hover();
-    await expect(page.locator('nav[aria-label="Main navigation"]')).toContainText("Administrative");
+    const findTrigger = page.locator("nav button", { hasText: /^Find$/ });
+    await findTrigger.first().hover();
+    await page.waitForTimeout(400);
+
+    const panel = page.locator("#verb-panel-find");
+    await expect(panel).toBeVisible();
 
     await page.locator("body").hover({ position: { x: 10, y: 10 } });
     await page.waitForTimeout(400);

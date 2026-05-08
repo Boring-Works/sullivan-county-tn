@@ -1,8 +1,8 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { AlertCircle } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import { AdminLayout } from "~/components/admin/AdminLayout";
 import { Alert, AlertDescription } from "~/components/ui/alert";
-import { AlertCircle } from "lucide-react";
 import { getNewsArticle, updateNewsArticle } from "~/server/admin-news";
 import { validateAdmin } from "~/server/auth";
 
@@ -200,7 +200,12 @@ function EditArticlePage() {
           </div>
         </div>
 
-        {error && (<Alert variant="destructive"><AlertCircle /><AlertDescription>{error}</AlertDescription></Alert>)}
+        {error && (
+          <Alert variant="destructive">
+            <AlertCircle />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
 
         <div className="flex gap-3 pt-2">
           <button

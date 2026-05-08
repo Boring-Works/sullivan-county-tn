@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { NewsSection } from "~/components/home/NewsSection";
 import { QuickServices } from "~/components/home/QuickServices";
 import { TelLink } from "~/components/shared/TelLink";
-import { WeatherBadge } from "~/components/shared/WeatherBadge";
 import {
   COMMISSION_REGULAR_SESSION_NAME,
   COMMISSION_REGULAR_SESSION_RULE,
@@ -133,7 +132,10 @@ export function TodaySection() {
                   <Calendar aria-hidden="true" className="size-3.5" />
                   {t("todaySection.fullSchedule")}
                 </Link>
-                <WeatherBadge className="ml-1" />
+                {/* WeatherBadge omitted here — already shown in the hero almanac
+                    strip (HeroBanner). Repeating it on a cream background
+                    breaks WCAG AA contrast since the badge is styled for
+                    dark/photo backgrounds. */}
               </div>
             </div>
           </div>

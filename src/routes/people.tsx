@@ -1,8 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Button } from "~/components/ui/button";
-
 import { HeritageHero } from "~/components/history/HeritageHero";
 import { PersonCard } from "~/components/people/PersonCard";
+import { Button } from "~/components/ui/button";
 import { notablePeople } from "~/data/notable-people";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
 import { seo, seoLinks } from "~/utils/seo";

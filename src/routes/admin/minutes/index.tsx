@@ -88,8 +88,12 @@ function MinutesListPage() {
                       {item.title}
                     </Link>
                   </td>
-                  <td className="hidden sm:table-cell px-4 py-3 text-brand-warm-gray">{item.committee}</td>
-                  <td className="hidden sm:table-cell px-4 py-3 text-brand-warm-gray">{item.date}</td>
+                  <td className="hidden sm:table-cell px-4 py-3 text-brand-warm-gray">
+                    {item.committee}
+                  </td>
+                  <td className="hidden sm:table-cell px-4 py-3 text-brand-warm-gray">
+                    {item.date}
+                  </td>
                   <td className="px-4 py-3">
                     <StatusBadge status={item.status} />
                   </td>

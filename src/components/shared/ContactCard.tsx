@@ -1,6 +1,7 @@
 import { Clock, Contact, Mail, MapPin, Phone, Printer } from "lucide-react";
 import { TelLink } from "~/components/shared/TelLink";
 import type { ContactInfo, DepartmentCategory } from "~/data/departments";
+import { SITE_URL } from "~/data/site-config";
 import { buildVCard, vCardDataHref } from "~/lib/vcard";
 
 const categoryAccents: Record<DepartmentCategory, string> = {
@@ -27,7 +28,7 @@ export function ContactCard({ head, contact, category }: ContactCardProps) {
       phone: contact.phone,
       email: contact.email,
       address: contact.address,
-      url: "https://sullivan-county-tn.codyboring.workers.dev",
+      url: SITE_URL,
     }),
   );
   const vcardFile = `${head.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.vcf`;

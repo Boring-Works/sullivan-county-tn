@@ -1,8 +1,8 @@
 import { createFileRoute, redirect, useNavigate } from "@tanstack/react-router";
+import { AlertCircle } from "lucide-react";
 import { useState } from "react";
 import { AdminLayout } from "~/components/admin/AdminLayout";
 import { Alert, AlertDescription } from "~/components/ui/alert";
-import { AlertCircle } from "lucide-react";
 import { COMMITTEES } from "~/data/meeting-minutes";
 import { createMinutesEntry } from "~/server/admin-minutes";
 import { validateAdmin } from "~/server/auth";
@@ -127,7 +127,12 @@ function NewMinutesPage() {
           />
         </div>
 
-        {error && (<Alert variant="destructive"><AlertCircle /><AlertDescription>{error}</AlertDescription></Alert>)}
+        {error && (
+          <Alert variant="destructive">
+            <AlertCircle />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
 
         <div className="flex gap-3 pt-2">
           <button

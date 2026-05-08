@@ -1,12 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Button } from "~/components/ui/button";
 import { ExternalLink } from "lucide-react";
-
 import { HeritageHero } from "~/components/history/HeritageHero";
 import { HeritageSiteCard } from "~/components/history/HeritageSiteCard";
 import { HistoryNarrative } from "~/components/history/HistoryNarrative";
 import { MountainDivider, MountainDividerInverted } from "~/components/shared/MountainDivider";
 import { PageFeedback } from "~/components/shared/PageFeedback";
+import { Button } from "~/components/ui/button";
 import { getTrailStops } from "~/data/heritage-sites";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
 import { seo, seoLinks } from "~/utils/seo";

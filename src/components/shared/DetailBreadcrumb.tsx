@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import { Fragment } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -37,7 +38,7 @@ export function DetailBreadcrumb({ items, className }: DetailBreadcrumbProps) {
         {items.map((item, i) => {
           const isLast = i === items.length - 1;
           return (
-            <span key={`${item.label}-${i}`} className="contents">
+            <Fragment key={item.to ?? item.label}>
               <BreadcrumbItem>
                 {isLast || !item.to ? (
                   <BreadcrumbPage className="text-brand-slate">{item.label}</BreadcrumbPage>
@@ -50,7 +51,7 @@ export function DetailBreadcrumb({ items, className }: DetailBreadcrumbProps) {
                 )}
               </BreadcrumbItem>
               {!isLast && <BreadcrumbSeparator />}
-            </span>
+            </Fragment>
           );
         })}
       </BreadcrumbList>

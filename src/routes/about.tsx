@@ -1,9 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Button } from "~/components/ui/button";
-
 import { HeritageHero } from "~/components/history/HeritageHero";
 import { HistoryNarrative } from "~/components/history/HistoryNarrative";
 import { MountainDivider, MountainDividerInverted } from "~/components/shared/MountainDivider";
+import { Button } from "~/components/ui/button";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
 import { seo, seoLinks } from "~/utils/seo";
 

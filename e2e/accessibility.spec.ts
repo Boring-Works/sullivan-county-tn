@@ -16,6 +16,8 @@ const PAGES = [
   { url: "/forms", name: "forms" },
   { url: "/privacy-policy", name: "privacy" },
   { url: "/ada-compliance", name: "ada" },
+  { url: "/accessibility", name: "accessibility-statement" },
+  { url: "/plain-language", name: "plain-language" },
 ];
 
 test.describe("accessibility scans", () => {

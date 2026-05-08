@@ -106,10 +106,8 @@ export function StorySection() {
                     className="absolute top-0 left-0 right-0 h-1 rounded-t-sm"
                     style={{ backgroundColor: `var(--color-${colorVar})` }}
                   />
-                  <p
-                    className="font-display text-3xl font-bold text-brand-navy leading-none"
-                    aria-label={`Year ${event.year}`}
-                  >
+                  <p className="font-display text-3xl font-bold text-brand-navy leading-none">
+                    <span className="sr-only">Year </span>
                     {event.year}
                   </p>
                   <p className="mt-2 font-body text-sm font-semibold text-brand-slate">
