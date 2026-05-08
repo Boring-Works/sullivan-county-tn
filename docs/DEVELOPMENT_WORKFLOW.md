@@ -179,27 +179,31 @@ npx playwright test --project=desktop tests/news.spec.ts
 |-------|-----------|
 | Framework | TanStack Start (SSR) |
 | Router | TanStack Router (file-based) |
-| Forms | TanStack Form + Zod |
+| **Forms** | **react-hook-form + Zod resolvers + shadcn `<Form>`** |
 | Data fetching | TanStack Query |
-| Styling | Tailwind CSS v4 + shadcn/ui + Radix UI |
-| Animation | tw-animate-css |
+| Styling | Tailwind CSS v4 + **shadcn/ui (21 primitives)** + Radix UI |
+| Toasts | **Sonner** (mounted in `__root.tsx`) |
+| Charts | recharts (used in `<CopperWeathervane />`-adjacent UI; shadcn `<Chart>` available) |
+| Animation | tw-animate-css + native `animation-timeline: view()` w/ JS fallback |
 | Database | Cloudflare D1 (SQLite) |
-| ORM | Drizzle ORM |
+| ORM | Drizzle ORM **+ drizzle-zod for derived schemas** |
 | KV | Cloudflare KV |
-| Validation | Zod |
+| Validation | **Zod 4** — derived from Drizzle via `drizzle-zod` where 1:1, hand-written for cross-field refines |
 | Dates | date-fns |
-| IDs | ulidx (ULID) |
+| IDs | ulidx (ULID) **+ branded type at `src/lib/schemas/ids.ts`** |
 | Search | Fuse.js (client-side fuzzy) |
 | i18n | i18next + react-i18next |
+| Weather | **NWS API (api.weather.gov, no key) + KV-cached SWR + D1 archive** |
+| **PWA** | **`public/sw.js` (cache-first fonts, network-first nav w/ offline fallback) + 2026 manifest spec + `<OfflineBanner />`** |
 | Lint/Format | Biome (2-space indent, 100 char line width) |
 | Unit testing | Vitest |
-| E2E testing | Playwright |
-| Type checking | TypeScript strict mode |
+| E2E testing | Playwright (desktop + tablet + mobile) |
+| Type checking | TypeScript strict mode + **typed `Cloudflare.Env` via `npm run cf-typegen`** |
 | Deployment | Cloudflare Workers + Wrangler |
 
 ## Code Conventions
 
-- **IDs:** Always ULIDs via `ulidx` — never `crypto.randomUUID()`
+- **IDs:** Always ULIDs via `ulidx` — never `crypto.randomUUID()`. Use `UlidSchema.brand<"Ulid">()` from `src/lib/schemas/ids.ts` for nominal typing.
 - **Dates:** ISO 8601 strings, `date-fns` for manipulation — never `moment` or `dayjs`
 - **Money:** Integer cents — never floating point
 - **Imports:** Organized automatically by Biome
@@ -208,4 +212,12 @@ npx playwright test --project=desktop tests/news.spec.ts
 - **Write paths:** Zod validate → idempotency key → authority gate → execute → receipt
 - **Secrets:** Never logged, printed, or committed
 - **Package manager:** npm (NOT pnpm)
-- **Do NOT:** use eslint, prettier, `crypto.randomUUID()`, `Math.random()` for security, or hardcode the codyboring.workers.dev URL
+- **Cloudflare bindings:** Always access via `getEnv() / getDB() / getKV()` from `src/server/env.ts`. **Never** cast `as Record<string, unknown>`.
+- **Forms:** Always use react-hook-form + Zod resolver + shadcn `<Form>` + `<Input>` / `<Textarea>` / `<Select>`. `/contact` is the canonical reference. Add `toast.success/error` from Sonner on submit.
+- **CTAs:** Use `<Button variant="copper">` for primary calls-to-action, `<Button variant="navy">` for admin/secondary, `<Button variant="outline">` for tertiary. **Don't** hand-roll `bg-brand-copper rounded-sm px-6 py-2.5` button classes.
+- **Detail pages:** Always include `<DetailBreadcrumb items={[...]} />` + a "Last reviewed" stamp where the data has a `lastUpdated` field.
+- **External links with `target="_blank"`:** Always include `rel="noopener noreferrer"`.
+- **Phone numbers:** Use `<TelLink phone="..." />` — never raw `tel:` `<a>` tags.
+- **Drizzle migrations:** Run `drizzle-kit generate` to produce `src/db/migrations/NNNN_*.sql`, then `npx wrangler d1 migrations apply sullivan-county-db --local` to apply locally and `--remote` to apply to production. Indexes belong in `schema.ts`, not raw SQL.
+- **`npm run cf-typegen`** after adding any new Cloudflare binding to `wrangler.jsonc` so the typed env stays in sync.
+- **Do NOT:** use eslint, prettier, `crypto.randomUUID()`, `Math.random()` for security, hardcode the codyboring.workers.dev URL, use `console.log` (use structured `console.error(JSON.stringify({...}))` instead), or use `as Record<string, unknown>` for env access.

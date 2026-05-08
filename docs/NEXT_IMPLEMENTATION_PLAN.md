@@ -1,38 +1,129 @@
 # Next Implementation Plan — Sullivan County TN
 
-**Last refreshed:** 2026-05-07 (PM)
+**Last refreshed:** 2026-05-07
 **Current state:** see [`CURRENT_STATE.md`](CURRENT_STATE.md)
 **Active gaps:** see [`GAP_ANALYSIS.md`](GAP_ANALYSIS.md)
 
-The site is in a strong, fully-deployed state. Three rounds of blueprint-aligned fixes shipped 2026-05-07: verb-based primary nav, parcel lookup on `/property-taxes`, and a homepage trim with seasonal awareness. This plan covers the remaining material work in priority order.
+The site has been through a 7-phase production-hardening pass plus follow-up audits. **Items #2, #3, #5 from the original top-7 are shipped.** This plan covers what's left, ranked by demo-day judging impact.
 
 ---
 
-## P1 — Operational hardening (within next sprint)
+## P1 — Highest visible impact remaining
 
-### 1. Service worker / offline emergency page
-**Why:** Storm and severe-weather events drive a mobile-dominated traffic spike on county sites with the worst connectivity at the moment of greatest need (blueprint Insight 10: Digital Divide Strategy Inversion).
+### 1. Admin overhaul (Sidebar + DataTable + stat dashboard + `/admin/feedback`)
+**Why:** `/admin` is currently 4 quick-link cards with no stats, and the list pages render plain `<table>` markup. If a judge logs in, this is the weakest visible surface area on the site. **The single biggest visible-quality jump remaining.**
+
+**Lift from `Kiranism/tanstack-start-dashboard`** (MIT, exact stack match — TanStack Start + shadcn + Vite). Specifically:
+- `src/components/ui/sidebar.tsx` + `src/components/layout/app-sidebar.tsx`
+- 13 DataTable composition files at `src/components/ui/table/data-table-*.tsx`
+- `src/hooks/use-data-table.ts` (the orchestration hook)
+- `src/features/overview/components/{area,bar,pie}-graph.tsx` + `recent-sales.tsx` for the dashboard tiles (recharts wrapper)
 
 **What:**
-- Workbox via `vite-plugin-pwa`.
-- Precache `/`, `/property-taxes`, `/contact`, `/calendar`, `/departments/emergency-management`, `/departments/sheriff`, county seal, fonts, CSS.
-- Stale-while-revalidate on content; cache-first on hashed assets.
-- Bump SW version on each deploy.
-- Register only in production (`import.meta.env.PROD`).
+- Replace `AdminLayout`'s custom sidebar with shadcn `<Sidebar>` (collapsible, mobile sheet, badged links e.g. "Submissions (3 new)").
+- New `getAdminDashboardStats()` server fn returning `{ submissionsTotal, submissionsNew, newsCount, lastNewsAt, minutesCount, announcementsActive, feedbackCount, weatherObsCount }`.
+- Replace `/admin/index.tsx` with stat-tile grid + recent-activity stream (last 10 mutations across tables — comes free with audit log when shipped).
+- Convert `/admin/{news,minutes,announcements,submissions}` to DataTable: sortable columns, filter, pagination, status filter.
+- Sonner toast on every mutation success/error.
+- Skeleton loaders for every list during load.
+- New `/admin/feedback.tsx` viewer (server fns `listPageFeedback`, `deletePageFeedback` already exist).
 
-**Done when:** loading the home page, killing the network, refreshing — emergency module + EMA / Sheriff phone numbers still render.
+**Done when:** logging in lands on a real dashboard with live counts; every list page sorts, filters, and paginates; every mutation toasts.
 
-### 2. CF Web Analytics token
-**Why:** Beacon script is already wired in `__root.tsx`, just needs a token. Cookieless, no consent banner needed.
+**Effort:** ~3–4 hours.
 
-**What:** Generate token in CF dashboard → paste → deploy. Track page views, top searches (via `?q=` if we ever add a search results page), bounce rate by audience pathway.
+---
+
+### 2. Audit log table + helper + `/admin/audit` viewer
+**Why:** Government accountability gap. No record of who created/edited/deleted what.
+
+**What:**
+- Migration `0004_audit_log.sql`:
+  ```sql
+  CREATE TABLE audit_log (
+    id TEXT PRIMARY KEY,
+    actor_session_id TEXT NOT NULL,
+    action TEXT NOT NULL,           -- e.g. "news.create", "announcement.delete"
+    resource TEXT NOT NULL,         -- e.g. "news_articles:01HZ..."
+    metadata TEXT,                  -- JSON blob
+    ip TEXT,
+    user_agent TEXT,
+    created_at TEXT NOT NULL
+  );
+  CREATE INDEX idx_audit_log_actor ON audit_log(actor_session_id);
+  CREATE INDEX idx_audit_log_created_at ON audit_log(created_at DESC);
+  ```
+- `audit(action, resource, metadata)` helper in `src/server/audit.ts`. Resolves `actor_session_id` + IP + UA from request context. Called via `ctx.waitUntil()` so admin requests don't pay the write cost.
+- Wrap every admin mutation: news create/update/delete, minutes create/update/delete, announcements create/update/delete, submission status updates, page-feedback delete.
+- New `/admin/audit.tsx` viewer (DataTable, sortable by date / actor, filterable by `action` prefix and `resource` table).
+
+**Done when:** every admin mutation produces an `audit_log` row; the viewer surfaces them with filter + sort.
+
+**Effort:** ~1.5 hours.
+
+---
+
+### 3. CF Web Analytics token (USER ACTION)
+**Why:** Beacon block in `__root.tsx` shows literal `YOUR_TOKEN_HERE` (commented out). Anyone reading source sees an unfinished feature; no real metrics flowing.
+
+**What:** CF dashboard → Web Analytics → Add a site → copy token → paste into `__root.tsx` → uncomment the script tag → redeploy.
 
 **Done when:** dashboard shows traffic.
 
-### 3. Spanish native review
-**Why:** `es.json` is machine-translated. Bristol and Kingsport have meaningful Spanish-speaking populations.
+**Effort:** 5 minutes.
 
-**What:** Pay a native Spanish speaker (~$200) to review and rewrite ~150 keys, paying special attention to:
+---
+
+## P2 — Production hardening
+
+### 4. Cron Trigger for weather refresh
+**Why:** SWR-on-read works fine — one user every 10 min pays a 300 ms NWS round-trip; everyone else gets a 5 ms KV hit. Production-ideal would be a scheduled refresh that never costs a user request.
+
+**What:**
+- Custom worker entry that wraps the TanStack Start handler:
+  ```ts
+  // src/worker.ts
+  import { default as tssHandler } from "@tanstack/react-start/server-entry";
+  import { refreshWeather } from "~/server/weather/refresh";
+  import { getEnv } from "~/server/env";
+  export default {
+    fetch: tssHandler.fetch,
+    async scheduled(_evt: ScheduledEvent, env: Cloudflare.Env, _ctx: ExecutionContext) {
+      await refreshWeather(env);
+    },
+  };
+  ```
+- Update `wrangler.jsonc` `main` to point at this entry + add `triggers.crons: ["*/10 * * * *"]`.
+- SWR-on-read remains as the safety net if cron stops firing.
+
+**Risk:** TanStack Start's entry-shape stability across versions. Ship with the SWR fallback intact so we can revert to read-path-refresh if needed.
+
+**Effort:** ~45 minutes.
+
+---
+
+### 5. SearchDialog → shadcn `<Command>`
+**Why:** Custom Radix Dialog + Fuse.js works but reinvents the wheel. shadcn `<Command>` (cmdk under the hood) gives better default keyboard handling.
+
+**What:** Replace `src/components/layout/SearchDialog.tsx` internals. Keep Fuse.js as the search engine. Wire to existing `sullivan:open-search` custom event so hero chips still pre-fill.
+
+**Effort:** ~45 minutes.
+
+---
+
+### 6. Mobile drawer → shadcn `<Sheet>`
+**Why:** `SiteNav.tsx` mobile drawer has a hand-rolled focus trap. `<Sheet>` (Radix Dialog variant) handles this natively.
+
+**What:** Replace mobile menu in `SiteNav.tsx` with `<Sheet>`. Remove the manual focus trap, Tab cycling, Escape handling — Radix does all of it.
+
+**Effort:** ~30 minutes.
+
+---
+
+### 7. Spanish native review (USER ACTION)
+**Why:** `es.json` is machine-translated. Should not be claimed bilingual yet.
+
+**What:** Pay a native Spanish-speaker (~$200) to review and rewrite ~150 keys, paying special attention to:
 - `propertyTaxes.lookup.*` (tax-related terms have legal weight)
 - `home.heroH1` / `home.heroSearchPlaceholder`
 - `forms.*` field labels
@@ -42,95 +133,76 @@ The site is in a strong, fully-deployed state. Three rounds of blueprint-aligned
 
 ---
 
-## P2 — Equity + transparency (within the quarter)
-
-### 4. Emergency alert sign-up (SMS + email)
-**Why:** Blueprint Tier 1. Only 40% of counties offer this; SMS open rate is 99% vs 20% for email.
-
-**What:**
-- New `/alerts` page: opt-in form (name, phone, email, ZIP, alert types: storm / road closure / boil-water / AMBER).
-- D1 `alert_subscribers` table.
-- Phase 1 = collect list + admin UI; admin blasts out via existing EMA SMS gateway / email.
-- Phase 2 = Twilio + cron Worker to send automatically when an admin posts an "urgent" announcement.
-
-**Done when:** opt-in form is wired to D1, admin can export CSV, first test alert sent.
-
-### 5. "Last updated" stamps on pages
-**Why:** GOV.UK pattern. Trust signal.
-
-**What:** Add `lastUpdated: ISO-date` to the `Department` interface; surface at the bottom of each detail page. Same for forms.
-
-**Done when:** every department page shows "Last updated May X, 2026" near the footer.
-
-### 6. Audit log for admin mutations
-**Why:** Government accountability. Currently no record of who changed what.
-
-**What:**
-- New D1 table `audit_log` (`actor_session_id`, `action`, `resource`, `metadata` JSON, `ip`, `created_at`).
-- Wrap every admin mutation server fn with a small `audit(action, resource, metadata)` helper.
-- Surface in `/admin/audit` (auth-gated, sortable by date / actor).
-
-**Done when:** creating, editing, deleting news / minutes / announcements / submissions all generate audit rows.
-
----
-
 ## P3 — Polish (when bandwidth allows)
 
-### 7. Cross-isolate rate limit (only if traffic warrants)
-- Migrate `rate-limit.ts` from in-memory `Map` to Durable Object atomic counter, OR
-- Use Cloudflare WAF rate-limiting rules at the platform level.
+### 8. Cross-isolate rate limit
+- Migrate `rate-limit.ts` from in-memory `Map` to Durable Object atomic counter, OR use Cloudflare WAF rate-limiting rules at the platform level.
 
-### 8. Plain-language CI check
+### 9. Plain-language CI check
 - `scripts/check-readability.ts` runs Flesch-Kincaid over `description` / `services[]` / `helpText` strings.
 - Fails CI if any string scores above grade 9.
-- Forces voice consistency without reviewer fatigue.
 
-### 9. Search query logging + best bets
+### 10. Search query logging + best bets
 - Log every search query (D1, 30-day TTL).
 - Admin view sorted by zero-result frequency.
-- Best-bets JSON pin specific results for seasonal windows ("Property tax deadline Feb 28" → `/property-taxes`, Jan–Mar only).
+- Best-bets JSON pin specific results for seasonal windows.
 
-### 10. Visual regression snapshots
-- Playwright screenshot tests on home, dept detail, calendar, forms, property-taxes, communities at desktop + mobile widths.
-- Catch CSS regressions that don't break layout enough to fail an assertion.
+### 11. Visual regression snapshots
+- Playwright screenshot tests on home, dept detail, calendar, forms, /weather, communities at desktop + mobile widths.
 
-### 11. "Ask Sullivan County" assistant (Invisible AI Advantage)
+### 12. Lighthouse CI
+- `lighthouserc.json` + GitHub Action with budgets (Performance ≥ 90, A11y = 100, SEO = 100).
+
+### 13. "Ask Sullivan County" assistant
 - Workers AI (`@cf/meta/llama-3.3-70b-instruct-fp8-fast`) + RAG over the existing search index + departments.ts + news.ts.
-- Branded as **Ask Sullivan County**, never "AI chatbot."
 - Floating launcher bottom-right (mobile-aware).
 - Confidence threshold drops to "Call (423) 323-6417" handoff.
-- Williamsburg's bot resolved 79% on first contact; even half that meaningfully reduces phone load.
+
+### 14. `lastUpdated` field on news / communities / heritage
+- Departments + Forms have `lastUpdated`. Other detail page types could too.
+
+### 15. Print styles for `/forms/$type`
+- Department detail has print styles; forms do not.
 
 ---
 
 ## P4 — Long-term
 
-### 12. Custom domain (`sullivancountytn.gov`)
-Move off `codyboring.workers.dev` subdomain. Configure custom domain in Cloudflare; verify HSTS preload still applies; update sitemap and JSON-LD.
+### 16. Custom domain (`sullivancountytn.gov`)
+Move off `codyboring.workers.dev` subdomain. Configure in Cloudflare; verify HSTS preload still applies; update sitemap and JSON-LD.
 
-### 13. Staging / QA environment
+### 17. Staging / QA environment
 Provision `sullivan-county-tn-preview` worker + a separate D1 for QA. Wire to a `staging` git branch.
 
-### 14. Citizen account portal (Tier 2 from blueprint)
-SSO via better-auth or Clerk. Saved forms, document vault, payment history. Enables much richer interactions but is a significant lift; defer until needed.
+### 18. Citizen account portal
+SSO via better-auth or Clerk. Saved forms, document vault, payment history. Significant lift; defer until needed.
+
+### 19. Emergency alert sign-up (SMS + email)
+- New `/alerts` page: opt-in form (name, phone, email, ZIP, alert types).
+- D1 `alert_subscribers` table.
+- Phase 2 = Twilio + cron Worker to send when admin posts an "urgent" announcement.
+
+### 20. Workers AI plain-English weather summary
+Llama 3.3 turns the raw NWS payload into "It's 60° and mostly cloudy. Tonight's storms aren't expected to be severe; tomorrow clears." Cached in the same KV doc as the snapshot.
 
 ---
 
 ## What's explicitly out of scope
 
-- **Migrating to Postgres** — D1 is plenty for this scale. The decision log holds.
-- **Redesign** — civic restraint stands. Heritage palette + Caslon + Outfit are the identity. No Holston-Partners-style redesign.
-- **Mobile app** — web-first remains the default per `~/.claude/THE-BORING-STACK.md` step 1. Citizens reach the site via search, not by installing an app.
-- **Removing the heritage / history pages** — they belong on the site (now consolidated under About, kept reachable from footer + search).
+- **Migrating to Postgres** — D1 is plenty for this scale.
+- **Redesign** — civic restraint stands. Heritage palette + Caslon + Outfit are the identity. No SaaS-y redesign.
+- **Mobile app** — web-first remains the default. Citizens reach the site via search, not by installing an app.
+- **Removing the heritage / history pages** — they belong on the site.
 
 ---
 
 ## How to pick what's next
 
 When you sit down to ship something, in order:
-1. Did P1.1 (service worker) ship? If not, do that. It's the highest-impact remaining item.
-2. Did P1.2 (CF analytics token) take 5 minutes yet? If not, do that. It's literally a dashboard click + redeploy.
+
+1. Did P1.1 (admin overhaul) ship? If not, do that. It's the highest-impact remaining item.
+2. Did P1.3 (CF Analytics token) take 5 minutes yet? If not, do that — literally a dashboard click + paste.
 3. Has anything changed about traffic level or admin needs? If so, audit P2.
 4. Otherwise pick from P3 / P4 based on what's drawing your interest.
 
-Don't expand scope without strong evidence. The site is good. The remaining work is incremental.
+Don't expand scope without strong evidence. The site is in best-practices shape. The remaining work is incremental.
