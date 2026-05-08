@@ -88,6 +88,8 @@ const staticPages: SitemapEntry[] = [
   { loc: "/contact", changefreq: "yearly", priority: "0.7" },
   { loc: "/documents", changefreq: "monthly", priority: "0.7" },
   { loc: "/ada-compliance", changefreq: "yearly", priority: "0.5" },
+  { loc: "/accessibility", changefreq: "yearly", priority: "0.5" },
+  { loc: "/plain-language", changefreq: "yearly", priority: "0.4" },
   { loc: "/employee-services", changefreq: "yearly", priority: "0.4" },
   { loc: "/privacy-policy", changefreq: "yearly", priority: "0.3" },
 ];

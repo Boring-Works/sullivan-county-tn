@@ -14,6 +14,7 @@ import { Route as VisitRouteImport } from './routes/visit'
 import { Route as TransportationRouteImport } from './routes/transportation'
 import { Route as PropertyTaxesRouteImport } from './routes/property-taxes'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as PlainLanguageRouteImport } from './routes/plain-language'
 import { Route as PeopleRouteImport } from './routes/people'
 import { Route as MinutesRouteImport } from './routes/minutes'
 import { Route as EmployeeServicesRouteImport } from './routes/employee-services'
@@ -24,6 +25,7 @@ import { Route as ContactRouteImport } from './routes/contact'
 import { Route as CommissionersRouteImport } from './routes/commissioners'
 import { Route as CalendarRouteImport } from './routes/calendar'
 import { Route as AdaComplianceRouteImport } from './routes/ada-compliance'
+import { Route as AccessibilityRouteImport } from './routes/accessibility'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as NewsIndexRouteImport } from './routes/news/index'
@@ -71,6 +73,11 @@ const PropertyTaxesRoute = PropertyTaxesRouteImport.update({
 const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
   id: '/privacy-policy',
   path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PlainLanguageRoute = PlainLanguageRouteImport.update({
+  id: '/plain-language',
+  path: '/plain-language',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PeopleRoute = PeopleRouteImport.update({
@@ -121,6 +128,11 @@ const CalendarRoute = CalendarRouteImport.update({
 const AdaComplianceRoute = AdaComplianceRouteImport.update({
   id: '/ada-compliance',
   path: '/ada-compliance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccessibilityRoute = AccessibilityRouteImport.update({
+  id: '/accessibility',
+  path: '/accessibility',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -242,6 +254,7 @@ const AdminMinutesIdRoute = AdminMinutesIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/accessibility': typeof AccessibilityRoute
   '/ada-compliance': typeof AdaComplianceRoute
   '/calendar': typeof CalendarRoute
   '/commissioners': typeof CommissionersRoute
@@ -252,6 +265,7 @@ export interface FileRoutesByFullPath {
   '/employee-services': typeof EmployeeServicesRoute
   '/minutes': typeof MinutesRoute
   '/people': typeof PeopleRoute
+  '/plain-language': typeof PlainLanguageRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/property-taxes': typeof PropertyTaxesRoute
   '/transportation': typeof TransportationRoute
@@ -282,6 +296,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/accessibility': typeof AccessibilityRoute
   '/ada-compliance': typeof AdaComplianceRoute
   '/calendar': typeof CalendarRoute
   '/commissioners': typeof CommissionersRoute
@@ -292,6 +307,7 @@ export interface FileRoutesByTo {
   '/employee-services': typeof EmployeeServicesRoute
   '/minutes': typeof MinutesRoute
   '/people': typeof PeopleRoute
+  '/plain-language': typeof PlainLanguageRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/property-taxes': typeof PropertyTaxesRoute
   '/transportation': typeof TransportationRoute
@@ -323,6 +339,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/accessibility': typeof AccessibilityRoute
   '/ada-compliance': typeof AdaComplianceRoute
   '/calendar': typeof CalendarRoute
   '/commissioners': typeof CommissionersRoute
@@ -333,6 +350,7 @@ export interface FileRoutesById {
   '/employee-services': typeof EmployeeServicesRoute
   '/minutes': typeof MinutesRoute
   '/people': typeof PeopleRoute
+  '/plain-language': typeof PlainLanguageRoute
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/property-taxes': typeof PropertyTaxesRoute
   '/transportation': typeof TransportationRoute
@@ -365,6 +383,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/accessibility'
     | '/ada-compliance'
     | '/calendar'
     | '/commissioners'
@@ -375,6 +394,7 @@ export interface FileRouteTypes {
     | '/employee-services'
     | '/minutes'
     | '/people'
+    | '/plain-language'
     | '/privacy-policy'
     | '/property-taxes'
     | '/transportation'
@@ -405,6 +425,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/accessibility'
     | '/ada-compliance'
     | '/calendar'
     | '/commissioners'
@@ -415,6 +436,7 @@ export interface FileRouteTypes {
     | '/employee-services'
     | '/minutes'
     | '/people'
+    | '/plain-language'
     | '/privacy-policy'
     | '/property-taxes'
     | '/transportation'
@@ -445,6 +467,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/accessibility'
     | '/ada-compliance'
     | '/calendar'
     | '/commissioners'
@@ -455,6 +478,7 @@ export interface FileRouteTypes {
     | '/employee-services'
     | '/minutes'
     | '/people'
+    | '/plain-language'
     | '/privacy-policy'
     | '/property-taxes'
     | '/transportation'
@@ -486,6 +510,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AccessibilityRoute: typeof AccessibilityRoute
   AdaComplianceRoute: typeof AdaComplianceRoute
   CalendarRoute: typeof CalendarRoute
   CommissionersRoute: typeof CommissionersRoute
@@ -496,6 +521,7 @@ export interface RootRouteChildren {
   EmployeeServicesRoute: typeof EmployeeServicesRoute
   MinutesRoute: typeof MinutesRoute
   PeopleRoute: typeof PeopleRoute
+  PlainLanguageRoute: typeof PlainLanguageRoute
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   PropertyTaxesRoute: typeof PropertyTaxesRoute
   TransportationRoute: typeof TransportationRoute
@@ -559,6 +585,13 @@ declare module '@tanstack/react-router' {
       path: '/privacy-policy'
       fullPath: '/privacy-policy'
       preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/plain-language': {
+      id: '/plain-language'
+      path: '/plain-language'
+      fullPath: '/plain-language'
+      preLoaderRoute: typeof PlainLanguageRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/people': {
@@ -629,6 +662,13 @@ declare module '@tanstack/react-router' {
       path: '/ada-compliance'
       fullPath: '/ada-compliance'
       preLoaderRoute: typeof AdaComplianceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/accessibility': {
+      id: '/accessibility'
+      path: '/accessibility'
+      fullPath: '/accessibility'
+      preLoaderRoute: typeof AccessibilityRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -798,6 +838,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AccessibilityRoute: AccessibilityRoute,
   AdaComplianceRoute: AdaComplianceRoute,
   CalendarRoute: CalendarRoute,
   CommissionersRoute: CommissionersRoute,
@@ -808,6 +849,7 @@ const rootRouteChildren: RootRouteChildren = {
   EmployeeServicesRoute: EmployeeServicesRoute,
   MinutesRoute: MinutesRoute,
   PeopleRoute: PeopleRoute,
+  PlainLanguageRoute: PlainLanguageRoute,
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   PropertyTaxesRoute: PropertyTaxesRoute,
   TransportationRoute: TransportationRoute,

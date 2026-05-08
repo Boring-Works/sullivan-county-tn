@@ -21,6 +21,18 @@ const EXTERNAL_RESOURCES = [
   { label: "Library", url: "https://www.scpltn.org" },
   { label: "Sheriff", url: "https://www.scsotn.com" },
   { label: "Animal Shelter", url: "https://www.animalshelter-sullivancounty.org" },
+  {
+    label: "Nextdoor — Sullivan County",
+    url: "https://nextdoor.com/agency-detail/tn/blountville/sullivan-county-government/",
+  },
+] as const;
+
+// Footer trust links per OMB M-24-08 + Plain Writing Act + FOIA convention.
+const TRUST_LINKS = [
+  { label: "Accessibility", href: "/accessibility" },
+  { label: "Plain language", href: "/plain-language" },
+  { label: "ADA compliance", href: "/ada-compliance" },
+  { label: "Privacy", href: "/privacy-policy" },
 ] as const;
 
 export function SiteFooter() {
@@ -136,26 +148,48 @@ export function SiteFooter() {
         </div>
       </div>
 
-      {/* Bottom Bar */}
+      {/* Trust strip — OMB M-24-08 + Plain Writing Act + FOIA links + Nextdoor */}
+      <div className="relative z-10 border-t border-white/8 bg-brand-navy-deep">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-5">
+          <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 font-body text-xs text-brand-cream/55 sm:justify-start">
+            {TRUST_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                to={link.href}
+                className="hover:text-brand-brass-light transition-colors"
+              >
+                {link.label}
+              </Link>
+            ))}
+            <Link
+              to="/forms/$type"
+              params={{ type: "public-records" }}
+              className="hover:text-brand-brass-light transition-colors"
+            >
+              Public records request
+            </Link>
+            <a href="/rss.xml" className="hover:text-brand-brass-light transition-colors">
+              RSS feed
+            </a>
+            <InstallPrompt />
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom bar — official-site disclosure + .gov migration note + copyright */}
       <div className="relative z-10 border-t border-white/8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 font-body text-xs text-brand-cream/40">
-            <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+          <div className="flex flex-col gap-3 font-body text-xs text-brand-cream/40 sm:flex-row sm:items-center sm:justify-between sm:gap-4">
+            <p className="leading-relaxed">
+              An official site of Sullivan County, Tennessee.{" "}
+              <span className="text-brand-cream/30">
+                A move to a <code className="font-mono">.gov</code> domain is planned.
+              </span>
+            </p>
+            <div className="flex flex-col items-start gap-1 sm:flex-row sm:items-center sm:gap-3">
               <span>&copy; {CURRENT_YEAR} Sullivan County, Tennessee</span>
               <span className="hidden sm:inline text-brand-cream/20">&middot;</span>
               <span className="italic font-accent">Est. 1779</span>
-            </div>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2 justify-center sm:justify-end">
-              <InstallPrompt />
-              <Link to="/ada-compliance" className="hover:text-brand-cream/60 transition-colors">
-                {t("footer.ada")}
-              </Link>
-              <Link to="/privacy-policy" className="hover:text-brand-cream/60 transition-colors">
-                {t("footer.privacy")}
-              </Link>
-              <a href="/rss.xml" className="hover:text-brand-cream/60 transition-colors">
-                RSS Feed
-              </a>
             </div>
           </div>
         </div>
