@@ -4,11 +4,6 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import { useTranslation } from "react-i18next";
 import { LanguageToggle } from "~/components/layout/LanguageToggle";
 import { CountySeal } from "~/components/shared/CountySeal";
-import {
-  DEPARTMENT_CATEGORIES,
-  type DepartmentCategory,
-  getDepartmentsByCategory,
-} from "~/data/departments";
 import { NAV_VERBS, type NavTask } from "~/data/nav-verbs";
 import { cn } from "~/lib/utils";
 
@@ -17,17 +12,6 @@ const LazySearchDialog = lazy(() =>
     default: m.SearchDialog,
   })),
 );
-
-const DEPARTMENTS_PANEL_KEY = "departments";
-
-const CATEGORY_ORDER: DepartmentCategory[] = [
-  "administrative",
-  "courts",
-  "public-safety",
-  "finance",
-  "operations",
-  "community",
-];
 
 interface FlatTask {
   href: string;
@@ -51,16 +35,6 @@ function flattenVerbTasks(verbKey: string): FlatTask[] {
     }
   }
   return flat;
-}
-
-function buildDepartmentLinks() {
-  const items: { slug: string; name: string; category: DepartmentCategory }[] = [];
-  for (const catKey of CATEGORY_ORDER) {
-    for (const dept of getDepartmentsByCategory(catKey)) {
-      items.push({ slug: dept.slug, name: dept.name, category: catKey });
-    }
-  }
-  return items;
 }
 
 function MobileTaskLink({
@@ -180,14 +154,10 @@ export function SiteNav() {
     /^\/(about|visit|people|education|economic-development|transportation)(\/|$)/.test(pathname);
   const solid = !hasDarkHeader || scrolled;
 
-  const departmentLinks = useMemo(() => buildDepartmentLinks(), []);
   const activePanelTasks = useMemo(() => {
     if (!activePanel) return [] as FlatTask[];
-    if (activePanel === DEPARTMENTS_PANEL_KEY) {
-      return departmentLinks.map((d) => ({ href: `/departments/${d.slug}`, external: false }));
-    }
     return flattenVerbTasks(activePanel);
-  }, [activePanel, departmentLinks]);
+  }, [activePanel]);
 
   // Detect hover-capable pointers so we can disable hover open on touch.
   useEffect(() => {
@@ -459,72 +429,10 @@ export function SiteNav() {
                           id={ariaControlsId}
                           className={cn(
                             "rounded-md border border-brand-surface bg-white shadow-2xl shadow-brand-navy/8 animate-scale-in",
-                            verb.key === DEPARTMENTS_PANEL_KEY
-                              ? "w-[920px] p-8"
-                              : verb.groups
-                                ? "w-[720px] p-6"
-                                : "w-[320px] p-4",
+                            verb.groups ? "w-[720px] p-6" : "w-[320px] p-4",
                           )}
                         >
-                          {verb.key === DEPARTMENTS_PANEL_KEY ? (
-                            <>
-                              <div className="mb-5 flex items-center justify-between border-b border-brand-surface pb-4">
-                                <h3 className="font-display text-base font-bold text-brand-navy">
-                                  {t("nav.countyDepartments")}
-                                </h3>
-                                <Link
-                                  to="/departments"
-                                  search={{ category: undefined }}
-                                  className="font-body text-xs font-semibold tracking-wide uppercase text-brand-copper hover:text-brand-copper-light transition-colors"
-                                  onClick={() => setActivePanel(null)}
-                                >
-                                  {t("nav.viewAll")} &rarr;
-                                </Link>
-                              </div>
-                              <div className="grid grid-cols-3 gap-8">
-                                {CATEGORY_ORDER.map((catKey) => {
-                                  const category = DEPARTMENT_CATEGORIES[catKey];
-                                  const depts = getDepartmentsByCategory(catKey);
-                                  return (
-                                    <div key={catKey}>
-                                      <div className="mb-2.5 flex items-center gap-2">
-                                        <div className="h-px flex-1 bg-brand-surface" />
-                                        <span className="font-body text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-stone">
-                                          {category.label}
-                                        </span>
-                                        <div className="h-px flex-1 bg-brand-surface" />
-                                      </div>
-                                      <ul className="space-y-0.5" aria-label={category.label}>
-                                        {depts.map((dept) => {
-                                          const active = pathname === `/departments/${dept.slug}`;
-                                          return (
-                                            <li key={dept.slug}>
-                                              <Link
-                                                to="/departments/$slug"
-                                                params={{ slug: dept.slug }}
-                                                data-panel-link=""
-                                                aria-current={active ? "page" : undefined}
-                                                className={cn(
-                                                  "block rounded-sm px-2.5 py-1.5 font-body text-sm transition-colors",
-                                                  "hover:bg-brand-parchment hover:text-brand-navy focus:bg-brand-parchment focus:text-brand-navy focus:outline-none",
-                                                  active
-                                                    ? "bg-brand-parchment text-brand-navy font-semibold"
-                                                    : "text-brand-slate",
-                                                )}
-                                                onClick={() => setActivePanel(null)}
-                                              >
-                                                {dept.name}
-                                              </Link>
-                                            </li>
-                                          );
-                                        })}
-                                      </ul>
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </>
-                          ) : verb.groups ? (
+                          {verb.groups ? (
                             <div className="grid grid-cols-3 gap-6">
                               {verb.groups.map((group) => (
                                 <div key={group.headingKey}>
@@ -710,43 +618,7 @@ export function SiteNav() {
                   </button>
                   {isOpen && (
                     <div id={`mobile-panel-${verb.key}`} className="mt-1 space-y-3 pl-3 pb-2">
-                      {verb.key === DEPARTMENTS_PANEL_KEY ? (
-                        <>
-                          {CATEGORY_ORDER.map((catKey) => {
-                            const category = DEPARTMENT_CATEGORIES[catKey];
-                            const depts = getDepartmentsByCategory(catKey);
-                            return (
-                              <div key={catKey}>
-                                <div className="mb-1.5 font-body text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-brass/70 px-3">
-                                  {category.label}
-                                </div>
-                                <ul className="space-y-0.5">
-                                  {depts.map((dept) => (
-                                    <li key={dept.slug}>
-                                      <Link
-                                        to="/departments/$slug"
-                                        params={{ slug: dept.slug }}
-                                        className="block rounded-sm px-3 py-2 font-body text-sm text-white/70 hover:bg-white/10 hover:text-white transition-colors min-h-[44px]"
-                                        onClick={closeMobile}
-                                      >
-                                        {dept.name}
-                                      </Link>
-                                    </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            );
-                          })}
-                          <Link
-                            to="/departments"
-                            search={{ category: undefined }}
-                            className="block rounded-sm px-3 py-2 font-body text-sm font-semibold text-brand-brass hover:text-brand-brass/80 transition-colors"
-                            onClick={closeMobile}
-                          >
-                            {t("nav.viewAllDepartments")} &rarr;
-                          </Link>
-                        </>
-                      ) : verb.groups ? (
+                      {verb.groups ? (
                         verb.groups.map((group) => (
                           <div key={group.headingKey}>
                             <div className="mb-1.5 font-body text-[10px] font-semibold uppercase tracking-[0.15em] text-brand-brass/70 px-3">

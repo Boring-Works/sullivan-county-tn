@@ -1,23 +1,23 @@
 import type { LucideIcon } from "lucide-react";
-import {
-  AlertTriangle,
-  Building2,
-  Calendar,
-  DollarSign,
-  FileText,
-  FolderSearch,
-  Info,
-} from "lucide-react";
+import { AlertTriangle, DollarSign, FileText, Info, Search } from "lucide-react";
 
 /**
  * Verb-based primary navigation. Each verb groups concrete citizen tasks the
- * way GOV.UK and Cook County's "I Want To" pattern do. The Departments
- * dropdown stays alongside these (kept in SiteNav for citizens who already
- * know the org chart).
+ * way GOV.UK and Cook County's "I Want To" pattern do.
  *
- * - `to` is an internal route path (TanStack Router will validate)
+ * Five verbs (Phase 1 of the homepage redesign — was seven):
+ *   FIND · PAY · APPLY · REPORT · ABOUT
+ *
+ * The collapse aligns with `County_Government_Website_Blueprint_2026`
+ * Section 3.2.1 (Hick's Law: 4–6 task-based items) and Fairfax County's
+ * canonical FIND/PAY/REGISTER/REPORT taxonomy. Records, Meetings, and the
+ * department directory all fold into FIND. The /departments page remains
+ * the canonical browse experience for all 25 departments — citizens reach
+ * it via FIND → "Browse all departments" or via a category quick link.
+ *
+ * - `to` is an internal route path
  * - `href` is an external URL (renders <a target="_blank" rel="noopener">)
- * - Keep each list to 4–6 items per Hick's Law / blueprint mega-menu spec
+ * - Each task list stays at 4–6 items per Hick's Law / blueprint mega-menu spec
  */
 
 export type NavTask =
@@ -25,6 +25,8 @@ export type NavTask =
       labelKey: string;
       to: string;
       external?: false;
+      /** Optional category search param for /departments?category=foo links. */
+      search?: { category?: string };
     }
   | {
       labelKey: string;
@@ -36,13 +38,53 @@ export interface NavVerb {
   key: string;
   labelKey: string;
   icon: LucideIcon;
-  /** Single-column list (most verbs). */
+  /** Single-column list. */
   tasks?: NavTask[];
-  /** Multi-column groups (About). */
+  /** Multi-column groups (FIND, ABOUT). */
   groups?: { headingKey: string; tasks: NavTask[] }[];
 }
 
 export const NAV_VERBS: NavVerb[] = [
+  {
+    key: "find",
+    labelKey: "verbNav.find.label",
+    icon: Search,
+    groups: [
+      {
+        headingKey: "verbNav.find.headingRecords",
+        tasks: [
+          { labelKey: "verbNav.find.propertyDeeds", to: "/departments/register-of-deeds" },
+          { labelKey: "verbNav.find.courtRecords", to: "/departments/circuit-court" },
+          { labelKey: "verbNav.find.meetingMinutes", to: "/minutes" },
+          { labelKey: "verbNav.find.documents", to: "/documents" },
+          {
+            labelKey: "verbNav.find.gisMap",
+            href: "https://sullcotngis.maps.arcgis.com/apps/mapviewer/index.html?webmap=2004721405af4dd0952a592b42e6f5b6",
+            external: true,
+          },
+        ],
+      },
+      {
+        headingKey: "verbNav.find.headingMeetings",
+        tasks: [
+          { labelKey: "verbNav.find.calendar", to: "/calendar" },
+          { labelKey: "verbNav.find.commissioners", to: "/commissioners" },
+          { labelKey: "verbNav.find.news", to: "/news" },
+          { labelKey: "verbNav.find.publicRecordsRequest", to: "/forms/public-records" },
+        ],
+      },
+      {
+        headingKey: "verbNav.find.headingDepartments",
+        tasks: [
+          { labelKey: "verbNav.find.allDepartments", to: "/departments" },
+          { labelKey: "verbNav.find.administrative", to: "/departments" },
+          { labelKey: "verbNav.find.courts", to: "/departments" },
+          { labelKey: "verbNav.find.publicSafety", to: "/departments" },
+          { labelKey: "verbNav.find.community", to: "/departments" },
+        ],
+      },
+    ],
+  },
   {
     key: "pay",
     labelKey: "verbNav.pay.label",
@@ -83,40 +125,6 @@ export const NAV_VERBS: NavVerb[] = [
       { labelKey: "verbNav.report.feedback", to: "/forms/general-feedback" },
       { labelKey: "verbNav.report.emergency", to: "/departments/emergency-management" },
     ],
-  },
-  {
-    key: "records",
-    labelKey: "verbNav.records.label",
-    icon: FolderSearch,
-    tasks: [
-      { labelKey: "verbNav.records.propertyDeeds", to: "/departments/register-of-deeds" },
-      { labelKey: "verbNav.records.courtRecords", to: "/departments/circuit-court" },
-      { labelKey: "verbNav.records.minutes", to: "/minutes" },
-      { labelKey: "verbNav.records.documents", to: "/documents" },
-      {
-        labelKey: "verbNav.records.gisMap",
-        href: "https://sullcotngis.maps.arcgis.com/apps/mapviewer/index.html?webmap=2004721405af4dd0952a592b42e6f5b6",
-        external: true,
-      },
-    ],
-  },
-  {
-    key: "meetings",
-    labelKey: "verbNav.meetings.label",
-    icon: Calendar,
-    tasks: [
-      { labelKey: "verbNav.meetings.calendar", to: "/calendar" },
-      { labelKey: "verbNav.meetings.minutes", to: "/minutes" },
-      { labelKey: "verbNav.meetings.commissioners", to: "/commissioners" },
-      { labelKey: "verbNav.meetings.news", to: "/news" },
-    ],
-  },
-  {
-    // Departments panel content is rendered specially by SiteNav (existing 6-category mega-menu).
-    // We only need a NAV_VERBS entry so the button shows up alongside the verbs.
-    key: "departments",
-    labelKey: "verbNav.departments.label",
-    icon: Building2,
   },
   {
     key: "about",

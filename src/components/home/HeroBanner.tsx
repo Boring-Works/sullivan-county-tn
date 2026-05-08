@@ -1,85 +1,16 @@
 import { Link } from "@tanstack/react-router";
-import {
-  Calendar,
-  DollarSign,
-  ExternalLink,
-  FileText,
-  type LucideIcon,
-  Map as MapIcon,
-  Phone,
-  Search,
-} from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { Search } from "lucide-react";
+import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { CountySeal } from "~/components/shared/CountySeal";
 import { MountainDivider } from "~/components/shared/MountainDivider";
 import { WeatherBadge } from "~/components/shared/WeatherBadge";
 import { COMMISSION_REGULAR_SESSION_RULE } from "~/data/meetings";
+import { getTodayInHistory } from "~/data/today-in-history";
 import { useOpenStatus } from "~/hooks/useOpenStatus";
 import { formatNyDateShort, formatNyTime, nextOccurrence } from "~/lib/recurrence";
 
-const SUGGESTED_HERO_QUERIES = [
-  "pay taxes",
-  "marriage license",
-  "trash pickup",
-  "pothole",
-  "voter registration",
-] as const;
-
 const COUNTY_OFFICE_HOURS = "Monday-Friday, 8am-4:30pm";
-
-type ChipKey = "payTaxes" | "forms" | "propertyLookup" | "meetings" | "contact";
-
-interface ExternalTask {
-  kind: "external";
-  labelKey: ChipKey;
-  href: string;
-  icon: LucideIcon;
-}
-
-interface InternalTask {
-  kind: "internal";
-  labelKey: ChipKey;
-  to: "/forms" | "/calendar" | "/contact" | "/property-taxes";
-  icon: LucideIcon;
-}
-
-type TopTask = ExternalTask | InternalTask;
-
-const TOP_TASKS: TopTask[] = [
-  {
-    kind: "internal",
-    labelKey: "payTaxes",
-    to: "/property-taxes",
-    icon: DollarSign,
-  },
-  { kind: "internal", labelKey: "forms", to: "/forms", icon: FileText },
-  {
-    kind: "external",
-    labelKey: "propertyLookup",
-    href: "https://gis.sullivancountytn.gov/",
-    icon: MapIcon,
-  },
-  { kind: "internal", labelKey: "meetings", to: "/calendar", icon: Calendar },
-  { kind: "internal", labelKey: "contact", to: "/contact", icon: Phone },
-];
-
-function StatItem({ value, label }: { value: string; label: string }) {
-  // Static render — no count-up animation. The blueprint's civic-restraint rule
-  // wins here; an animating "0+ Residents" was a real correctness bug during
-  // hydration on slow clients and with prefers-reduced-motion.
-  return (
-    <div className="text-center sm:text-left">
-      <div className="font-display text-base font-bold text-white sm:text-xl leading-none">
-        {value}
-      </div>
-      <div className="font-body text-[9px] font-medium tracking-widest uppercase text-white/50 sm:text-[10px]">
-        {label}
-      </div>
-    </div>
-  );
-}
-
 const PARALLAX_SPEED = 0.5;
 
 function openSearch(query?: string) {
@@ -89,14 +20,40 @@ function openSearch(query?: string) {
   );
 }
 
+/**
+ * HeroBanner — Phase 1 of the homepage redesign.
+ *
+ * Calm civic-newspaper masthead. One photo, one identity statement, one
+ * search box, one quiet almanac line, one rotating today-in-history fact.
+ *
+ * What's intentionally NOT here (vs the prior iteration):
+ *   - 5 task chips (citizens reach the same destinations via verb mega-nav)
+ *   - 5 suggested-search pills (the search box does this work)
+ *   - Identity stats (158k / 430 / 25) — moved to "Live in Sullivan" tile (Phase 2)
+ *   - Loud almanac strip with multiple lines (now one line + a fact)
+ *
+ * What stays:
+ *   - Boone Lake aerial photo (real local photography per blueprint S2.2.1)
+ *   - Identity eyebrow ("Sullivan County, Tennessee · Established 1779")
+ *   - Single H1 ("Where Tennessee Began and Begins")
+ *   - Single center search box
+ *   - Live weather pill (already-shipped <WeatherBadge>)
+ *   - Open-Now + Next-Meeting consolidated into one quiet sentence
+ *   - Mountain divider transition to cream
+ *
+ * Above-the-fold interactive count drops from 31 → ~7.
+ */
 export function HeroBanner() {
   const heroRef = useRef<HTMLElement>(null);
   const rafRef = useRef<number>(0);
   const status = useOpenStatus(COUNTY_OFFICE_HOURS);
   const { t } = useTranslation();
+
   // Computed once so the date renders during SSR. Stable across server/client
   // because the meeting is always days+ in the future.
-  const [meetingDate] = useState<Date>(() => nextOccurrence(COMMISSION_REGULAR_SESSION_RULE));
+  const meetingDate = useMemo(() => nextOccurrence(COMMISSION_REGULAR_SESSION_RULE), []);
+  // Also stable: today's date doesn't change during a single render pass.
+  const todayFact = useMemo(() => getTodayInHistory(), []);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -120,7 +77,7 @@ export function HeroBanner() {
     <section
       ref={heroRef}
       aria-labelledby="hero-heading"
-      className="relative min-h-[85vh] flex flex-col overflow-hidden bg-brand-navy"
+      className="relative min-h-[80vh] flex flex-col overflow-hidden bg-brand-navy"
     >
       <picture>
         <source
@@ -196,9 +153,10 @@ export function HeroBanner() {
         <CountySeal size={180} className="invert" />
       </div>
 
-      <div className="relative z-10 flex-1 flex items-center px-6 pt-24 pb-44 sm:px-8 sm:pb-52 lg:px-12">
+      <div className="relative z-10 flex-1 flex items-center px-6 pt-24 pb-40 sm:px-8 sm:pb-48 lg:px-12">
         <div className="mx-auto w-full max-w-7xl">
           <div className="max-w-3xl">
+            {/* Identity eyebrow */}
             <div className="mb-5 opacity-0 animate-fade-up" style={{ animationDelay: "0.1s" }}>
               <span className="inline-flex items-center gap-2 font-body text-[11px] font-medium tracking-[0.2em] uppercase text-brand-brass-light">
                 {t("home.heroEyebrow")}
@@ -207,6 +165,7 @@ export function HeroBanner() {
               </span>
             </div>
 
+            {/* Single focused message — Caslon serif, civic restraint */}
             <h1
               id="hero-heading"
               className="font-display font-bold tracking-tight text-white leading-[1.02] opacity-0 animate-fade-up"
@@ -218,7 +177,8 @@ export function HeroBanner() {
               {t("home.heroH1")}
             </h1>
 
-            {/* Search trigger — opens the existing SiteNav-mounted SearchDialog. */}
+            {/* Single search box — center search drives 2.1x the usage of top-left
+                placement per blueprint S2.1.3. */}
             <div className="mt-7 opacity-0 animate-fade-up" style={{ animationDelay: "0.4s" }}>
               <button
                 type="button"
@@ -236,80 +196,30 @@ export function HeroBanner() {
               </button>
             </div>
 
-            {/* Top-task chips — citizens come hunting; these are the answers. */}
-            <nav
-              aria-label={t("home.topTasksLabel")}
-              className="mt-5 opacity-0 animate-fade-up"
-              style={{ animationDelay: "0.65s" }}
-            >
-              <ul className="flex flex-wrap gap-2 sm:gap-2.5">
-                {TOP_TASKS.map((task) => {
-                  const Icon = task.icon;
-                  const chipClass =
-                    "inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-2.5 font-body text-sm font-medium text-white backdrop-blur-sm transition-all hover:border-brand-brass-light/70 hover:bg-white/15 hover:text-brand-brass-light min-h-[44px]";
-                  const label = t(`home.heroChips.${task.labelKey}`);
-                  if (task.kind === "external") {
-                    return (
-                      <li key={task.labelKey}>
-                        <a
-                          href={task.href}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          aria-label={`${label} ${t("home.opensInNewTab")}`}
-                          className={chipClass}
-                        >
-                          <Icon aria-hidden className="size-4" />
-                          {label}
-                          <ExternalLink aria-hidden className="size-3 opacity-60" />
-                        </a>
-                      </li>
-                    );
-                  }
-                  return (
-                    <li key={task.labelKey}>
-                      <Link to={task.to} className={chipClass}>
-                        <Icon aria-hidden className="size-4" />
-                        {label}
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            </nav>
-
-            {/* Suggested searches — converts "I don't know what I'm looking for"
-                into a one-tap completed task. Each chip prefills SearchDialog. */}
-            <div
-              className="mt-4 flex flex-wrap items-center gap-2 opacity-0 animate-fade-up"
-              style={{ animationDelay: "0.8s" }}
-            >
-              <span className="font-body text-[11px] font-medium tracking-widest uppercase text-white/50 mr-1">
-                {t("home.heroSuggestionsLabel")}
-              </span>
-              {SUGGESTED_HERO_QUERIES.map((q) => (
-                <button
-                  key={q}
-                  type="button"
-                  onClick={() => openSearch(q)}
-                  className="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1.5 font-body text-xs font-medium text-white/90 backdrop-blur-sm transition-all hover:border-brand-brass-light/60 hover:bg-white/15 hover:text-brand-brass-light min-h-[36px]"
-                >
-                  {q}
-                </button>
-              ))}
-            </div>
+            {/* Today-in-history line — newspaper voice, civic restraint.
+                Renders only when we have a fact for today's date. */}
+            {todayFact && (
+              <p
+                className="mt-6 max-w-2xl font-body text-sm leading-relaxed text-white/75 italic opacity-0 animate-fade-up sm:text-base"
+                style={{ animationDelay: "0.65s" }}
+              >
+                <span className="not-italic font-display text-[10px] font-semibold tracking-[0.2em] uppercase text-brand-brass-light mr-2">
+                  {t("home.heroToday")}
+                </span>
+                {todayFact.text}
+              </p>
+            )}
           </div>
         </div>
       </div>
 
-      {/* Almanac strip — leads with the readable "open until / next meeting"
-          line, falls back to identity stats below for visual reinforcement. */}
-      <div className="absolute bottom-[40px] sm:bottom-[55px] lg:bottom-[70px] left-0 right-0 z-30">
+      {/* Almanac strip — single quiet line + weather pill. */}
+      <div className="absolute bottom-[28px] sm:bottom-[40px] lg:bottom-[55px] left-0 right-0 z-30">
         <div
           className="mx-auto max-w-5xl px-4 sm:px-6 opacity-0 animate-fade-up"
-          style={{ animationDelay: "0.95s" }}
+          style={{ animationDelay: "0.85s" }}
         >
-          <div className="rounded-sm border border-white/10 bg-brand-navy/55 backdrop-blur-md px-4 py-3.5 sm:px-6 sm:py-4">
-            {/* Top: human-readable status line. */}
+          <div className="rounded-sm border border-white/10 bg-brand-navy/55 backdrop-blur-md px-4 py-3 sm:px-6 sm:py-3.5">
             <Link
               to="/calendar"
               className="group flex flex-wrap items-center justify-center gap-x-3 gap-y-1 text-center lg:justify-start lg:text-left"
@@ -337,19 +247,8 @@ export function HeroBanner() {
                 {t("home.heroAlmanac.nextMeeting")}: {formatNyDateShort(meetingDate)}{" "}
                 {t("home.heroAlmanac.at")} {formatNyTime(meetingDate)}.
               </span>
+              <WeatherBadge className="ml-0 lg:ml-3" />
             </Link>
-
-            {/* Bottom: identity stats — quieter, reinforcement only. */}
-            <div className="mt-3 grid grid-cols-3 gap-3 border-t border-white/10 pt-3 sm:gap-6 items-center justify-items-center">
-              <StatItem value="158,000+" label={t("home.heroAlmanac.residents")} />
-              <StatItem value="430" label={t("home.heroAlmanac.squareMiles")} />
-              <StatItem value="25" label={t("home.heroAlmanac.departments")} />
-            </div>
-
-            {/* Live weather badge — small "the site is alive" cue. */}
-            <div className="mt-3 flex justify-center lg:justify-start">
-              <WeatherBadge />
-            </div>
           </div>
         </div>
       </div>

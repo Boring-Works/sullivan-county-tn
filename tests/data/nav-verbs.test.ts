@@ -3,9 +3,11 @@ import { departments } from "../../src/data/departments";
 import { FORM_DEFINITIONS } from "../../src/data/form-definitions";
 import { NAV_VERBS } from "../../src/data/nav-verbs";
 
-const VERB_KEYS = ["pay", "apply", "report", "records", "meetings", "departments", "about"] as const;
+const VERB_KEYS = ["find", "pay", "apply", "report", "about"] as const;
 
 const KNOWN_INTERNAL_ROUTES = new Set([
+  "/",
+  "/departments",
   "/property-taxes",
   "/forms",
   "/forms/building-permit",
@@ -30,7 +32,6 @@ const KNOWN_INTERNAL_ROUTES = new Set([
   "/employee-services",
   "/ada-compliance",
   "/privacy-policy",
-  "/property-taxes",
 ]);
 
 const DEPT_SLUGS = new Set(departments.map((d) => d.slug));
@@ -50,7 +51,7 @@ function isValidInternal(path: string): boolean {
 }
 
 describe("NAV_VERBS", () => {
-  it("contains exactly the seven expected top-level verbs in order", () => {
+  it("contains exactly the five expected top-level verbs in order (Phase 1: 7→5)", () => {
     expect(NAV_VERBS.map((v) => v.key)).toEqual(VERB_KEYS);
   });
 
@@ -61,9 +62,8 @@ describe("NAV_VERBS", () => {
     }
   });
 
-  it("every verb has either tasks or groups (Departments may have neither)", () => {
+  it("every verb has either tasks or groups", () => {
     for (const v of NAV_VERBS) {
-      if (v.key === "departments") continue;
       const hasTasks = (v.tasks?.length ?? 0) > 0;
       const hasGroups = (v.groups?.length ?? 0) > 0;
       expect(hasTasks || hasGroups, `${v.key} must have tasks or groups`).toBe(true);

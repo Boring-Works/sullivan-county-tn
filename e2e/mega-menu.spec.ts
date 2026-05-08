@@ -1,6 +1,16 @@
 import { expect, test } from "@playwright/test";
 
-test.describe("verb-nav mega panels on all pages", () => {
+/**
+ * Mega-menu E2E for the Phase 1 verb consolidation: 7 verbs → 5.
+ *
+ * The 5 verbs are: FIND · PAY · APPLY · REPORT · ABOUT
+ *
+ * The standalone "Departments" verb was removed in Phase 1; department
+ * browsing now lives under FIND ("Browse all 25 departments") and on the
+ * /departments index page (the canonical browse experience). The
+ * "Records" and "Meetings" verbs were folded into FIND's groups.
+ */
+test.describe("verb-nav mega panels (5-verb model)", () => {
 	const pages = [
 		"/",
 		"/departments",
@@ -17,76 +27,69 @@ test.describe("verb-nav mega panels on all pages", () => {
 	];
 
 	for (const path of pages) {
-		test(`hover opens Departments panel on ${path}`, async ({ page }) => {
+		test(`hover opens FIND panel on ${path}`, async ({ page }) => {
 			if (page.viewportSize()!.width < 1024) return;
 			await page.goto(path);
 			await page.waitForTimeout(1500);
 
-			const btn = page.locator("nav button", { hasText: "Departments" });
+			const btn = page.locator("nav button", { hasText: /^Find$/ });
 			await btn.first().hover();
 			await page.waitForTimeout(400);
 
-			const panel = page.locator("#verb-panel-departments");
+			const panel = page.locator("#verb-panel-find");
 			await expect(panel).toBeVisible();
-			await expect(panel.getByText("Administrative")).toBeVisible();
+			// FIND has three groups: Records, Meetings & people, Departments.
+			await expect(panel).toContainText("Records");
 		});
 	}
 
-	test("click toggles Departments panel", async ({ page }) => {
+	test("click toggles FIND panel", async ({ page }) => {
 		if (page.viewportSize()!.width < 1024) return;
-		await page.goto("/departments");
+		await page.goto("/");
 		await page.waitForTimeout(800);
 
-		const btn = page.locator("nav button", { hasText: "Departments" });
+		const btn = page.locator("nav button", { hasText: /^Find$/ });
 
 		await btn.first().click();
 		await page.waitForTimeout(300);
-		await expect(page.locator("#verb-panel-departments")).toBeVisible();
+		await expect(page.locator("#verb-panel-find")).toBeVisible();
 
 		await btn.first().click();
 		await page.waitForTimeout(300);
-		await expect(page.locator("#verb-panel-departments")).not.toBeVisible();
+		await expect(page.locator("#verb-panel-find")).not.toBeVisible();
 	});
 
-	test("Departments panel links navigate correctly", async ({ page }) => {
+	test("FIND panel 'Browse all departments' link navigates to /departments", async ({ page }) => {
 		if (page.viewportSize()!.width < 1024) return;
-		await page.goto("/departments");
+		await page.goto("/");
 		await page.waitForTimeout(800);
 
-		const btn = page.locator("nav button", { hasText: "Departments" });
+		const btn = page.locator("nav button", { hasText: /^Find$/ });
 		await btn.first().hover();
 		await page.waitForTimeout(400);
 
 		await page
-			.locator("#verb-panel-departments a")
-			.filter({ hasText: "County Mayor" })
+			.locator("#verb-panel-find a")
+			.filter({ hasText: /Browse all 25 departments|Ver los 25 departamentos/ })
 			.first()
 			.click();
-		await expect(page).toHaveURL(/\/departments\/county-mayor/);
+		await expect(page).toHaveURL(/\/departments(\?|$)/);
 	});
 
-	test("Departments panel shows all 6 category groups", async ({ page }) => {
+	test("FIND panel shows all three group headings", async ({ page }) => {
 		if (page.viewportSize()!.width < 1024) return;
-		const allPages = ["/", "/departments", "/history", "/contact"];
-		for (const path of allPages) {
-			await page.goto(path, { waitUntil: "domcontentloaded" });
-			await expect(page.locator("nav button", { hasText: "Departments" })).toBeVisible();
-			// Park cursor far away so the auto-move-before-hover doesn't trigger
-			// hover-open on a different verb and race with our explicit hover.
-			await page.mouse.move(0, 0);
-			await page.waitForTimeout(150);
+		await page.goto("/");
+		await page.mouse.move(0, 0);
+		await page.waitForTimeout(150);
 
-			const btn = page.locator("nav button", { hasText: "Departments" });
-			await btn.first().hover();
-			const panel = page.locator("#verb-panel-departments");
-			await expect(panel).toBeVisible({ timeout: 8000 });
-			await expect(panel).toContainText("Administrative");
-			await expect(panel).toContainText("Courts");
-			await expect(panel).toContainText("Public Safety");
-			await expect(panel).toContainText("Finance");
-			await expect(panel).toContainText("Operations");
-			await expect(panel).toContainText("Community");
-		}
+		const btn = page.locator("nav button", { hasText: /^Find$/ });
+		await btn.first().hover();
+		const panel = page.locator("#verb-panel-find");
+		await expect(panel).toBeVisible({ timeout: 8000 });
+		// Group headings are rendered as 10px uppercase labels.
+		await expect(panel).toContainText(/Records|Registros/i);
+		await expect(panel).toContainText(/Meetings|Reuniones/i);
+		await expect(panel).toContainText(/Departments|Departamentos/i);
 	});
 
 	test("Pay verb panel surfaces property taxes task", async ({ page }) => {
@@ -136,20 +139,50 @@ test.describe("verb-nav mega panels on all pages", () => {
 		await expect(panel).toContainText("Government");
 	});
 
-	test("Records panel external GIS link opens in new tab", async ({ page }) => {
+	test("FIND panel external GIS link opens in new tab", async ({ page }) => {
 		if (page.viewportSize()!.width < 1024) return;
 		await page.goto("/");
 		await page.waitForTimeout(1500);
 
-		const recordsBtn = page.locator("nav button", { hasText: /^Records$/ });
-		await recordsBtn.first().hover();
+		const findBtn = page.locator("nav button", { hasText: /^Find$/ });
+		await findBtn.first().hover();
 		await page.waitForTimeout(400);
 
 		const gisLink = page
-			.locator("#verb-panel-records a")
-			.filter({ hasText: "GIS / property map" })
+			.locator("#verb-panel-find a")
+			.filter({ hasText: /GIS \/ property map|GIS \/ mapa/ })
 			.first();
 		await expect(gisLink).toHaveAttribute("target", "_blank");
 		await expect(gisLink).toHaveAttribute("rel", /noopener/);
+	});
+
+	test("nav has exactly 5 verb buttons (Phase 1 consolidation 7→5)", async ({ page }) => {
+		if (page.viewportSize()!.width < 1024) return;
+		await page.goto("/");
+		await page.waitForTimeout(800);
+
+		// All 5 verbs visible in main nav, in order.
+		for (const label of ["Find", "Pay", "Apply", "Report", "About"]) {
+			await expect(
+				page
+					.locator("nav[aria-label='Main navigation'] button", {
+						hasText: new RegExp(`^${label}$`),
+					})
+					.first(),
+			).toBeVisible();
+		}
+
+		// Records / Meetings / Departments verbs should NOT be standalone buttons anymore.
+		// (The "Departments" mega-menu was the previous 7th verb. /departments page is fine;
+		//  we just check the standalone verb button no longer exists in the nav.)
+		await expect(
+			page.locator("nav[aria-label='Main navigation'] button", { hasText: /^Records$/ }),
+		).toHaveCount(0);
+		await expect(
+			page.locator("nav[aria-label='Main navigation'] button", { hasText: /^Meetings$/ }),
+		).toHaveCount(0);
+		await expect(
+			page.locator("nav[aria-label='Main navigation'] button", { hasText: /^Departments$/ }),
+		).toHaveCount(0);
 	});
 });

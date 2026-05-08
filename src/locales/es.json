@@ -38,6 +38,7 @@
       "officesPrefix": "Oficinas del condado",
       "at": "a las"
     },
+    "heroToday": "Hoy",
     "topTasksLabel": "Tareas principales para residentes",
     "heroSuggestionsLabel": "Intente",
     "opensInNewTab": "(se abre en una pestaña nueva)",
@@ -156,6 +157,26 @@
     "details": "Detalles"
   },
   "verbNav": {
+    "find": {
+      "label": "Buscar",
+      "headingRecords": "Registros",
+      "headingMeetings": "Reuniones y personas",
+      "headingDepartments": "Departamentos",
+      "propertyDeeds": "Registros y escrituras",
+      "courtRecords": "Registros judiciales",
+      "meetingMinutes": "Actas de reuniones",
+      "documents": "Biblioteca de documentos",
+      "gisMap": "GIS / mapa de propiedades",
+      "calendar": "Calendario y próxima reunión",
+      "commissioners": "Sus comisionados",
+      "news": "Noticias y anuncios",
+      "publicRecordsRequest": "Solicitud de registros públicos",
+      "allDepartments": "Ver los 25 departamentos",
+      "administrative": "Oficinas administrativas",
+      "courts": "Tribunales y legal",
+      "publicSafety": "Seguridad pública",
+      "community": "Servicios comunitarios"
+    },
     "pay": {
       "label": "Pagar",
       "propertyTaxes": "Impuestos a la propiedad",
@@ -180,24 +201,6 @@
       "strayAnimal": "Animal perdido o callejero",
       "feedback": "Comentarios o sugerencias",
       "emergency": "Tormenta, inundación o emergencia"
-    },
-    "records": {
-      "label": "Registros",
-      "propertyDeeds": "Registros y escrituras",
-      "courtRecords": "Registros judiciales",
-      "minutes": "Actas de reuniones",
-      "documents": "Biblioteca de documentos",
-      "gisMap": "GIS / mapa de propiedades"
-    },
-    "meetings": {
-      "label": "Reuniones",
-      "calendar": "Calendario y próxima reunión",
-      "minutes": "Actas anteriores",
-      "commissioners": "Sus comisionados",
-      "news": "Noticias y anuncios"
-    },
-    "departments": {
-      "label": "Departamentos"
     },
     "about": {
       "label": "Conozca",

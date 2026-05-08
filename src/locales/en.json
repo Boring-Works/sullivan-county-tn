@@ -38,6 +38,7 @@
       "officesPrefix": "County offices",
       "at": "at"
     },
+    "heroToday": "Today",
     "topTasksLabel": "Top citizen tasks",
     "heroSuggestionsLabel": "Try",
     "opensInNewTab": "(opens in a new tab)",
@@ -156,6 +157,26 @@
     "details": "Details"
   },
   "verbNav": {
+    "find": {
+      "label": "Find",
+      "headingRecords": "Records",
+      "headingMeetings": "Meetings & people",
+      "headingDepartments": "Departments",
+      "propertyDeeds": "Property records & deeds",
+      "courtRecords": "Court records",
+      "meetingMinutes": "Meeting minutes",
+      "documents": "Document library",
+      "gisMap": "GIS / property map",
+      "calendar": "Calendar & next meeting",
+      "commissioners": "Your commissioners",
+      "news": "News & announcements",
+      "publicRecordsRequest": "Public records request",
+      "allDepartments": "Browse all 25 departments",
+      "administrative": "Administrative offices",
+      "courts": "Courts & legal",
+      "publicSafety": "Public safety",
+      "community": "Community services"
+    },
     "pay": {
       "label": "Pay",
       "propertyTaxes": "Property taxes",
@@ -180,24 +201,6 @@
       "strayAnimal": "Stray or lost animal",
       "feedback": "Feedback or suggestion",
       "emergency": "Storm, flood, or emergency"
-    },
-    "records": {
-      "label": "Records",
-      "propertyDeeds": "Property records & deeds",
-      "courtRecords": "Court records",
-      "minutes": "Meeting minutes",
-      "documents": "Document library",
-      "gisMap": "GIS / property map"
-    },
-    "meetings": {
-      "label": "Meetings",
-      "calendar": "Calendar & next meeting",
-      "minutes": "Past meeting minutes",
-      "commissioners": "Your commissioners",
-      "news": "News & announcements"
-    },
-    "departments": {
-      "label": "Departments"
     },
     "about": {
       "label": "About",
