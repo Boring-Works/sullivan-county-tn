@@ -88,10 +88,21 @@ export const Route = createRootRoute({
       }),
       { name: "theme-color", content: "#0c1e33" },
       { name: "theme-color", media: "(prefers-color-scheme: light)", content: "#faf8f5" },
+      // iOS PWA — match 2026 spec
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
       { name: "apple-mobile-web-app-title", content: "Sullivan County TN" },
+      // Android PWA
       { name: "mobile-web-app-capable", content: "yes" },
+      // Disable iOS auto-linking phone numbers — we use TelLink which controls
+      // the format and tracks telLink semantics. iOS detection produces blue
+      // underlines on numbers in body copy that conflict with our typography.
+      { name: "format-detection", content: "telephone=no" },
+      // Edge / Windows tile color
+      { name: "msapplication-TileColor", content: "#0c1e33" },
+      // Hint to user agents that we have a brand-light scheme; helps native
+      // form controls (Select etc.) match our palette.
+      { name: "color-scheme", content: "light" },
       { name: "view-transition", content: "same-origin" },
     ],
     links: [
@@ -115,7 +126,12 @@ export const Route = createRootRoute({
       },
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
       { rel: "icon", sizes: "32x32", href: "/favicon.ico" },
-      { rel: "apple-touch-icon", href: "/apple-touch-icon.png" },
+      // Multiple sizes — iOS picks the closest match. 180 is the canonical 2026 size.
+      { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
+      { rel: "apple-touch-icon", sizes: "192x192", href: "/android-chrome-192x192.png" },
+      { rel: "apple-touch-icon", sizes: "512x512", href: "/android-chrome-512x512.png" },
+      // Mask icon for Safari pinned tab + macOS dock
+      { rel: "mask-icon", href: "/favicon.svg", color: "#0c1e33" },
       { rel: "manifest", href: "/manifest.webmanifest" },
       {
         rel: "alternate",
