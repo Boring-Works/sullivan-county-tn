@@ -129,6 +129,16 @@
       "meetCommissioners": "Meet Your Commissioners"
     }
   },
+  "storySection": {
+    "eyebrow": "Our Story · Tennessee's second-oldest county",
+    "heading": "Where Tennessee Began and Begins",
+    "body": "Tennessee began here. North Carolina established Sullivan County in 1779 — the second-oldest county in what would become Tennessee — and named it for Major General John Sullivan of the Continental Army. From the State of Franklin to the Overmountain Men's march to King's Mountain, the corner of the Appalachian Highlands set the foundations of the state. In 1927 the Bristol Sessions recorded what would later be called the Big Bang of country music. The story keeps writing itself.",
+    "timelineHeading": "Five moments in 246 years",
+    "peopleHeading": "Notable figures from Sullivan County",
+    "linkFoundingStory": "Read the founding story",
+    "linkTimeline": "See the full timeline",
+    "linkPeople": "Meet notable people"
+  },
   "todaySection": {
     "eyebrow": "Today",
     "heading": "Today in Sullivan County",

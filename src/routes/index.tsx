@@ -4,6 +4,7 @@ import { AudiencePathways } from "~/components/home/AudiencePathways";
 import { CommunityMap } from "~/components/home/CommunityMap";
 import { HeroBanner } from "~/components/home/HeroBanner";
 import { SeasonalRibbon } from "~/components/home/SeasonalRibbon";
+import { StorySection } from "~/components/home/StorySection";
 import { TodaySection } from "~/components/home/TodaySection";
 import { MountainDivider } from "~/components/shared/MountainDivider";
 import { governmentOrganizationJsonLd, jsonLdString } from "~/lib/jsonld";
@@ -46,6 +47,7 @@ function HomePage() {
       <TodaySection />
       <MountainDivider fill="var(--color-brand-parchment)" />
       <CommunityMap />
+      <StorySection />
       <AboutSection />
     </main>
   );

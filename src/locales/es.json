@@ -129,6 +129,16 @@
       "meetCommissioners": "Conozca a sus comisionados"
     }
   },
+  "storySection": {
+    "eyebrow": "Nuestra Historia · Segundo condado más antiguo de Tennessee",
+    "heading": "Donde Tennessee comenzó y sigue comenzando",
+    "body": "Tennessee comenzó aquí. Carolina del Norte estableció el Condado de Sullivan en 1779 — el segundo condado más antiguo de lo que se convertiría en Tennessee — y lo nombró en honor al Mayor General John Sullivan del Ejército Continental. Desde el Estado de Franklin hasta la marcha de los Overmountain Men hacia King's Mountain, este rincón de las Tierras Altas de los Apalaches sentó las bases del estado. En 1927, las Bristol Sessions grabaron lo que más tarde se llamaría el Big Bang de la música country. La historia sigue escribiéndose.",
+    "timelineHeading": "Cinco momentos en 246 años",
+    "peopleHeading": "Figuras notables del Condado de Sullivan",
+    "linkFoundingStory": "Lea la historia fundacional",
+    "linkTimeline": "Ver la línea de tiempo completa",
+    "linkPeople": "Conozca a personas notables"
+  },
   "todaySection": {
     "eyebrow": "Hoy",
     "heading": "Hoy en el Condado de Sullivan",
