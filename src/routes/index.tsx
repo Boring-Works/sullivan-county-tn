@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AboutSection } from "~/components/home/AboutSection";
+import { AudiencePathways } from "~/components/home/AudiencePathways";
 import { CommunityMap } from "~/components/home/CommunityMap";
 import { EmergencyModule } from "~/components/home/EmergencyModule";
 import { HeroBanner } from "~/components/home/HeroBanner";
@@ -45,6 +46,7 @@ function HomePage() {
       <HeroBanner />
       <SeasonalRibbon />
       <EmergencyModule />
+      <AudiencePathways />
       <QuickServices />
       <NextMeetingCard />
       <NewsSection />

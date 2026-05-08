@@ -129,6 +129,44 @@
       "meetCommissioners": "Meet Your Commissioners"
     }
   },
+  "audiencePathways": {
+    "eyebrow": "Three ways to use this site",
+    "heading": "Why are you here today?",
+    "intro": "Pick the path that fits — every page is open to everyone.",
+    "live": {
+      "heading": "Live in Sullivan",
+      "subheading": "For residents and future neighbors",
+      "body": "Pay your taxes, find your school district, get to know your community, and meet the commissioners who represent you.",
+      "statResidents": "Residents",
+      "statSchools": "School systems",
+      "statCommunities": "Communities",
+      "linkCommunities": "Explore the six communities",
+      "linkEducation": "Schools and higher education",
+      "linkAbout": "About Sullivan County"
+    },
+    "visit": {
+      "heading": "Visit",
+      "subheading": "Heritage, lakes, and live music",
+      "body": "Sullivan County is where Tennessee began. Walk the Heritage Trail, watch a race at Bristol, and stay where founders met.",
+      "statHeritageSites": "Heritage sites",
+      "statBmsCapacity": "Bristol Motor Speedway seats",
+      "statFounded": "Founded",
+      "linkVisit": "Plan your visit",
+      "linkHistory": "Our founding story",
+      "linkTimeline": "248 years of history"
+    },
+    "business": {
+      "heading": "Do Business",
+      "subheading": "Permits, planning, and growth",
+      "body": "Tri-Cities manufacturing hub home to BAE Systems, Eastman, and Bristol Motor Speedway. Get a permit, find incentives, or grow here.",
+      "statJobs": "Local jobs",
+      "statTopEmployers": "Major employers",
+      "statBaeContract": "BAE Holston contract",
+      "linkEconDev": "Economic development",
+      "linkPermits": "Apply for a permit",
+      "linkPlanning": "Planning & Codes"
+    }
+  },
   "news": {
     "title": "County News",
     "description": "Stay up to date with the latest announcements, events, and public notices from Sullivan County government.",

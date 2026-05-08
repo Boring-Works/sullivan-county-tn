@@ -129,6 +129,44 @@
       "meetCommissioners": "Conozca a sus comisionados"
     }
   },
+  "audiencePathways": {
+    "eyebrow": "Tres maneras de usar este sitio",
+    "heading": "¿Por qué está aquí hoy?",
+    "intro": "Elija el camino que le corresponda — todas las páginas están abiertas a todos.",
+    "live": {
+      "heading": "Vivir en Sullivan",
+      "subheading": "Para residentes y futuros vecinos",
+      "body": "Pague impuestos, encuentre su distrito escolar, conozca su comunidad y conozca a los comisionados que le representan.",
+      "statResidents": "Residentes",
+      "statSchools": "Sistemas escolares",
+      "statCommunities": "Comunidades",
+      "linkCommunities": "Explore las seis comunidades",
+      "linkEducation": "Escuelas y educación superior",
+      "linkAbout": "Acerca del Condado de Sullivan"
+    },
+    "visit": {
+      "heading": "Visitar",
+      "subheading": "Patrimonio, lagos y música en vivo",
+      "body": "El Condado de Sullivan es donde comenzó Tennessee. Recorra la Ruta del Patrimonio, vea una carrera en Bristol y conozca los lugares donde se reunieron los fundadores.",
+      "statHeritageSites": "Sitios patrimoniales",
+      "statBmsCapacity": "Capacidad de Bristol Motor Speedway",
+      "statFounded": "Fundado",
+      "linkVisit": "Planee su visita",
+      "linkHistory": "Nuestra historia fundacional",
+      "linkTimeline": "248 años de historia"
+    },
+    "business": {
+      "heading": "Hacer negocios",
+      "subheading": "Permisos, planificación y crecimiento",
+      "body": "Centro manufacturero de Tri-Cities, sede de BAE Systems, Eastman y Bristol Motor Speedway. Obtenga un permiso, encuentre incentivos o haga crecer su negocio aquí.",
+      "statJobs": "Empleos locales",
+      "statTopEmployers": "Principales empleadores",
+      "statBaeContract": "Contrato de BAE Holston",
+      "linkEconDev": "Desarrollo económico",
+      "linkPermits": "Solicitar un permiso",
+      "linkPlanning": "Planificación y Códigos"
+    }
+  },
   "news": {
     "title": "Noticias del condado",
     "description": "Manténgase al día con los anuncios, eventos y avisos públicos del gobierno del condado de Sullivan.",
