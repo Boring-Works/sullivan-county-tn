@@ -48,6 +48,38 @@ function CommunityPage() {
     <main id="main-content">
       <HeritageHero title={community.name} subtitle={community.tagline} />
 
+      {/* Hero photo strip — community-specific image when available. */}
+      {community.image ? (
+        <div className="relative w-full overflow-hidden bg-brand-navy">
+          <picture>
+            {community.image.webp1024 ? (
+              <source
+                media="(min-width: 768px)"
+                srcSet={community.image.webp1024}
+                type="image/webp"
+              />
+            ) : null}
+            {community.image.webp ? (
+              <source srcSet={community.image.webp} type="image/webp" />
+            ) : null}
+            {community.image.src1024 ? (
+              <source media="(min-width: 768px)" srcSet={community.image.src1024} />
+            ) : null}
+            <img
+              src={community.image.src}
+              alt={community.image.alt}
+              loading="eager"
+              fetchPriority="high"
+              decoding="async"
+              className="block w-full h-[280px] sm:h-[360px] lg:h-[440px] object-cover"
+            />
+          </picture>
+          <p className="absolute bottom-2 right-3 font-body text-[10px] tracking-wide text-white/70 bg-brand-navy/40 backdrop-blur px-2 py-0.5 rounded-sm">
+            Photo: {community.image.credit}
+          </p>
+        </div>
+      ) : null}
+
       <section className="bg-white py-16 sm:py-20">
         <div ref={containerRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <DetailBreadcrumb

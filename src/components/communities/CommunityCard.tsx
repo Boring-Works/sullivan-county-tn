@@ -16,6 +16,7 @@ interface CommunityCardProps {
 }
 
 export function CommunityCard({ community, index = 0 }: CommunityCardProps) {
+  const img = community.image;
   return (
     <Link
       to="/communities/$slug"
@@ -24,7 +25,30 @@ export function CommunityCard({ community, index = 0 }: CommunityCardProps) {
       data-reveal-delay={index * 100}
       className="card-lift group relative flex flex-col rounded-sm border border-brand-surface bg-white overflow-hidden"
     >
-      <div className="h-1 bg-brand-copper scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
+      {img ? (
+        <div className="relative aspect-[16/9] overflow-hidden bg-brand-navy">
+          <picture>
+            {img.webp1024 ? (
+              <source media="(min-width: 768px)" srcSet={img.webp1024} type="image/webp" />
+            ) : null}
+            {img.webp ? <source srcSet={img.webp} type="image/webp" /> : null}
+            {img.src1024 ? <source media="(min-width: 768px)" srcSet={img.src1024} /> : null}
+            <img
+              src={img.src}
+              alt={img.alt}
+              loading="lazy"
+              decoding="async"
+              className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+          </picture>
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-gradient-to-t from-brand-navy/55 via-transparent to-transparent"
+          />
+        </div>
+      ) : (
+        <div className="h-1 bg-brand-copper scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
+      )}
       <div className="flex-1 p-6">
         <div className="flex items-start justify-between gap-3 mb-3">
           <h3 className="font-display text-lg font-bold text-brand-navy group-hover:text-brand-copper transition-colors">

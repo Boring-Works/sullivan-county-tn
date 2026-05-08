@@ -1,5 +1,19 @@
 export type CommunityType = "city" | "town" | "cdp" | "unincorporated";
 
+export interface CommunityImage {
+  /** Default fallback (smallest, also the JPEG <img>). */
+  src: string;
+  /** Optional WebP source for the same crop. */
+  webp?: string;
+  /** Optional 1024w variant for tablet/desktop. */
+  src1024?: string;
+  webp1024?: string;
+  /** Real alt text describing the photo (NOT the community). */
+  alt: string;
+  /** Source attribution shown as a quiet caption. */
+  credit: string;
+}
+
 export interface Community {
   slug: string;
   name: string;
@@ -12,6 +26,10 @@ export interface Community {
   landmarks: string[];
   keyFacts: string[];
   highlights: { label: string; value: string }[];
+  /** Optional photo for the community card and detail page. Public-domain
+   *  or CC-BY-SA from Wikimedia Commons. The credit line is rendered as a
+   *  small caption to honor the license. */
+  image?: CommunityImage;
 }
 
 export const communities: Community[] = [
@@ -46,6 +64,14 @@ export const communities: Community[] = [
       { label: "Incorporated", value: "1917" },
       { label: "Largest Employer", value: "Eastman Chemical" },
     ],
+    image: {
+      src: "/images/communities/kingsport-church-circle-640.jpg",
+      webp: "/images/communities/kingsport-church-circle-640.webp",
+      src1024: "/images/communities/kingsport-church-circle-1024.jpg",
+      webp1024: "/images/communities/kingsport-church-circle-1024.webp",
+      alt: "Church Circle in downtown Kingsport, Tennessee — historic civic center with church steeples and white-columned buildings",
+      credit: "Wikimedia Commons (CC BY-SA)",
+    },
   },
   {
     slug: "bristol",
@@ -77,6 +103,14 @@ export const communities: Community[] = [
       { label: "Incorporated", value: "1856" },
       { label: "BMS Capacity", value: "146,000" },
     ],
+    image: {
+      src: "/images/communities/bristol-state-street-640.jpg",
+      webp: "/images/communities/bristol-state-street-640.webp",
+      src1024: "/images/communities/bristol-state-street-1024.jpg",
+      webp1024: "/images/communities/bristol-state-street-1024.webp",
+      alt: "The Tennessee–Virginia state line painted in double yellow on State Street in downtown Bristol, with a brass marker reading 'TENNESSEE / VIRGINIA'",
+      credit: "Wikimedia Commons (CC BY-SA)",
+    },
   },
   {
     slug: "blountville",
@@ -106,6 +140,14 @@ export const communities: Community[] = [
       { label: "Since", value: "1795" },
       { label: "Airport", value: "TRI" },
     ],
+    image: {
+      src: "/images/communities/blountville-deery-inn-640.jpg",
+      webp: "/images/communities/blountville-deery-inn-640.webp",
+      src1024: "/images/communities/blountville-deery-inn-1024.jpg",
+      webp1024: "/images/communities/blountville-deery-inn-1024.webp",
+      alt: "The Old Deery Inn (NRHP 1973) on Main Street in Blountville, Tennessee — a two-story white-clapboard 1800s tavern with painted shutters",
+      credit: "Wikimedia Commons (CC BY-SA)",
+    },
   },
   {
     slug: "bluff-city",
@@ -127,6 +169,14 @@ export const communities: Community[] = [
       { label: "Population", value: "~1,756" },
       { label: "Trail", value: "Overmountain Victory" },
     ],
+    image: {
+      src: "/images/communities/bluff-city-choates-ford-640.jpg",
+      webp: "/images/communities/bluff-city-choates-ford-640.webp",
+      src1024: "/images/communities/bluff-city-choates-ford-1024.jpg",
+      webp1024: "/images/communities/bluff-city-choates-ford-1024.webp",
+      alt: "South Holston River bed at Choates Ford — the historic Overmountain Victory Trail crossing on the edge of Bluff City",
+      credit: "Wikimedia Commons (CC BY-SA)",
+    },
   },
   {
     slug: "piney-flats",
@@ -146,6 +196,14 @@ export const communities: Community[] = [
       { label: "Known For", value: "Rocky Mount" },
       { label: "Character", value: "Rural Heritage" },
     ],
+    image: {
+      src: "/images/communities/piney-flats-electric-640.jpg",
+      webp: "/images/communities/piney-flats-electric-640.webp",
+      src1024: "/images/communities/piney-flats-electric-1024.jpg",
+      webp1024: "/images/communities/piney-flats-electric-1024.webp",
+      alt: "Historic Piney Flats Electric Company building, photographed for the National Archives — a wood-frame structure on a rural creek",
+      credit: "U.S. National Archives (public domain)",
+    },
   },
   {
     slug: "colonial-heights",
@@ -164,6 +222,14 @@ export const communities: Community[] = [
       { label: "Type", value: "Census-Designated Place" },
       { label: "Corridor", value: "US-11W" },
     ],
+    image: {
+      src: "/images/communities/colonial-heights-cornstalk-640.jpg",
+      webp: "/images/communities/colonial-heights-cornstalk-640.webp",
+      src1024: "/images/communities/colonial-heights-cornstalk-1024.jpg",
+      webp1024: "/images/communities/colonial-heights-cornstalk-1024.webp",
+      alt: "Cornstalk Heights house — a Victorian-era two-story home with wraparound porch in the Colonial Heights area of Sullivan County",
+      credit: "Wikimedia Commons (CC BY-SA)",
+    },
   },
 ];
 

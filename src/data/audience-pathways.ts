@@ -123,11 +123,12 @@ export const AUDIENCE_PATHWAYS: AudiencePathway[] = [
       },
     ],
     photo: {
-      // Phase 5 will introduce a business-specific photo (Eastman, BMS plant,
-      // or Tri-Cities Airport). For now we use the OG courthouse asset which
-      // visually distinguishes from the Live tile's narrower courthouse crop.
-      src: "/images/og/og-courthouse.jpg",
-      alt: "Sullivan County Court House at dusk — civic and business hub of the county seat in Blountville",
+      src: "/images/audience/eastman-aerial-1024.jpg",
+      srcSet: [
+        { src: "/images/audience/eastman-aerial-640.jpg", minWidth: 0 },
+        { src: "/images/audience/eastman-aerial-1024.jpg", minWidth: 768 },
+      ],
+      alt: "Aerial view of the Eastman Chemical Company plant on the Holston River in Kingsport, Sullivan County's largest employer and a Fortune 500 company",
     },
   },
 ];
