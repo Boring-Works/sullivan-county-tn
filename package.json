@@ -1,8 +1,12 @@
 {
   "name": "sullivan-county-tn",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "Official government website for Sullivan County, Tennessee. TanStack Start + Cloudflare Workers + shadcn/ui + NWS weather + PWA.",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "vite dev",
     "build": "vite build",

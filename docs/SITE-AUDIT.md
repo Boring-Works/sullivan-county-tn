@@ -1,16 +1,20 @@
-# Sullivan County TN — Site Audit & Status
+# Sullivan County TN — Site Audit (Archival)
 
-**Date:** March 1, 2026 (current)
-**Current site:** https://sullivancountytn.gov (WordPress/Divi)
-**New site:** https://sullivan-county-tn.codyboring.workers.dev (TanStack Start/Cloudflare Workers)
+> **⚠️ ARCHIVAL DOCUMENT.** This is a snapshot from project inception (March 1, 2026), preserved for historical context. The site has evolved substantially since this was written — see [`CURRENT_STATE.md`](CURRENT_STATE.md) for live state.
+
+**Date snapshot:** March 1, 2026 (initial audit)
+**Old site (the one this replaces):** https://sullivancountytn.gov (WordPress/Divi)
+**New site (this project):** https://sullivan-county-tn.codyboring.workers.dev (TanStack Start / Cloudflare Workers)
+
+What's changed since this was written: 7-phase production hardening (typed env, drizzle-zod, 21 shadcn primitives, react-hook-form, PWA + offline, weather subsystem with NWS integration, breadcrumbs + last-reviewed stamps, iOS/Android 2026 PWA standards, scroll-reveal failsafe, fresh content). See `CURRENT_STATE.md`.
 
 ---
 
-## Executive Summary
+## Executive Summary (March 2026 snapshot)
 
 The new Sullivan County website is feature-complete and deployed to Cloudflare Workers. All critical and phase 2 gaps from the initial audit are closed. The site delivers sub-second loads, custom "Appalachian Editorial" design, full SEO/OG support, 115 locally-served documents, a contact form with KV backend, and comprehensive security hardening.
 
-**Status: Production-ready.** Only optional enhancements remain (performance optimization, advanced accessibility, analytics token).
+**Status at the time of this snapshot: Production-ready.** Only optional enhancements remain (performance optimization, advanced accessibility, analytics token).
 
 ---
 

@@ -38,21 +38,26 @@ Cloudflare Workers (TanStack Start SSR). Config in wrangler.jsonc.
 - Compatibility date: 2026-05-06
 
 ## Tech Stack
-- TanStack Start + Router + Query + Form
+- TanStack Start + Router + Query
+- **react-hook-form + @hookform/resolvers** (Zod resolver) — `/contact`, `/admin/login`, `/forms/$type` all migrated
 - Cloudflare Workers + Vite Plugin
 - Tailwind CSS v4
 - Biome (lint + format)
-- shadcn/ui + Radix UI
-- TypeScript strict mode
-- Drizzle ORM (D1)
-- Cloudflare D1 (form submissions, news, minutes, announcements, sessions)
-- Cloudflare KV (contact form submissions)
-- Zod (server function validation)
+- **shadcn/ui (21 primitives)** + Radix UI
+- **Sonner** for toasts (mounted in `__root.tsx`)
+- TypeScript strict mode + **typed `Cloudflare.Env`** (no `as Record<string, unknown>` casts)
+- Drizzle ORM + **drizzle-zod** for derived schemas (D1)
+- Cloudflare D1 (form submissions, news, minutes, announcements, sessions, page feedback, weather observations)
+- Cloudflare KV (contact form submissions + weather snapshot)
+- **NWS API** (api.weather.gov) for live weather + alerts
+- **PWA** (service worker + offline.html + 2026 manifest spec)
+- Zod 4 (derived from Drizzle where 1:1, hand-written for cross-field refines)
 - date-fns (date formatting)
-- ulidx (ULID-based IDs)
+- ulidx (ULID-based IDs, with branded type at `src/lib/schemas/ids.ts`)
 - Fuse.js (client-side fuzzy search)
 - Vitest (testing)
-- Playwright (E2E testing)
+- Playwright (E2E testing × desktop + tablet + mobile)
+- axe-core (accessibility scans)
 
 ## Conventions
 - Biome for linting and formatting (NOT eslint/prettier)
@@ -76,6 +81,10 @@ Cloudflare Workers (TanStack Start SSR). Config in wrangler.jsonc.
 - Log PII or secrets
 - Use offset-based pagination
 - Hardcode codyboring.workers.dev URL in new code (use site config)
+- Use `console.log` (use structured `console.error(JSON.stringify({...}))`)
+- Cast `env as Record<string, unknown>` (use `getEnv() / getDB() / getKV()`)
+- Hand-roll bg-brand-copper button classes (use `<Button variant="copper">`)
+- Add `target="_blank"` without `rel="noopener noreferrer"`
 
 ## Routes (40 total)
 Citizen-facing: `/`, `/property-taxes`, `/departments`, `/departments/$slug`, `/commissioners`, `/news`, `/news/$slug`, `/calendar`, `/contact`, `/documents`, `/forms`, `/forms/$type`, `/ada-compliance`, `/privacy-policy`, `/employee-services`
@@ -89,21 +98,35 @@ Pay · Apply · Report · Records · Meetings · Departments · About — define
 ## Data Files (17)
 departments, commissioners, news, documents, quick-services, search-index, heritage-sites, timeline, communities, notable-people, employers, education, form-definitions, meeting-minutes, meetings, holidays, nav-verbs, site-config
 
-## Server Functions (12)
+## Server Functions (15 files)
+- **env** (typed getEnv / getDB / getKV — used by all of the below)
 - auth (login, validateAdmin, logout)
 - contact (submitContactForm → KV)
 - forms (submitForm → D1)
 - parcel-lookup (lookupParcelSuggestions — proxies TN Comptroller TPAD)
 - page-feedback (submitPageFeedback, listPageFeedback, deletePageFeedback)
 - public-announcements (listPublicAnnouncements)
+- public-news (listPublicNews, getPublicNewsArticle)
+- public-weather (getCurrentWeather — KV-cached SWR / getRecentObservations)
+- weather/nws-client (hardened NWS fetch w/ 5s timeout + cf cache hint + retry on 5xx)
+- weather/refresh (refreshWeather → KV write + D1 archive)
 - admin-news (CRUD)
 - admin-minutes (CRUD)
 - admin-announcements (CRUD)
-- admin-submissions (list, updateStatus)
+- admin-submissions (list, updateStatus — rate-limited)
 - guard (requireAdmin shared helper)
 - csrf (token issue + validate — defined; primary defense is SameSite=Strict cookies)
 - rate-limit (per-IP composite-key in-memory limiter)
 
 ## Cloudflare Bindings
-- DB: D1 database (sullivan-county-db)
-- CONTACT_SUBMISSIONS: KV namespace
+- DB: D1 database (sullivan-county-db) — 4 migrations applied to remote
+- CONTACT_SUBMISSIONS: KV namespace (contact form 90-day TTL + weather snapshot 1-hour TTL)
+- ADMIN_PASSWORD: secret (set via `wrangler secret put`)
+
+## Patterns to follow
+- **Forms:** react-hook-form + Zod resolver + shadcn `<Form>` + Sonner toast. Reference: `src/routes/contact.tsx` and `src/routes/forms/$type.tsx` (dynamic schema from `FormFieldDefinition[]`).
+- **CTAs:** `<Button variant="copper">` for primary, `<Button variant="navy">` for admin. Never hand-roll `bg-brand-copper rounded-sm` classes.
+- **Cloudflare bindings:** `getEnv() / getDB() / getKV()` from `src/server/env.ts`. Never `as Record<string, unknown>`.
+- **Detail pages:** `<DetailBreadcrumb items={[...]} />` + "Last reviewed" stamp where data has `lastUpdated`.
+- **Phone numbers:** `<TelLink phone="..." />` — never raw `tel:` `<a>`.
+- **Logging:** structured `console.error(JSON.stringify({ event, reason }))`. No `console.log`.
