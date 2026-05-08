@@ -13,6 +13,8 @@ The site has been through a 7-phase production-hardening pass plus follow-up aud
 ### 1. Admin overhaul (Sidebar + DataTable + stat dashboard + `/admin/feedback`)
 **Why:** `/admin` is currently 4 quick-link cards with no stats, and the list pages render plain `<table>` markup. If a judge logs in, this is the weakest visible surface area on the site. **The single biggest visible-quality jump remaining.**
 
+> **📋 Detailed 7-phase plan:** [`ADMIN_PLAN.md`](ADMIN_PLAN.md) — phase-by-phase scope, files touched, ship signals, ~8 hours total.
+
 **Lift from `Kiranism/tanstack-start-dashboard`** (MIT, exact stack match — TanStack Start + shadcn + Vite). Specifically:
 - `src/components/ui/sidebar.tsx` + `src/components/layout/app-sidebar.tsx`
 - 13 DataTable composition files at `src/components/ui/table/data-table-*.tsx`

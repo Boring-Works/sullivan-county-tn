@@ -34,7 +34,8 @@
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Frontend, backend, data flow, security, Cloudflare services |
 | [`docs/DEVELOPMENT_WORKFLOW.md`](docs/DEVELOPMENT_WORKFLOW.md) | Setup, commands, deployment, testing, code conventions |
 | [`docs/GAP_ANALYSIS.md`](docs/GAP_ANALYSIS.md) | Active gaps ranked by demo-day impact |
-| [`docs/NEXT_IMPLEMENTATION_PLAN.md`](docs/NEXT_IMPLEMENTATION_PLAN.md) | Top-7 leftover items, file-by-file lift instructions for the admin overhaul |
+| [`docs/NEXT_IMPLEMENTATION_PLAN.md`](docs/NEXT_IMPLEMENTATION_PLAN.md) | Top-7 leftover items, file-by-file lift instructions |
+| [`docs/ADMIN_PLAN.md`](docs/ADMIN_PLAN.md) | P1.1 admin overhaul — 7-phase plan, ~8 hours total |
 | [`docs/ADMIN-CREDENTIALS.md`](docs/ADMIN-CREDENTIALS.md) | Admin login + security notes |
 | [`docs/SITE-AUDIT.md`](docs/SITE-AUDIT.md) | Archival — initial inception audit (March 2026) |
 
