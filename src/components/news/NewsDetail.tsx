@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, ExternalLink, FileDown } from "lucide-react";
 import { DetailBreadcrumb } from "~/components/shared/DetailBreadcrumb";
+import { PageFeedback } from "~/components/shared/PageFeedback";
 import { Badge } from "~/components/ui/badge";
 import type { NewsItem } from "~/data/news";
 
@@ -102,6 +103,9 @@ export function NewsDetail({ article }: NewsDetailProps) {
               </a>
             </Badge>
           )}
+        </div>
+        <div className="mt-12">
+          <PageFeedback />
         </div>
       </div>
     </main>

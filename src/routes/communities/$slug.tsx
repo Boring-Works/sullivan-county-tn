@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { HeritageHero } from "~/components/history/HeritageHero";
 import { DetailBreadcrumb } from "~/components/shared/DetailBreadcrumb";
+import { PageFeedback } from "~/components/shared/PageFeedback";
 import { Button } from "~/components/ui/button";
 import { getCommunityBySlug } from "~/data/communities";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
@@ -146,6 +147,9 @@ function CommunityPage() {
                 </div>
               </div>
             </div>
+          </div>
+          <div className="mt-12 max-w-4xl">
+            <PageFeedback />
           </div>
         </div>
       </section>

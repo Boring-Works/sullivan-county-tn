@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { HeritageHero } from "~/components/history/HeritageHero";
 import { VisitorInfoCard } from "~/components/history/VisitorInfoCard";
 import { DetailBreadcrumb } from "~/components/shared/DetailBreadcrumb";
+import { PageFeedback } from "~/components/shared/PageFeedback";
 import { getHeritageSiteBySlug } from "~/data/heritage-sites";
 import { timelineEvents } from "~/data/timeline";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
@@ -145,6 +146,9 @@ function HeritageSitePage() {
                 </div>
               </div>
             </div>
+          </div>
+          <div className="mt-12 max-w-4xl">
+            <PageFeedback />
           </div>
         </div>
       </section>
