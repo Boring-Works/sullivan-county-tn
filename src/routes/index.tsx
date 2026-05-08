@@ -2,12 +2,9 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AboutSection } from "~/components/home/AboutSection";
 import { AudiencePathways } from "~/components/home/AudiencePathways";
 import { CommunityMap } from "~/components/home/CommunityMap";
-import { EmergencyModule } from "~/components/home/EmergencyModule";
 import { HeroBanner } from "~/components/home/HeroBanner";
-import { NewsSection } from "~/components/home/NewsSection";
-import { NextMeetingCard } from "~/components/home/NextMeetingCard";
-import { QuickServices } from "~/components/home/QuickServices";
 import { SeasonalRibbon } from "~/components/home/SeasonalRibbon";
+import { TodaySection } from "~/components/home/TodaySection";
 import { MountainDivider } from "~/components/shared/MountainDivider";
 import { governmentOrganizationJsonLd, jsonLdString } from "~/lib/jsonld";
 import { seo, seoLinks } from "~/utils/seo";
@@ -45,11 +42,8 @@ function HomePage() {
       />
       <HeroBanner />
       <SeasonalRibbon />
-      <EmergencyModule />
       <AudiencePathways />
-      <QuickServices />
-      <NextMeetingCard />
-      <NewsSection />
+      <TodaySection />
       <MountainDivider fill="var(--color-brand-parchment)" />
       <CommunityMap />
       <AboutSection />

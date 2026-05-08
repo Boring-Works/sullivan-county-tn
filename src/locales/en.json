@@ -129,6 +129,20 @@
       "meetCommissioners": "Meet Your Commissioners"
     }
   },
+  "todaySection": {
+    "eyebrow": "Today",
+    "heading": "Today in Sullivan County",
+    "officesPrefix": "County offices",
+    "meetingPrefix": "Next meeting:",
+    "addToCalendar": "Add to calendar",
+    "watchLive": "Watch live",
+    "fullSchedule": "Full schedule",
+    "emergencyHeading": "In an emergency",
+    "lifeThreatening": "Life-threatening",
+    "sheriff": "Sheriff",
+    "ema": "Emergency Mgmt",
+    "preparednessLink": "Preparedness resources"
+  },
   "audiencePathways": {
     "eyebrow": "Three ways to use this site",
     "heading": "Why are you here today?",

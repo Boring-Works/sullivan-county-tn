@@ -129,6 +129,20 @@
       "meetCommissioners": "Conozca a sus comisionados"
     }
   },
+  "todaySection": {
+    "eyebrow": "Hoy",
+    "heading": "Hoy en el Condado de Sullivan",
+    "officesPrefix": "Oficinas del condado",
+    "meetingPrefix": "Próxima reunión:",
+    "addToCalendar": "Añadir al calendario",
+    "watchLive": "Ver en vivo",
+    "fullSchedule": "Calendario completo",
+    "emergencyHeading": "En una emergencia",
+    "lifeThreatening": "Riesgo vital",
+    "sheriff": "Sheriff",
+    "ema": "Gestión de Emergencias",
+    "preparednessLink": "Recursos de preparación"
+  },
   "audiencePathways": {
     "eyebrow": "Tres maneras de usar este sitio",
     "heading": "¿Por qué está aquí hoy?",

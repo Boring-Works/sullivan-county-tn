@@ -13,6 +13,7 @@ import {
   Siren,
   Vote,
 } from "lucide-react";
+import type { ReactNode } from "react";
 import { useTranslation } from "react-i18next";
 import { quickServices, type ServiceSubmissionMode } from "~/data/quick-services";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
@@ -51,17 +52,48 @@ function SubmissionBadge({ mode }: { mode: ServiceSubmissionMode }) {
   );
 }
 
-export function QuickServices() {
+export interface QuickServicesProps {
+  /**
+   * h2 by default. Pass "h3" when this component is nested under another
+   * section's h2 (e.g., inside TodaySection). Single-h1-per-page semantics.
+   */
+  headingLevel?: "h2" | "h3";
+  /** When true, the outer <section> bg-cream and big py-20 are dropped — for
+   *  composition inside another section. Defaults to false (standalone use). */
+  variant?: "standalone" | "embedded";
+}
+
+export function QuickServices({
+  headingLevel = "h2",
+  variant = "standalone",
+}: QuickServicesProps = {}) {
   const containerRef = useScrollReveal<HTMLDivElement>();
   const { t } = useTranslation();
+  const Heading = headingLevel;
+  const isEmbedded = variant === "embedded";
+
+  const Wrapper = isEmbedded
+    ? ({ children }: { children: ReactNode }) => <div className="relative">{children}</div>
+    : ({ children }: { children: ReactNode }) => (
+        <section className="relative bg-brand-cream py-20 sm:py-24">{children}</section>
+      );
 
   return (
-    <section className="relative bg-brand-cream py-20 sm:py-24">
-      <div ref={containerRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="mb-14 max-w-2xl" data-reveal>
-          <h2 className="font-display text-3xl font-bold text-brand-navy sm:text-4xl">
+    <Wrapper>
+      <div
+        ref={containerRef}
+        className={isEmbedded ? "" : "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"}
+      >
+        <div className={isEmbedded ? "mb-8 max-w-2xl" : "mb-14 max-w-2xl"} data-reveal>
+          <Heading
+            className={
+              isEmbedded
+                ? "font-display text-2xl font-bold text-brand-navy sm:text-3xl"
+                : "font-display text-3xl font-bold text-brand-navy sm:text-4xl"
+            }
+          >
             {t("home.services.heading")}
-          </h2>
+          </Heading>
           <p className="mt-3 font-body text-base text-brand-slate-light leading-relaxed sm:text-lg">
             {t("home.services.description")}
           </p>
@@ -131,6 +163,6 @@ export function QuickServices() {
           })}
         </div>
       </div>
-    </section>
+    </Wrapper>
   );
 }

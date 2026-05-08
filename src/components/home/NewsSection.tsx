@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { NewsCard } from "~/components/shared/NewsCard";
 import { type NewsItem, news } from "~/data/news";
@@ -19,10 +19,22 @@ function mergeLatest(d1Items: NewsItem[]): NewsItem[] {
     .slice(0, 3);
 }
 
-export function NewsSection() {
+export interface NewsSectionProps {
+  /** h2 by default; pass "h3" when nested under another section's h2. */
+  headingLevel?: "h2" | "h3";
+  /** "embedded" drops the outer <section bg-white py-20> for composition. */
+  variant?: "standalone" | "embedded";
+}
+
+export function NewsSection({
+  headingLevel = "h2",
+  variant = "standalone",
+}: NewsSectionProps = {}) {
   const containerRef = useScrollReveal<HTMLDivElement>();
   const { t } = useTranslation();
   const [latestNews, setLatestNews] = useState<NewsItem[]>(STATIC_FALLBACK);
+  const Heading = headingLevel;
+  const isEmbedded = variant === "embedded";
 
   useEffect(() => {
     let cancelled = false;
@@ -40,15 +52,37 @@ export function NewsSection() {
     };
   }, []);
 
+  const Wrapper = isEmbedded
+    ? ({ children }: { children: ReactNode }) => <div>{children}</div>
+    : ({ children }: { children: ReactNode }) => (
+        <section className="bg-white py-20 sm:py-24">{children}</section>
+      );
+
   return (
-    <section className="bg-white py-20 sm:py-24">
-      <div ref={containerRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <Wrapper>
+      <div
+        ref={containerRef}
+        className={isEmbedded ? "" : "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"}
+      >
         {/* Heading — editorial with decorative line + "View All" link */}
-        <div className="mb-14 flex items-end justify-between" data-reveal>
+        <div
+          className={
+            isEmbedded
+              ? "mb-8 flex items-end justify-between"
+              : "mb-14 flex items-end justify-between"
+          }
+          data-reveal
+        >
           <div>
-            <h2 className="font-display text-3xl font-bold text-brand-navy sm:text-4xl">
+            <Heading
+              className={
+                isEmbedded
+                  ? "font-display text-2xl font-bold text-brand-navy sm:text-3xl"
+                  : "font-display text-3xl font-bold text-brand-navy sm:text-4xl"
+              }
+            >
               {t("home.newsSection.heading")}
-            </h2>
+            </Heading>
             <p className="mt-3 font-body text-base text-brand-slate-light leading-relaxed sm:text-lg">
               {t("home.newsSection.description")}
             </p>
@@ -87,6 +121,6 @@ export function NewsSection() {
           </Link>
         </div>
       </div>
-    </section>
+    </Wrapper>
   );
 }
