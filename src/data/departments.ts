@@ -77,7 +77,19 @@ export interface Department {
   bidThresholds?: BidThreshold[];
   importantNotes?: string[];
   publications?: Publication[];
+  /**
+   * Last time the department's content was reviewed/updated.
+   * ISO 8601 date (YYYY-MM-DD). Surfaced as "Last reviewed [date]" near the
+   * footer of the detail page — GOV.UK trust-signal pattern.
+   */
+  lastUpdated?: string;
 }
+
+/**
+ * Default last-reviewed date applied to every department in this file when
+ * no per-department date is set. Bump when you do a content audit pass.
+ */
+export const DEFAULT_LAST_UPDATED = "2026-05-07";
 
 export const departments: Department[] = [
   // ─── Administrative ──────────────────────────────────────────────────

@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { ArrowLeft, ExternalLink, FileDown } from "lucide-react";
+import { DetailBreadcrumb } from "~/components/shared/DetailBreadcrumb";
 import { Badge } from "~/components/ui/badge";
 import type { NewsItem } from "~/data/news";
 
@@ -23,6 +24,14 @@ export function NewsDetail({ article }: NewsDetailProps) {
       {/* Header */}
       <div className="bg-brand-parchment border-b border-brand-surface">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+          <DetailBreadcrumb
+            className="mb-4"
+            items={[
+              { label: "Home", to: "/" },
+              { label: "News", to: "/news" },
+              { label: article.title },
+            ]}
+          />
           <Link
             to="/news"
             className="inline-flex items-center gap-1.5 font-body text-sm text-brand-copper hover:text-brand-copper-light transition-colors mb-6"

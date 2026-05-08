@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { HeritageHero } from "~/components/history/HeritageHero";
 import { VisitorInfoCard } from "~/components/history/VisitorInfoCard";
+import { DetailBreadcrumb } from "~/components/shared/DetailBreadcrumb";
 import { getHeritageSiteBySlug } from "~/data/heritage-sites";
 import { timelineEvents } from "~/data/timeline";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
@@ -54,6 +55,14 @@ function HeritageSitePage() {
 
       <section className="bg-white py-16 sm:py-20">
         <div ref={containerRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <DetailBreadcrumb
+            className="mb-8"
+            items={[
+              { label: "Home", to: "/" },
+              { label: "History", to: "/history" },
+              { label: site.name },
+            ]}
+          />
           <div className="grid grid-cols-1 gap-10 lg:grid-cols-3">
             {/* Main content */}
             <div className="lg:col-span-2" data-reveal>

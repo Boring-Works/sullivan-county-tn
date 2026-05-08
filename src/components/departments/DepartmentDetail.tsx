@@ -11,12 +11,13 @@ import {
 } from "lucide-react";
 import { PrintableContactCard } from "~/components/departments/PrintableContactCard";
 import { ContactCard } from "~/components/shared/ContactCard";
+import { DetailBreadcrumb } from "~/components/shared/DetailBreadcrumb";
 import { OpenStatusPill } from "~/components/shared/OpenStatusPill";
 import { PageFeedback } from "~/components/shared/PageFeedback";
 import { TelLink } from "~/components/shared/TelLink";
 import { Badge } from "~/components/ui/badge";
 import type { Department, DepartmentCategory } from "~/data/departments";
-import { DEPARTMENT_CATEGORIES } from "~/data/departments";
+import { DEFAULT_LAST_UPDATED, DEPARTMENT_CATEGORIES } from "~/data/departments";
 
 const categoryBadgeColors: Record<DepartmentCategory, string> = {
   administrative: "bg-white/15 text-white/90 border border-white/20",
@@ -97,6 +98,14 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
 
         {/* Main content — contact card pulls up into the banner */}
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <DetailBreadcrumb
+            className="pt-6"
+            items={[
+              { label: "Home", to: "/" },
+              { label: "Departments", to: "/departments" },
+              { label: department.name },
+            ]}
+          />
           <div className="flex flex-col-reverse gap-8 lg:flex-row lg:-mt-8">
             {/* Main content */}
             <div className="flex-1 py-8">
@@ -437,9 +446,27 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
               </div>
             </div>
           </div>
+          {/* Last-reviewed trust signal — GOV.UK pattern. */}
+          {(department.lastUpdated ?? DEFAULT_LAST_UPDATED) && (
+            <p className="mt-12 mb-4 text-center font-body text-xs text-brand-stone">
+              Last reviewed{" "}
+              <time dateTime={department.lastUpdated ?? DEFAULT_LAST_UPDATED}>
+                {formatLastUpdated(department.lastUpdated ?? DEFAULT_LAST_UPDATED)}
+              </time>
+            </p>
+          )}
           <PageFeedback />
         </div>
       </div>
     </main>
   );
+}
+
+function formatLastUpdated(iso: string): string {
+  const [year, month, day] = iso.split("-").map(Number);
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(new Date(year, month - 1, day));
 }

@@ -20,7 +20,12 @@ export interface FormDefinition {
   fields: FormField[];
   /** Whether the request can be submitted online, requires an in-person visit, or both. */
   submission?: SubmissionMode;
+  /** ISO 8601 date — last time the form fields/copy were reviewed. GOV.UK trust pattern. */
+  lastUpdated?: string;
 }
+
+/** Default last-reviewed date when a FormDefinition lacks its own. */
+export const FORM_LAST_UPDATED_DEFAULT = "2026-05-07";
 
 export const FORM_DEFINITIONS: FormDefinition[] = [
   {
