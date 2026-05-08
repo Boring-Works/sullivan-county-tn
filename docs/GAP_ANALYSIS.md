@@ -10,6 +10,11 @@ The site is in **best-practices shape** in every dimension. Most prior gaps have
 
 ### 🔴 High — biggest visible improvements remaining
 
+#### 0. Homepage redesign — *blueprint-grounded, the new top priority*
+- **Status:** Current homepage has 31 interactive elements above the fold; top-tier county benchmark counties ship 5–9. Serves 1 of 5 audiences (current citizens). Hides the substantial content built for potential residents, businesses, and tourists under verb-nav and "About."
+- **Validation:** `County_Government_Website_Blueprint_2026.docx` (45+ sources, 20-county benchmark) — hybrid IA model is canonical. P0/P1/P2/P3 priority matrix used by all top performers.
+- **Fix:** 7-phase rebuild documented in [`HOMEPAGE_REDESIGN.md`](HOMEPAGE_REDESIGN.md). ~25 hours. AI assistant deferred.
+
 #### 1. Admin overhaul (Sidebar + DataTable + stat dashboard + toasts)
 - **Status:** `/admin` is 4 quick-link cards with no stats. Admin list pages are plain `<table>` rendering, no DataTable features.
 - **Impact:** If a judge logs in, this is the weakest visible surface area on the entire site.

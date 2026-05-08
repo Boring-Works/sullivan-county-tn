@@ -6,12 +6,19 @@
 
 The site has been through a 7-phase production-hardening pass plus follow-up audits. **Items #2, #3, #5 from the original top-7 are shipped.** This plan covers what's left, ranked by demo-day judging impact.
 
+> **🎯 Current top priority: [`HOMEPAGE_REDESIGN.md`](HOMEPAGE_REDESIGN.md)** — blueprint-grounded 7-phase homepage rebuild (~25 hours). Validated by `County_Government_Website_Blueprint_2026.docx`: hybrid IA, 5 audience-served, OMB M-24-08 footer, storm-mode emergency takeover. Drops above-the-fold count from 31 → 9 and surfaces the 4 audiences (potential residents, current businesses, potential businesses, tourists) the homepage doesn't serve today.
+
 ---
 
 ## P1 — Highest visible impact remaining
 
+### 0. Homepage redesign — *the new top priority*
+**Why:** Validated by `County_Government_Website_Blueprint_2026.docx` (45+ sources, 20-county benchmark). The current homepage has 31 above-fold interactive elements (top performers ship 5–9), serves only 1 of 5 audiences (current citizens), and doesn't surface the substantial content built for potential residents, businesses, and tourists. The blueprint hybrid model (services-primary nav + audience-secondary pathways) is the canonical pattern shipped by Arlington (8.9), Chesterfield (8.9), and Fairfax (8.6).
+
+> **📋 Detailed 7-phase plan:** [`HOMEPAGE_REDESIGN.md`](HOMEPAGE_REDESIGN.md) — ~25 hours, blueprint-grounded, AI assistant explicitly deferred to a separate plan.
+
 ### 1. Admin overhaul (Sidebar + DataTable + stat dashboard + `/admin/feedback`)
-**Why:** `/admin` is currently 4 quick-link cards with no stats, and the list pages render plain `<table>` markup. If a judge logs in, this is the weakest visible surface area on the site. **The single biggest visible-quality jump remaining.**
+**Why:** `/admin` is currently 4 quick-link cards with no stats, and the list pages render plain `<table>` markup. If a judge logs in, this is the weakest visible back-office surface.
 
 > **📋 Detailed 7-phase plan:** [`ADMIN_PLAN.md`](ADMIN_PLAN.md) — phase-by-phase scope, files touched, ship signals, ~8 hours total.
 
