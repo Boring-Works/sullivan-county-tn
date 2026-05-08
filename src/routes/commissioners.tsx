@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useTranslation } from "react-i18next";
 import { CommissionerGrid } from "~/components/commissioners/CommissionerGrid";
 import { PageFeedback } from "~/components/shared/PageFeedback";
+import { Button } from "~/components/ui/button";
 import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/commissioners")({
@@ -43,14 +44,15 @@ function CommissionersPage() {
               <p>Current agendas and meeting packets are published before each session.</p>
               <p>Previous minutes are available through the Sullivan County Clerk.</p>
               <p>Commission meetings are streamed live on YouTube.</p>
-              <a
-                href="https://www.sullivancountyclerktn.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-3 inline-flex items-center gap-2 rounded-sm bg-brand-copper px-5 py-2 font-body text-sm font-semibold text-white transition-colors hover:bg-brand-copper-light"
-              >
-                View Current Agenda &rarr;
-              </a>
+              <Button asChild variant="copper" className="mt-3">
+                <a
+                  href="https://www.sullivancountyclerktn.com/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  View Current Agenda &rarr;
+                </a>
+              </Button>
             </div>
             <div className="space-y-2.5 font-body text-sm text-brand-slate">
               <h3 className="font-display text-base font-bold text-brand-navy">Contact</h3>

@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 
 import { HeritageHero } from "~/components/history/HeritageHero";
+import { Button } from "~/components/ui/button";
 import { getCommunityBySlug } from "~/data/communities";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
 import { seo, seoLinks } from "~/utils/seo";
@@ -34,12 +35,9 @@ function CommunityPage() {
         <p className="mt-2 text-brand-slate">
           This community page doesn't exist or may have been moved.
         </p>
-        <Link
-          to="/communities"
-          className="mt-6 inline-block rounded-sm bg-brand-copper px-6 py-2 text-sm font-medium text-white hover:bg-brand-copper-light transition-colors"
-        >
-          Back to Communities
-        </Link>
+        <Button asChild variant="copper" className="mt-6">
+          <Link to="/communities">Back to Communities</Link>
+        </Button>
       </main>
     );
   }

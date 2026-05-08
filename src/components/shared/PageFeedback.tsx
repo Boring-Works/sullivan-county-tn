@@ -1,6 +1,8 @@
 import { useRouterState } from "@tanstack/react-router";
 import { Check, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useState } from "react";
+import { Button } from "~/components/ui/button";
+import { Textarea } from "~/components/ui/textarea";
 import { submitPageFeedback } from "~/server/page-feedback";
 
 type Phase = "ask" | "comment" | "thanks";
@@ -93,30 +95,20 @@ export function PageFeedback() {
           <p className="font-body text-sm text-brand-slate-light">
             What were you looking for? Your message goes only to county staff.
           </p>
-          <textarea
+          <Textarea
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             rows={3}
             maxLength={1000}
             placeholder="Optional"
-            className="rounded-sm border border-brand-surface bg-white px-3 py-2 font-body text-sm text-brand-slate placeholder:text-brand-stone focus:border-brand-copper focus:outline-none"
           />
           <div className="flex flex-wrap gap-2">
-            <button
-              type="submit"
-              disabled={submitting}
-              className="inline-flex items-center gap-2 rounded-sm bg-brand-navy px-5 py-2 font-body text-sm font-semibold text-white hover:bg-brand-navy-light transition-colors disabled:opacity-60 min-h-[44px]"
-            >
+            <Button type="submit" variant="navy" disabled={submitting}>
               {submitting ? "Sending…" : "Send"}
-            </button>
-            <button
-              type="button"
-              onClick={handleSkip}
-              disabled={submitting}
-              className="inline-flex items-center rounded-sm border border-brand-navy/15 bg-white px-5 py-2 font-body text-sm font-medium text-brand-navy hover:bg-brand-parchment transition-colors disabled:opacity-60 min-h-[44px]"
-            >
+            </Button>
+            <Button type="button" variant="outline" onClick={handleSkip} disabled={submitting}>
               Skip
-            </button>
+            </Button>
           </div>
         </form>
       )}

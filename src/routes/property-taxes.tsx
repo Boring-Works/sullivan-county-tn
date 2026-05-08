@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Button } from "~/components/ui/button";
 import {
   AlertTriangle,
   ArrowRight,
@@ -162,18 +163,12 @@ function PropertyTaxesPage() {
                 parcel ID or property address. Credit/debit and e-check (ACH) are accepted.
               </p>
               <div className="mt-5 flex flex-wrap items-center gap-3">
-                <a
-                  href={TRUSTEE_PAY_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-3 rounded-sm bg-brand-copper px-7 py-3.5 font-body text-sm font-semibold tracking-wide text-white transition-all duration-300 hover:bg-brand-copper-light hover:shadow-lg hover:shadow-brand-copper/20 min-h-[44px]"
-                >
-                  Pay on the Trustee's site
-                  <ExternalLink
-                    aria-hidden="true"
-                    className="h-4 w-4 transition-transform group-hover:translate-x-0.5"
-                  />
-                </a>
+                <Button asChild variant="copper" size="lg" className="min-h-[44px]">
+                  <a href={TRUSTEE_PAY_URL} target="_blank" rel="noopener noreferrer">
+                    Pay on the Trustee's site
+                    <ExternalLink aria-hidden="true" className="h-4 w-4" />
+                  </a>
+                </Button>
                 <span className="font-body text-xs text-brand-stone">Opens in a new tab</span>
               </div>
             </div>

@@ -1,5 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { NewsDetail } from "~/components/news/NewsDetail";
+import { Button } from "~/components/ui/button";
 import { getNewsBySlug } from "~/data/news";
 import { getPublicNewsArticle } from "~/server/public-news";
 import { seo, seoLinks } from "~/utils/seo";
@@ -47,12 +48,9 @@ function NewsArticlePage() {
         <p className="mt-2 text-brand-slate">
           The news article you're looking for doesn't exist or may have been moved.
         </p>
-        <Link
-          to="/news"
-          className="mt-6 inline-block rounded-sm bg-brand-copper px-6 py-2 text-sm font-medium text-white hover:bg-brand-copper-light transition-colors"
-        >
-          Back to News
-        </Link>
+        <Button asChild variant="copper" className="mt-6">
+          <Link to="/news">Back to News</Link>
+        </Button>
       </main>
     );
   }

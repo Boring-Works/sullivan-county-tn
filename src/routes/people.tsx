@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Button } from "~/components/ui/button";
 
 import { HeritageHero } from "~/components/history/HeritageHero";
 import { PersonCard } from "~/components/people/PersonCard";
@@ -38,13 +39,12 @@ function PeoplePage() {
           </div>
 
           <div className="mt-12 text-center">
-            <Link
-              to="/history"
-              className="inline-flex items-center gap-2 rounded-sm bg-brand-copper px-6 py-3 font-body text-sm font-semibold text-white transition-all hover:bg-brand-copper-light hover:shadow-lg"
-            >
-              The Founding Story
-              <span aria-hidden="true">&rarr;</span>
-            </Link>
+            <Button asChild variant="copper" size="lg">
+              <Link to="/history">
+                The Founding Story
+                <span aria-hidden="true">&rarr;</span>
+              </Link>
+            </Button>
           </div>
         </div>
       </section>

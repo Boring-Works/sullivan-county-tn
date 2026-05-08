@@ -17,6 +17,7 @@ import { NotFound } from "~/components/layout/NotFound";
 import { SiteFooter } from "~/components/layout/SiteFooter";
 import { SiteNav } from "~/components/layout/SiteNav";
 import { OfflineBanner } from "~/components/shared/OfflineBanner";
+import { Button } from "~/components/ui/button";
 import { Toaster } from "~/components/ui/sonner";
 import { TooltipProvider } from "~/components/ui/tooltip";
 import i18n, { syncStoredLocale } from "~/lib/i18n";
@@ -54,15 +55,15 @@ function RouteErrorFallback({ error }: ErrorComponentProps) {
         </p>
       )}
       <div className="flex items-center justify-center gap-4">
-        <button
-          type="button"
+        <Button
+          variant="copper"
+          size="lg"
           onClick={() => {
             if (typeof window !== "undefined") window.location.reload();
           }}
-          className="rounded-sm bg-brand-copper px-6 py-2.5 font-body text-sm font-semibold text-white hover:bg-brand-copper-light transition-colors"
         >
           Refresh Page
-        </button>
+        </Button>
         <Link
           to="/"
           className="rounded-sm border border-brand-surface px-6 py-2.5 font-body text-sm font-semibold text-brand-navy hover:bg-brand-parchment transition-colors"

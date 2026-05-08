@@ -1,13 +1,21 @@
-import { cn } from "~/lib/utils";
+import { Badge } from "~/components/ui/badge";
 
-const STATUS_COLORS: Record<string, string> = {
-  new: "bg-blue-50 text-blue-700 border-blue-200",
-  reviewed: "bg-yellow-50 text-yellow-700 border-yellow-200",
-  resolved: "bg-green-50 text-green-700 border-green-200",
-  draft: "bg-gray-50 text-gray-700 border-gray-200",
-  published: "bg-green-50 text-green-700 border-green-200",
-  archived: "bg-gray-50 text-gray-500 border-gray-200",
+/**
+ * Admin status indicator. Uses brand palette where possible (sage for success
+ * states, stone for archived) and standard semantic blue/amber for the others
+ * — these are functional indicators, not brand moments.
+ */
+const STATUS_STYLES: Record<string, string> = {
+  new: "bg-blue-50 text-blue-800 border-blue-200 hover:bg-blue-50",
+  reviewed: "bg-amber-50 text-amber-900 border-amber-200 hover:bg-amber-50",
+  resolved: "bg-brand-sage/10 text-brand-sage border-brand-sage/30 hover:bg-brand-sage/15",
+  draft: "bg-brand-parchment text-brand-stone border-brand-surface hover:bg-brand-parchment",
+  published: "bg-brand-sage/10 text-brand-sage border-brand-sage/30 hover:bg-brand-sage/15",
+  archived: "bg-brand-parchment text-brand-warm-gray border-brand-surface hover:bg-brand-parchment",
 };
+
+const FALLBACK =
+  "bg-brand-parchment text-brand-stone border-brand-surface hover:bg-brand-parchment";
 
 interface StatusBadgeProps {
   status: string;
@@ -15,13 +23,11 @@ interface StatusBadgeProps {
 
 export function StatusBadge({ status }: StatusBadgeProps) {
   return (
-    <span
-      className={cn(
-        "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-medium capitalize",
-        STATUS_COLORS[status] ?? "bg-gray-50 text-gray-700 border-gray-200",
-      )}
+    <Badge
+      variant="outline"
+      className={`capitalize font-body ${STATUS_STYLES[status] ?? FALLBACK}`}
     >
       {status}
-    </span>
+    </Badge>
   );
 }

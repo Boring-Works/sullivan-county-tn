@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { Button } from "~/components/ui/button";
 
 import { HeritageHero } from "~/components/history/HeritageHero";
 import { HistoryNarrative } from "~/components/history/HistoryNarrative";
@@ -127,12 +128,9 @@ function AboutPage() {
             Explore More
           </h2>
           <div className="flex flex-wrap justify-center gap-4">
-            <Link
-              to="/history"
-              className="inline-flex items-center gap-2 rounded-sm bg-brand-copper px-6 py-3 font-body text-sm font-semibold text-white transition-all hover:bg-brand-copper-light hover:shadow-lg"
-            >
-              The Founding Story
-            </Link>
+            <Button asChild variant="copper" size="lg">
+              <Link to="/history">The Founding Story</Link>
+            </Button>
             <Link
               to="/communities"
               className="inline-flex items-center gap-2 rounded-sm border border-brand-navy/15 px-6 py-3 font-body text-sm font-medium text-brand-navy transition-all hover:border-brand-navy/30 hover:bg-brand-navy/5"

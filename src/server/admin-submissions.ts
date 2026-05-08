@@ -5,6 +5,7 @@ import { formSubmissions } from "~/db/schema";
 import { updateSubmissionStatusSchema } from "~/lib/schemas/submissions";
 import { getDB } from "~/server/env";
 import { requireAdmin } from "~/server/guard";
+import { rateLimit } from "~/server/rate-limit";
 
 export const listSubmissions = createServerFn({ method: "GET" }).handler(async () => {
   await requireAdmin();
@@ -17,6 +18,7 @@ export const updateSubmissionStatus = createServerFn({ method: "POST" })
   .inputValidator(updateSubmissionStatusSchema)
   .handler(async ({ data }) => {
     await requireAdmin();
+    rateLimit("admin-submissions-mutate", 30, 60_000);
     const d1 = getDB();
     const db = getDb(d1);
     const now = new Date().toISOString();

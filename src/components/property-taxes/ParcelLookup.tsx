@@ -1,6 +1,7 @@
 import { CreditCard, ExternalLink, Loader2, MapPin, Search } from "lucide-react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Button } from "~/components/ui/button";
 import { lookupParcelSuggestions, type ParcelSuggestion } from "~/server/parcel-lookup";
 
 const TPAD_SEARCH_URL = "https://assessment.cot.tn.gov/TPAD/Search";
@@ -239,36 +240,32 @@ export function ParcelLookup() {
           {/* Three side-by-side actions — explain that three official portals exist
               and route the user to the right one with their query in hand. */}
           <div className="mt-5 grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <button
+            <Button
               type="button"
+              variant="navy"
+              size="lg"
               onClick={() => submit(query)}
               disabled={query.trim().length < MIN_QUERY_LENGTH}
-              className="group inline-flex items-center justify-center gap-2 rounded-sm bg-brand-navy px-4 py-3 font-body text-sm font-semibold text-white transition-colors hover:bg-brand-navy/90 disabled:cursor-not-allowed disabled:opacity-50 min-h-[44px]"
+              className="min-h-[44px]"
             >
-              <Search aria-hidden="true" className="size-4" />
+              <Search aria-hidden="true" />
               {t("propertyTaxes.lookup.viewAssessment")}
               <ExternalLink aria-hidden="true" className="size-3.5 opacity-70" />
-            </button>
-            <a
-              href={TRUSTEE_PAY_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center justify-center gap-2 rounded-sm bg-brand-copper px-4 py-3 font-body text-sm font-semibold text-white transition-colors hover:bg-brand-copper-light min-h-[44px]"
-            >
-              <CreditCard aria-hidden="true" className="size-4" />
-              {t("propertyTaxes.lookup.payNow")}
-              <ExternalLink aria-hidden="true" className="size-3.5 opacity-70" />
-            </a>
-            <a
-              href={GIS_MAP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex items-center justify-center gap-2 rounded-sm border border-brand-navy/20 bg-white px-4 py-3 font-body text-sm font-semibold text-brand-navy transition-colors hover:border-brand-copper/40 hover:text-brand-copper min-h-[44px]"
-            >
-              <MapPin aria-hidden="true" className="size-4" />
-              {t("propertyTaxes.lookup.viewOnMap")}
-              <ExternalLink aria-hidden="true" className="size-3.5 opacity-70" />
-            </a>
+            </Button>
+            <Button asChild variant="copper" size="lg" className="min-h-[44px]">
+              <a href={TRUSTEE_PAY_URL} target="_blank" rel="noopener noreferrer">
+                <CreditCard aria-hidden="true" />
+                {t("propertyTaxes.lookup.payNow")}
+                <ExternalLink aria-hidden="true" className="size-3.5 opacity-70" />
+              </a>
+            </Button>
+            <Button asChild variant="outline" size="lg" className="min-h-[44px]">
+              <a href={GIS_MAP_URL} target="_blank" rel="noopener noreferrer">
+                <MapPin aria-hidden="true" />
+                {t("propertyTaxes.lookup.viewOnMap")}
+                <ExternalLink aria-hidden="true" className="size-3.5 opacity-70" />
+              </a>
+            </Button>
           </div>
           <p className="mt-3 font-body text-[11px] leading-relaxed text-brand-stone">
             {t("propertyTaxes.lookup.disclosure")}
