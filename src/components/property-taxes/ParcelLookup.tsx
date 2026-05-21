@@ -227,7 +227,8 @@ export function ParcelLookup() {
             )}
             {showNoResults && (
               <p className="mt-2 font-body text-xs text-brand-stone">
-                {t("propertyTaxes.lookup.noResults")}
+                No matching parcel appeared. You can still search the official state assessment site
+                with this name, address, or parcel ID.
               </p>
             )}
             {showOffline && (
@@ -249,7 +250,9 @@ export function ParcelLookup() {
               className="min-h-[44px]"
             >
               <Search aria-hidden="true" />
-              {t("propertyTaxes.lookup.viewAssessment")}
+              {suggestions.length > 0
+                ? t("propertyTaxes.lookup.viewAssessment")
+                : "Search state assessment site"}
               <ExternalLink aria-hidden="true" className="size-3.5 opacity-70" />
             </Button>
             <Button asChild variant="copper" size="lg" className="min-h-[44px]">

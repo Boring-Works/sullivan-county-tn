@@ -34,25 +34,28 @@ function NewArticlePage() {
       .slice(0, 80);
   }
 
+  function paragraphsToHtml(text: string): string {
+    return text
+      .split("\n\n")
+      .map((p) => p.trim())
+      .filter(Boolean)
+      .map((p) => `<p>${p}</p>`)
+      .join("\n");
+  }
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setSubmitting(true);
     setError(null);
 
     try {
-      // Content is stored as JSON array of paragraphs
-      const paragraphs = content
-        .split("\n\n")
-        .map((p) => p.trim())
-        .filter(Boolean);
-
       await createNewsArticle({
         data: {
           title,
           slug: generateSlug(title),
           author,
           summary,
-          content: JSON.stringify(paragraphs),
+          content: paragraphsToHtml(content),
           status,
           url: url || undefined,
           pdfUrl: pdfUrl || undefined,

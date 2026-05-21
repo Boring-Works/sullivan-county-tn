@@ -31,7 +31,9 @@ export const submitContactForm = createServerFn({ method: "POST" })
       console.error(
         JSON.stringify({ event: "contact_submission_store_failed", reason: "KV unavailable" }),
       );
-      return { success: false, error: "storage_unavailable" };
+      throw new Error(
+        "We couldn't save your message. Please try again or call the county office for help.",
+      );
     }
 
     return { success: true, id };

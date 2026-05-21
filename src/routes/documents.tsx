@@ -148,11 +148,14 @@ function DocumentsPage() {
           {visibleCategories.map((category) => {
             const categoryDocs = filtered.filter((d) => d.category === category.name);
             const isCollapsed = collapsedSections.has(category.name);
+            const sectionId = `documents-section-${category.slug}`;
             return (
               <section key={category.slug}>
                 <button
                   type="button"
                   onClick={() => toggleSection(category.name)}
+                  aria-expanded={!isCollapsed}
+                  aria-controls={sectionId}
                   className="flex items-center gap-3 mb-4 w-full text-left group"
                 >
                   <ChevronDown
@@ -168,7 +171,7 @@ function DocumentsPage() {
                   </span>
                 </button>
                 {!isCollapsed && (
-                  <div className="space-y-2 ml-7">
+                  <div id={sectionId} className="space-y-2 ml-7">
                     {categoryDocs.map((doc) => (
                       <a
                         key={doc.href}
@@ -207,10 +210,22 @@ function DocumentsPage() {
         </div>
 
         {filtered.length === 0 && (
-          <div className="text-center py-12 mb-16">
-            <p className="font-body text-sm text-brand-slate-light">
-              No documents found matching your search. Try a different term.
+          <div className="rounded-sm border border-brand-surface bg-white px-6 py-10 text-center mb-16">
+            <p className="font-display text-lg font-bold text-brand-navy">No documents found</p>
+            <p className="mx-auto mt-2 max-w-md font-body text-sm text-brand-slate-light">
+              Try another keyword, clear the category filter, or contact the county office if you
+              need a specific public record.
             </p>
+            <button
+              type="button"
+              onClick={() => {
+                setFilter("");
+                setActiveCategory(null);
+              }}
+              className="mt-4 rounded-sm border border-brand-copper px-4 py-2 font-body text-sm font-semibold text-brand-copper hover:bg-brand-copper hover:text-white"
+            >
+              Clear search and filters
+            </button>
           </div>
         )}
 

@@ -49,7 +49,7 @@ function RouteErrorFallback({ error }: ErrorComponentProps) {
         We encountered an unexpected error. Please try refreshing the page or return to the
         homepage.
       </p>
-      {error instanceof Error && (
+      {import.meta.env.DEV && error instanceof Error && (
         <p className="font-body text-xs text-brand-stone mb-6 max-w-lg mx-auto break-words">
           {error.message}
         </p>
@@ -153,8 +153,8 @@ function RootComponent() {
     if (typeof window === "undefined") return;
     if (!("serviceWorker" in navigator)) return;
     if (!import.meta.env.PROD) return;
-    navigator.serviceWorker.register("/sw.js").catch((err) => {
-      console.error("[sw] registration failed", err);
+    navigator.serviceWorker.register("/sw.js").catch(() => {
+      console.error(JSON.stringify({ event: "service_worker_registration_failed" }));
     });
   }, []);
 

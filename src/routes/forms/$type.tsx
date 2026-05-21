@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { CheckCircle } from "lucide-react";
+import type { Control, FieldPath, FieldValues } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
@@ -179,6 +180,10 @@ function ActiveFormPage({ form, formType, navigate, t }: ActiveFormPageProps) {
             {t("forms.submitted")}
           </h2>
           <p className="font-body text-brand-slate-light mb-6">{t("forms.submittedDesc")}</p>
+          <p className="mx-auto mb-6 max-w-md font-body text-sm text-brand-slate">
+            Your request has been saved for county staff review. If the request is urgent or you do
+            not receive follow-up, call the relevant county office directly.
+          </p>
           <Button variant="copper" onClick={() => navigate({ to: "/forms" })}>
             {t("forms.backToForms")}
           </Button>
@@ -229,6 +234,21 @@ function ActiveFormPage({ form, formType, navigate, t }: ActiveFormPageProps) {
               autoComplete="off"
               {...rhf.register("website")}
             />
+          </div>
+
+          <div className="rounded-sm border border-brand-copper/25 bg-brand-copper/5 p-5">
+            <h2 className="font-display text-base font-bold text-brand-navy">Before you submit</h2>
+            <ul className="mt-3 space-y-2 font-body text-sm leading-relaxed text-brand-slate">
+              <li>County staff use this information to route your request to the right office.</li>
+              <li>
+                You should receive follow-up during regular business hours if staff need more
+                detail.
+              </li>
+              <li>
+                Do not use this form for emergencies, court filings, or urgent public safety
+                reports.
+              </li>
+            </ul>
           </div>
 
           {/* Contact Information */}
@@ -307,7 +327,7 @@ function ActiveFormPage({ form, formType, navigate, t }: ActiveFormPageProps) {
                   key={fdef.name}
                   fdef={fdef}
                   control={rhf.control}
-                  name={`fields.${fdef.name}`}
+                  name={`fields.${fdef.name}` as FieldPath<Values>}
                 />
               ))}
             </div>
@@ -344,14 +364,17 @@ function ActiveFormPage({ form, formType, navigate, t }: ActiveFormPageProps) {
  * Renders a single dynamic field driven by the FormFieldDef shape, wired into
  * the parent react-hook-form via the dotted name path (e.g. "fields.address").
  */
-interface DynamicFieldProps {
+interface DynamicFieldProps<TValues extends FieldValues> {
   fdef: FormFieldDef;
-  // biome-ignore lint/suspicious/noExplicitAny: control is generic across schemas
-  control: any;
-  name: string;
+  control: Control<TValues>;
+  name: FieldPath<TValues>;
 }
 
-function DynamicField({ fdef, control, name }: DynamicFieldProps) {
+function DynamicField<TValues extends FieldValues>({
+  fdef,
+  control,
+  name,
+}: DynamicFieldProps<TValues>) {
   return (
     <FormField
       control={control}

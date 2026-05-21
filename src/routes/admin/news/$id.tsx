@@ -29,6 +29,15 @@ function EditArticlePage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  function paragraphsToHtml(text: string): string {
+    return text
+      .split("\n\n")
+      .map((p) => p.trim())
+      .filter(Boolean)
+      .map((p) => `<p>${p}</p>`)
+      .join("\n");
+  }
+
   const load = useCallback(async () => {
     try {
       const article = await getNewsArticle({ data: { id } });
@@ -63,18 +72,13 @@ function EditArticlePage() {
     setError(null);
 
     try {
-      const paragraphs = content
-        .split("\n\n")
-        .map((p) => p.trim())
-        .filter(Boolean);
-
       await updateNewsArticle({
         data: {
           id,
           title,
           author,
           summary,
-          content: JSON.stringify(paragraphs),
+          content: paragraphsToHtml(content),
           status,
           url: url || undefined,
           pdfUrl: pdfUrl || undefined,

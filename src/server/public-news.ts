@@ -7,6 +7,27 @@ import { newsArticles } from "~/db/schema";
 import { getDB } from "~/server/env";
 
 function rowToNewsItem(r: typeof newsArticles.$inferSelect): NewsItem {
+  const content = r.content?.trim();
+  if (content?.startsWith("[")) {
+    try {
+      const paragraphs = JSON.parse(content);
+      if (Array.isArray(paragraphs) && paragraphs.every((p) => typeof p === "string")) {
+        return {
+          title: r.title,
+          date: (r.publishedAt ?? r.createdAt).slice(0, 10),
+          author: r.author,
+          slug: r.slug,
+          summary: r.summary,
+          url: r.url ?? undefined,
+          pdfUrl: r.pdfUrl ?? undefined,
+          content: paragraphs,
+        };
+      }
+    } catch {
+      // Fall through to HTML rendering for older hand-entered records.
+    }
+  }
+
   return {
     title: r.title,
     date: (r.publishedAt ?? r.createdAt).slice(0, 10),
@@ -15,8 +36,7 @@ function rowToNewsItem(r: typeof newsArticles.$inferSelect): NewsItem {
     summary: r.summary,
     url: r.url ?? undefined,
     pdfUrl: r.pdfUrl ?? undefined,
-    // Content from admin is stored as sanitized HTML; surface as htmlContent.
-    htmlContent: r.content || undefined,
+    htmlContent: content || undefined,
   };
 }
 

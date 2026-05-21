@@ -178,6 +178,16 @@ function ContactPage() {
           <MapEmbed />
         </div>
 
+        <div className="mb-8 rounded-sm border border-brand-safety/25 bg-brand-safety/5 p-5">
+          <h2 className="font-display text-lg font-bold text-brand-navy">Need help right now?</h2>
+          <p className="mt-2 font-body text-sm leading-relaxed text-brand-slate">
+            Do not use the website form for emergencies or time-sensitive public safety requests.
+            Call <TelLink phone="911" className="font-semibold text-brand-safety underline" /> for
+            emergencies. For non-emergency law enforcement, call the Sheriff&apos;s Office at{" "}
+            <TelLink phone="(423) 279-7500" className="font-semibold text-brand-navy underline" />.
+          </p>
+        </div>
+
         {/* Quick contacts grid */}
         <div className="mb-14">
           <h2 className="font-display text-xl font-bold text-brand-navy mb-6">Most Contacted</h2>
@@ -320,7 +330,8 @@ function ContactForm() {
       </h2>
       <p className="font-body text-sm text-brand-slate-light mb-6">
         Have a question or need assistance? Fill out the form below and a county staff member will
-        respond within 2 business days.
+        respond within 2 business days during regular county office hours. This form creates a staff
+        message; it is not a public records request, emergency report, or legal filing.
       </p>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">

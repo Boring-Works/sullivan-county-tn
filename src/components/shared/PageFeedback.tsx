@@ -95,7 +95,11 @@ export function PageFeedback() {
           <p className="font-body text-sm text-brand-slate-light">
             What were you looking for? Your message goes only to county staff.
           </p>
+          <label htmlFor="page-feedback-comment" className="sr-only">
+            Optional page feedback comment
+          </label>
           <Textarea
+            id="page-feedback-comment"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
             rows={3}
