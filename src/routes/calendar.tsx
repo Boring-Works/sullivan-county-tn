@@ -34,6 +34,13 @@ interface RecurringMeeting {
   rule?: RecurrenceRule;
 }
 
+interface UpcomingEvent {
+  name: string;
+  startsAtLabel: string;
+  location?: string;
+  description: string;
+}
+
 const recurringMeetings: RecurringMeeting[] = [
   {
     name: COMMISSION_REGULAR_SESSION_NAME,
@@ -91,6 +98,43 @@ const countyHolidays = [
   { name: "Veterans Day", date: "November 11" },
   { name: "Thanksgiving", date: "4th Thursday & Friday in November" },
   { name: "Christmas Eve & Day", date: "December 24–25" },
+];
+
+const upcomingEvents: UpcomingEvent[] = [
+  {
+    name: "Regular Session Sullivan County Board of Commissioners",
+    startsAtLabel: "May 21 @ 6:00 PM EDT",
+    location: COURTHOUSE,
+    description:
+      "The Board of Commissioners meets in regular session to consider county business, public items, and official actions. Residents are encouraged to attend and stay involved.",
+  },
+  {
+    name: "Memorial Day — Offices Closed",
+    startsAtLabel: "May 25 @ 8:00 AM EDT",
+    description:
+      "All Sullivan County government offices are closed in observance of Memorial Day. Emergency services remain available 24/7 throughout the holiday.",
+  },
+  {
+    name: "Board of Education Work Session @ Central Office",
+    startsAtLabel: "May 27 @ 4:30 PM EDT",
+    location: "Sullivan County Schools Central Office",
+    description:
+      "A focused work session for agenda preparation, planning, and policy discussion ahead of the evening board meeting.",
+  },
+  {
+    name: "Board of Education @ Central Office",
+    startsAtLabel: "May 27 @ 6:30 PM EDT",
+    location: "Sullivan County Schools Central Office",
+    description:
+      "Regular Board of Education meeting covering district operations, student-focused priorities, and public agenda items.",
+  },
+  {
+    name: "Military Park Committee @ Foxes Den Café",
+    startsAtLabel: "May 28 @ 6:00 PM EDT",
+    location: "Foxes Den Café",
+    description:
+      "Committee meeting to review Military Park initiatives, community partnerships, and upcoming heritage programming.",
+  },
 ];
 
 function MeetingRow({ meeting }: { meeting: RecurringMeeting }) {
@@ -238,15 +282,32 @@ function CalendarPage() {
         {/* Upcoming Events */}
         <section className="mb-14">
           <h2 className="font-display text-xl font-bold text-brand-navy mb-6">Upcoming Events</h2>
-          <div className="rounded-sm border border-brand-surface bg-brand-parchment p-8 text-center">
-            <Calendar className="mx-auto size-10 text-brand-stone/40 mb-4" />
-            <p className="font-display text-base font-bold text-brand-navy mb-2">
-              No upcoming events scheduled
-            </p>
-            <p className="font-body text-sm text-brand-slate-light max-w-md mx-auto">
-              Check back for upcoming community events, public hearings, and special sessions.
-              Meeting agendas are published before each session.
-            </p>
+          <p className="font-body text-sm text-brand-slate-light mb-5 max-w-2xl">
+            May 2026 highlights for county government and partner public meetings.
+          </p>
+          <div className="space-y-3">
+            {upcomingEvents.map((event) => (
+              <article
+                key={`${event.name}-${event.startsAtLabel}`}
+                className="rounded-sm border border-brand-surface bg-white p-5"
+              >
+                <div className="flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                  <h3 className="font-display text-base font-bold text-brand-navy">{event.name}</h3>
+                  <p className="font-body text-sm font-semibold text-brand-copper">
+                    {event.startsAtLabel}
+                  </p>
+                </div>
+                {event.location && (
+                  <p className="mt-1 font-body text-xs text-brand-stone">
+                    <span className="font-semibold text-brand-slate">Location:</span>{" "}
+                    {event.location}
+                  </p>
+                )}
+                <p className="mt-2 font-body text-sm text-brand-slate-light leading-relaxed">
+                  {event.description}
+                </p>
+              </article>
+            ))}
           </div>
         </section>
 

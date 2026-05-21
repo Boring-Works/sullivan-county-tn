@@ -26,6 +26,7 @@ i18n.use(initReactI18next).init({
 export function setLocale(locale: string) {
   i18n.changeLanguage(locale);
   if (typeof document !== "undefined") {
+    // biome-ignore lint/suspicious/noDocumentCookie: cookie persistence is required for SSR locale hydration.
     document.cookie = `${LOCALE_COOKIE}=${locale};path=/;max-age=${60 * 60 * 24 * 365};SameSite=Strict`;
     document.documentElement.lang = locale;
   }

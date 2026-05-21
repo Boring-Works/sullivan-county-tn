@@ -11,7 +11,12 @@
     "forms": "Formularios",
     "contact": "Contacto",
     "payTaxes": "Pagar impuestos",
+    "home": "Inicio",
     "search": "Buscar",
+    "weatherStatus": "Clima y alertas",
+    "officeStatus": "Oficinas del condado",
+    "publicUpdates": "Actualizaciones públicas",
+    "emergencyInfo": "Información de emergencia",
     "viewAll": "Ver todo",
     "viewAllDepartments": "Ver todos los departamentos",
     "countyDepartments": "Departamentos del condado"

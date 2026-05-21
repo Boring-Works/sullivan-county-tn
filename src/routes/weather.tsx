@@ -13,7 +13,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import { CopperWeathervane } from "~/components/weather/CopperWeathervane";
 import { getCurrentWeather, getRecentObservations } from "~/server/public-weather";
-import type { PublicAlert, PublicWeatherSnapshot } from "~/server/weather/refresh";
+import type { PublicAlert } from "~/server/weather/refresh";
 import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/weather")({

@@ -4,8 +4,14 @@ export default defineConfig({
   testDir: "./e2e",
   timeout: 30000,
   retries: 1,
+  webServer: {
+    command: "npm run dev -- --host 127.0.0.1 --port 4173",
+    url: "http://127.0.0.1:4173",
+    reuseExistingServer: true,
+    timeout: 120000,
+  },
   use: {
-    baseURL: process.env.BASE_URL || "https://sullivan-county-tn.codyboring.workers.dev",
+    baseURL: process.env.BASE_URL || "http://127.0.0.1:4173",
   },
   projects: [
     {

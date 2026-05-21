@@ -11,7 +11,12 @@
     "forms": "Forms",
     "contact": "Contact",
     "payTaxes": "Pay Taxes",
+    "home": "Home",
     "search": "Search",
+    "weatherStatus": "Weather & alerts",
+    "officeStatus": "County offices",
+    "publicUpdates": "Public updates",
+    "emergencyInfo": "Emergency info",
     "viewAll": "View All",
     "viewAllDepartments": "View All Departments",
     "countyDepartments": "County Departments"

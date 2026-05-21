@@ -2,7 +2,7 @@
 
 > **Brand:** "Where Tennessee Began and Begins"
 > **Stack:** TanStack Start + Cloudflare Workers + Tailwind CSS v4 + shadcn/ui
-> **Last updated:** 2026-05-07
+> **Last updated:** 2026-05-21
 
 ---
 
@@ -99,6 +99,18 @@ Custom brand tokens are defined as CSS custom properties in `src/styles/app.css`
 ### Search
 
 Client-side fuzzy search via **Fuse.js v7** (`~5KB gzipped`). A unified search index (`data/search-index.ts`) combines all data sources (departments, news, commissioners, documents, heritage sites, communities, pages). The `SearchDialog` component is code-split and activated via `Cmd+K` / `Ctrl+K`. Implements WAI-ARIA combobox pattern: `role="combobox"`, `aria-activedescendant`, `role="listbox"` / `role="option"` on results.
+
+`SearchDialog` also supports prefilled opening state via `initialQuery` for cross-component entry points (hero/search chips/mobile quick actions).
+
+### Navigation state model
+
+`src/components/layout/site-nav-state.ts` is the shared source of truth for menu active-state calculations:
+
+- `hasMatchingSearchCategory(task, searchStr)`
+- `isTaskActive(task, pathname, searchStr)`
+- `isVerbActive(verb, pathname, searchStr)`
+
+This ensures nav highlighting reflects both route path and category query filters (for example `/departments?category=courts`) on desktop and mobile.
 
 ---
 
