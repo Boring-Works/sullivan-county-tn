@@ -91,6 +91,7 @@ export function SearchDialog({ open, onOpenChange, initialQuery = "" }: SearchDi
       onOpenChange={onOpenChange}
       title="Search Sullivan County"
       description="Search across departments, services, news, commissioners, and documents."
+      shouldFilter={false}
       className="top-[12%] max-w-xl rounded-md border-brand-surface p-0 shadow-2xl shadow-brand-navy/10"
     >
       <CommandInput
