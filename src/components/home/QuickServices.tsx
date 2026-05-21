@@ -84,7 +84,7 @@ export function QuickServices({
         ref={containerRef}
         className={isEmbedded ? "" : "mx-auto max-w-7xl px-4 sm:px-6 lg:px-8"}
       >
-        <div className={isEmbedded ? "mb-8 max-w-2xl" : "mb-14 max-w-2xl"} data-reveal>
+        <div className={isEmbedded ? "mb-5 max-w-2xl sm:mb-8" : "mb-14 max-w-2xl"} data-reveal>
           <Heading
             className={
               isEmbedded
@@ -94,18 +94,32 @@ export function QuickServices({
           >
             {t("home.services.heading")}
           </Heading>
-          <p className="mt-3 font-body text-base text-brand-slate-light leading-relaxed sm:text-lg">
+          <p className="mt-3 hidden font-body text-base leading-relaxed text-brand-slate-light sm:block sm:text-lg">
             {t("home.services.description")}
           </p>
         </div>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div
+          className={
+            isEmbedded
+              ? "grid grid-cols-2 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+              : "grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+          }
+        >
           {quickServices.map((service, index) => {
             const Icon = ICON_MAP[service.icon];
             const content = (
-              <div className="card-lift group relative flex h-full flex-col rounded-sm border border-brand-surface bg-white p-6 overflow-hidden transition-colors hover:border-brand-navy/15">
-                <div className="mb-4 flex items-start justify-between">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-sm bg-brand-navy/5 text-brand-navy transition-colors duration-300 group-hover:bg-brand-copper/10 group-hover:text-brand-copper">
+              <div
+                className={`card-lift group relative flex h-full flex-col overflow-hidden rounded-sm border border-brand-surface bg-white transition-colors hover:border-brand-navy/15 ${isEmbedded ? "p-3.5 sm:p-4" : "p-6"}`}
+              >
+                <div
+                  className={
+                    isEmbedded
+                      ? "mb-3 flex items-start justify-between"
+                      : "mb-4 flex items-start justify-between"
+                  }
+                >
+                  <div className="flex size-9 items-center justify-center rounded-sm bg-brand-navy/5 text-brand-navy transition-colors duration-300 group-hover:bg-brand-copper/10 group-hover:text-brand-copper sm:size-11">
                     {Icon ? <Icon aria-hidden="true" className="h-5 w-5" /> : null}
                   </div>
                   {service.external ? (
@@ -120,10 +134,10 @@ export function QuickServices({
                     />
                   )}
                 </div>
-                <h3 className="font-display text-sm font-bold text-brand-slate group-hover:text-brand-navy transition-colors">
+                <h3 className="font-display text-sm font-bold leading-tight text-brand-slate transition-colors group-hover:text-brand-navy">
                   {service.title}
                 </h3>
-                <p className="hidden sm:block mt-1.5 font-body text-xs leading-relaxed text-brand-slate-light">
+                <p className="mt-1.5 hidden font-body text-xs leading-relaxed text-brand-slate-light sm:line-clamp-3 sm:block">
                   {service.description}
                 </p>
                 {service.submission && (

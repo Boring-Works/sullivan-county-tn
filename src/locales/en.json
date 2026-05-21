@@ -64,6 +64,10 @@
       "meetings": {
         "title": "Meetings & agendas",
         "body": "Commission meetings, schedules, minutes, and livestreams."
+      },
+      "report": {
+        "title": "Report a problem",
+        "body": "Code complaints, road concerns, and general county feedback."
       }
     },
     "heroSecondary": {

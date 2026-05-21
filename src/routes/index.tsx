@@ -5,7 +5,7 @@ import { HeroBanner } from "~/components/home/HeroBanner";
 import { SeasonalRibbon } from "~/components/home/SeasonalRibbon";
 import { StorySection } from "~/components/home/StorySection";
 import { TodaySection } from "~/components/home/TodaySection";
-import { MountainDivider } from "~/components/shared/MountainDivider";
+import { TourismAppPromo } from "~/components/home/TourismAppPromo";
 import { governmentOrganizationJsonLd, jsonLdString } from "~/lib/jsonld";
 import { seo, seoLinks } from "~/utils/seo";
 
@@ -43,9 +43,9 @@ function HomePage() {
       <HeroBanner />
       <SeasonalRibbon />
       <TodaySection />
-      <MountainDivider fill="var(--color-brand-parchment)" />
       <CommunityMap />
       <StorySection />
+      <TourismAppPromo />
       <AboutSection />
     </main>
   );

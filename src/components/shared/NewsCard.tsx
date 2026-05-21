@@ -7,6 +7,11 @@ import type { NewsItem } from "~/data/news";
 interface NewsCardProps {
   item: NewsItem;
   featured?: boolean;
+  compact?: boolean;
+  action?: {
+    label: string;
+    to: string;
+  };
 }
 
 function formatDate(dateStr: string): string {
@@ -19,7 +24,7 @@ function formatDate(dateStr: string): string {
   }).format(date);
 }
 
-export function NewsCard({ item, featured = false }: NewsCardProps) {
+export function NewsCard({ item, featured = false, compact = false, action }: NewsCardProps) {
   const [shareState, setShareState] = useState<"idle" | "shared" | "copied">("idle");
   const articleUrl = `/news/${item.slug}`;
 
@@ -42,14 +47,16 @@ export function NewsCard({ item, featured = false }: NewsCardProps) {
       {/* Accent bar */}
       <div className="h-0.5 bg-brand-copper scale-x-0 transition-transform duration-300 origin-left group-hover:scale-x-100" />
 
-      <div className={`flex-1 flex flex-col ${featured ? "p-8" : "p-6"}`}>
+      <div className={`flex flex-1 flex-col ${compact ? "p-4" : featured ? "p-8" : "p-6"}`}>
         {/* Date + Author */}
         <p className="font-body text-xs text-brand-stone mb-2.5 tracking-wide">
           {formatDate(item.date)} &middot; {item.author}
         </p>
 
         {/* Title — links to internal article page */}
-        <h3 className={`font-display font-bold mb-3 ${featured ? "text-2xl" : "text-lg"}`}>
+        <h3
+          className={`font-display font-bold mb-3 ${compact ? "text-lg" : featured ? "text-2xl" : "text-lg"}`}
+        >
           <Link
             to="/news/$slug"
             params={{ slug: item.slug }}
@@ -61,13 +68,21 @@ export function NewsCard({ item, featured = false }: NewsCardProps) {
 
         {/* Summary */}
         <p
-          className={`font-body leading-relaxed text-brand-slate-light flex-1 ${featured ? "text-base" : "text-sm"}`}
+          className={`flex-1 font-body leading-relaxed text-brand-slate-light ${compact ? "hidden text-sm sm:line-clamp-2 sm:block" : featured ? "text-base" : "text-sm"}`}
         >
           {item.summary}
         </p>
 
         {/* Actions row */}
         <div className="mt-4 flex flex-wrap items-center gap-3">
+          {action && (
+            <Link
+              to={action.to}
+              className="inline-flex items-center rounded-full bg-brand-navy px-3 py-1.5 font-body text-xs font-semibold text-white transition-colors hover:bg-brand-copper"
+            >
+              {action.label}
+            </Link>
+          )}
           {item.pdfUrl && (
             <Badge
               asChild
@@ -91,15 +106,17 @@ export function NewsCard({ item, featured = false }: NewsCardProps) {
               Source
             </a>
           )}
-          <button
-            type="button"
-            onClick={handleShare}
-            className="inline-flex items-center gap-1 font-body text-xs text-brand-stone hover:text-brand-copper transition-colors"
-          >
-            <Share2 className="size-3" />
-            Share
-          </button>
-          {shareState !== "idle" && (
+          {!compact && (
+            <button
+              type="button"
+              onClick={handleShare}
+              className="inline-flex items-center gap-1 font-body text-xs text-brand-stone transition-colors hover:text-brand-copper"
+            >
+              <Share2 className="size-3" />
+              Share
+            </button>
+          )}
+          {!compact && shareState !== "idle" && (
             <span className="font-body text-[11px] text-brand-stone">
               {shareState === "shared" ? "Shared" : "Link copied"}
             </span>

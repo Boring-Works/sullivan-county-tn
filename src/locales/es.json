@@ -64,6 +64,10 @@
       "meetings": {
         "title": "Reuniones y agendas",
         "body": "Reuniones de la Comisión, horarios, actas y transmisiones."
+      },
+      "report": {
+        "title": "Reportar un problema",
+        "body": "Quejas de códigos, problemas de caminos y comentarios al condado."
       }
     },
     "heroSecondary": {

@@ -36,10 +36,10 @@ export function CommunityMap() {
     <section
       ref={containerRef}
       aria-labelledby="community-map-heading"
-      className="relative bg-brand-parchment py-20 sm:py-24"
+      className="relative bg-brand-parchment py-12 sm:py-18"
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto text-center mb-12" data-reveal>
+        <div className="mx-auto mb-8 max-w-2xl text-center sm:mb-12" data-reveal>
           <span className="inline-block font-body text-xs font-medium tracking-widest uppercase text-brand-brass mb-4">
             {t("home.communityMap.eyebrow")}
           </span>
@@ -59,7 +59,7 @@ export function CommunityMap() {
               behave as a navigation surface, not a single image. The <title>
               below provides the accessible name; per-pin links are independently
               focusable. */}
-          <svg viewBox={VIEW_BOX} className="block w-full h-auto">
+          <svg viewBox={VIEW_BOX} className="block h-auto max-h-[260px] w-full sm:max-h-none">
             <title>{t("home.communityMap.svgAria")}</title>
 
             {/* Faint topo grid behind the county shape. */}
@@ -159,9 +159,53 @@ export function CommunityMap() {
           </ul>
         </div>
 
-        <p className="mt-8 text-center font-body text-xs text-brand-stone">
-          {t("home.communityMap.boundarySource")}
-        </p>
+        <div className="mt-8 grid grid-cols-3 gap-2 sm:gap-3">
+          <Link
+            to="/communities"
+            className="rounded-sm border border-brand-brass/20 bg-white px-3 py-3 transition-colors hover:border-brand-copper/40 sm:px-4"
+          >
+            <span className="block font-display text-xs font-bold leading-tight text-brand-navy sm:text-sm">
+              Find your community
+            </span>
+            <span className="mt-1 hidden font-body text-xs leading-relaxed text-brand-slate-light sm:block">
+              Services, history, and contacts by place.
+            </span>
+          </Link>
+          <Link
+            to="/commissioners"
+            className="rounded-sm border border-brand-brass/20 bg-white px-3 py-3 transition-colors hover:border-brand-copper/40 sm:px-4"
+          >
+            <span className="block font-display text-xs font-bold leading-tight text-brand-navy sm:text-sm">
+              Find commissioners
+            </span>
+            <span className="mt-1 hidden font-body text-xs leading-relaxed text-brand-slate-light sm:block">
+              See districts and who represents you.
+            </span>
+          </Link>
+          <Link
+            to="/education"
+            className="rounded-sm border border-brand-brass/20 bg-white px-3 py-3 transition-colors hover:border-brand-copper/40 sm:px-4"
+          >
+            <span className="block font-display text-xs font-bold leading-tight text-brand-navy sm:text-sm">
+              Schools
+            </span>
+            <span className="mt-1 hidden font-body text-xs leading-relaxed text-brand-slate-light sm:block">
+              Local systems, higher education, and links.
+            </span>
+          </Link>
+        </div>
+
+        <div className="mt-3 flex flex-col items-center justify-between gap-3 rounded-sm border border-brand-brass/20 bg-white/70 px-4 py-4 sm:flex-row">
+          <p className="font-body text-xs text-brand-stone">
+            {t("home.communityMap.boundarySource")}
+          </p>
+          <Link
+            to="/communities"
+            className="inline-flex min-h-[44px] items-center rounded-sm bg-brand-navy px-4 py-2 font-body text-sm font-semibold text-white transition-colors hover:bg-brand-copper"
+          >
+            View all communities
+          </Link>
+        </div>
       </div>
     </section>
   );

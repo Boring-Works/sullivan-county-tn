@@ -1,7 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { ArrowRight, BookOpen, Clock, Users } from "lucide-react";
+import { ArrowRight, BookOpen, Clock, FileText, MapPin, Users } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { PersonCard } from "~/components/people/PersonCard";
 import { notablePeople } from "~/data/notable-people";
 import { CATEGORY_COLORS, type TimelineEvent, timelineEvents } from "~/data/timeline";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
@@ -29,7 +28,7 @@ import { useScrollReveal } from "~/hooks/useScrollReveal";
  */
 
 // 5 timeline highlights — chosen to span the county's full arc.
-const HIGHLIGHT_YEARS = [1779, 1780, 1796, 1927, 2025] as const;
+const HIGHLIGHT_YEARS = [1779, 1796, 1927] as const;
 
 // 3 notable figures spanning founding-era, cultural-birthplace, and modern eras.
 const HIGHLIGHT_PEOPLE_NAMES = ["Isaac Shelby", "Tennessee Ernie Ford", "Harry Coover"] as const;
@@ -67,31 +66,64 @@ export function StorySection() {
   const { t } = useTranslation();
 
   return (
-    <section aria-labelledby="story-heading" className="relative bg-brand-cream py-20 sm:py-24">
+    <section aria-labelledby="story-heading" className="relative bg-brand-cream py-10 sm:py-16">
       <div ref={containerRef} className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="max-w-3xl mb-12 sm:mb-16" data-reveal>
-          <span className="inline-block font-body text-[11px] font-semibold tracking-[0.2em] uppercase text-brand-brass">
-            {t("storySection.eyebrow")}
-          </span>
-          <h2
-            id="story-heading"
-            className="mt-3 font-display text-3xl font-bold text-brand-navy text-balance sm:text-4xl"
-          >
-            {t("storySection.heading")}
-          </h2>
-          <p className="mt-5 font-body text-base leading-relaxed text-brand-slate sm:text-lg text-pretty">
-            {t("storySection.body")}
-          </p>
+        <div className="mb-8 grid gap-6 lg:grid-cols-[0.9fr_1.1fr] lg:items-end" data-reveal>
+          <div>
+            <span className="inline-block font-body text-[11px] font-semibold tracking-[0.2em] uppercase text-brand-brass">
+              {t("storySection.eyebrow")}
+            </span>
+            <h2
+              id="story-heading"
+              className="mt-3 font-display text-3xl font-bold text-brand-navy text-balance sm:text-4xl"
+            >
+              {t("storySection.heading")}
+            </h2>
+            <p className="mt-4 line-clamp-4 font-body text-base leading-relaxed text-brand-slate text-pretty sm:text-lg lg:line-clamp-none">
+              {t("storySection.body")}
+            </p>
+          </div>
+          <div className="rounded-sm border border-brand-surface bg-white p-5">
+            <h3 className="font-display text-sm font-bold text-brand-navy">Why it matters today</h3>
+            <p className="mt-2 font-body text-sm leading-relaxed text-brand-slate-light">
+              The story is here for orientation, not decoration: it explains the courthouse,
+              communities, records, and public places residents still use.
+            </p>
+            <div className="mt-4 hidden grid-cols-3 gap-2 sm:grid lg:grid-cols-1 xl:grid-cols-3">
+              <Link
+                to="/departments/$slug"
+                params={{ slug: "register-of-deeds" }}
+                className="rounded-sm bg-brand-cream px-2.5 py-2 font-body text-[11px] font-semibold leading-tight text-brand-navy transition-colors hover:bg-brand-parchment sm:text-xs"
+              >
+                <FileText aria-hidden="true" className="mb-1 size-3.5 text-brand-copper" />
+                Deeds and records
+              </Link>
+              <Link
+                to="/documents"
+                className="rounded-sm bg-brand-cream px-2.5 py-2 font-body text-[11px] font-semibold leading-tight text-brand-navy transition-colors hover:bg-brand-parchment sm:text-xs"
+              >
+                <BookOpen aria-hidden="true" className="mb-1 size-3.5 text-brand-copper" />
+                Public documents
+              </Link>
+              <Link
+                to="/visit"
+                className="rounded-sm bg-brand-cream px-2.5 py-2 font-body text-[11px] font-semibold leading-tight text-brand-navy transition-colors hover:bg-brand-parchment sm:text-xs"
+              >
+                <MapPin aria-hidden="true" className="mb-1 size-3.5 text-brand-copper" />
+                Visit heritage sites
+              </Link>
+            </div>
+          </div>
         </div>
 
         {/* Timeline preview — 5 highlight events as a horizontal newspaper-style
             row. Stacks on mobile. */}
-        <div className="mb-14 sm:mb-16" data-reveal data-reveal-delay={100}>
-          <h3 className="mb-5 font-display text-[11px] font-semibold tracking-[0.2em] uppercase text-brand-brass">
+        <div className="mb-8" data-reveal data-reveal-delay={100}>
+          <h3 className="mb-4 font-display text-[11px] font-semibold tracking-[0.2em] uppercase text-brand-brass">
             {t("storySection.timelineHeading")}
           </h3>
-          <ol className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-5">
+          <ol className="grid grid-cols-3 gap-2 sm:gap-3 lg:grid-cols-3">
             {HIGHLIGHT_EVENTS.map((event, i) => {
               const colorVar = CATEGORY_COLORS[event.category];
               return (
@@ -99,18 +131,18 @@ export function StorySection() {
                   key={`${event.year}-${event.title}`}
                   data-reveal
                   data-reveal-delay={120 + i * 80}
-                  className="relative rounded-sm border border-brand-surface bg-white p-5"
+                  className="relative rounded-sm border border-brand-surface bg-white p-3 sm:p-4"
                 >
                   <div
                     aria-hidden="true"
                     className="absolute top-0 left-0 right-0 h-1 rounded-t-sm"
                     style={{ backgroundColor: `var(--color-${colorVar})` }}
                   />
-                  <p className="font-display text-3xl font-bold text-brand-navy leading-none">
+                  <p className="font-display text-2xl font-bold text-brand-navy leading-none sm:text-3xl">
                     <span className="sr-only">Year </span>
                     {event.year}
                   </p>
-                  <p className="mt-2 font-body text-sm font-semibold text-brand-slate">
+                  <p className="mt-2 font-body text-xs font-semibold leading-snug text-brand-slate sm:text-sm">
                     {event.title}
                   </p>
                 </li>
@@ -119,14 +151,26 @@ export function StorySection() {
           </ol>
         </div>
 
-        {/* Notable figures — 3 cards from PersonCard component */}
-        <div className="mb-12" data-reveal data-reveal-delay={200}>
+        {/* Notable figures — compact homepage preview. */}
+        <div className="mb-8 hidden md:block" data-reveal data-reveal-delay={200}>
           <h3 className="mb-5 font-display text-[11px] font-semibold tracking-[0.2em] uppercase text-brand-brass">
             {t("storySection.peopleHeading")}
           </h3>
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-            {HIGHLIGHT_PEOPLE.map((person, i) => (
-              <PersonCard key={person.name} person={person} index={i} />
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+            {HIGHLIGHT_PEOPLE.map((person) => (
+              <Link
+                key={person.name}
+                to="/people"
+                className="rounded-sm border border-brand-surface bg-white p-4 transition-colors hover:border-brand-copper/40 hover:bg-brand-parchment/60"
+              >
+                <p className="font-display text-base font-bold text-brand-navy">{person.name}</p>
+                <p className="mt-1 font-body text-xs font-semibold uppercase tracking-wide text-brand-brass">
+                  {person.category}
+                </p>
+                <p className="mt-2 line-clamp-2 font-body text-sm leading-relaxed text-brand-slate-light">
+                  {person.achievement}
+                </p>
+              </Link>
             ))}
           </div>
         </div>

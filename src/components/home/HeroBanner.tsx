@@ -5,6 +5,7 @@ import {
   CalendarDays,
   ClipboardCheck,
   FileText,
+  MessageSquareWarning,
   Phone,
   Receipt,
   Search,
@@ -15,6 +16,7 @@ import { useTranslation } from "react-i18next";
 import { MountainDivider } from "~/components/shared/MountainDivider";
 import { WeatherBadge } from "~/components/shared/WeatherBadge";
 import { COMMISSION_REGULAR_SESSION_RULE } from "~/data/meetings";
+import { SUGGESTED_QUERIES } from "~/data/search-index";
 import { useOpenStatus } from "~/hooks/useOpenStatus";
 import { formatNyDateShort, formatNyTime, nextOccurrence } from "~/lib/recurrence";
 
@@ -43,6 +45,11 @@ const PRIMARY_TASKS = [
     to: "/calendar",
   },
 ] as const;
+
+const REPORT_TASK = {
+  key: "report",
+  icon: MessageSquareWarning,
+} as const;
 
 const SECONDARY_LINKS = [
   { key: "contact", to: "/contact" },
@@ -86,7 +93,7 @@ export function HeroBanner() {
     <section
       ref={heroRef}
       aria-labelledby="hero-heading"
-      className="relative isolate min-h-[88vh] overflow-hidden bg-brand-navy"
+      className="relative isolate overflow-hidden bg-brand-navy lg:min-h-[88vh]"
     >
       <picture>
         <source
@@ -146,7 +153,7 @@ export function HeroBanner() {
       />
       <div aria-hidden="true" className="absolute inset-0 -z-10 bg-topo-pattern opacity-25" />
 
-      <div className="mx-auto grid min-h-[88vh] max-w-7xl grid-cols-1 items-center gap-6 px-4 pb-28 pt-24 sm:gap-8 sm:px-6 sm:pt-32 lg:grid-cols-[minmax(0,1fr)_420px] lg:px-8 lg:pb-44">
+      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-5 px-4 pb-20 pt-20 sm:gap-8 sm:px-6 sm:pt-32 lg:min-h-[88vh] lg:grid-cols-[minmax(0,1fr)_420px] lg:px-8 lg:pb-44">
         <div className="max-w-4xl">
           <div className="mb-5 opacity-0 animate-fade-up" style={{ animationDelay: "0.08s" }}>
             <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-brass-light backdrop-blur-md">
@@ -223,17 +230,57 @@ export function HeroBanner() {
                   <span className="block font-display text-base font-bold leading-tight sm:text-lg">
                     {t(`home.heroTasks.${task.key}.title`)}
                   </span>
-                  <span className="mt-1.5 hidden font-body text-xs leading-relaxed text-white/72 sm:block">
+                  <span className="mt-1.5 hidden font-body text-xs leading-relaxed text-white/72 sm:line-clamp-2 sm:block">
                     {t(`home.heroTasks.${task.key}.body`)}
                   </span>
                 </Link>
               );
             })}
+            <Link
+              to="/forms/$type"
+              params={{ type: "code-complaint" }}
+              className="group hidden rounded-sm border border-white/14 bg-white/[0.13] p-3 text-white backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-brand-brass-light/60 hover:bg-white/[0.18] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-copper sm:block sm:p-4 xl:hidden"
+            >
+              <span className="mb-3 flex items-center justify-between gap-3 sm:mb-4">
+                <span className="flex size-9 items-center justify-center rounded-sm bg-white text-brand-navy sm:size-10">
+                  <REPORT_TASK.icon aria-hidden="true" className="size-4 sm:size-5" />
+                </span>
+                <ArrowRight
+                  aria-hidden="true"
+                  className="size-4 text-white/45 transition-transform group-hover:translate-x-1 group-hover:text-brand-brass-light"
+                />
+              </span>
+              <span className="block font-display text-base font-bold leading-tight sm:text-lg">
+                {t(`home.heroTasks.${REPORT_TASK.key}.title`)}
+              </span>
+              <span className="mt-1.5 hidden font-body text-xs leading-relaxed text-white/72 sm:line-clamp-2 sm:block">
+                {t(`home.heroTasks.${REPORT_TASK.key}.body`)}
+              </span>
+            </Link>
           </div>
 
           <div
-            className="mt-4 flex flex-wrap items-center gap-2 opacity-0 animate-fade-up sm:mt-5"
+            className="mt-4 hidden max-w-[calc(100vw-2rem)] items-center gap-2 overflow-x-auto pb-1 opacity-0 animate-fade-up sm:mt-5 sm:flex sm:max-w-4xl sm:flex-wrap sm:overflow-visible sm:pb-0"
             style={{ animationDelay: "0.58s" }}
+          >
+            <span className="shrink-0 font-body text-xs font-semibold uppercase tracking-[0.16em] text-white/50">
+              {t("home.heroSuggestionsLabel")}
+            </span>
+            {SUGGESTED_QUERIES.slice(0, 5).map((query) => (
+              <button
+                key={query}
+                type="button"
+                onClick={() => openSearch(query)}
+                className="shrink-0 rounded-full border border-white/12 bg-white/8 px-3 py-1.5 font-body text-xs font-medium text-white/80 transition-colors hover:border-brand-brass-light/50 hover:text-brand-brass-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-copper"
+              >
+                {query}
+              </button>
+            ))}
+          </div>
+
+          <div
+            className="mt-3 hidden flex-wrap items-center gap-2 opacity-0 animate-fade-up sm:mt-4 sm:flex"
+            style={{ animationDelay: "0.62s" }}
           >
             <span className="font-body text-xs font-semibold uppercase tracking-[0.16em] text-white/50">
               {t("home.heroAlso")}
@@ -314,7 +361,7 @@ export function HeroBanner() {
               </div>
             </div>
 
-            <div className="border-t border-brand-surface bg-white px-5 py-4">
+            <div className="hidden border-t border-brand-surface bg-white px-5 py-4 sm:block">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between lg:flex-col lg:items-stretch">
                 <div className="flex items-center gap-2 text-brand-safety">
                   <Siren aria-hidden="true" className="size-4" />
