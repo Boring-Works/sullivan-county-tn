@@ -34,14 +34,19 @@ jobs:
       - name: Build
         run: pnpm run build
 
+      - name: Preview deploy disabled until isolated preview bindings exist
+        run: |
+          echo "Preview deploy intentionally disabled."
+          echo "This app has mutation-capable D1/KV bindings; preview deploys must not share production data."
+
       - name: Skip preview when Cloudflare token is not configured
-        if: ${{ env.CLOUDFLARE_API_TOKEN == '' }}
+        if: ${{ false }}
         run: |
           echo "CLOUDFLARE_API_TOKEN is not configured; skipping Cloudflare preview deploy."
           echo "Set the repository secret to enable GitHub Actions preview deploys."
 
       - name: Deploy preview
-        if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
+        if: ${{ false }}
         id: deploy
         uses: cloudflare/wrangler-action@v3
         with:
@@ -49,7 +54,7 @@ jobs:
           command: deploy --env preview
 
       - name: Comment preview URL
-        if: ${{ env.CLOUDFLARE_API_TOKEN != '' }}
+        if: ${{ false }}
         uses: actions/github-script@v9
         with:
           script: |

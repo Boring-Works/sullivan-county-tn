@@ -50,9 +50,14 @@ export const login = createServerFn({ method: "POST" })
     const now = new Date().toISOString();
     const expiresAt = new Date(Date.now() + SESSION_TTL_MS).toISOString();
 
+    const db = getDb(getDB());
     try {
-      const db = getDb(getDB());
       await db.delete(adminSessions).where(lt(adminSessions.expiresAt, now));
+    } catch {
+      console.error(JSON.stringify({ event: "expired_session_cleanup_failed" }));
+    }
+
+    try {
       await db.insert(adminSessions).values({
         id: sessionId,
         createdAt: now,
@@ -60,6 +65,7 @@ export const login = createServerFn({ method: "POST" })
       });
     } catch {
       console.error(JSON.stringify({ event: "session_create_failed", reason: "D1 unavailable" }));
+      throw new Error("Unable to create admin session");
     }
 
     setCookie(SESSION_COOKIE, sessionId, {

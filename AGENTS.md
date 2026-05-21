@@ -5,30 +5,30 @@ Brand: **"Where Tennessee Began and Begins"**
 
 ## Sanity Check (always run before pushing)
 ```
-npx biome check . && npx tsc --noEmit && npm run build && npm test -- --run
+pnpm exec biome check . && pnpm exec tsc --noEmit && pnpm exec vitest run && pnpm run build
 ```
 
 ## Testing
-- Unit: `npm test`
-- E2E (all viewports): `npx playwright test`
-- E2E (desktop only): `npx playwright test --project=desktop`
-- E2E UI mode: `npx playwright test --ui`
-- Admin password: `sullivan-admin-2026` (set via `wrangler secret put ADMIN_PASSWORD`)
+- Unit: `pnpm exec vitest run`
+- E2E (all viewports): `pnpm exec playwright test`
+- E2E (desktop only): `pnpm exec playwright test --project=desktop`
+- E2E UI mode: `pnpm exec playwright test --ui`
+- Admin password: set via `pnpm exec wrangler secret put ADMIN_PASSWORD`; never store it in docs.
 
 ## Build & Deploy
-- Install: `npm ci`
-- Dev: `npm run dev`
-- Build: `npm run build`
-- Test: `npm test`
-- Lint: `npx biome check .`
-- Format: `npx biome format --write .`
-- Deploy: `npm run deploy`
-- CF Types: `npm run cf-typegen`
-- Sitemap: `npm run generate:sitemap`
-- RSS: `npm run generate:rss`
+- Install: `pnpm install --frozen-lockfile`
+- Dev: `pnpm run dev`
+- Build: `pnpm run build`
+- Test: `pnpm exec vitest run`
+- Lint: `pnpm exec biome check .`
+- Format: `pnpm exec biome format --write .`
+- Deploy: `pnpm run deploy`
+- CF Types: `pnpm run cf-typegen`
+- Sitemap: `pnpm run generate:sitemap`
+- RSS: `pnpm run generate:rss`
 
 ## Package Manager
-npm (use package-lock.json, NOT pnpm-lock.yaml)
+pnpm
 
 ## Deploy
 Cloudflare Workers (TanStack Start SSR). Config in wrangler.jsonc.
@@ -50,11 +50,12 @@ Cloudflare Workers (TanStack Start SSR). Config in wrangler.jsonc.
 - Cloudflare D1 (form submissions, news, minutes, announcements, sessions, page feedback, weather observations)
 - Cloudflare KV (contact form submissions + weather snapshot)
 - **NWS API** (api.weather.gov) for live weather + alerts
+- **USGS waterservices** for live river/stream gauge conditions
 - **PWA** (service worker + offline.html + 2026 manifest spec)
 - Zod 4 (derived from Drizzle where 1:1, hand-written for cross-field refines)
 - date-fns (date formatting)
 - ulidx (ULID-based IDs, with branded type at `src/lib/schemas/ids.ts`)
-- Fuse.js (client-side fuzzy search)
+- Fuse.js + shadcn Command (client-side fuzzy search)
 - Vitest (testing)
 - Playwright (E2E testing × desktop + tablet + mobile)
 - axe-core (accessibility scans)
@@ -71,7 +72,6 @@ Cloudflare Workers (TanStack Start SSR). Config in wrangler.jsonc.
 - Cursor-based pagination only
 
 ## Do NOT
-- Generate pnpm-lock.yaml (this project uses npm)
 - Use eslint or prettier (this project uses Biome)
 - Modify wrangler.jsonc deploy config without asking
 - Use any type without justification
@@ -86,7 +86,7 @@ Cloudflare Workers (TanStack Start SSR). Config in wrangler.jsonc.
 - Hand-roll bg-brand-copper button classes (use `<Button variant="copper">`)
 - Add `target="_blank"` without `rel="noopener noreferrer"`
 
-## Routes (40 total)
+## Routes (41 total)
 Citizen-facing: `/`, `/property-taxes`, `/departments`, `/departments/$slug`, `/commissioners`, `/news`, `/news/$slug`, `/calendar`, `/contact`, `/documents`, `/forms`, `/forms/$type`, `/ada-compliance`, `/privacy-policy`, `/employee-services`
 Heritage / civic: `/history`, `/history/timeline`, `/history/$slug`, `/communities`, `/communities/$slug`, `/about`, `/economic-development`, `/education`, `/transportation`, `/people`, `/visit`
 Admin (auth-gated): `/admin/login`, `/admin`, `/admin/news{,/new,/$id}`, `/admin/minutes{,/new,/$id}`, `/admin/announcements`, `/admin/submissions`

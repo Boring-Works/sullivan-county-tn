@@ -12,8 +12,8 @@ See `/docs/` for complete architecture audit:
 - [GAP_ANALYSIS.md](docs/GAP_ANALYSIS.md) — Known gaps
 - [NEXT_IMPLEMENTATION_PLAN.md](docs/NEXT_IMPLEMENTATION_PLAN.md) — Future plan
 
-## State (2026-05-21 — production-hardened, weather-live, PWA-ready)
-- **Tests:** 83 unit tests passing across 13 files; Playwright coverage includes desktop/tablet/mobile critical paths, accessibility scans, menu behavior, user flows, and admin auth flows.
+## State (2026-05-21 — production-hardened, weather/river-live, PWA-ready)
+- **Tests:** 91 unit tests passing across 15 files; Playwright coverage includes desktop/tablet/mobile critical paths, accessibility scans, menu behavior, user flows, and admin auth flows.
 - **A11y:** WCAG AA oriented — kbd contrast fixed, brand-stable colors site-wide, scroll-reveal failsafe ensures all sections render even with reduced motion or no JS.
 - **Lint:** Biome check passes with 0 errors.
 - **Build:** Vite/TanStack Start production build passes locally.
@@ -24,7 +24,7 @@ See `/docs/` for complete architecture audit:
 - **Phase 3 (shadcn):** 21 primitives — `accordion, alert, badge, breadcrumb, button, card, command, dialog, dropdown-menu, form, input, label, scroll-area, select, separator, sheet, skeleton, sonner, table, tabs, textarea, tooltip`. Theme overrides map shadcn vars to brand-navy/copper/cream. Sharp 0.125rem radius. `<Button>` extended with `copper` and `navy` variants.
 - **Phase 4 (UI conversion):** Toaster + TooltipProvider in `__root.tsx`, Skeleton replaces "Loading..." text, **`/contact` + `/admin/login` + `/forms/$type` (all 4 form types) migrated to react-hook-form + shadcn `<Form>` + Sonner toasts**. `@tanstack/react-form` removed. `/property-taxes` FAQ → `<Accordion>`. `/weather` 7-day cards → `<Card>`, hourly → `<ScrollArea>`. **`<CopperWeathervane />`** lifted from tennessee-starts-here, themed for Sullivan brand.
 - **Phase 5 (PWA + offline):** `public/sw.js` (cache-first fonts, network-first nav with Navigation Preload + `/offline.html` fallback, image cache eviction, stale-while-revalidate). Pre-caches emergency-critical pages: `/`, `/property-taxes`, `/contact`, `/calendar`, `/weather`, `/departments/emergency-management`, `/departments/sheriff`. Branded `/offline.html` with 911/Sheriff/EMA tel: links. `<OfflineBanner />` listens to `navigator.onLine`. **2026 PWA manifest spec**: `id`, `scope`, `lang`, `display_override`, `launch_handler.client_mode`, `share_target`, `shortcuts` (Pay Taxes / Weather / Contact / Calendar), maskable icon.
-- **Weather subsystem (2026-05-07):** NWS API integration (api.weather.gov, no key — government data on a government site). MRX gridpoint 126,82, forecast zone TNZ017. KV-cached snapshot with 10-min SWR-on-read. D1 `weather_observations` archives every refresh. `<WeatherBadge />` on homepage almanac with copper-pulse on Severe alerts. `/weather` route: current conditions, CopperWeathervane, severity-tiered alerts, hourly outlook, 7-day forecast, 24h trend chart.
+- **Weather + river subsystem (2026-05-21):** NWS API integration (api.weather.gov, no key — government data on a government site). MRX gridpoint 126,82, forecast zone TNZ017. KV-cached snapshot with 10-min SWR-on-read. D1 `weather_observations` archives every refresh. `/weather` route: current conditions, CopperWeathervane with 16-point compass labels, severity-tiered alerts, hourly outlook, day/night forecast, 24h trend chart, and live USGS river gauges for Beaver Creek, South Fork Holston, and North Fork Holston.
 - **Content freshness:** 7 fresh news articles dated April–May 2026 (Memorial Day closures, Blountville Athletic Park grand opening, FY 26-27 budget hearing, Apr 16 Commission recap, SR 126 Memorial Boulevard project, May 15 burn permit deadline, severe weather prep). **Live D1-seeded AnnouncementBanner** showing Memorial Day closure on the homepage.
 - **Trust signals (2026-05-07):** `<DetailBreadcrumb>` mounted on `/departments/$slug`, `/news/$slug`, `/communities/$slug`, `/history/$slug`, `/forms/$type`. **"Last reviewed" stamps** at the bottom of every department detail page and form page.
 - **iOS / Android 2026 PWA standards:** `viewport-fit=cover` safe areas, dual `theme-color` (light + dark), full iOS PWA tag set, multiple `apple-touch-icon` sizes, `mask-icon`, `format-detection: telephone=no`, `msapplication-TileColor`, `color-scheme: light`.
@@ -56,7 +56,7 @@ See `/docs/` for complete architecture audit:
 ## Routes
 | Route | File | Purpose |
 |-------|------|---------|
-| `/` | `routes/index.tsx` | Homepage — HeroBanner (search + single almanac/weather bar), SeasonalRibbon (date-aware, Oct 1 – Mar 1 only), AudiencePathways, TodaySection, CommunityMap, StorySection, AboutSection. Duplicate status ribbon removed 2026-05-21 so weather/status appears once below the hero message. |
+| `/` | `routes/index.tsx` | Homepage — citizen-first HeroBanner (task search, top tasks, single county-status panel), SeasonalRibbon (date-aware, Oct 1 – Mar 1 only), TodaySection, CommunityMap, StorySection, AboutSection. Duplicate status/weather overlays and old audience section removed 2026-05-21. |
 | `/property-taxes` | `routes/property-taxes.tsx` | "Pay your property taxes" landing page with `ParcelLookup` typeahead, three-portal CTAs (TPAD/Trustee/GIS), FAQ + GovernmentService JSON-LD |
 | `/departments` | `routes/departments/index.tsx` | Department directory with category filter |
 | `/departments/$slug` | `routes/departments/$slug.tsx` | Individual department detail (25 departments) |
@@ -80,6 +80,7 @@ See `/docs/` for complete architecture audit:
 | `/transportation` | `routes/transportation.tsx` | TRI airport, highways, transit + historical context |
 | `/people` | `routes/people.tsx` | Notable historical figures grid (7 people) |
 | `/visit` | `routes/visit.tsx` | Heritage Trail, parks, recreation, events, getting here |
+| `/weather` | `routes/weather.tsx` | NWS weather + USGS river conditions: alerts, current conditions, hourly outlook, day/night forecast, temperature trend, and live river gauges |
 
 ## Data Files
 | File | Content |
@@ -110,7 +111,7 @@ See `/docs/` for complete architecture audit:
 | AnnouncementBanner | `components/layout/AnnouncementBanner.tsx` | Dismissible banner (localStorage persistence) |
 | SearchDialog | `components/layout/SearchDialog.tsx` | Fuse.js fuzzy search modal (Cmd+K), ARIA combobox pattern, lazy-loaded |
 | NotFound | `components/layout/NotFound.tsx` | Custom 404 page with quick links + search hint |
-| HeroBanner | `components/home/HeroBanner.tsx` | Cinematic hero with WebP + JPEG `<picture>` sources + stat counters |
+| HeroBanner | `components/home/HeroBanner.tsx` | Citizen-first hero with search trigger, top task cards, county-status panel, next meeting, and weather badge |
 | QuickServices | `components/home/QuickServices.tsx` | 8-card service grid with scroll reveals |
 | DepartmentCategories | `components/home/DepartmentCategories.tsx` | 6 category cards with scroll reveals |
 | CommunityHighlights | `components/home/CommunityHighlights.tsx` | 3 tourism/regional attraction cards |
@@ -126,7 +127,6 @@ See `/docs/` for complete architecture audit:
 | DepartmentCard | `components/departments/DepartmentCard.tsx` | Department card with category badge + phone |
 | MountainDivider | `components/shared/MountainDivider.tsx` | SVG mountain ridge section dividers |
 | useScrollReveal | `hooks/useScrollReveal.ts` | Intersection Observer scroll-reveal system |
-| useCountUp | `hooks/useCountUp.ts` | Animated stat counter hook |
 | HeritageHero | `components/history/HeritageHero.tsx` | Hero with brand tagline + 1790/current year date device |
 | HistoryNarrative | `components/history/HistoryNarrative.tsx` | Long-form editorial content sections with scroll-reveal |
 | HeritageSiteCard | `components/history/HeritageSiteCard.tsx` | Heritage site card with NRHP/NHL badges |
@@ -182,6 +182,7 @@ See `/docs/` for complete architecture audit:
 | `listMinutes/createMinutesEntry/updateMinutesEntry/deleteMinutesEntry` | `server/admin-minutes.ts` | Minutes CRUD (auth-gated) |
 | `listSubmissions/updateSubmissionStatus` | `server/admin-submissions.ts` | Form submission management (auth-gated) |
 | `listAnnouncements/createAnnouncement/updateAnnouncement/deleteAnnouncement` | `server/admin-announcements.ts` | Announcement CRUD (auth-gated) |
+| `getRiverConditions` | `server/river-conditions.ts` | Live USGS streamflow and gauge-height data |
 | `requireAdmin` | `server/guard.ts` | Shared auth guard for all admin endpoints |
 
 ## Cloudflare Bindings
@@ -211,11 +212,11 @@ See `/docs/` for complete architecture audit:
 - **Deploy:** `pnpm run deploy`
 - **Before deploying** new D1 migrations, apply them remotely:
   ```sh
-  npx wrangler d1 migrations apply --remote sullivan-county-db
+  pnpm exec wrangler d1 migrations apply --remote sullivan-county-db
   ```
   As of 2026-05-07 all migrations (`0000`, `0001_page_feedback`, `0002_announcement_severity`) are applied to remote. PageFeedback writes succeed, severity-tagged announcements render. Verified via `wrangler d1 execute --remote PRAGMA table_info(announcements)` and `SELECT name FROM sqlite_master`.
 - **Spanish locale** in `src/locales/es.json` is machine-translated. Schedule a native Spanish-speaker review before claiming bilingual support in marketing. Spanish renders **client-side only** — `syncStoredLocale()` reads the `locale` cookie in a `useEffect`, so the first paint is always English. The Spanish UI flashes in immediately after hydration. To eliminate the flash, plumb cookie-aware language detection into the server entry in `__root.tsx` (out of scope for this pass).
-- **Service worker / offline** is not yet shipped — the manifest is complete and Android Chrome installs cleanly via `beforeinstallprompt`. A future PR should ship a Workbox SW for the emergency module.
+- **Service worker / offline** is shipped via `public/sw.js` and registered in production from `__root.tsx`.
 
 ## Voice & content standards
 This is a county government website. The reference points are GOV.UK, NYC.gov, the Smithsonian, NPR. **Not** a startup, **not** a SaaS product, **not** the Holston Partners cyberpunk redesign.
@@ -306,7 +307,7 @@ This is a county government website. The reference points are GOV.UK, NYC.gov, t
 | Homepage trimmed from 11 → 7 sections | Three competing IA models (QuickServices, DepartmentCategories, AudiencePathways) were stacked on the same page; verb nav already covers audience + departments. PromisesSection was banned consultant prose. Cuts ~45% of vertical scroll on mobile. | 2026-05-07 |
 | QuickServices: 9 → 6 cards | Animal shelter, emergency services, veterans benefits dropped — all reachable via verb nav and search; emergency services is duplicated by EmergencyModule above. Grid widened from 4-col to 3-col so 6 cards fit cleanly in 2 rows. | 2026-05-07 |
 | NextMeetingCard slimmed to single banner | Was a two-column hero card. Now a navy-banner row with date + .ics + watch-live + see-full-schedule actions. | 2026-05-07 |
-| Hero stat-counter removed (static SSR render) | `useCountUp` was rendering "0+ Residents 0 Square Miles 0 Departments" in SSR HTML until JS hydrated and IntersectionObserver fired. Real correctness bug for slow JS / reduced motion / screen readers. Stats now render their final values directly. The hook is still around for other contexts; HeroBanner just doesn't call it. | 2026-05-07 |
+| Hero stat-counter removed (static SSR render) | `useCountUp` was rendering "0+ Residents 0 Square Miles 0 Departments" in SSR HTML until JS hydrated and IntersectionObserver fired. Real correctness bug for slow JS / reduced motion / screen readers. Stats now render their final values directly. The unused hook was removed. | 2026-05-07 |
 | Suggested-search chips under hero | Five static chips ("pay taxes · marriage license · trash pickup · pothole · voter registration") below the search input. Each dispatches `sullivan:open-search` with `detail.query`; `SearchDialog` accepts an `initialQuery` prop and pre-fills. | 2026-05-07 |
 | Open-Now / Next-Meeting promoted | Almanac strip restructured: top row is one human sentence ("County offices Open until 4:30 PM today. Next commission meeting Thu May 21 at 6:30 PM."); identity stats stay below as quieter reinforcement. | 2026-05-07 |
 | SeasonalRibbon (date-aware property-tax notice) | Component visible Oct 1 – Mar 1 only. Linked to `/property-taxes` with the Feb 28 deadline. Pure deterministic date check via `Intl.DateTimeFormat` in America/New_York. Unit-tested across 8 month boundaries. | 2026-05-07 |
@@ -315,7 +316,7 @@ This is a county government website. The reference points are GOV.UK, NYC.gov, t
 | shadcn/ui foundation (Phase 3) | 21 primitives installed via shadcn CLI. Theme overrides in `app.css` map shadcn vars to brand-navy/copper/cream with sharp 0.125rem radius (civic restraint). `<Button>` extended with `copper` and `navy` brand variants — used for all CTAs. | 2026-05-07 |
 | react-hook-form + shadcn Form migration (Phase 4) | `/contact`, `/admin/login`, and all 4 `/forms/$type` pages migrated to react-hook-form + shadcn `<Form>` + Zod resolvers + Sonner toasts. `@tanstack/react-form` removed (was unused). Dynamic Zod schema built from `FormFieldDefinition[]` for `/forms/$type` so all 4 form types share one route. | 2026-05-07 |
 | CopperWeathervane lifted from tennessee-starts-here | Animated copper compass-rose SVG that rotates with live NWS wind direction. Pure CSS, no framer-motion dependency. Brand-themed for Sullivan's copper palette. Drops into `/weather`'s side panel. | 2026-05-07 |
-| Weather subsystem | NWS API integration (api.weather.gov, no key — government data on a government site). MRX gridpoint 126,82, forecast zone TNZ017. KV-cached snapshot with SWR-on-read (10-min freshness). D1 `weather_observations` archives every refresh for the 24h trend chart. `<WeatherBadge />` on homepage almanac. `/weather` route with severity-tiered alert cards. | 2026-05-07 |
+| Weather + river subsystem | NWS API integration (api.weather.gov, no key) plus USGS stream gauges for Beaver Creek, South Fork Holston, and North Fork Holston. KV-cached weather snapshot with SWR-on-read, D1 `weather_observations` archive, 24h trend chart, day/night forecast, and severity-tiered alert cards. | 2026-05-21 |
 | PWA service worker + offline (Phase 5) | `public/sw.js` adapted from `where-tennessee-began`. Cache-first fonts, network-first navigation w/ Navigation Preload + `/offline.html` fallback, image cache eviction, stale-while-revalidate. Pre-caches emergency-critical pages. Branded `offline.html` with 911/Sheriff/EMA tel: links. `<OfflineBanner />` listens to `navigator.onLine`. | 2026-05-07 |
 | 2026 PWA manifest spec | Full modern manifest: `id`, `scope`, `lang`, `display_override: ["standalone","minimal-ui"]`, `launch_handler.client_mode: "navigate-existing"`, `share_target` (citizens can share addresses INTO the contact form), `shortcuts` (Pay Taxes / Weather / Contact / Calendar quick-actions), maskable icon variant, categories. | 2026-05-07 |
 | iOS / Android 2026 PWA polish | Multiple `apple-touch-icon` sizes (180/192/512), `mask-icon` for Safari pinned tab, `format-detection: telephone=no` (we use TelLink), `msapplication-TileColor`, `color-scheme: light`. | 2026-05-07 |

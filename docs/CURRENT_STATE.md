@@ -1,9 +1,8 @@
 # Current State — Sullivan County TN Government Website
 
 **Date:** 2026-05-21
-**Live:** https://sullivan-county-tn.codyboring.workers.dev (version `8f75c569-2488-468f-989a-87f196e9e4f8`)
+**Live:** https://sullivan-county-tn.codyboring.workers.dev
 **Repo:** https://github.com/Boring-Works/sullivan-county-tn
-**Latest commit:** `a80dead` — _feat: items #2, #3, #5 from top-7 audit_
 
 ---
 
@@ -42,12 +41,13 @@ The site has been through a **7-phase production-hardening pass** plus several f
 - `<OfflineBanner />` listens to `navigator.onLine`, fixed top bar with brand-copper styling, safe-area-aware.
 - SW registered in `__root.tsx` behind `import.meta.env.PROD`.
 
-### Weather subsystem
+### Weather and river subsystem
 - **NWS API integration** (api.weather.gov, no key, government data on a government site). Forecast office `MRX` (Morristown), gridpoint `126,82`, forecast zone `TNZ017`.
 - KV-cached snapshot with SWR-on-read pattern (10-min freshness; one user every 10 min pays the upstream round-trip; everyone else gets a 5 ms KV hit).
 - D1 archive in `weather_observations` for the 24-hour temperature trend chart on `/weather`.
 - `<WeatherBadge />` on the homepage hero almanac — auto-pulses copper when a Severe/Extreme NWS alert is active.
-- `/weather` route: current conditions hero, CopperWeathervane, severity-tiered alert cards, hourly outlook, 7-day forecast, 24-hour temperature trend.
+- `/weather` route: current conditions hero, CopperWeathervane, severity-tiered alert cards, hourly outlook, day/night forecast, 24-hour temperature trend.
+- **USGS river conditions** for Beaver Creek at Bristol, South Fork Holston near Damascus, and North Fork Holston near Gate City. Cards show flow, gauge height, trend, last observation time, and official USGS links.
 
 ### Content freshness
 - **7 fresh news articles** dated April–May 2026, grounded in real-world facts: Memorial Day closures, Blountville Athletic Park grand opening (May 9), FY 26-27 budget hearing (May 21), April 16 Commission recap, SR 126 Memorial Boulevard project (8.3 mi, March 2026 start), TN burn-permit deadline (May 15), spring severe weather preparedness.
@@ -95,7 +95,7 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 
 ## What exists
 
-### Routes (40)
+### Routes (41)
 
 | Area | Routes |
 |---|---|
@@ -116,9 +116,9 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 
 | Area | Notable |
 |---|---|
-| Layout | `SiteNav` (verb-based mega-panels + category-aware active state), `SiteFooter`, `AnnouncementBanner` (D1-wired, **live**), `SearchDialog` (Cmd+K, lazy-loaded, supports prefilled initial query), `MobileBottomTabBar`, `LanguageToggle`, `NotFound` |
-| Home (mounted on /) | `HeroBanner` (with `WeatherBadge`), `SeasonalRibbon`, `EmergencyModule` (restrained navy strip), `QuickServices`, `NextMeetingCard`, `NewsSection`, `CommunityMap`, `AboutSection` |
-| Weather | `WeatherBadge` (homepage almanac), `CopperWeathervane` (animated copper compass rose) |
+| Layout | `SiteNav` (verb-based mega-panels + category-aware active state + shadcn Sheet mobile drawer), `SiteFooter`, `AnnouncementBanner` (D1-wired, **live**), `SearchDialog` (Fuse.js inside shadcn CommandDialog, Cmd+K, lazy-loaded, supports prefilled initial query), `MobileBottomTabBar`, `LanguageToggle`, `NotFound` |
+| Home (mounted on /) | `HeroBanner` (task search, top tasks, status panel with `WeatherBadge`), `SeasonalRibbon`, `TodaySection`, `CommunityMap`, `StorySection`, `AboutSection` |
+| Weather | `WeatherBadge` (homepage status panel), `CopperWeathervane` (animated copper compass rose), live USGS river-condition cards on `/weather` |
 | Departments | `DepartmentCard`, `DepartmentDetail`, `PrintableContactCard` |
 | Commissioners | `CommissionerGrid`, `CommissionerCard` |
 | Communities | `CommunityCard` |
@@ -149,6 +149,7 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 | `public-announcements.ts` | listPublicAnnouncements (D1 read) | — | — | — |
 | `public-news.ts` | listPublicNews / getPublicNewsArticle (D1 read) | — | — | Zod slug schema |
 | `public-weather.ts` | getCurrentWeather (KV-cached SWR) / getRecentObservations (D1 trend) | — | — | — |
+| `river-conditions.ts` | getRiverConditions (USGS streamflow and gauge height) | — | — | — |
 | `weather/nws-client.ts` | NWS fetch wrapper (timeout, retry, edge cache) | — | — | — |
 | `weather/refresh.ts` | refreshWeather (KV write + D1 archive) | — | — | — |
 | `admin-news.ts` | News CRUD | requireAdmin everywhere | 30/60s on mutations | Zod schemas |
@@ -175,7 +176,7 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 
 | Type | Files | Tests | Status |
 |---|---|---|---|
-| Unit (Vitest) | 13 | 83 | all passing |
+| Unit (Vitest) | 15 | 91 | all passing |
 | E2E (Playwright × desktop+tablet+mobile) | 6 specs | 117–270 cases (varies by spec) | 117/117 critical-paths + user-flows; 21/21 a11y; ParcelLookup test occasionally flakes when TPAD upstream is slow |
 
 ### Design system
@@ -186,11 +187,12 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 
 | Service | Purpose | Status |
 |---|---|---|
-| Cloudflare Workers | Hosting | live, version `8f75c569-...` |
+| Cloudflare Workers | Hosting | live |
 | D1 (`sullivan-county-db`) | Form submissions, news, minutes, announcements, sessions, feedback, weather observations | live, 4 migrations applied |
 | KV (`CONTACT_SUBMISSIONS`) | Contact form (90-day TTL) + weather snapshot (1-hour TTL) | live |
 | Service Worker | `/sw.js` registered in production | live |
-| NWS API | Weather data source (free, no key) | live, called every ~10 min |
+| NWS API | Weather data source (free, no key) | live, called every ~10 min by SWR refresh |
+| USGS waterservices | River/stream gauge source (free, no key) | live on `/weather` |
 | Wrangler 4.88+ | CLI | configured |
 | Biome 2.x | Lint + format | CLI/schema mismatch present in current env (`2.4.15` CLI vs `2.4.14` schema) |
 | TypeScript | Strict | clean |
@@ -222,7 +224,7 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 | In-memory rate limit cross-isolate | ACCEPTABLE | Per-IP keys mean one user can't block another inside an isolate. Cross-isolate spillover is theoretically possible under heavy attack — for stricter enforcement, migrate to Durable Object atomic counters. Not pressing at current traffic. |
 | CSRF token integration | DEFERRED | `csrf.ts` defined but not invoked. SameSite=Strict + same-origin server fns prevent CSRF in modern browsers. Reinstate as defense-in-depth if/when adding cross-origin embeds. |
 | **CF Web Analytics token** | NOT CONFIGURED | Beacon block in `__root.tsx` shows literal `YOUR_TOKEN_HERE`. Requires CF dashboard access (5-minute task; user-action item). |
-| **Cron Trigger for weather** | NOT SHIPPED | SWR-on-read works fine. Custom worker entry to add `scheduled()` would remove the "first user every 10 min pays 300ms" penalty. |
+| **Cron Trigger for weather** | NOT SHIPPED | SWR-on-read works fine. Custom worker entry to add `scheduled()` would remove the first-user refresh penalty. |
 | **Audit log table** | NOT SHIPPED | Designed but not implemented. ~1.5 hours of work — `0004_audit_log.sql` migration + `audit()` helper + `/admin/audit` viewer. |
 | **Admin overhaul** (Sidebar + DataTable + stat dashboard) | NOT SHIPPED | Largest visible improvement remaining. **`Kiranism/tanstack-start-dashboard`** (MIT, exact stack match) provides reusable DataTable composition + Sidebar to lift from. ~3-4 hours. |
 | `/admin/feedback` viewer UI | NOT SHIPPED | Server fns (`listPageFeedback`, `deletePageFeedback`) exist; ~30 min to build the route. |
@@ -231,18 +233,18 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 
 ---
 
-## Key numbers (2026-05-07)
+## Key numbers (2026-05-21)
 
 | Metric | Value |
 |---|---|
-| Routes | 40 |
+| Routes | 41 |
 | Components | ~60 (39 site + 21 shadcn primitives) |
 | Data files | 17 |
-| Server function files | 15 |
+| Server function files | 16 |
 | Drizzle tables | 7 |
 | Drizzle-generated Zod schemas | 7 select + 7 insert + 1 ULID brand |
 | News articles | 14 (7 fresh + 7 archive) |
-| Unit tests | 79 |
+| Unit tests | 91 |
 | E2E tests | 117/117 critical-paths + user-flows × 3 viewports |
 | Build size | 749.92 KB worker entry |
 | Build time | ~3.7s |

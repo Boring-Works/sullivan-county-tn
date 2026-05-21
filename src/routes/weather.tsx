@@ -15,6 +15,7 @@ import {
   Wind,
 } from "lucide-react";
 import type { ReactNode } from "react";
+import { TelLink } from "~/components/shared/TelLink";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import { CopperWeathervane } from "~/components/weather/CopperWeathervane";
@@ -110,7 +111,7 @@ function WeatherPage() {
           <h1 className="font-display text-3xl font-bold sm:text-4xl">
             Weather & River Conditions
           </h1>
-          <p className="mt-2 font-body text-sm text-white/70">
+          <p className="mt-2 font-body text-sm text-white/70" suppressHydrationWarning>
             Updated {formatRelative(snapshot.fetchedAt)} · NWS forecast plus USGS stream gauges
           </p>
           <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
@@ -416,7 +417,12 @@ function WeatherPage() {
             >
               Sullivan County Emergency Management
             </Link>{" "}
-            at (423) 323-6912.
+            at{" "}
+            <TelLink
+              phone="(423) 323-6912"
+              className="text-brand-copper underline hover:text-brand-copper-light"
+            />
+            .
           </p>
         </section>
       </div>
@@ -477,7 +483,7 @@ function WeatherStatCard({
   tone: "safe" | "neutral" | "warn" | "danger";
 }) {
   const toneClass = {
-    safe: "border-brand-sage/30 bg-brand-sage/12 text-brand-sage",
+    safe: "border-brand-sage/30 bg-brand-sage/12 text-white/90",
     neutral: "border-white/12 bg-white/8 text-brand-brass-light",
     warn: "border-brand-brass-light/35 bg-brand-brass-light/12 text-brand-brass-light",
     danger: "border-brand-copper-light/50 bg-brand-copper/25 text-white",

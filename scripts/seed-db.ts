@@ -4,6 +4,8 @@
  * Or use this script to generate the SQL: pnpm exec tsx scripts/seed-db.ts > scripts/seed.sql
  */
 
+import { ulid } from "ulidx";
+
 // Import from data files manually (can't use path aliases in scripts)
 // This generates SQL INSERT statements
 
@@ -60,20 +62,12 @@ function esc(str: string): string {
   return str.replace(/'/g, "''");
 }
 
-function uuid(): string {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0;
-    const v = c === "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}
-
 const now = new Date().toISOString();
 
 // News articles
 console.log("-- News Articles");
 for (const article of news) {
-  const id = uuid();
+  const id = ulid();
   console.log(
     `INSERT INTO news_articles (id, title, slug, author, summary, content, status, url, pdf_url, published_at, created_at, updated_at) VALUES ('${id}', '${esc(article.title)}', '${esc(article.slug)}', '${esc(article.author)}', '${esc(article.summary)}', '${esc(JSON.stringify(article.content))}', 'published', '${esc(article.url)}', ${article.pdfUrl ? `'${esc(article.pdfUrl)}'` : "NULL"}, '${article.date}T00:00:00.000Z', '${now}', '${now}');`,
   );

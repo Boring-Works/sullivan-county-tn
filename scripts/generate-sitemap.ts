@@ -7,8 +7,7 @@
 import { writeFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { news } from "../src/data/news";
-
-const SITE_URL = "https://sullivan-county-tn.codyboring.workers.dev";
+import { SITE_URL } from "../src/data/site-config";
 
 // Department slugs — must match src/data/departments.ts exactly
 const departmentSlugs = [

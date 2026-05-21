@@ -6,7 +6,7 @@
 
 ---
 
-## Recent additions (2026-05-07)
+## Recent additions (2026-05-21)
 
 The site has been through a 7-phase production-hardening pass. New subsystems / patterns added since the previous version of this doc:
 
@@ -16,7 +16,8 @@ The site has been through a 7-phase production-hardening pass. New subsystems / 
 - **react-hook-form + Zod resolvers** — adopted on `/contact`, `/admin/login`, and **all 4 `/forms/$type` form types** (dynamic Zod schema built from `FormFieldDefinition[]` at render time). `@tanstack/react-form` removed.
 - **Sonner toasts** — `<Toaster />` mounted in `__root.tsx`. All form submissions and admin mutations toast.
 - **PWA + offline (Phase 5)** — `public/sw.js` (cache-first fonts, network-first nav with Navigation Preload + `/offline.html` fallback, image cache eviction, stale-while-revalidate). `public/offline.html` branded with 911/Sheriff/EMA tel: links. `public/manifest.webmanifest` is the full **2026 spec** (`id`, `scope`, `lang`, `display_override`, `launch_handler`, `share_target`, `shortcuts`, maskable icon). `<OfflineBanner />` listens to `navigator.onLine`.
-- **Weather subsystem** — NWS API integration (api.weather.gov, no key). MRX gridpoint 126,82, forecast zone TNZ017. KV-cached snapshot with SWR-on-read. D1 `weather_observations` archives every 10 min for the trend chart. `<WeatherBadge />` on homepage almanac with copper-pulse on Severe alerts. `<CopperWeathervane />` (animated copper compass-rose lifted from tennessee-starts-here).
+- **Weather + river subsystem** — NWS API integration (api.weather.gov, no key) plus USGS stream gauges. MRX gridpoint 126,82, forecast zone TNZ017. KV-cached snapshot with SWR-on-read. D1 `weather_observations` archives every 10 min for the trend chart. `<WeatherBadge />` on the homepage status panel, `<CopperWeathervane />`, and river cards for Beaver Creek, South Fork Holston, and North Fork Holston.
+- **Search and mobile navigation upgrades** — `SearchDialog` uses shadcn `<CommandDialog>` with Fuse.js aliases. Mobile navigation uses shadcn `<Sheet>` instead of a custom focus trap.
 - **`<DetailBreadcrumb>`** + **`lastUpdated` stamps** on all 5 detail page types (`/departments/$slug`, `/news/$slug`, `/communities/$slug`, `/history/$slug`, `/forms/$type`).
 - **iOS / Android 2026 PWA standards** — multi-size apple-touch-icon, mask-icon for Safari pinned tab, `format-detection: telephone=no`, `msapplication-TileColor`, `color-scheme: light`.
 - **Scroll-reveal failsafe** — `useScrollReveal` adds `.js-reveal-armed` to `<html>` so `[data-reveal]` is visible by default. 2.5s failsafe force-reveals anything missed. `prefers-reduced-motion: reduce` honored.
@@ -93,12 +94,11 @@ Custom brand tokens are defined as CSS custom properties in `src/styles/app.css`
 | Hook | File | Purpose |
 |------|------|---------|
 | `useScrollReveal` | `hooks/useScrollReveal.ts` | Intersection Observer-based scroll-reveal system. Applies `.revealed` class when elements enter viewport. Supports `data-reveal` variants: `slide-left`, `scale`, default (fade-up). Respects `prefers-reduced-motion`. |
-| `useCountUp` | `hooks/useCountUp.ts` | Animated number counter. Eases from 0 to target value over duration with easing curve. Used in hero stat counters. |
 | `useLocale` | `hooks/useLocale.ts` | Locale state management. Exposes `locale`, `setLocale()`, and wraps `useTranslation()`. |
 
 ### Search
 
-Client-side fuzzy search via **Fuse.js v7** (`~5KB gzipped`). A unified search index (`data/search-index.ts`) combines all data sources (departments, news, commissioners, documents, heritage sites, communities, pages). The `SearchDialog` component is code-split and activated via `Cmd+K` / `Ctrl+K`. Implements WAI-ARIA combobox pattern: `role="combobox"`, `aria-activedescendant`, `role="listbox"` / `role="option"` on results.
+Client-side fuzzy search via **Fuse.js v7** (`~5KB gzipped`) rendered inside shadcn `<CommandDialog>`. A unified search index (`data/search-index.ts`) combines all data sources (departments, news, commissioners, documents, heritage sites, communities, pages). The `SearchDialog` component is code-split and activated via `Cmd+K` / `Ctrl+K`. shadcn Command provides the keyboard model for arrow navigation, Enter selection, and Escape close.
 
 `SearchDialog` also supports prefilled opening state via `initialQuery` for cross-component entry points (hero/search chips/mobile quick actions).
 

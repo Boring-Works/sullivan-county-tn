@@ -1,9 +1,9 @@
 # Component Inventory — Sullivan County TN
 
 **Platform:** Web-only (TanStack Start on Cloudflare Workers)
-**Refreshed:** 2026-05-07 (after 7-phase production-hardening pass + audit)
+**Refreshed:** 2026-05-21 (after homepage redesign, weather/river expansion, and review fixes)
 
-All components below are in active use. The site has **~60 components total**: 39 site-specific components + 21 shadcn primitives.
+All components below are in active use. The site has **~60 components total**: site-specific components plus 21 shadcn primitives.
 
 ---
 
@@ -11,9 +11,9 @@ All components below are in active use. The site has **~60 components total**: 3
 
 | Component | File | Purpose |
 |-----------|------|---------|
-| `SiteNav` | `layout/SiteNav.tsx` | Verb-based primary nav (Pay · Apply · Report · Records · Meetings · Departments · About). Each verb opens a mega-panel of concrete tasks. Hover-open gated to fine pointers, click-outside closes, arrow-key navigation. |
+| `SiteNav` | `layout/SiteNav.tsx` | Verb-based primary nav (Pay · Apply · Report · Records · Meetings · Departments · About). Each verb opens a mega-panel of concrete tasks. Hover-open gated to fine pointers, click-outside closes, arrow-key navigation. Mobile uses shadcn `<Sheet>`. |
 | `SiteFooter` | `layout/SiteFooter.tsx` | Four-column footer with mountain SVG, county seal, links, copyright. |
-| `SearchDialog` | `layout/SearchDialog.tsx` | Fuse.js fuzzy search modal (Cmd+K). ARIA combobox + listbox. Citizen-language aliases. Lazy-loaded. |
+| `SearchDialog` | `layout/SearchDialog.tsx` | Fuse.js fuzzy search inside shadcn `<CommandDialog>` (Cmd+K). Citizen-language aliases, quick actions, suggested queries, and keyboard-native arrow/Enter/Escape behavior. Lazy-loaded. |
 | `AnnouncementBanner` | `layout/AnnouncementBanner.tsx` | Reads from D1 via `listPublicAnnouncements`. Sets `--banner-height` so SiteNav offsets correctly. localStorage dismissal. **Live row seeded** for Memorial Day. |
 | `LanguageToggle` | `layout/LanguageToggle.tsx` | EN/ES toggle, persists via cookie. |
 | `MobileBottomTabBar` | `layout/MobileBottomTabBar.tsx` | Three-action thumb-zone bar at <md: Pay · Search · Call. Hides on soft keyboard. |
@@ -21,29 +21,27 @@ All components below are in active use. The site has **~60 components total**: 3
 
 ---
 
-## Home (8)
+## Home (6)
 
 | Component | File | Purpose |
 |-----------|------|---------|
-| `HeroBanner` | `home/HeroBanner.tsx` | Cinematic hero with WebP `<picture>` sources + parallax, visible search trigger, 5 task chips, suggested-search pill chips, single Open-Now / Next-Meeting line, **WeatherBadge** in almanac, identity stats (static SSR-rendered). |
-| `WeatherBadge` | `shared/WeatherBadge.tsx` | Compact "[temp]°F · [condition]" pill in the almanac. Pulses copper on Severe NWS alert. Auto-refreshes every 5 minutes client-side. Links to `/weather`. |
+| `HeroBanner` | `home/HeroBanner.tsx` | Citizen-first hero with task search, top task cards, secondary links, and one county-status panel containing office status, next meeting, emergency contact, and **WeatherBadge**. |
+| `WeatherBadge` | `shared/WeatherBadge.tsx` | Compact "[temp]°F · [condition]" pill in the county-status panel. Pulses copper on Severe NWS alert. Auto-refreshes every 5 minutes client-side. Links to `/weather`. |
 | `SeasonalRibbon` | `home/SeasonalRibbon.tsx` | Date-aware banner. Visible Oct 1 – Mar 1 only. Links to `/property-taxes`. |
-| `EmergencyModule` | `home/EmergencyModule.tsx` | **Restrained navy strip** with inline 911 / Sheriff / EMA contacts. Civic-restraint redesign — was 3-tile grid with copper-tinted 911. |
-| `QuickServices` | `home/QuickServices.tsx` | 6-card grid (3-col) with online/in-person submission badges. |
-| `NextMeetingCard` | `home/NextMeetingCard.tsx` | Slim navy banner with the next commission meeting + `.ics` download + watch-live + see-full-schedule. |
-| `NewsSection` | `home/NewsSection.tsx` | 3-card editorial layout. Merges D1 news + static `news.ts`. |
+| `TodaySection` | `home/TodaySection.tsx` | Below-fold service/update/emergency section with cards for common citizen needs. |
 | `CommunityMap` | `home/CommunityMap.tsx` | Interactive 6-community SVG map (US Census TIGER/Line projection). |
 | `AboutSection` | `home/AboutSection.tsx` | "Where Tennessee Began" section with courthouse photos. CTAs use shadcn `<Button>`. |
 
-(Three legacy unmounted components — `DepartmentCategories`, `AudiencePathways`, `PromisesSection` — kept in the repo for possible reuse on other pages but no longer on `/`.)
+Legacy unmounted homepage components that were no longer useful on `/` were removed during the 2026-05-21 review.
 
 ---
 
-## Weather (1)
+## Weather (2)
 
 | Component | File | Purpose |
 |-----------|------|---------|
-| `CopperWeathervane` | `weather/CopperWeathervane.tsx` | Animated copper compass-rose SVG. Rotates with live wind direction from NWS. Brand-perfect copper aesthetic. Lifted from `tennessee-starts-here`, themed for Sullivan. |
+| `CopperWeathervane` | `weather/CopperWeathervane.tsx` | Animated copper compass-rose SVG. Rotates with live wind direction from NWS, handles calm/unknown wind, and displays 16-point compass labels. |
+| River condition cards | `routes/weather.tsx` | USGS-powered cards for Beaver Creek, South Fork Holston, and North Fork Holston with flow, gauge height, trend, timestamp, and official source links. |
 
 ---
 
@@ -157,7 +155,7 @@ All components below are in active use. The site has **~60 components total**: 3
 
 ## shadcn/ui primitives (21)
 
-Installed via `npx shadcn@latest add`. Theme overrides in `app.css` map shadcn vars to brand-navy / brand-copper / brand-cream with sharp 0.125rem radius.
+Installed via `pnpm dlx shadcn@latest add`. Theme overrides in `app.css` map shadcn vars to brand-navy / brand-copper / brand-cream with sharp 0.125rem radius.
 
 | Primitive | File | Used by |
 |---|---|---|
@@ -186,11 +184,10 @@ Installed via `npx shadcn@latest add`. Theme overrides in `app.css` map shadcn v
 
 ---
 
-## Hooks (4)
+## Hooks (3)
 
 | Hook | File | Purpose |
 |------|------|---------|
 | `useOpenStatus` | `hooks/useOpenStatus.ts` | Parses dept `contact.hours` strings and returns `{ isOpen, label, nextChange }`. Honors all 13 county holidays. SSR-safe. |
 | `useScrollReveal` | `hooks/useScrollReveal.ts` | Intersection-observer scroll-reveal system **with 2.5s failsafe**. Adds `.js-reveal-armed` to `<html>` so `[data-reveal]` is visible by default — content never hides without JS. `prefers-reduced-motion: reduce` honored. |
-| `useCountUp` | `hooks/useCountUp.ts` | Animated stat counter with rAF-driven easing. Respects `prefers-reduced-motion`. Currently unused on hero (replaced by static SSR render). |
 | `useLocale` | `hooks/useLocale.ts` | Cookie-based locale toggle with `document.documentElement.lang` sync. |

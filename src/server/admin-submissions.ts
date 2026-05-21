@@ -11,7 +11,12 @@ export const listSubmissions = createServerFn({ method: "GET" }).handler(async (
   await requireAdmin();
   const d1 = getDB();
   const db = getDb(d1);
-  return db.select().from(formSubmissions).orderBy(desc(formSubmissions.createdAt)).all();
+  return db
+    .select()
+    .from(formSubmissions)
+    .orderBy(desc(formSubmissions.createdAt))
+    .limit(100)
+    .all();
 });
 
 export const updateSubmissionStatus = createServerFn({ method: "POST" })

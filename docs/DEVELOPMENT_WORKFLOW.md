@@ -3,8 +3,8 @@
 ## Prerequisites
 
 - **Node.js 22+** (check: `node --version`)
-- **npm** (check: `npm --version`)
-- **Cloudflare account** with Wrangler CLI: `npm install -g wrangler`
+- **pnpm** (check: `pnpm --version`)
+- **Cloudflare account** with Wrangler available through project scripts
 - **Git**
 
 ## Project Setup
@@ -12,7 +12,7 @@
 ```bash
 git clone https://github.com/Boring-Works/sullivan-county-tn.git
 cd sullivan-county-tn
-npm ci
+pnpm install --frozen-lockfile
 cp .dev.vars.example .dev.vars
 # Edit .dev.vars with local development values
 ```
@@ -21,7 +21,7 @@ cp .dev.vars.example .dev.vars
 
 | Variable | Scope | How to Set |
 |----------|-------|------------|
-| `ADMIN_PASSWORD` | Production secret | `echo "password" \| npx wrangler secret put ADMIN_PASSWORD` |
+| `ADMIN_PASSWORD` | Production secret | `pnpm exec wrangler secret put ADMIN_PASSWORD` |
 | `ADMIN_PASSWORD` | Local dev | Set in `.dev.vars` |
 
 - `.dev.vars` — local development variables (gitignored)
@@ -32,25 +32,25 @@ cp .dev.vars.example .dev.vars
 
 | Command | Purpose |
 |---------|---------|
-| `npm run dev` | Start local dev server |
-| `npm run build` | Production build |
-| `npm run deploy` | Build + deploy to Cloudflare Workers |
-| `npm test` | Run unit tests (Vitest) |
-| `npm run test:watch` | Run unit tests in watch mode |
-| `npx playwright test` | Run E2E tests (all 3 viewports) |
-| `npx playwright test --ui` | Interactive E2E test runner |
-| `npx playwright test --project=desktop` | Desktop-only E2E tests |
-| `npx playwright test --project=tablet` | Tablet-only E2E tests |
-| `npx playwright test --project=mobile` | Mobile-only E2E tests |
-| `npx biome check .` | Lint check (read-only) |
-| `npx biome check --write .` | Auto-fix lint and formatting issues |
-| `npx biome format --write .` | Format files only |
-| `npm run cf-typegen` | Regenerate Cloudflare bindings types |
-| `npm run generate:sitemap` | Regenerate sitemap XML |
-| `npm run generate:rss` | Regenerate RSS feed |
-| `npx wrangler d1 migrations apply sullivan-county-db --remote` | Apply D1 migrations (production) |
-| `npx wrangler d1 migrations apply sullivan-county-db --local` | Apply D1 migrations (local) |
-| `npx wrangler secret put ADMIN_PASSWORD` | Set/update admin password secret |
+| `pnpm run dev` | Start local dev server |
+| `pnpm run build` | Production build |
+| `pnpm run deploy` | Build + deploy to Cloudflare Workers |
+| `pnpm test` | Run unit tests (Vitest) |
+| `pnpm run test:watch` | Run unit tests in watch mode |
+| `pnpm exec playwright test` | Run E2E tests (all 3 viewports) |
+| `pnpm exec playwright test --ui` | Interactive E2E test runner |
+| `pnpm exec playwright test --project=desktop` | Desktop-only E2E tests |
+| `pnpm exec playwright test --project=tablet` | Tablet-only E2E tests |
+| `pnpm exec playwright test --project=mobile` | Mobile-only E2E tests |
+| `pnpm exec biome check .` | Lint check (read-only) |
+| `pnpm exec biome check --write .` | Auto-fix lint and formatting issues |
+| `pnpm exec biome format --write .` | Format files only |
+| `pnpm run cf-typegen` | Regenerate Cloudflare bindings types |
+| `pnpm run generate:sitemap` | Regenerate sitemap XML |
+| `pnpm run generate:rss` | Regenerate RSS feed |
+| `pnpm exec wrangler d1 migrations apply sullivan-county-db --remote` | Apply D1 migrations (production) |
+| `pnpm exec wrangler d1 migrations apply sullivan-county-db --local` | Apply D1 migrations (local) |
+| `pnpm exec wrangler secret put ADMIN_PASSWORD` | Set/update admin password secret |
 
 ## Git Workflow
 
@@ -65,7 +65,7 @@ cp .dev.vars.example .dev.vars
 3. Run sanity check before pushing:
 
    ```
-   npx biome check . && npx tsc --noEmit && npm run build && npm test -- --run
+   pnpm exec biome check . && pnpm exec tsc --noEmit && pnpm exec vitest run && pnpm run build
    ```
 
 4. Push branch and open PR against `main`
@@ -73,7 +73,7 @@ cp .dev.vars.example .dev.vars
 
 ## Deployment Process
 
-1. **Build + Deploy:** `npm run deploy` (runs `vite build` then `wrangler deploy`)
+1. **Build + Deploy:** `pnpm run deploy` (runs `vite build` then `wrangler deploy`)
 2. **Worker name:** `sullivan-county-tn`
 3. **Preview worker:** `sullivan-county-tn-preview`
 4. **Live URL:** `https://sullivan-county-tn.codyboring.workers.dev`
@@ -90,11 +90,11 @@ cp .dev.vars.example .dev.vars
 ## D1 Migration Workflow
 
 1. Edit schema: `src/db/schema.ts`
-2. Generate migration: `npx drizzle-kit generate`
+2. Generate migration: `pnpm exec drizzle-kit generate`
 3. Review generated SQL in `src/db/migrations/`
-4. Apply locally: `npx wrangler d1 migrations apply sullivan-county-db --local`
-5. Verify locally with `npm run dev`
-6. Apply remote: `npx wrangler d1 migrations apply sullivan-county-db --remote`
+4. Apply locally: `pnpm exec wrangler d1 migrations apply sullivan-county-db --local`
+5. Verify locally with `pnpm run dev`
+6. Apply remote: `pnpm exec wrangler d1 migrations apply sullivan-county-db --remote`
 
 Note: Drizzle dialect is `sqlite`. Migrations output to `src/db/migrations/`.
 
@@ -105,7 +105,7 @@ Note: Drizzle dialect is `sqlite`. Migrations output to `src/db/migrations/`.
 - Environment: `jsdom`
 - Location: `tests/` directory
 - Coverage target: `src/**/*.{ts,tsx}` (excludes routeTree.gen.ts and migrations)
-- Run: `npm test` or `npm run test:watch`
+- Run: `pnpm test` or `pnpm run test:watch`
 
 ### E2E Tests (Playwright)
 
@@ -139,24 +139,24 @@ Note: Drizzle dialect is `sqlite`. Migrations output to `src/db/migrations/`.
 ### Add a News Article
 
 1. Edit `src/data/news.ts` — add entry to the news array
-2. Run `npm run generate:rss` to update the RSS feed
-3. Run `npm run generate:sitemap` to include the new page
-4. Build and verify: `npm run build`
+2. Run `pnpm run generate:rss` to update the RSS feed
+3. Run `pnpm run generate:sitemap` to include the new page
+4. Build and verify: `pnpm run build`
 
 ### Add a Department
 
 1. Edit `src/data/departments.ts` — add entry to the departments array
-2. Build and verify: `npm run build`
+2. Build and verify: `pnpm run build`
 
 ### Update Site Announcement
 
 1. Edit `AnnouncementBanner.tsx` — modify the announcements array
-2. Build and verify: `npm run build`
+2. Build and verify: `pnpm run build`
 
 ### Change Admin Password
 
 ```bash
-echo "new-password" | npx wrangler secret put ADMIN_PASSWORD
+pnpm exec wrangler secret put ADMIN_PASSWORD
 ```
 
 ### Add a New Route
@@ -164,13 +164,13 @@ echo "new-password" | npx wrangler secret put ADMIN_PASSWORD
 1. Create file in `src/routes/` following TanStack Start file-based routing conventions
 2. Add link to navigation if needed
 3. Update `src/data/search-index.ts` if the page should be searchable
-4. Update sitemap: `npm run generate:sitemap`
+4. Update sitemap: `pnpm run generate:sitemap`
 5. Run sanity check before pushing
 
 ### Run a Single E2E Test
 
 ```bash
-npx playwright test --project=desktop tests/news.spec.ts
+pnpm exec playwright test --project=desktop tests/news.spec.ts
 ```
 
 ## Tech Stack Reference
@@ -191,14 +191,14 @@ npx playwright test --project=desktop tests/news.spec.ts
 | Validation | **Zod 4** — derived from Drizzle via `drizzle-zod` where 1:1, hand-written for cross-field refines |
 | Dates | date-fns |
 | IDs | ulidx (ULID) **+ branded type at `src/lib/schemas/ids.ts`** |
-| Search | Fuse.js (client-side fuzzy) |
+| Search | Fuse.js + shadcn Command palette |
 | i18n | i18next + react-i18next |
-| Weather | **NWS API (api.weather.gov, no key) + KV-cached SWR + D1 archive** |
+| Weather | **NWS API (api.weather.gov, no key) + KV-cached SWR + D1 archive + USGS river gauges** |
 | **PWA** | **`public/sw.js` (cache-first fonts, network-first nav w/ offline fallback) + 2026 manifest spec + `<OfflineBanner />`** |
 | Lint/Format | Biome (2-space indent, 100 char line width) |
 | Unit testing | Vitest |
 | E2E testing | Playwright (desktop + tablet + mobile) |
-| Type checking | TypeScript strict mode + **typed `Cloudflare.Env` via `npm run cf-typegen`** |
+| Type checking | TypeScript strict mode + **typed `Cloudflare.Env` via `pnpm run cf-typegen`** |
 | Deployment | Cloudflare Workers + Wrangler |
 
 ## Code Conventions
@@ -211,13 +211,13 @@ npx playwright test --project=desktop tests/news.spec.ts
 - **Response shape:** `{ data: T }` for success, `{ error: { code, message } }` for errors
 - **Write paths:** Zod validate → idempotency key → authority gate → execute → receipt
 - **Secrets:** Never logged, printed, or committed
-- **Package manager:** npm (NOT pnpm)
+- **Package manager:** pnpm
 - **Cloudflare bindings:** Always access via `getEnv() / getDB() / getKV()` from `src/server/env.ts`. **Never** cast `as Record<string, unknown>`.
 - **Forms:** Always use react-hook-form + Zod resolver + shadcn `<Form>` + `<Input>` / `<Textarea>` / `<Select>`. `/contact` is the canonical reference. Add `toast.success/error` from Sonner on submit.
 - **CTAs:** Use `<Button variant="copper">` for primary calls-to-action, `<Button variant="navy">` for admin/secondary, `<Button variant="outline">` for tertiary. **Don't** hand-roll `bg-brand-copper rounded-sm px-6 py-2.5` button classes.
 - **Detail pages:** Always include `<DetailBreadcrumb items={[...]} />` + a "Last reviewed" stamp where the data has a `lastUpdated` field.
 - **External links with `target="_blank"`:** Always include `rel="noopener noreferrer"`.
 - **Phone numbers:** Use `<TelLink phone="..." />` — never raw `tel:` `<a>` tags.
-- **Drizzle migrations:** Run `drizzle-kit generate` to produce `src/db/migrations/NNNN_*.sql`, then `npx wrangler d1 migrations apply sullivan-county-db --local` to apply locally and `--remote` to apply to production. Indexes belong in `schema.ts`, not raw SQL.
-- **`npm run cf-typegen`** after adding any new Cloudflare binding to `wrangler.jsonc` so the typed env stays in sync.
+- **Drizzle migrations:** Run `pnpm exec drizzle-kit generate` to produce `src/db/migrations/NNNN_*.sql`, then `pnpm exec wrangler d1 migrations apply sullivan-county-db --local` to apply locally and `--remote` to apply to production. Indexes belong in `schema.ts`, not raw SQL.
+- **`pnpm run cf-typegen`** after adding any new Cloudflare binding to `wrangler.jsonc` so the typed env stays in sync.
 - **Do NOT:** use eslint, prettier, `crypto.randomUUID()`, `Math.random()` for security, hardcode the codyboring.workers.dev URL, use `console.log` (use structured `console.error(JSON.stringify({...}))` instead), or use `as Record<string, unknown>` for env access.

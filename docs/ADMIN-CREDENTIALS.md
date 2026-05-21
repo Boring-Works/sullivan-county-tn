@@ -1,15 +1,15 @@
-# Sullivan County TN -- Admin Credentials
+# Sullivan County TN -- Admin Access
 
 **Site:** https://sullivan-county-tn.codyboring.workers.dev  
 **Admin URL:** https://sullivan-county-tn.codyboring.workers.dev/admin/login
 
 ## Production Password
 
-```
-sullivan-admin-2026
-```
+Do not store production admin passwords in this repository.
 
-Set via: `wrangler secret put ADMIN_PASSWORD`
+The prior committed password was removed and the deployed `ADMIN_PASSWORD` secret was rotated on 2026-05-21. Ask the project owner to set a new known password through Cloudflare when admin access is needed.
+
+Set or rotate via: `pnpm exec wrangler secret put ADMIN_PASSWORD`
 
 ## Local Development
 
@@ -22,7 +22,7 @@ cp .dev.vars.example .dev.vars
 Then run:
 
 ```bash
-npm run dev
+pnpm run dev
 ```
 
 Local dev password is set in `.dev.vars` (gitignored).
@@ -30,7 +30,7 @@ Local dev password is set in `.dev.vars` (gitignored).
 ## Changing Password
 
 ```bash
-echo "new-password-here" | npx wrangler secret put ADMIN_PASSWORD
+pnpm exec wrangler secret put ADMIN_PASSWORD
 ```
 
 ## Login Flow

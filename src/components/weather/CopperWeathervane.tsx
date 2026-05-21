@@ -14,7 +14,24 @@ interface CopperWeathervaneProps {
   className?: string;
 }
 
-const DIRECTIONS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"] as const;
+const DIRECTIONS = [
+  "N",
+  "NNE",
+  "NE",
+  "ENE",
+  "E",
+  "ESE",
+  "SE",
+  "SSE",
+  "S",
+  "SSW",
+  "SW",
+  "WSW",
+  "W",
+  "WNW",
+  "NW",
+  "NNW",
+] as const;
 
 function describeWind(speedMph: number): string {
   if (speedMph < 1) return "Calm";
@@ -32,7 +49,7 @@ export function CopperWeathervane({
   className,
 }: CopperWeathervaneProps) {
   const hasDirection = typeof windDirection === "number" && Number.isFinite(windDirection);
-  const dirIdx = hasDirection ? Math.round(windDirection / 45) % 8 : 0;
+  const dirIdx = hasDirection ? Math.round(windDirection / 22.5) % 16 : 0;
   const directionName = hasDirection ? DIRECTIONS[dirIdx] : "Calm";
 
   // Compass-rose label radius scales with size.
@@ -64,21 +81,26 @@ export function CopperWeathervane({
       {/* Cardinal & ordinal direction letters */}
       <div className="absolute inset-0" aria-hidden="true">
         {DIRECTIONS.map((dir, i) => {
-          const angle = i * 45;
+          const angle = i * 22.5;
           const x = Math.sin((angle * Math.PI) / 180) * labelRadius;
           const y = -Math.cos((angle * Math.PI) / 180) * labelRadius;
-          const isCardinal = i % 2 === 0;
+          const isCardinal = i % 4 === 0;
+          const isOrdinal = i % 2 === 0;
           return (
             <div
               key={dir}
               className={`absolute font-display font-bold ${
-                isCardinal ? "text-brand-copper" : "text-brand-copper/60"
+                isCardinal
+                  ? "text-brand-copper"
+                  : isOrdinal
+                    ? "text-brand-copper/60"
+                    : "text-brand-copper/40"
               }`}
               style={{
                 left: `calc(50% + ${x}px)`,
                 top: `calc(50% + ${y}px)`,
                 transform: "translate(-50%, -50%)",
-                fontSize: isCardinal ? size * 0.07 : size * 0.05,
+                fontSize: isCardinal ? size * 0.07 : isOrdinal ? size * 0.045 : size * 0.035,
               }}
             >
               {dir}

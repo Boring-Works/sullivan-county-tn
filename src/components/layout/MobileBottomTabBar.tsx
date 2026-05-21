@@ -40,7 +40,7 @@ export function MobileBottomTabBar() {
   return (
     <nav
       aria-label="Quick actions"
-      className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-brand-navy text-brand-cream border-t border-brand-brass/20 shadow-[0_-4px_20px_rgba(8,22,36,0.25)]"
+      className="md:hidden fixed bottom-0 left-0 right-0 z-30 bg-brand-navy text-brand-cream border-t border-brand-brass/20 shadow-[0_-4px_20px_rgba(8,22,36,0.25)]"
       style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
     >
       <ul className="grid grid-cols-3">
