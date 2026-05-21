@@ -1,6 +1,6 @@
 /**
  * Generate static sitemap.xml from route and data files.
- * Run: npx tsx scripts/generate-sitemap.ts
+ * Run: pnpm exec tsx scripts/generate-sitemap.ts
  * Output: public/sitemap.xml
  */
 

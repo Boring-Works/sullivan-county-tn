@@ -1,4 +1,3 @@
-import QRCode from "qrcode-svg";
 import { CountySeal } from "~/components/shared/CountySeal";
 import type { Department } from "~/data/departments";
 import { SITE_URL } from "~/utils/seo";
@@ -14,16 +13,6 @@ interface PrintableContactCardProps {
  */
 export function PrintableContactCard({ department }: PrintableContactCardProps) {
   const url = `${SITE_URL}/departments/${department.slug}`;
-  const qr = new QRCode({
-    content: url,
-    padding: 1,
-    width: 96,
-    height: 96,
-    color: "#0c1e33",
-    background: "#ffffff",
-    ecl: "M",
-    join: true,
-  }).svg();
 
   return (
     <aside className="hidden print:block print:fixed print:inset-0 print:m-0 print:bg-white print:text-black print:p-8">
@@ -80,10 +69,9 @@ export function PrintableContactCard({ department }: PrintableContactCardProps) 
           </div>
         </dl>
 
-        <div className="flex flex-col items-center gap-1">
-          {/* biome-ignore lint/security/noDangerouslySetInnerHtml: server-rendered QR SVG */}
-          <div dangerouslySetInnerHTML={{ __html: qr }} />
-          <p className="font-body text-[8pt] text-center max-w-[120px]">Scan for the live page</p>
+        <div className="flex max-w-[180px] flex-col items-center gap-2 rounded-sm border border-black/30 p-3 text-center">
+          <p className="font-display text-[11pt] font-bold">Live page</p>
+          <p className="break-all font-body text-[8pt] leading-snug">{url}</p>
         </div>
       </div>
 

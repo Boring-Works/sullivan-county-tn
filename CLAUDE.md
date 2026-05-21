@@ -12,12 +12,12 @@ See `/docs/` for complete architecture audit:
 - [GAP_ANALYSIS.md](docs/GAP_ANALYSIS.md) — Known gaps
 - [NEXT_IMPLEMENTATION_PLAN.md](docs/NEXT_IMPLEMENTATION_PLAN.md) — Future plan
 
-## State (2026-05-07 — production-hardened, weather-live, PWA-ready)
-- **Tests:** 79 unit + 117/117 critical-paths + user-flows E2E across desktop/tablet/mobile, 21/21 accessibility scans (axe-core)
-- **A11y:** WCAG AA compliant — kbd contrast fixed, brand-stable colors site-wide, scroll-reveal failsafe ensures all sections render even with reduced motion or no JS
-- **Lint:** 0 errors
-- **Build:** ~3.7s, **749.92 KB** worker entry
-- **Live:** https://sullivan-county-tn.codyboring.workers.dev (latest version `8f75c569-2488-468f-989a-87f196e9e4f8`)
+## State (2026-05-21 — production-hardened, weather-live, PWA-ready)
+- **Tests:** 83 unit tests passing across 13 files; Playwright coverage includes desktop/tablet/mobile critical paths, accessibility scans, menu behavior, user flows, and admin auth flows.
+- **A11y:** WCAG AA oriented — kbd contrast fixed, brand-stable colors site-wide, scroll-reveal failsafe ensures all sections render even with reduced motion or no JS.
+- **Lint:** Biome check passes with 0 errors.
+- **Build:** Vite/TanStack Start production build passes locally.
+- **Live:** Cloudflare Workers deployment target is `sullivan-county-tn` at https://sullivan-county-tn.codyboring.workers.dev.
 - **Security:** Typed `Cloudflare.Env` end-to-end (no `as Record<string, unknown>` casts), auth gates + Zod validation + per-IP rate limit on every admin POST, ULIDs, XSS sanitization, timing-safe password compare, structured JSON logging, CSRF module defined (SameSite=Strict cookies + same-origin server fns provide primary defense)
 - **Phase 1 (typed env):** `src/server/env.ts` exports `getEnv()` / `getDB()` / `getKV()` against `Cloudflare.Env`. `ADMIN_PASSWORD` declared via interface merging. NWS fetch hardened with 5s `AbortController` timeout + `cf` cache hint + retry on 5xx.
 - **Phase 2 (Drizzle/Zod):** `drizzle-zod` installed, `createInsertSchema/createSelectSchema` per table, all indexes in `schema.ts`, ULID brand type at `src/lib/schemas/ids.ts`, `$inferSelect` types exported.
@@ -29,7 +29,7 @@ See `/docs/` for complete architecture audit:
 - **Trust signals (2026-05-07):** `<DetailBreadcrumb>` mounted on `/departments/$slug`, `/news/$slug`, `/communities/$slug`, `/history/$slug`, `/forms/$type`. **"Last reviewed" stamps** at the bottom of every department detail page and form page.
 - **iOS / Android 2026 PWA standards:** `viewport-fit=cover` safe areas, dual `theme-color` (light + dark), full iOS PWA tag set, multiple `apple-touch-icon` sizes, `mask-icon`, `format-detection: telephone=no`, `msapplication-TileColor`, `color-scheme: light`.
 - **Code quality:** 0 TODO/FIXME/XXX, 0 `console.log`, 0 hand-written `any`, all `target=_blank` have `rel`, all `<input>` label-associated, `StatusBadge` brand-aligned palette.
-- **Earlier 2026-05-06/07 wins (preserved):** Hero search + 5 task chips + suggested-search pills, restrained EmergencyModule strip, Open-Now status pill (holiday-aware via Computus), Next-Meeting `.ics` export, online/in-person submission badges, vCard "Save Contact" exports, view transitions on dept list → detail, BreadcrumbList + Event + GovernmentService + FAQPage JSON-LD, Spanish locale populated, citizen-language search aliases, MobileBottomTabBar, ParcelLookup → TPAD typeahead, verb-based primary nav (Pay · Apply · Report · Records · Meetings · Departments · About), per-IP rate limit composite keys.
+- **Earlier 2026-05-06/07 wins (preserved):** Hero search + 5 task chips + suggested-search pills, restrained EmergencyModule strip, Open-Now status pill (holiday-aware via Computus), Next-Meeting `.ics` export, online/in-person submission badges, vCard "Save Contact" exports, view transitions on dept list → detail, BreadcrumbList + Event + GovernmentService + FAQPage JSON-LD, Spanish locale populated, citizen-language search aliases, MobileBottomTabBar, ParcelLookup → TPAD typeahead, consolidated 5-verb primary nav (Find · Pay · Apply · Report · About), per-IP rate limit composite keys.
 
 ## Tech Stack
 - TanStack Start (full-stack React framework)
@@ -42,15 +42,16 @@ See `/docs/` for complete architecture audit:
 - Vite + Cloudflare Vite Plugin
 
 ## Key Commands
-- `npm run dev` — Start dev server (local Cloudflare Workers runtime)
-- `npm run build` — Production build
-- `npm run preview` — Preview production build locally
-- `npm run deploy` — Build + deploy to Cloudflare Workers
-- `npm run lint` — Run Biome linter
-- `npm run format` — Format with Biome
-- `npm run test` — Run tests
-- `npx tsx scripts/generate-rss.ts` — Regenerate RSS feed after adding news
-- `npx tsx scripts/generate-sitemap.ts` — Regenerate sitemap after adding routes/content
+- `pnpm install --frozen-lockfile` — Install exact dependencies
+- `pnpm run dev` — Start dev server (local Cloudflare Workers runtime)
+- `pnpm run build` — Production build
+- `pnpm run preview` — Preview production build locally
+- `pnpm run deploy` — Build + deploy to Cloudflare Workers
+- `pnpm run lint` — Run Biome linter
+- `pnpm run format` — Format with Biome
+- `pnpm run test` — Run tests
+- `pnpm exec tsx scripts/generate-rss.ts` — Regenerate RSS feed after adding news
+- `pnpm exec tsx scripts/generate-sitemap.ts` — Regenerate sitemap after adding routes/content
 
 ## Routes
 | Route | File | Purpose |
@@ -98,7 +99,7 @@ See `/docs/` for complete architecture audit:
 | `data/meeting-minutes.ts` | Meeting minutes with committee, date, titles, PDF attachments |
 | `data/form-definitions.ts` | 4 form types with field definitions and validation |
 | `data/site-config.ts` | Centralized SITE_URL, SITE_NAME, CURRENT_YEAR constants |
-| `data/nav-verbs.ts` | 7 verb-based primary nav definitions (Pay/Apply/Report/Records/Meetings/Departments/About) — each verb maps to concrete citizen tasks with internal/external link tags |
+| `data/nav-verbs.ts` | 5 verb-based primary nav definitions (Find/Pay/Apply/Report/About) — each verb maps to concrete citizen tasks with internal/external link tags |
 | `data/holidays.ts` | 13 county holidays computed annually (fixed dates + Easter via Computus + observed-on-nearest-weekday for fixed-date holidays falling on weekends) |
 
 ## Key Components
@@ -161,10 +162,10 @@ See `/docs/` for complete architecture audit:
 | `@cloudflare/vitest-pool-workers` | Real Workers runtime testing |
 
 ## Testing
-- Unit tests: `npm test`
-- E2E tests: `npx playwright test`
-- E2E UI mode: `npx playwright test --ui`
-- Coverage: `npm test -- --coverage`
+- Unit tests: `pnpm test`
+- E2E tests: `pnpm exec playwright test`
+- E2E UI mode: `pnpm exec playwright test --ui`
+- Coverage: `pnpm test -- --coverage`
 
 ## Server Functions
 | Function | File | Purpose |
@@ -207,7 +208,7 @@ See `/docs/` for complete architecture audit:
 ## Deployment
 - **Platform:** Cloudflare Workers
 - **Worker:** sullivan-county-tn
-- **Deploy:** `npm run deploy`
+- **Deploy:** `pnpm run deploy`
 - **Before deploying** new D1 migrations, apply them remotely:
   ```sh
   npx wrangler d1 migrations apply --remote sullivan-county-db
@@ -227,7 +228,7 @@ This is a county government website. The reference points are GOV.UK, NYC.gov, t
 - **Identity earns its place; utility earns the citizen's time.** Hero is "How can we help today?" + search + 5 top tasks; heritage tagline is the quiet final line.
 
 ## Architecture notes for new components
-- **Verb-based primary nav (`SiteNav.tsx` + `data/nav-verbs.ts`)** — top nav is seven verbs: Pay · Apply · Report · Records · Meetings · Departments · About. Each verb opens a mega-panel of concrete tasks. Hover-open is gated behind `matchMedia("(hover: hover) and (pointer: fine)")` so touch devices use click-only. Click-outside closes via `pointerdown`. Arrow keys cycle through `data-panel-link` items inside the open panel; Escape closes and returns focus to the trigger. The Departments verb keeps the existing 6-category mega-menu layout; About uses three columns (Heritage / Region / Government). Adding a new task = edit `nav-verbs.ts`; the unit test in `tests/data/nav-verbs.test.ts` validates that internal targets resolve to real routes.
+- **Verb-based primary nav (`SiteNav.tsx` + `data/nav-verbs.ts`)** — top nav is five verbs: Find · Pay · Apply · Report · About. Records, meetings, and departments fold into Find to keep the top-level choice set small. Each verb opens a mega-panel of concrete tasks. Hover-open is gated behind `matchMedia("(hover: hover) and (pointer: fine)")` so touch devices use click-only. Click-outside closes via `pointerdown`. Arrow keys cycle through `data-panel-link` items inside the open panel; Escape closes and returns focus to the trigger. Find includes department category links with `/departments?category=...` search params. Adding a new task = edit `nav-verbs.ts`; the unit test in `tests/data/nav-verbs.test.ts` validates that internal targets resolve to real routes.
 - **Parcel lookup (`components/property-taxes/ParcelLookup.tsx` + `server/parcel-lookup.ts`)** — single-box typeahead on `/property-taxes`. Calls `lookupParcelSuggestions` server fn which proxies the Tennessee Comptroller's TPAD autocomplete (`assessment.cot.tn.gov/TPAD/Search/Autocomplete/082/{q}`). No HTML scraping. Submitting deep-links to TPAD search results in a new tab. Three side-by-side CTAs: View assessment → TPAD, Pay your taxes → Trustee, View on map → ArcGIS Online web map. Rate-limited 30/min per IP, 4s upstream timeout, graceful "we couldn't reach the state database" copy on failure.
 - **`useOpenStatus(hours)`** parses department `contact.hours` strings. Format **must** look like `"Monday-Friday, 8am-4:30pm"` (additional clauses after the period are ignored). Strings starting with `"24/7"` always resolve to "Open 24/7." Unparseable strings render no pill (graceful fallback). On SSR (no `now`), the hook returns a stable hours summary placeholder ("Mon–Fri · 8:00 AM–4:30 PM") so the pill is visible immediately; client hydration upgrades to live "Open until 4:30 PM" / "Closed · Holiday Name". The hook honors all 13 county holidays (computed in `src/data/holidays.ts`, including Easter via Computus + observed-on-nearest-weekday for fixed-date holidays) — government offices show "Closed · {Holiday}" on observed-closure days even within business hours.
 - **Interactive county map (`src/components/home/CommunityMap.tsx`)** — boundary path derived once from US Census TIGER/Line FIPS 47163 polygon, equirectangular-projected at the county's center latitude into a 1000×373 viewBox (700-char SVG path committed; no runtime GeoJSON parsing). Six community pins computed from each municipality's lat/lng using the same projection. `Link to="/communities/$slug"` per pin; mobile fallback list when SVG pins are too small to tap. Replaces the old heritage trio of cards on the homepage.
@@ -298,7 +299,7 @@ This is a county government website. The reference points are GOV.UK, NYC.gov, t
 | Mobile bottom tab bar | USWDS thumb-zone pattern: Pay · Search · Call. Hides itself when the soft keyboard is up via `visualViewport` ratio detection. `padding-bottom: env(safe-area-inset-bottom)` to clear the iOS notch. | 2026-05-06 |
 | AudiencePathways homepage section | Brunswick / Greenville hybrid pattern: three audience tiles (Residents / Businesses / Visitors) below DepartmentCategories. Routes to `/departments?category=community`, `/economic-development`, `/visit`. | 2026-05-06 |
 | FAQPage + GovernmentService JSON-LD | Every `/departments/$slug` emits a combined JSON-LD block (BreadcrumbList + GovernmentService + optional FAQPage when the dept has `faqItems`). Every `/forms/$type` emits GovernmentService with a `potentialAction` back to the form URL. | 2026-05-06 |
-| Verb-based primary nav | Replaces heritage-led top nav with **Pay · Apply · Report · Records · Meetings · Departments · About**. Each verb opens its own mega-panel of concrete tasks (GOV.UK / Cook County "I Want To" pattern). Departments mega-menu preserved. Heritage routes consolidated under About. Data in `src/data/nav-verbs.ts`, validated by `tests/data/nav-verbs.test.ts`. | 2026-05-07 |
+| Verb-based primary nav | Replaces heritage-led top nav with **Find · Pay · Apply · Report · About**. Each verb opens its own mega-panel of concrete tasks (GOV.UK / Cook County "I Want To" pattern). Records, meetings, and department browse tasks are consolidated under Find. Heritage routes remain under About. Data in `src/data/nav-verbs.ts`, validated by `tests/data/nav-verbs.test.ts`. | 2026-05-21 |
 | Parcel lookup on /property-taxes | Single-box typeahead routes citizens to TPAD (state assessment) / Trustee (payment) / ArcGIS (map). Server fn proxies TPAD autocomplete; no HTML scraping. Closes the GIS-Trustee gap that blueprint Insight 11 calls "the highest-ROI integration available to most counties." | 2026-05-07 |
 | Per-IP rate limit keys | `rate-limit.ts` now derives composite `key:ip` keys via `getRequestIP()` + CF-Connecting-IP. Previously global keys (`"contact"`, `"form-submit"`) meant one user blocked everyone in the same isolate. | 2026-05-07 |
 | Unused shadcn primitives removed | `components/ui/card.tsx` and `components/ui/button.tsx` had zero imports. Deleted. Badge stays (used in 4 places). | 2026-05-07 |

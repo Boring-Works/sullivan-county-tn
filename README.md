@@ -13,16 +13,22 @@ TypeScript, TanStack Start, Cloudflare D1, Cloudflare Workers
 
 ## Commands
 ```bash
-npm ci
-npm run dev
-npm run build
-npm run deploy
+pnpm install --frozen-lockfile
+pnpm run dev
+pnpm run build
+pnpm run deploy
 ```
 
 ## Release Sanity Check
 ```bash
-npx biome check . && npx tsc --noEmit && npm run build && npm test -- --run
+pnpm exec biome check . && pnpm exec tsc --noEmit && pnpm run build && pnpm test -- --run
 ```
+
+## GitHub Deploys
+
+Cloudflare deploys run through `.github/workflows/deploy.yml`. Set `CLOUDFLARE_API_TOKEN`
+as a GitHub Actions secret with Workers Scripts write access. Without that secret, CI still builds
+and tests, but the deploy job is skipped so main does not show a false deploy failure.
 
 ## Recent Navigation & Share UX Updates (May 2026)
 - Verb-navigation active state now evaluates both pathname and search params (notably `/departments?category=...`).

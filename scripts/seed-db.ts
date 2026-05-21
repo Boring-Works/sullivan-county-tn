@@ -1,7 +1,7 @@
 /**
  * Seed D1 database with existing static data (news + meeting minutes).
  * Run against local: wrangler d1 execute sullivan-county-db --local --file=scripts/seed.sql
- * Or use this script to generate the SQL: npx tsx scripts/seed-db.ts > scripts/seed.sql
+ * Or use this script to generate the SQL: pnpm exec tsx scripts/seed-db.ts > scripts/seed.sql
  */
 
 // Import from data files manually (can't use path aliases in scripts)

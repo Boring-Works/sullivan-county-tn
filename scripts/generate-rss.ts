@@ -1,6 +1,6 @@
 /**
  * Generate static RSS feed from news data.
- * Run: npx tsx scripts/generate-rss.ts
+ * Run: pnpm exec tsx scripts/generate-rss.ts
  * Output: public/rss.xml
  */
 

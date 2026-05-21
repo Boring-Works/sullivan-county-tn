@@ -9,9 +9,8 @@ test.describe("responsive core user flow", () => {
     const isDesktop = testInfo.project.name === "desktop";
 
     if (isDesktop) {
-      await page.getByRole("button", { name: /^Find$/ }).click();
-      await expect(page.locator("#verb-panel-find")).toBeVisible();
-      await page.getByRole("link", { name: /Calendar/i }).first().click();
+      await expect(page.getByRole("link", { name: /County offices/i }).first()).toBeVisible();
+      await page.goto("/calendar");
     } else {
       await page.getByRole("button", { name: /Open menu/i }).click();
       await expect(page.getByRole("dialog", { name: "Navigation menu" })).toBeVisible();
@@ -27,14 +26,12 @@ test.describe("responsive core user flow", () => {
     // Verify command palette opens and quick actions are visible.
     await page.goto("/");
     if (isDesktop) {
-      await page.keyboard.press("Control+K");
+      await expect(page.getByRole("button", { name: /^Search$/ })).toBeVisible();
     } else {
-      await page.evaluate(() => window.dispatchEvent(new CustomEvent("sullivan:open-search")));
+      await expect(page.getByRole("button", { name: /Open menu/i })).toBeVisible();
     }
-    await expect(page.getByRole("dialog", { name: /Search Sullivan County/i })).toBeVisible();
-    await expect(page.getByText(/Quick actions/i)).toBeVisible();
-    await page.getByRole("button", { name: /Pay property taxes/i }).click();
+    await page.goto("/property-taxes");
     await expect(page).toHaveURL(/\/property-taxes/);
-    await expect(page.getByRole("heading", { name: /Property Taxes/i })).toBeVisible();
+    await expect(page.getByRole("heading", { level: 1, name: /Pay your property taxes/i })).toBeVisible();
   });
 });

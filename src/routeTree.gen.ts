@@ -40,6 +40,7 @@ import { Route as HistorySlugRouteImport } from './routes/history/$slug'
 import { Route as FormsTypeRouteImport } from './routes/forms/$type'
 import { Route as DepartmentsSlugRouteImport } from './routes/departments/$slug'
 import { Route as CommunitiesSlugRouteImport } from './routes/communities/$slug'
+import { Route as ApiHealthRouteImport } from './routes/api/health'
 import { Route as AdminSubmissionsRouteImport } from './routes/admin/submissions'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
 import { Route as AdminAnnouncementsRouteImport } from './routes/admin/announcements'
@@ -205,6 +206,11 @@ const CommunitiesSlugRoute = CommunitiesSlugRouteImport.update({
   path: '/communities/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiHealthRoute = ApiHealthRouteImport.update({
+  id: '/api/health',
+  path: '/api/health',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminSubmissionsRoute = AdminSubmissionsRouteImport.update({
   id: '/admin/submissions',
   path: '/admin/submissions',
@@ -274,6 +280,7 @@ export interface FileRoutesByFullPath {
   '/admin/announcements': typeof AdminAnnouncementsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/submissions': typeof AdminSubmissionsRoute
+  '/api/health': typeof ApiHealthRoute
   '/communities/$slug': typeof CommunitiesSlugRoute
   '/departments/$slug': typeof DepartmentsSlugRoute
   '/forms/$type': typeof FormsTypeRoute
@@ -316,6 +323,7 @@ export interface FileRoutesByTo {
   '/admin/announcements': typeof AdminAnnouncementsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/submissions': typeof AdminSubmissionsRoute
+  '/api/health': typeof ApiHealthRoute
   '/communities/$slug': typeof CommunitiesSlugRoute
   '/departments/$slug': typeof DepartmentsSlugRoute
   '/forms/$type': typeof FormsTypeRoute
@@ -359,6 +367,7 @@ export interface FileRoutesById {
   '/admin/announcements': typeof AdminAnnouncementsRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/submissions': typeof AdminSubmissionsRoute
+  '/api/health': typeof ApiHealthRoute
   '/communities/$slug': typeof CommunitiesSlugRoute
   '/departments/$slug': typeof DepartmentsSlugRoute
   '/forms/$type': typeof FormsTypeRoute
@@ -403,6 +412,7 @@ export interface FileRouteTypes {
     | '/admin/announcements'
     | '/admin/login'
     | '/admin/submissions'
+    | '/api/health'
     | '/communities/$slug'
     | '/departments/$slug'
     | '/forms/$type'
@@ -445,6 +455,7 @@ export interface FileRouteTypes {
     | '/admin/announcements'
     | '/admin/login'
     | '/admin/submissions'
+    | '/api/health'
     | '/communities/$slug'
     | '/departments/$slug'
     | '/forms/$type'
@@ -487,6 +498,7 @@ export interface FileRouteTypes {
     | '/admin/announcements'
     | '/admin/login'
     | '/admin/submissions'
+    | '/api/health'
     | '/communities/$slug'
     | '/departments/$slug'
     | '/forms/$type'
@@ -530,6 +542,7 @@ export interface RootRouteChildren {
   AdminAnnouncementsRoute: typeof AdminAnnouncementsRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminSubmissionsRoute: typeof AdminSubmissionsRoute
+  ApiHealthRoute: typeof ApiHealthRoute
   CommunitiesSlugRoute: typeof CommunitiesSlugRoute
   DepartmentsSlugRoute: typeof DepartmentsSlugRoute
   FormsTypeRoute: typeof FormsTypeRoute
@@ -769,6 +782,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CommunitiesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/health': {
+      id: '/api/health'
+      path: '/api/health'
+      fullPath: '/api/health'
+      preLoaderRoute: typeof ApiHealthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/submissions': {
       id: '/admin/submissions'
       path: '/admin/submissions'
@@ -858,6 +878,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminAnnouncementsRoute: AdminAnnouncementsRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminSubmissionsRoute: AdminSubmissionsRoute,
+  ApiHealthRoute: ApiHealthRoute,
   CommunitiesSlugRoute: CommunitiesSlugRoute,
   DepartmentsSlugRoute: DepartmentsSlugRoute,
   FormsTypeRoute: FormsTypeRoute,
