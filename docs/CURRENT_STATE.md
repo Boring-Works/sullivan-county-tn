@@ -43,9 +43,10 @@ The site has been through a **7-phase production-hardening pass** plus several f
 ### Phase 5 — PWA + offline
 - `public/sw.js` adapted from `Boring-Works/where-tennessee-began`. Cache-first fonts, network-first navigation w/ Navigation Preload + `/offline.html` fallback, image cache with eviction cap, stale-while-revalidate everywhere else. **Pre-caches emergency-critical pages** (`/`, `/property-taxes`, `/contact`, `/calendar`, `/weather`, `/departments/emergency-management`, `/departments/sheriff`).
 - `public/offline.html` — branded fallback with 911/Sheriff/EMA `tel:` links.
-- `public/manifest.webmanifest` — full **2026 PWA spec**: `id`, `scope`, `lang`, `display_override`, `launch_handler`, `share_target`, **shortcuts** (Pay Taxes / Weather / Contact / Calendar), maskable icon variant, categories.
+- `public/manifest.webmanifest` — full **2026 PWA spec**: `id`, `scope`, `lang`, `display_override`, `launch_handler`, `share_target`, **shortcuts** (Pay Taxes / Weather / Contact / Calendar), maskable icon variant, categories, and no orientation lock.
 - `<OfflineBanner />` listens to `navigator.onLine`, fixed top bar with brand-copper styling, safe-area-aware.
 - SW registered in `__root.tsx` behind `import.meta.env.PROD`.
+- `docs/ACCESSIBILITY_PWA_AUDIT.md` records the 2026 accessibility/PWA review, applied fixes, and remaining platform-grade recommendations.
 
 ### Weather and river subsystem
 - **NWS API integration** (api.weather.gov, no key, government data on a government site). Forecast office `MRX` (Morristown), gridpoint `126,82`, forecast zone `TNZ017`.
@@ -75,6 +76,7 @@ The site has been through a **7-phase production-hardening pass** plus several f
 - `format-detection: telephone=no` (we use TelLink for explicit, branded `tel:` links).
 - `msapplication-TileColor` for Edge/Windows.
 - `color-scheme: light` hint for native form controls.
+- Manifest orientation lock removed to support portrait and landscape.
 
 ### Code-quality audit pass
 - 0 TODO/FIXME/XXX comments
@@ -185,7 +187,7 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 
 | Type | Files | Tests | Status |
 |---|---|---|---|
-| Unit (Vitest) | 16 | 94 | all passing |
+| Unit (Vitest) | 17 | 97 | all passing |
 | E2E (Playwright × desktop+tablet+mobile) | 6 specs | 117–270 cases (varies by spec) | 117/117 critical-paths + user-flows; 21/21 a11y; ParcelLookup test occasionally flakes when TPAD upstream is slow |
 
 ### Design system

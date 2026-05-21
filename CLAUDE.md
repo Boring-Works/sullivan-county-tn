@@ -6,6 +6,7 @@ Brand: **Official services. Local government. Community information.** Tourism b
 ## Audit Docs (May 2026)
 See `/docs/` for complete architecture audit:
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md) — Full stack architecture
+- [ACCESSIBILITY_PWA_AUDIT.md](docs/ACCESSIBILITY_PWA_AUDIT.md) — Accessibility, color contrast, iOS/Android/PWA audit
 - [BRAND_POSITIONING.md](docs/BRAND_POSITIONING.md) — Civic portal vs. tourism brand split
 - [CURRENT_STATE.md](docs/CURRENT_STATE.md) — Current project state
 - [COMPONENT_INVENTORY.md](docs/COMPONENT_INVENTORY.md) — All 50 components
@@ -14,8 +15,8 @@ See `/docs/` for complete architecture audit:
 - [NEXT_IMPLEMENTATION_PLAN.md](docs/NEXT_IMPLEMENTATION_PLAN.md) — Future plan
 
 ## State (2026-05-21 — production-hardened, weather/river-live, PWA-ready)
-- **Tests:** 94 unit tests passing across 16 files; Playwright coverage includes desktop/tablet/mobile critical paths, accessibility scans, menu behavior, user flows, and admin auth flows.
-- **A11y:** WCAG AA oriented — kbd contrast fixed, brand-stable colors site-wide, scroll-reveal failsafe ensures all sections render even with reduced motion or no JS.
+- **Tests:** 97 unit tests passing across 17 files; Playwright coverage includes desktop/tablet/mobile critical paths, accessibility scans, menu behavior, user flows, and admin auth flows.
+- **A11y:** WCAG AA oriented — kbd contrast fixed, brand-stable colors site-wide, skip-link focus fixed, scroll-reveal failsafe ensures all sections render even with reduced motion or no JS.
 - **Lint:** Biome check passes with 0 errors.
 - **Build:** Vite/TanStack Start production build passes locally.
 - **Live:** Cloudflare Workers deployment target is `sullivan-county-tn` at https://sullivan-county-tn.codyboring.workers.dev.
@@ -28,7 +29,7 @@ See `/docs/` for complete architecture audit:
 - **Weather + river subsystem (2026-05-21):** NWS API integration (api.weather.gov, no key — government data on a government site). MRX gridpoint 126,82, forecast zone TNZ017. KV-cached snapshot with 10-min SWR-on-read. Homepage uses one shared client weather fetch for the alert banner and hero weather badge. D1 `weather_observations` archives every refresh. `/weather` route is action-first: situation summary, relevant NWS alerts, current conditions, 12-hour outlook, 7-day forecast, trend chart, USGS river gauges, TVA lake links, and TDOT/TN 511 road links.
 - **Content freshness:** 7 fresh news articles dated April–May 2026 (Memorial Day closures, Blountville Athletic Park grand opening, FY 26-27 budget hearing, Apr 16 Commission recap, SR 126 Memorial Boulevard project, May 15 burn permit deadline, severe weather prep). **Live D1-seeded AnnouncementBanner** showing Memorial Day closure on the homepage.
 - **Trust signals (2026-05-07):** `<DetailBreadcrumb>` mounted on `/departments/$slug`, `/news/$slug`, `/communities/$slug`, `/history/$slug`, `/forms/$type`. **"Last reviewed" stamps** at the bottom of every department detail page and form page.
-- **iOS / Android 2026 PWA standards:** `viewport-fit=cover` safe areas, dual `theme-color` (light + dark), full iOS PWA tag set, multiple `apple-touch-icon` sizes, `mask-icon`, `format-detection: telephone=no`, `msapplication-TileColor`, `color-scheme: light`.
+- **iOS / Android 2026 PWA standards:** `viewport-fit=cover` safe areas, dual `theme-color` (light + dark), full iOS PWA tag set, multiple `apple-touch-icon` sizes, `mask-icon`, `format-detection: telephone=no`, `msapplication-TileColor`, `color-scheme: light`, no manifest orientation lock.
 - **Code quality:** 0 TODO/FIXME/XXX, 0 `console.log`, 0 hand-written `any`, all `target=_blank` have `rel`, all `<input>` label-associated, `StatusBadge` brand-aligned palette.
 - **Earlier 2026-05-06/07 wins (preserved):** Hero search + 5 task chips + suggested-search pills, restrained EmergencyModule strip, Open-Now status pill (holiday-aware via Computus), Next-Meeting `.ics` export, online/in-person submission badges, vCard "Save Contact" exports, view transitions on dept list → detail, BreadcrumbList + Event + GovernmentService + FAQPage JSON-LD, Spanish locale populated, citizen-language search aliases, MobileBottomTabBar, ParcelLookup → TPAD typeahead, consolidated 5-verb primary nav (Find · Pay · Apply · Report · About), per-IP rate limit composite keys.
 

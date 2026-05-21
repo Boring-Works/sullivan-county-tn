@@ -30,6 +30,7 @@ export const Route = createFileRoute("/")({
         href: "/images/hero/boone-lake-1920.webp",
         as: "image",
         type: "image/webp",
+        media: "(min-width: 1024px)",
         fetchPriority: "high",
       },
     ],

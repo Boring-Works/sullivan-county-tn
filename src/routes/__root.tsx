@@ -205,6 +205,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
             e.preventDefault();
             const main = document.getElementById("main-content");
             if (main) {
+              if (!main.hasAttribute("tabindex")) main.setAttribute("tabindex", "-1");
               main.focus();
               main.scrollIntoView();
             }

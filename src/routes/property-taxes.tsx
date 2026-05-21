@@ -44,6 +44,8 @@ const TRUSTEE_ADDRESS = "3411 TN-126, Blountville, TN 37617";
 const ASSESSOR_PHONE = "(423) 323-6455";
 const GIS_URL =
   "https://sullcotngis.maps.arcgis.com/apps/mapviewer/index.html?webmap=2004721405af4dd0952a592b42e6f5b6";
+const INLINE_LINK_CLASS =
+  "text-brand-copper underline underline-offset-2 hover:text-brand-copper-light";
 
 const FAQ: { question: string; answer: string }[] = [
   {
@@ -257,7 +259,7 @@ function PropertyTaxesPage() {
                 card accepted at the counter.
               </p>
               <p className="mt-2 font-body text-sm">
-                <TelLink phone={TRUSTEE_PHONE} className="text-brand-copper hover:underline" />
+                <TelLink phone={TRUSTEE_PHONE} className={INLINE_LINK_CLASS} />
               </p>
             </div>
           </div>
@@ -304,24 +306,22 @@ function PropertyTaxesPage() {
               <ul className="mt-3 space-y-3 font-body text-sm text-brand-slate">
                 <li>
                   <strong className="text-brand-navy">Billing, payment, due dates →</strong>{" "}
-                  Trustee:{" "}
-                  <TelLink phone={TRUSTEE_PHONE} className="text-brand-copper hover:underline" />
+                  Trustee: <TelLink phone={TRUSTEE_PHONE} className={INLINE_LINK_CLASS} />
                 </li>
                 <li>
                   <strong className="text-brand-navy">Assessment value or appeal →</strong> Property
-                  Assessor:{" "}
-                  <TelLink phone={ASSESSOR_PHONE} className="text-brand-copper hover:underline" /> ·{" "}
+                  Assessor: <TelLink phone={ASSESSOR_PHONE} className={INLINE_LINK_CLASS} /> ·{" "}
                   <Link
                     to="/departments/$slug"
                     params={{ slug: "property-assessor" }}
-                    className="text-brand-copper hover:underline"
+                    className={INLINE_LINK_CLASS}
                   >
                     department page
                   </Link>
                 </li>
                 <li>
                   <strong className="text-brand-navy">Tax rate (set by the Commission) →</strong>{" "}
-                  <Link to="/commissioners" className="text-brand-copper hover:underline">
+                  <Link to="/commissioners" className={INLINE_LINK_CLASS}>
                     Commissioners
                   </Link>
                 </li>
@@ -371,9 +371,8 @@ function PropertyTaxesPage() {
                 <strong className="text-brand-navy">Don't ignore a delinquent bill.</strong>{" "}
                 Tennessee law lets the county sell delinquent properties at tax sale after a period
                 of unpaid taxes. If you're behind, call the Trustee at{" "}
-                <TelLink phone={TRUSTEE_PHONE} className="text-brand-copper hover:underline" /> —
-                there are payment plans and relief programs for elderly, disabled, and
-                disabled-veteran homeowners.
+                <TelLink phone={TRUSTEE_PHONE} className={INLINE_LINK_CLASS} /> — there are payment
+                plans and relief programs for elderly, disabled, and disabled-veteran homeowners.
               </p>
             </div>
           </div>

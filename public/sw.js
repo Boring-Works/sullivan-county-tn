@@ -79,7 +79,9 @@ self.addEventListener("fetch", (event) => {
 
   if (request.method !== "GET") return;
 
-  // Google Fonts: cache-first with dedicated font cache
+  // Google Fonts: cache-first with dedicated font cache. If the upstream request
+  // fails, return a successful empty fallback so the page uses local font stacks
+  // without surfacing synthetic 408 console errors.
   if (
     url.startsWith("https://fonts.googleapis.com/") ||
     url.startsWith("https://fonts.gstatic.com/")
@@ -96,7 +98,15 @@ self.addEventListener("fetch", (event) => {
               }
               return response;
             })
-            .catch(() => new Response("", { status: 408 })),
+            .catch(
+              () =>
+                new Response("", {
+                  status: url.startsWith("https://fonts.googleapis.com/") ? 200 : 204,
+                  headers: url.startsWith("https://fonts.googleapis.com/")
+                    ? { "Content-Type": "text/css; charset=utf-8" }
+                    : undefined,
+                }),
+            ),
       ),
     );
     return;
