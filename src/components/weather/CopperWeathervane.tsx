@@ -8,7 +8,7 @@
  */
 
 interface CopperWeathervaneProps {
-  windDirection: number; // degrees
+  windDirection: number | null; // degrees
   windSpeed?: number; // mph (informational only)
   size?: number; // px width (also defines height)
   className?: string;
@@ -31,8 +31,9 @@ export function CopperWeathervane({
   size = 220,
   className,
 }: CopperWeathervaneProps) {
-  const dirIdx = Math.round(windDirection / 45) % 8;
-  const directionName = DIRECTIONS[dirIdx];
+  const hasDirection = typeof windDirection === "number" && Number.isFinite(windDirection);
+  const dirIdx = hasDirection ? Math.round(windDirection / 45) % 8 : 0;
+  const directionName = hasDirection ? DIRECTIONS[dirIdx] : "Calm";
 
   // Compass-rose label radius scales with size.
   const labelRadius = size * 0.4;
@@ -41,7 +42,11 @@ export function CopperWeathervane({
     <div
       className={`relative mx-auto ${className ?? ""}`}
       style={{ width: size, height: size }}
-      aria-label={`Wind from ${directionName}${windSpeed !== undefined ? `, ${windSpeed} mph (${describeWind(windSpeed)})` : ""}`}
+      aria-label={
+        hasDirection
+          ? `Wind from ${directionName}${windSpeed !== undefined ? `, ${windSpeed} mph (${describeWind(windSpeed)})` : ""}`
+          : `Calm or variable wind${windSpeed !== undefined ? `, ${windSpeed} mph` : ""}`
+      }
       role="img"
     >
       {/* Outer compass ring */}
@@ -82,10 +87,10 @@ export function CopperWeathervane({
         })}
       </div>
 
-      {/* Vane — rotates with wind direction */}
+      {/* Vane — rotates with wind direction when NWS reports one. */}
       <div
-        className="absolute inset-0 transition-transform duration-1000 ease-out"
-        style={{ transform: `rotate(${windDirection}deg)` }}
+        className={`absolute inset-0 transition-transform duration-1000 ease-out ${hasDirection ? "" : "opacity-45"}`}
+        style={{ transform: `rotate(${hasDirection ? windDirection : 0}deg)` }}
         aria-hidden="true"
       >
         {/* Arrow head (points INTO wind, top of element) */}

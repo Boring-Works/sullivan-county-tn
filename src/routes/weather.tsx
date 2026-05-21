@@ -2,36 +2,51 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import {
   AlertTriangle,
   ArrowLeft,
+  CheckCircle2,
   Cloud,
   CloudRain,
   CloudSnow,
   ExternalLink,
+  Gauge,
+  MapPin,
+  ShieldAlert,
   Sun,
+  Waves,
   Wind,
 } from "lucide-react";
+import type { ReactNode } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import { CopperWeathervane } from "~/components/weather/CopperWeathervane";
+import {
+  formatRiverTrend,
+  formatRiverValue,
+  type RiverGauge,
+  type RiverTrend,
+} from "~/lib/river-utils";
+import { formatPercent, formatWind, parseWindDegrees, parseWindSpeed } from "~/lib/weather-utils";
 import { getCurrentWeather, getRecentObservations } from "~/server/public-weather";
+import { getRiverConditions } from "~/server/river-conditions";
 import type { PublicAlert } from "~/server/weather/refresh";
 import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/weather")({
   loader: async () => {
-    const [snapshot, observations] = await Promise.all([
+    const [snapshot, observations, riverConditions] = await Promise.all([
       getCurrentWeather().catch(() => null),
       getRecentObservations().catch(
         () => [] as Array<{ observedAt: string; temperatureF: number | null }>,
       ),
+      getRiverConditions().catch(() => [] as RiverGauge[]),
     ]);
-    return { snapshot, observations };
+    return { snapshot, observations, riverConditions };
   },
   component: WeatherPage,
   head: () => ({
     meta: seo({
-      title: "Sullivan County Weather — National Weather Service Forecast",
+      title: "Sullivan County Weather & River Conditions",
       description:
-        "Current conditions, 7-day forecast, hourly outlook, and active severe-weather alerts for Sullivan County, Tennessee. Data sourced live from the National Weather Service.",
+        "Current conditions, 7-day forecast, hourly outlook, active severe-weather alerts, and live USGS river gauge readings for Sullivan County, Tennessee.",
       url: "/weather",
     }),
     links: seoLinks("/weather"),
@@ -39,7 +54,7 @@ export const Route = createFileRoute("/weather")({
 });
 
 function WeatherPage() {
-  const { snapshot, observations } = Route.useLoaderData();
+  const { snapshot, observations, riverConditions } = Route.useLoaderData();
 
   if (!snapshot) {
     return (
@@ -73,6 +88,10 @@ function WeatherPage() {
     );
   }
 
+  const windMph = parseWindSpeed(snapshot.current.windSpeed);
+  const windDirectionDegrees = parseWindDegrees(snapshot.current.windDirection);
+  const hasAlerts = snapshot.alerts.length > 0;
+
   return (
     <main id="main-content" className="pt-24 pb-14 bg-brand-cream">
       {/* Header strip */}
@@ -89,11 +108,37 @@ function WeatherPage() {
             Sullivan County, Tennessee
           </p>
           <h1 className="font-display text-3xl font-bold sm:text-4xl">
-            Current Conditions & Forecast
+            Weather & River Conditions
           </h1>
           <p className="mt-2 font-body text-sm text-white/70">
-            Updated {formatRelative(snapshot.fetchedAt)} · Source: {snapshot.source}
+            Updated {formatRelative(snapshot.fetchedAt)} · NWS forecast plus USGS stream gauges
           </p>
+          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <WeatherStatCard
+              icon={<ShieldAlert aria-hidden="true" className="size-4" />}
+              label="NWS alerts"
+              value={hasAlerts ? `${snapshot.alerts.length} active` : "None active"}
+              tone={snapshot.hasSevereAlert ? "danger" : hasAlerts ? "warn" : "safe"}
+            />
+            <WeatherStatCard
+              icon={<CloudRain aria-hidden="true" className="size-4" />}
+              label="Rain chance"
+              value={formatPercent(snapshot.today.precipChance)}
+              tone={(snapshot.today.precipChance ?? 0) >= 70 ? "warn" : "neutral"}
+            />
+            <WeatherStatCard
+              icon={<Wind aria-hidden="true" className="size-4" />}
+              label="Wind"
+              value={formatWind(snapshot.current.windSpeed, snapshot.current.windDirection)}
+              tone={windMph >= 25 ? "warn" : "neutral"}
+            />
+            <WeatherStatCard
+              icon={<Waves aria-hidden="true" className="size-4" />}
+              label="River gauges"
+              value={riverConditions.length > 0 ? `${riverConditions.length} live` : "Unavailable"}
+              tone={riverConditions.some((gauge) => gauge.trend === "rising") ? "warn" : "neutral"}
+            />
+          </div>
         </div>
       </div>
 
@@ -116,21 +161,55 @@ function WeatherPage() {
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 space-y-12">
         {/* Active alerts */}
-        {snapshot.alerts.length > 0 && (
-          <section aria-labelledby="alerts-heading">
-            <h2
-              id="alerts-heading"
-              className="font-display text-2xl font-bold text-brand-navy mb-4"
+        <section aria-labelledby="alerts-heading">
+          <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="font-body text-xs font-semibold uppercase tracking-[0.18em] text-brand-brass">
+                Safety first
+              </p>
+              <h2
+                id="alerts-heading"
+                className="mt-1 font-display text-2xl font-bold text-brand-navy"
+              >
+                Active alerts {hasAlerts ? `(${snapshot.alerts.length})` : ""}
+              </h2>
+            </div>
+            <a
+              href="https://alerts.weather.gov/search?zone=TNZ017"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 self-start font-body text-sm font-semibold text-brand-copper hover:text-brand-copper-light sm:self-auto"
             >
-              Active alerts ({snapshot.alerts.length})
-            </h2>
+              Open NWS alert feed
+              <ExternalLink aria-hidden="true" className="size-3.5" />
+            </a>
+          </div>
+          {hasAlerts ? (
             <div className="space-y-4">
               {snapshot.alerts.map((alert) => (
                 <AlertCard key={alert.id} alert={alert} />
               ))}
             </div>
-          </section>
-        )}
+          ) : (
+            <div className="rounded-sm border border-brand-sage/25 bg-brand-sage/5 p-5">
+              <div className="flex items-start gap-3">
+                <CheckCircle2
+                  aria-hidden="true"
+                  className="mt-0.5 size-5 shrink-0 text-brand-sage"
+                />
+                <div>
+                  <p className="font-display text-base font-bold text-brand-navy">
+                    No active National Weather Service alerts for Sullivan County.
+                  </p>
+                  <p className="mt-1 font-body text-sm leading-relaxed text-brand-slate-light">
+                    Conditions can change quickly in the mountains. Keep a way to receive warnings,
+                    especially during thunderstorms, winter weather, and overnight storms.
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
+        </section>
 
         {/* Current conditions hero card */}
         <section
@@ -155,10 +234,14 @@ function WeatherPage() {
                 <p className="mt-2 font-body text-lg text-brand-slate">
                   {snapshot.current.conditions}
                 </p>
+                <p className="mt-1 inline-flex items-center gap-1.5 font-body text-xs font-semibold uppercase tracking-[0.14em] text-brand-stone">
+                  <MapPin aria-hidden="true" className="size-3.5" />
+                  Blountville gridpoint · Sullivan County
+                </p>
               </div>
             </div>
             <p className="mt-6 font-body text-sm text-brand-slate-light leading-relaxed">
-              {snapshot.current.detailedForecast}
+              {snapshot.current.detailedForecast || snapshot.today.detailedForecast}
             </p>
           </div>
 
@@ -167,8 +250,8 @@ function WeatherPage() {
             {/* Live weathervane — rotates with current wind direction */}
             <div className="pt-2 pb-12">
               <CopperWeathervane
-                windDirection={parseWindDegrees(snapshot.current.windDirection)}
-                windSpeed={parseInt(snapshot.current.windSpeed, 10) || undefined}
+                windDirection={windDirectionDegrees}
+                windSpeed={windMph || undefined}
                 size={180}
               />
             </div>
@@ -196,7 +279,7 @@ function WeatherPage() {
               <div className="flex items-center gap-2 font-display text-base font-bold text-brand-navy">
                 <Wind aria-hidden="true" className="size-4 text-brand-stone" />
                 <span>
-                  {snapshot.current.windSpeed} {snapshot.current.windDirection}
+                  {formatWind(snapshot.current.windSpeed, snapshot.current.windDirection)}
                 </span>
               </div>
             </div>
@@ -213,6 +296,8 @@ function WeatherPage() {
             )}
           </div>
         </section>
+
+        <RiverConditionsSection gauges={riverConditions} />
 
         {/* Hourly outlook */}
         {snapshot.hourly.length > 0 && (
@@ -309,6 +394,16 @@ function WeatherPage() {
               National Weather Service Morristown office
               <ExternalLink aria-hidden="true" className="size-3" />
             </a>
+            . River gauge data from the{" "}
+            <a
+              href="https://waterdata.usgs.gov/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-brand-copper underline hover:text-brand-copper-light inline-flex items-center gap-1"
+            >
+              U.S. Geological Survey
+              <ExternalLink aria-hidden="true" className="size-3" />
+            </a>
             . Cached at the edge and refreshed every 10 minutes.
           </p>
           <p className="mt-2 font-body text-sm text-brand-slate leading-relaxed">
@@ -367,6 +462,173 @@ function AlertCard({ alert }: { alert: PublicAlert }) {
         </div>
       </div>
     </div>
+  );
+}
+
+function WeatherStatCard({
+  icon,
+  label,
+  value,
+  tone,
+}: {
+  icon: ReactNode;
+  label: string;
+  value: string;
+  tone: "safe" | "neutral" | "warn" | "danger";
+}) {
+  const toneClass = {
+    safe: "border-brand-sage/30 bg-brand-sage/12 text-brand-sage",
+    neutral: "border-white/12 bg-white/8 text-brand-brass-light",
+    warn: "border-brand-brass-light/35 bg-brand-brass-light/12 text-brand-brass-light",
+    danger: "border-brand-copper-light/50 bg-brand-copper/25 text-white",
+  }[tone];
+
+  return (
+    <div className={`rounded-sm border px-4 py-3 ${toneClass}`}>
+      <div className="flex items-center gap-2 font-body text-[11px] font-semibold uppercase tracking-[0.16em]">
+        {icon}
+        <span>{label}</span>
+      </div>
+      <p className="mt-1 font-display text-xl font-bold text-white">{value}</p>
+    </div>
+  );
+}
+
+function RiverConditionsSection({ gauges }: { gauges: RiverGauge[] }) {
+  return (
+    <section aria-labelledby="river-heading">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.18em] text-brand-brass">
+            Rivers and creeks
+          </p>
+          <h2 id="river-heading" className="mt-1 font-display text-2xl font-bold text-brand-navy">
+            River conditions
+          </h2>
+          <p className="mt-1 max-w-3xl font-body text-sm leading-relaxed text-brand-slate-light">
+            Live USGS stream gauges for waterways that feed Sullivan County recreation, stormwater,
+            and flood awareness. Use this with official NWS alerts, not instead of them.
+          </p>
+        </div>
+        <a
+          href="https://waterdata.usgs.gov/tn/nwis/current/?type=flow"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 self-start font-body text-sm font-semibold text-brand-copper hover:text-brand-copper-light sm:self-auto"
+        >
+          Open USGS water data
+          <ExternalLink aria-hidden="true" className="size-3.5" />
+        </a>
+      </div>
+
+      {gauges.length > 0 ? (
+        <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
+          {gauges.map((gauge) => (
+            <RiverGaugeCard key={gauge.siteNo} gauge={gauge} />
+          ))}
+        </div>
+      ) : (
+        <div className="rounded-sm border border-brand-surface bg-white p-5">
+          <p className="font-display text-base font-bold text-brand-navy">
+            River gauge data is temporarily unavailable.
+          </p>
+          <p className="mt-1 font-body text-sm text-brand-slate-light">
+            Check the official USGS water data site for the latest streamflow readings.
+          </p>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function RiverGaugeCard({ gauge }: { gauge: RiverGauge }) {
+  return (
+    <article className="rounded-sm border border-brand-surface bg-white p-5 shadow-sm">
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <p className="font-body text-[11px] font-semibold uppercase tracking-[0.16em] text-brand-stone">
+            {gauge.label}
+          </p>
+          <h3 className="mt-1 font-display text-xl font-bold leading-tight text-brand-navy">
+            {gauge.waterway}
+          </h3>
+          <p className="mt-1 font-body text-xs text-brand-slate-light">{gauge.name}</p>
+          <p className="mt-3 font-body text-sm leading-relaxed text-brand-slate">
+            {riverGaugePurpose(gauge.siteNo)}
+          </p>
+        </div>
+        <TrendBadge trend={gauge.trend} />
+      </div>
+
+      <div className="mt-5 grid grid-cols-2 gap-3">
+        <RiverMetric
+          icon={<Waves aria-hidden="true" className="size-4" />}
+          label="Flow"
+          value={formatRiverValue(gauge.discharge, 0)}
+        />
+        <RiverMetric
+          icon={<Gauge aria-hidden="true" className="size-4" />}
+          label="Gauge height"
+          value={formatRiverValue(gauge.gaugeHeight)}
+        />
+      </div>
+
+      <div className="mt-5 border-t border-brand-surface pt-4">
+        <p className="font-body text-xs text-brand-stone">
+          Updated{" "}
+          {gauge.latestObservedAt ? formatDateTime(gauge.latestObservedAt) : "when USGS reports"}
+        </p>
+        <a
+          href={gauge.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-2 inline-flex items-center gap-1.5 font-body text-sm font-semibold text-brand-copper hover:text-brand-copper-light"
+        >
+          View official gauge
+          <ExternalLink aria-hidden="true" className="size-3.5" />
+        </a>
+      </div>
+    </article>
+  );
+}
+
+function RiverMetric({ icon, label, value }: { icon: ReactNode; label: string; value: string }) {
+  return (
+    <div className="rounded-sm bg-brand-parchment p-3">
+      <div className="flex items-center gap-2 font-body text-[11px] font-semibold uppercase tracking-[0.14em] text-brand-stone">
+        {icon}
+        <span>{label}</span>
+      </div>
+      <p className="mt-1 font-display text-lg font-bold text-brand-navy">{value}</p>
+    </div>
+  );
+}
+
+function riverGaugePurpose(siteNo: string): string {
+  return (
+    {
+      "03478400": "Best local signal for Bristol-area creek response after heavy rain.",
+      "03473000":
+        "Useful upstream signal for South Fork Holston flows feeding toward South Holston Lake.",
+      "03490000": "Useful upstream signal for North Fork Holston flows west of Kingsport.",
+    }[siteNo] ?? "Useful local streamflow signal for outdoor planning and water awareness."
+  );
+}
+
+function TrendBadge({ trend }: { trend: RiverTrend }) {
+  const className = {
+    rising: "border-brand-copper/25 bg-brand-copper/10 text-brand-copper",
+    falling: "border-brand-community/25 bg-brand-community/10 text-brand-community",
+    steady: "border-brand-sage/25 bg-brand-sage/10 text-brand-sage",
+    unknown: "border-brand-surface bg-brand-parchment text-brand-stone",
+  }[trend];
+
+  return (
+    <span
+      className={`shrink-0 rounded-full border px-2.5 py-1 font-body text-[11px] font-bold uppercase tracking-[0.12em] ${className}`}
+    >
+      {formatRiverTrend(trend)}
+    </span>
   );
 }
 
@@ -464,29 +726,6 @@ function formatRelative(iso: string): string {
   const hr = Math.round(min / 60);
   if (hr === 1) return "1 hour ago";
   return `${hr} hours ago`;
-}
-
-/** Convert NWS wind direction string ("NW", "WSW") to degrees (0=N, 90=E). */
-function parseWindDegrees(dir: string): number {
-  const map: Record<string, number> = {
-    N: 0,
-    NNE: 22.5,
-    NE: 45,
-    ENE: 67.5,
-    E: 90,
-    ESE: 112.5,
-    SE: 135,
-    SSE: 157.5,
-    S: 180,
-    SSW: 202.5,
-    SW: 225,
-    WSW: 247.5,
-    W: 270,
-    WNW: 292.5,
-    NW: 315,
-    NNW: 337.5,
-  };
-  return map[dir.toUpperCase()] ?? 0;
 }
 
 function formatHour(iso: string): string {

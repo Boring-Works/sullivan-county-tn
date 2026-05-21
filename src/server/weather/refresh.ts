@@ -122,7 +122,7 @@ export async function refreshWeather(env: Cloudflare.Env): Promise<PublicWeather
       icon: currentPeriod.icon,
       windSpeed: currentPeriod.windSpeed,
       windDirection: currentPeriod.windDirection,
-      detailedForecast: currentPeriod.detailedForecast,
+      detailedForecast: currentPeriod.detailedForecast || todayPeriod.detailedForecast,
       isDaytime: currentPeriod.isDaytime,
     },
     today: {
@@ -133,7 +133,7 @@ export async function refreshWeather(env: Cloudflare.Env): Promise<PublicWeather
       precipChance: todayPeriod.probabilityOfPrecipitation?.value ?? null,
       detailedForecast: todayPeriod.detailedForecast,
     },
-    next7: daily.slice(0, 7).map((p) => ({
+    next7: daily.slice(0, 14).map((p) => ({
       name: p.name,
       startTime: p.startTime,
       isDaytime: p.isDaytime,

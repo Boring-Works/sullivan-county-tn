@@ -1,5 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
-import { desc } from "drizzle-orm";
+import { desc, gte } from "drizzle-orm";
 import { getDb } from "~/db";
 import { weatherObservations } from "~/db/schema";
 import { getEnv } from "~/server/env";
@@ -50,8 +50,7 @@ export const getCurrentWeather = createServerFn({ method: "GET" }).handler(
 );
 
 /**
- * Returns the most recent N hourly observations from D1 for the trend chart.
- * Defaults to last 24 hours of archived snapshots.
+ * Returns archived weather snapshots from the last 24 hours for the trend chart.
  */
 export const getRecentObservations = createServerFn({ method: "GET" }).handler(async () => {
   const env = getEnv();
@@ -60,6 +59,7 @@ export const getRecentObservations = createServerFn({ method: "GET" }).handler(a
 
   try {
     const db = getDb(d1);
+    const cutoff = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const rows = await db
       .select({
         observedAt: weatherObservations.observedAt,
@@ -68,8 +68,9 @@ export const getRecentObservations = createServerFn({ method: "GET" }).handler(a
         alertsCount: weatherObservations.alertsCount,
       })
       .from(weatherObservations)
+      .where(gte(weatherObservations.observedAt, cutoff))
       .orderBy(desc(weatherObservations.observedAt))
-      .limit(48) // ~48 readings = 8 hours @ 10-min cadence; ~24h at 30-min cadence
+      .limit(144) // 24 hours at the normal 10-minute cadence
       .all();
     return rows.reverse(); // oldest → newest for chart x-axis
   } catch (err) {
