@@ -17,7 +17,7 @@ export function TourismAppPromo() {
               Visiting Sullivan County?
             </span>
             <span className="font-body text-xs font-semibold text-brand-stone">
-              Free tourism app · No app store needed
+              Where Tennessee Began · Trip-planning guide
             </span>
           </div>
 
@@ -27,11 +27,11 @@ export function TourismAppPromo() {
                 id="tourism-app-heading"
                 className="font-display text-2xl font-bold leading-tight text-brand-navy text-balance sm:text-3xl"
               >
-                Turn a county visit into a self-guided trail.
+                Start your Tennessee story here.
               </h2>
               <p className="mt-3 line-clamp-3 max-w-2xl font-body text-sm leading-relaxed text-brand-slate-light sm:text-base lg:line-clamp-none">
-                Use the Where Tennessee Began app to plan a self-guided trip through local history,
-                music, water, racing, and mountain views.
+                Explore history, music, water, trails, race weekends, events, and local flavor with
+                Where Tennessee Began, Sullivan County&apos;s tourism and trip-planning guide.
               </p>
             </div>
 
@@ -39,19 +39,19 @@ export function TourismAppPromo() {
               <li className="rounded-sm border border-brand-surface bg-brand-cream p-2.5 sm:p-3">
                 <Smartphone aria-hidden="true" className="size-4 text-brand-copper" />
                 <span className="mt-2 block font-body text-xs font-bold leading-tight text-brand-navy">
-                  Smart daily picks
+                  Places to explore
                 </span>
               </li>
               <li className="rounded-sm border border-brand-surface bg-brand-cream p-2.5 sm:p-3">
                 <MapIcon aria-hidden="true" className="size-4 text-brand-copper" />
                 <span className="mt-2 block font-body text-xs font-bold leading-tight text-brand-navy">
-                  Maps and tours
+                  Maps and trails
                 </span>
               </li>
               <li className="rounded-sm border border-brand-surface bg-brand-cream p-2.5 sm:p-3">
                 <Compass aria-hidden="true" className="size-4 text-brand-copper" />
                 <span className="mt-2 block font-body text-xs font-bold leading-tight text-brand-navy">
-                  Stories to walk
+                  Events and tours
                 </span>
               </li>
             </ul>
@@ -76,7 +76,7 @@ export function TourismAppPromo() {
               rel="noopener noreferrer"
               className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-sm bg-brand-navy px-4 py-2.5 font-body text-sm font-bold text-white transition-colors hover:bg-brand-copper"
             >
-              Open the tourism app
+              Open tourism guide
               <ArrowRight aria-hidden="true" className="size-3.5" />
             </a>
             <a
@@ -85,7 +85,7 @@ export function TourismAppPromo() {
               rel="noopener noreferrer"
               className="inline-flex min-h-[44px] items-center justify-center gap-2 rounded-sm border border-brand-navy/15 px-4 py-2.5 font-body text-sm font-bold text-brand-navy transition-colors hover:border-brand-copper hover:text-brand-copper"
             >
-              See self-guided tours
+              Plan a weekend
             </a>
           </div>
         </div>

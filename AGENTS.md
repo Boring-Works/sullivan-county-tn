@@ -1,7 +1,7 @@
 # Sullivan County TN — Government Website
 
 Citizen services portal for Sullivan County, Tennessee.
-Brand: **"Where Tennessee Began and Begins"**
+Brand: **Official services. Local government. Community information.** Tourism bridge: **Where Tennessee Began**.
 
 ## Sanity Check (always run before pushing)
 ```

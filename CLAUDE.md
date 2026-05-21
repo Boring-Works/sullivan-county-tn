@@ -1,7 +1,7 @@
 # Sullivan County TN Government Website
 
 Citizen services portal for Sullivan County, Tennessee.
-Brand: **"Where Tennessee Began and Begins"**
+Brand: **Official services. Local government. Community information.** Tourism bridge: **Where Tennessee Began**.
 
 ## Audit Docs (May 2026)
 See `/docs/` for complete architecture audit:
@@ -227,7 +227,7 @@ This is a county government website. The reference points are GOV.UK, NYC.gov, t
 - **Lead with the verb.** "Find a department." "Get a permit." "Report a pothole."
 - **Be specific.** Real phone numbers, real hours, real dates beat generic prose.
 - **Civic restraint.** Heritage palette + Caslon + Outfit are the identity. Reserve copper/brass for true hierarchy moments. Mountain dividers used sparingly. Animation minimal.
-- **Identity earns its place; utility earns the citizen's time.** Hero is "How can we help today?" + search + 5 top tasks; heritage tagline is the quiet final line.
+- **Identity earns its place; utility earns the citizen's time.** Hero is "What do you need to do today?" + search + 5 top tasks; heritage and tourism appear after the civic service layer.
 
 ## Architecture notes for new components
 - **Verb-based primary nav (`SiteNav.tsx` + `data/nav-verbs.ts`)** — top nav is five verbs: Find · Pay · Apply · Report · About. Records, meetings, and departments fold into Find to keep the top-level choice set small. Each verb opens a mega-panel of concrete tasks. Hover-open is gated behind `matchMedia("(hover: hover) and (pointer: fine)")` so touch devices use click-only. Click-outside closes via `pointerdown`. Arrow keys cycle through `data-panel-link` items inside the open panel; Escape closes and returns focus to the trigger. Find includes department category links with `/departments?category=...` search params. Adding a new task = edit `nav-verbs.ts`; the unit test in `tests/data/nav-verbs.test.ts` validates that internal targets resolve to real routes.
@@ -287,7 +287,7 @@ This is a county government website. The reference points are GOV.UK, NYC.gov, t
 | Department count fix | Corrected 27→25 in hero stats + AboutSection to match actual data | 2026-03-01 |
 | PII sanitization | Contact form fallback log now only outputs submission ID, not full PII | 2026-03-01 |
 | Heritage Content Layer | Add /history, /communities, /about, /visit, /people, /education, /economic-development, /transportation routes using fact-checked master reference doc | 2026-03-01 |
-| Brand thesis | "Where Tennessee Began and Begins" — history-first, fact-checked, editorial tone | 2026-03-01 |
+| Civic brand split | County site is the official services portal; Where Tennessee Began is the tourism/heritage bridge, not the primary government identity. | 2026-05-21 |
 | History-first phasing | Phase 1 = history/heritage pages (story of Sullivan County). Communities/civic pages come later. | 2026-03-01 |
 | SiteNav audit + disclosure rebuild | Removed dead `megaContainerRef` effect; switched mega-menu from invalid `role="menu"`/`menuitem` to proper disclosure (`aria-expanded` + `aria-controls` + `id`); added click-outside `pointerdown` close; gated hover open behind `matchMedia("(hover: hover) and (pointer: fine)")` so touch is click-only; added active-page indicators (`aria-current` + underline/left-border/parchment fill) to desktop links, Departments trigger, mobile links, and current department; anchored `hasDarkHeader` regex with `(\/|$)`; renamed `expandedCategory` → `mobileDeptsOpen`; `prefers-reduced-motion` now snaps entrance animations to opacity 1 with no delay. 15/15 mega-menu E2E pass. | 2026-05-06 |
 | Mobile drawer hoisted out of `<nav>` | Critical bug: drawer was a child of `<nav>`, whose `backdrop-blur-lg` establishes a CSS containing block for fixed descendants. `top: 64px; bottom: 0` therefore resolved against the 64-px-tall nav (height: 0), making the drawer invisible and parking content under the nav so the first button was unclickable. Hoisted drawer + lazy SearchDialog out as fragment siblings so fixed positioning resolves against the viewport. Found via Playwright MCP audit on the deployed site. | 2026-05-06 |

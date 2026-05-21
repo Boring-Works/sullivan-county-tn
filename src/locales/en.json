@@ -24,8 +24,8 @@
   "home": {
     "heroEyebrow": "Sullivan County, Tennessee",
     "heroEyebrowEst": "Established 1779",
-    "heroH1": "How can we help today?",
-    "heroIntro": "Pay taxes, find county offices, submit forms, request records, check meetings, and get local alerts.",
+    "heroH1": "What do you need to do today?",
+    "heroIntro": "Search for a county service, office, form, public record, meeting, or local resource.",
     "heroSearchPrompt": "Search by task, office, or question",
     "heroSearchPlaceholder": "Try “pay taxes,” “building permit,” or “county clerk”",
     "heroSearchAria": "Search Sullivan County departments, services, and people",
@@ -62,7 +62,7 @@
         "body": "Permits, public records, licenses, and county requests."
       },
       "meetings": {
-        "title": "Meetings",
+        "title": "Meetings & agendas",
         "body": "Commission agendas, minutes, calendar, and public notices."
       },
       "report": {
@@ -169,7 +169,7 @@
       "eyebrow": "Your County Government",
       "headingPart1": "Your county",
       "headingPart2": "government",
-      "body": "Sullivan County government serves residents across 430 square miles with elected offices, public records, courts, emergency services, roads, permits, and community resources.",
+      "body": "Sullivan County government helps residents, businesses, and communities access services, records, meetings, public safety information, and local resources in one place.",
       "readFoundingStory": "Read our founding story",
       "contactUs": "Contact Us",
       "meetCommissioners": "Meet Your Commissioners"

@@ -1,6 +1,6 @@
 # Sullivan County TN -- Architecture Document
 
-> **Brand:** "Where Tennessee Began and Begins"
+> **Brand:** Official services. Local government. Community information. Tourism bridge: Where Tennessee Began.
 > **Stack:** TanStack Start + Cloudflare Workers + Tailwind CSS v4 + shadcn/ui
 > **Last updated:** 2026-05-21
 
