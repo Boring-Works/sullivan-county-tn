@@ -3,6 +3,7 @@ import { ChevronDown, ExternalLink as ExternalLinkIcon, Search } from "lucide-re
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { LanguageToggle } from "~/components/layout/LanguageToggle";
+import { isTaskActive, isVerbActive } from "~/components/layout/site-nav-state";
 import { CountySeal } from "~/components/shared/CountySeal";
 import { NAV_VERBS, type NavTask } from "~/data/nav-verbs";
 import { cn } from "~/lib/utils";
@@ -40,11 +41,15 @@ function flattenVerbTasks(verbKey: string): FlatTask[] {
 function MobileTaskLink({
   task,
   labelKey,
+  pathname,
+  searchStr,
   onNavigate,
   t,
 }: {
   task: NavTask;
   labelKey: string;
+  pathname: string;
+  searchStr: string;
   onNavigate: () => void;
   t: (key: string) => string;
 }) {
@@ -68,7 +73,13 @@ function MobileTaskLink({
   }
   return (
     <li>
-      <Link to={task.to} className={cls} onClick={onNavigate}>
+      <Link
+        to={task.to}
+        search={task.search}
+        aria-current={isTaskActive(task, pathname, searchStr) ? "page" : undefined}
+        className={cls}
+        onClick={onNavigate}
+      >
         {t(labelKey)}
       </Link>
     </li>
@@ -79,12 +90,14 @@ function DesktopTaskLink({
   task,
   labelKey,
   pathname,
+  searchStr,
   onNavigate,
   t,
 }: {
   task: NavTask;
   labelKey: string;
   pathname: string;
+  searchStr: string;
   onNavigate: () => void;
   t: (key: string) => string;
 }) {
@@ -111,11 +124,12 @@ function DesktopTaskLink({
       </li>
     );
   }
-  const active = pathname === task.to || pathname.startsWith(`${task.to}/`);
+  const active = isTaskActive(task, pathname, searchStr);
   return (
     <li>
       <Link
         to={task.to}
+        search={task.search}
         data-panel-link=""
         aria-current={active ? "page" : undefined}
         className={linkClass(active)}
@@ -145,7 +159,9 @@ export function SiteNav() {
   const mobileMenuRef = useRef<HTMLDivElement>(null);
   const hamburgerRef = useRef<HTMLButtonElement>(null);
 
-  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const location = useRouterState({ select: (s) => s.location });
+  const pathname = location.pathname;
+  const searchStr = location.searchStr;
   const hasDarkHeader =
     pathname === "/" ||
     /^\/departments\/[^/]+/.test(pathname) ||
@@ -366,13 +382,7 @@ export function SiteNav() {
               {NAV_VERBS.map((verb) => {
                 const isOpen = activePanel === verb.key;
                 // Verb is "active" if pathname matches any of its concrete tasks
-                const verbActive = (() => {
-                  const tasks = flattenVerbTasks(verb.key);
-                  return tasks.some(
-                    (tt) =>
-                      !tt.external && (pathname === tt.href || pathname.startsWith(`${tt.href}/`)),
-                  );
-                })();
+                const verbActive = isVerbActive(verb, pathname, searchStr);
                 const ariaControlsId = `verb-panel-${verb.key}`;
                 return (
                   // biome-ignore lint/a11y/noStaticElementInteractions: positioning wrapper around real <button> trigger and its disclosure panel
@@ -446,6 +456,7 @@ export function SiteNav() {
                                         task={task}
                                         labelKey={task.labelKey}
                                         pathname={pathname}
+                                        searchStr={searchStr}
                                         onNavigate={() => setActivePanel(null)}
                                         t={t}
                                       />
@@ -462,6 +473,7 @@ export function SiteNav() {
                                   task={task}
                                   labelKey={task.labelKey}
                                   pathname={pathname}
+                                  searchStr={searchStr}
                                   onNavigate={() => setActivePanel(null)}
                                   t={t}
                                 />
@@ -580,14 +592,19 @@ export function SiteNav() {
           aria-label="Navigation menu"
         >
           <div className="px-4 py-6 space-y-1">
+            <Link
+              to="/"
+              onClick={closeMobile}
+              aria-current={pathname === "/" ? "page" : undefined}
+              className="mb-2 flex items-center justify-center rounded-sm border border-white/20 px-4 py-3 font-body text-sm font-semibold tracking-wide text-white/95 transition-colors hover:bg-white/10"
+            >
+              {t("nav.home")}
+            </Link>
             {/* Verb accordions */}
             {NAV_VERBS.map((verb, vIdx) => {
               const isOpen = mobilePanel === verb.key;
               const VerbIcon = verb.icon;
-              const verbActive = flattenVerbTasks(verb.key).some(
-                (tt) =>
-                  !tt.external && (pathname === tt.href || pathname.startsWith(`${tt.href}/`)),
-              );
+              const verbActive = isVerbActive(verb, pathname, searchStr);
               return (
                 <div
                   key={verb.key}
@@ -630,6 +647,8 @@ export function SiteNav() {
                                   key={`${task.labelKey}-${task.external ? task.href : task.to}`}
                                   task={task}
                                   labelKey={task.labelKey}
+                                  pathname={pathname}
+                                  searchStr={searchStr}
                                   onNavigate={closeMobile}
                                   t={t}
                                 />
@@ -644,6 +663,8 @@ export function SiteNav() {
                               key={`${task.labelKey}-${task.external ? task.href : task.to}`}
                               task={task}
                               labelKey={task.labelKey}
+                              pathname={pathname}
+                              searchStr={searchStr}
                               onNavigate={closeMobile}
                               t={t}
                             />

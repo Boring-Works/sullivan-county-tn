@@ -1,7 +1,7 @@
 import { Clock, Contact, Mail, MapPin, Phone, Printer } from "lucide-react";
+import { useState } from "react";
 import { TelLink } from "~/components/shared/TelLink";
 import type { ContactInfo, DepartmentCategory } from "~/data/departments";
-import { SITE_URL } from "~/data/site-config";
 import { buildVCard, vCardDataHref } from "~/lib/vcard";
 
 const categoryAccents: Record<DepartmentCategory, string> = {
@@ -20,6 +20,7 @@ interface ContactCardProps {
 }
 
 export function ContactCard({ head, contact, category }: ContactCardProps) {
+  const [shareStatus, setShareStatus] = useState<"idle" | "copied" | "shared">("idle");
   const vcardHref = vCardDataHref(
     buildVCard({
       fullName: head.name,
@@ -28,10 +29,30 @@ export function ContactCard({ head, contact, category }: ContactCardProps) {
       phone: contact.phone,
       email: contact.email,
       address: contact.address,
-      url: SITE_URL,
     }),
   );
   const vcardFile = `${head.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.vcf`;
+  const shareText = [head.name, head.title, contact.phone, contact.email, contact.address]
+    .filter(Boolean)
+    .join("\n");
+
+  async function handleShareContact() {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: `${head.name} — Sullivan County Contact`,
+          text: shareText,
+        });
+        setShareStatus("shared");
+        return;
+      }
+      await navigator.clipboard.writeText(shareText);
+      setShareStatus("copied");
+    } catch {
+      // User cancelled share or clipboard is unavailable.
+      setShareStatus("idle");
+    }
+  }
 
   return (
     <div className="group rounded-sm border border-brand-surface bg-white overflow-hidden shadow-md ring-1 ring-black/5">
@@ -97,14 +118,28 @@ export function ContactCard({ head, contact, category }: ContactCardProps) {
           <span>{contact.hours}</span>
         </div>
 
-        <a
-          href={vcardHref}
-          download={vcardFile}
-          className="mt-1 inline-flex items-center gap-2 self-start rounded-sm border border-brand-navy/15 bg-brand-parchment px-3 py-1.5 font-body text-xs font-medium text-brand-navy hover:border-brand-copper/40 hover:text-brand-copper transition-colors"
-        >
-          <Contact aria-hidden="true" className="size-3.5" />
-          Save contact
-        </a>
+        <div className="mt-1 flex flex-wrap items-center gap-2">
+          <a
+            href={vcardHref}
+            download={vcardFile}
+            className="inline-flex items-center gap-2 rounded-sm border border-brand-navy/15 bg-brand-parchment px-3 py-1.5 font-body text-xs font-medium text-brand-navy hover:border-brand-copper/40 hover:text-brand-copper transition-colors"
+          >
+            <Contact aria-hidden="true" className="size-3.5" />
+            Save contact
+          </a>
+          <button
+            type="button"
+            onClick={handleShareContact}
+            className="inline-flex items-center gap-2 rounded-sm border border-brand-navy/15 bg-white px-3 py-1.5 font-body text-xs font-medium text-brand-navy hover:border-brand-copper/40 hover:text-brand-copper transition-colors"
+          >
+            Share details
+          </button>
+          {shareStatus !== "idle" && (
+            <span className="font-body text-[11px] text-brand-stone">
+              {shareStatus === "shared" ? "Shared" : "Copied to clipboard"}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   );

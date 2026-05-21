@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AboutSection } from "~/components/home/AboutSection";
 import { AudiencePathways } from "~/components/home/AudiencePathways";
+import { CivicStatusRibbon } from "~/components/home/CivicStatusRibbon";
 import { CommunityMap } from "~/components/home/CommunityMap";
 import { HeroBanner } from "~/components/home/HeroBanner";
 import { SeasonalRibbon } from "~/components/home/SeasonalRibbon";
@@ -42,6 +43,7 @@ function HomePage() {
         dangerouslySetInnerHTML={{ __html: jsonLdString(governmentOrganizationJsonLd) }}
       />
       <HeroBanner />
+      <CivicStatusRibbon />
       <SeasonalRibbon />
       <AudiencePathways />
       <TodaySection />

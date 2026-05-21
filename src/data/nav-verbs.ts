@@ -77,10 +77,22 @@ export const NAV_VERBS: NavVerb[] = [
         headingKey: "verbNav.find.headingDepartments",
         tasks: [
           { labelKey: "verbNav.find.allDepartments", to: "/departments" },
-          { labelKey: "verbNav.find.administrative", to: "/departments" },
-          { labelKey: "verbNav.find.courts", to: "/departments" },
-          { labelKey: "verbNav.find.publicSafety", to: "/departments" },
-          { labelKey: "verbNav.find.community", to: "/departments" },
+          {
+            labelKey: "verbNav.find.administrative",
+            to: "/departments",
+            search: { category: "administrative" },
+          },
+          { labelKey: "verbNav.find.courts", to: "/departments", search: { category: "courts" } },
+          {
+            labelKey: "verbNav.find.publicSafety",
+            to: "/departments",
+            search: { category: "public-safety" },
+          },
+          {
+            labelKey: "verbNav.find.community",
+            to: "/departments",
+            search: { category: "community" },
+          },
         ],
       },
     ],

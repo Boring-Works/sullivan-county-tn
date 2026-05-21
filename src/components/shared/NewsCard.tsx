@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
-import { ExternalLink, FileDown } from "lucide-react";
+import { ExternalLink, FileDown, Share2 } from "lucide-react";
+import { useState } from "react";
 import { Badge } from "~/components/ui/badge";
 import type { NewsItem } from "~/data/news";
 
@@ -19,6 +20,23 @@ function formatDate(dateStr: string): string {
 }
 
 export function NewsCard({ item, featured = false }: NewsCardProps) {
+  const [shareState, setShareState] = useState<"idle" | "shared" | "copied">("idle");
+  const articleUrl = `/news/${item.slug}`;
+
+  async function handleShare() {
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: item.title, text: item.summary, url: articleUrl });
+        setShareState("shared");
+        return;
+      }
+      await navigator.clipboard.writeText(`${item.title}\n${item.summary}\n${articleUrl}`);
+      setShareState("copied");
+    } catch {
+      setShareState("idle");
+    }
+  }
+
   return (
     <div className="card-lift group relative flex h-full flex-col rounded-sm border border-brand-surface bg-white overflow-hidden">
       {/* Accent bar */}
@@ -49,7 +67,7 @@ export function NewsCard({ item, featured = false }: NewsCardProps) {
         </p>
 
         {/* Actions row */}
-        <div className="mt-4 flex items-center gap-3">
+        <div className="mt-4 flex flex-wrap items-center gap-3">
           {item.pdfUrl && (
             <Badge
               asChild
@@ -72,6 +90,19 @@ export function NewsCard({ item, featured = false }: NewsCardProps) {
               <ExternalLink className="size-3" />
               Source
             </a>
+          )}
+          <button
+            type="button"
+            onClick={handleShare}
+            className="inline-flex items-center gap-1 font-body text-xs text-brand-stone hover:text-brand-copper transition-colors"
+          >
+            <Share2 className="size-3" />
+            Share
+          </button>
+          {shareState !== "idle" && (
+            <span className="font-body text-[11px] text-brand-stone">
+              {shareState === "shared" ? "Shared" : "Link copied"}
+            </span>
           )}
         </div>
       </div>

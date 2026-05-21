@@ -1,6 +1,6 @@
 # Current State — Sullivan County TN Government Website
 
-**Date:** 2026-05-07 (PM)
+**Date:** 2026-05-21
 **Live:** https://sullivan-county-tn.codyboring.workers.dev (version `8f75c569-2488-468f-989a-87f196e9e4f8`)
 **Repo:** https://github.com/Boring-Works/sullivan-county-tn
 **Latest commit:** `a80dead` — _feat: items #2, #3, #5 from top-7 audit_
@@ -116,7 +116,7 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 
 | Area | Notable |
 |---|---|
-| Layout | `SiteNav` (verb-based mega-panels), `SiteFooter`, `AnnouncementBanner` (D1-wired, **live**), `SearchDialog` (Cmd+K, lazy-loaded), `MobileBottomTabBar`, `LanguageToggle`, `NotFound` |
+| Layout | `SiteNav` (verb-based mega-panels + category-aware active state), `SiteFooter`, `AnnouncementBanner` (D1-wired, **live**), `SearchDialog` (Cmd+K, lazy-loaded, supports prefilled initial query), `MobileBottomTabBar`, `LanguageToggle`, `NotFound` |
 | Home (mounted on /) | `HeroBanner` (with `WeatherBadge`), `SeasonalRibbon`, `EmergencyModule` (restrained navy strip), `QuickServices`, `NextMeetingCard`, `NewsSection`, `CommunityMap`, `AboutSection` |
 | Weather | `WeatherBadge` (homepage almanac), `CopperWeathervane` (animated copper compass rose) |
 | Departments | `DepartmentCard`, `DepartmentDetail`, `PrintableContactCard` |
@@ -129,12 +129,12 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 | Minutes | `MinutesList`, `MinutesFilter` |
 | Admin | `AdminLayout`, `StatusBadge` (brand-aligned palette) |
 | Property taxes | `ParcelLookup` (TPAD typeahead + 3 shadcn `<Button>` CTAs) |
-| Shared | `TelLink`, `OpenStatusPill`, `PageFeedback`, `OfflineBanner`, `ContactCard`, `InstallPrompt`, `MountainDivider`, `CountySeal`, `VideoEmbed`, `DetailBreadcrumb` |
+| Shared | `TelLink`, `OpenStatusPill`, `PageFeedback`, `OfflineBanner`, `ContactCard` (**Save contact + Share details**, no hardcoded site URL in vCard), `InstallPrompt`, `MountainDivider`, `CountySeal`, `VideoEmbed`, `DetailBreadcrumb` |
 | `ui/*` (shadcn) | 21 primitives (full inventory in COMPONENT_INVENTORY.md) |
 
 ### Data (17 files)
 
-`departments.ts` (25, all with `lastUpdated`), `commissioners.ts` (24), `news.ts` (14 entries — 7 fresh April-May 2026 + 7 archive), `documents.ts` (115 files / 17 categories), `quick-services.ts` (6), `search-index.ts` (175+ items with citizen-language aliases), `heritage-sites.ts` (8), `timeline.ts` (48 events), `communities.ts` (6), `notable-people.ts` (7), `employers.ts`, `education.ts` (6), `form-definitions.ts` (4 types, with `lastUpdated`), `meeting-minutes.ts`, `meetings.ts` (recurrence rules), `holidays.ts` (13 county holidays), `nav-verbs.ts` (7 verbs).
+`departments.ts` (25, all with `lastUpdated`), `commissioners.ts` (24), `news.ts` (14 entries — 7 fresh April-May 2026 + 7 archive), `documents.ts` (115 files / 17 categories), `quick-services.ts` (6), `search-index.ts` (175+ items with citizen-language aliases), `heritage-sites.ts` (8), `timeline.ts` (48 events), `communities.ts` (6), `notable-people.ts` (7), `employers.ts`, `education.ts` (6), `form-definitions.ts` (4 types, with `lastUpdated`), `meeting-minutes.ts`, `meetings.ts` (recurrence rules), `holidays.ts` (13 county holidays), `nav-verbs.ts` (**5 verb model with category-filtered department links**).
 
 ### Server functions (15 files)
 
@@ -175,7 +175,7 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 
 | Type | Files | Tests | Status |
 |---|---|---|---|
-| Unit (Vitest) | 12 | 79 | all passing |
+| Unit (Vitest) | 13 | 83 | all passing |
 | E2E (Playwright × desktop+tablet+mobile) | 6 specs | 117–270 cases (varies by spec) | 117/117 critical-paths + user-flows; 21/21 a11y; ParcelLookup test occasionally flakes when TPAD upstream is slow |
 
 ### Design system
@@ -192,7 +192,7 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 | Service Worker | `/sw.js` registered in production | live |
 | NWS API | Weather data source (free, no key) | live, called every ~10 min |
 | Wrangler 4.88+ | CLI | configured |
-| Biome 2.x | Lint + format | clean |
+| Biome 2.x | Lint + format | CLI/schema mismatch present in current env (`2.4.15` CLI vs `2.4.14` schema) |
 | TypeScript | Strict | clean |
 | GitHub Actions | CI | configured |
 

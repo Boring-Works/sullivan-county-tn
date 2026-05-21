@@ -14,6 +14,17 @@ const TYPE_LABELS: Record<SearchItem["type"], string> = {
   page: "Page",
 };
 
+const QUICK_ACTIONS = [
+  { label: "Pay property taxes", to: "/property-taxes" },
+  { label: "Browse departments", to: "/departments" },
+  { label: "Find forms", to: "/forms" },
+  { label: "View meeting calendar", to: "/calendar" },
+  { label: "Contact county offices", to: "/contact" },
+] as const;
+
+const ACTION_BUTTON_CLASS =
+  "w-full min-h-[40px] rounded-sm border border-brand-surface px-2.5 py-2 text-left font-body text-sm text-brand-slate transition-colors hover:border-brand-copper/40 hover:bg-brand-surface/60 hover:text-brand-navy";
+
 const TYPE_COLORS: Record<SearchItem["type"], string> = {
   department: "bg-brand-navy/10 text-brand-navy",
   news: "bg-brand-copper/10 text-brand-copper",
@@ -62,10 +73,10 @@ export function SearchDialog({ open, onOpenChange, initialQuery = "" }: SearchDi
   // Reset on open/close
   useEffect(() => {
     if (open) {
-      setQuery("");
+      setQuery(initialQuery);
       setSelectedIndex(0);
     }
-  }, [open]);
+  }, [open, initialQuery]);
 
   const navigateToResult = useCallback(
     (item: SearchItem) => {
@@ -91,11 +102,6 @@ export function SearchDialog({ open, onOpenChange, initialQuery = "" }: SearchDi
     [results, selectedIndex, navigateToResult],
   );
 
-  // Reset selection when results change
-  useEffect(() => {
-    setSelectedIndex(0);
-  }, []);
-
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Dialog.Portal>
@@ -119,7 +125,10 @@ export function SearchDialog({ open, onOpenChange, initialQuery = "" }: SearchDi
               type="text"
               placeholder="Search departments, services, people..."
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setSelectedIndex(0);
+              }}
               onKeyDown={handleKeyDown}
               className="flex-1 bg-transparent font-body text-sm text-brand-slate placeholder:text-brand-stone outline-none"
               role="combobox"
@@ -147,6 +156,25 @@ export function SearchDialog({ open, onOpenChange, initialQuery = "" }: SearchDi
             {!query.trim() && (
               <div className="px-3 py-4">
                 <p className="font-body text-[10px] font-semibold tracking-widest uppercase text-brand-stone mb-2">
+                  Quick actions
+                </p>
+                <ul className="mb-4 space-y-1.5">
+                  {QUICK_ACTIONS.map((action) => (
+                    <li key={action.to}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          onOpenChange(false);
+                          navigate({ to: action.to });
+                        }}
+                        className={ACTION_BUTTON_CLASS}
+                      >
+                        {action.label}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <p className="font-body text-[10px] font-semibold tracking-widest uppercase text-brand-stone mb-2">
                   Try one of these
                 </p>
                 <ul className="flex flex-wrap gap-1.5">
@@ -154,7 +182,10 @@ export function SearchDialog({ open, onOpenChange, initialQuery = "" }: SearchDi
                     <li key={q}>
                       <button
                         type="button"
-                        onClick={() => setQuery(q)}
+                        onClick={() => {
+                          setQuery(q);
+                          setSelectedIndex(0);
+                        }}
                         className="rounded-full border border-brand-surface bg-brand-parchment px-3 py-1 font-body text-xs text-brand-slate hover:border-brand-copper/40 hover:text-brand-copper transition-colors"
                       >
                         {q}
@@ -178,7 +209,10 @@ export function SearchDialog({ open, onOpenChange, initialQuery = "" }: SearchDi
                     <li key={q}>
                       <button
                         type="button"
-                        onClick={() => setQuery(q)}
+                        onClick={() => {
+                          setQuery(q);
+                          setSelectedIndex(0);
+                        }}
                         className="rounded-full border border-brand-surface bg-brand-parchment px-3 py-1 font-body text-xs text-brand-slate hover:border-brand-copper/40 hover:text-brand-copper transition-colors"
                       >
                         {q}

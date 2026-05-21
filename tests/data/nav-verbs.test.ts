@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { DEPARTMENT_CATEGORIES } from "../../src/data/departments";
 import { departments } from "../../src/data/departments";
 import { FORM_DEFINITIONS } from "../../src/data/form-definitions";
 import { NAV_VERBS } from "../../src/data/nav-verbs";
@@ -35,6 +36,7 @@ const KNOWN_INTERNAL_ROUTES = new Set([
 ]);
 
 const DEPT_SLUGS = new Set(departments.map((d) => d.slug));
+const DEPT_CATEGORY_KEYS = new Set(Object.keys(DEPARTMENT_CATEGORIES));
 const FORM_TYPES = new Set(FORM_DEFINITIONS.map((f) => f.type));
 
 function isValidInternal(path: string): boolean {
@@ -92,6 +94,23 @@ describe("NAV_VERBS", () => {
         }
       }
     }
+  });
+
+  it("department-filter links use valid department category keys", () => {
+    const broken: string[] = [];
+    for (const v of NAV_VERBS) {
+      const tasks = [...(v.tasks ?? []), ...(v.groups?.flatMap((g) => g.tasks) ?? [])];
+      for (const t of tasks) {
+        if (t.external) continue;
+        if (t.to !== "/departments") continue;
+        const category = t.search?.category;
+        if (!category) continue;
+        if (!DEPT_CATEGORY_KEYS.has(category)) {
+          broken.push(`${v.key} → ${t.labelKey} → ${category}`);
+        }
+      }
+    }
+    expect(broken).toEqual([]);
   });
 
   it("each task list stays at 4–6 items per Hick's Law / blueprint", () => {
