@@ -218,11 +218,7 @@ export function HeroBanner() {
           className="mx-auto max-w-5xl px-4 sm:px-6 opacity-0 animate-fade-up"
           style={{ animationDelay: "0.85s" }}
         >
-          <Link
-            to="/calendar"
-            className="group block rounded-sm border border-white/10 bg-brand-navy/60 backdrop-blur-md px-4 py-3 sm:px-6 sm:py-3.5 transition-colors hover:border-white/20 hover:bg-brand-navy/70 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-copper"
-            aria-label={`${t("home.heroAlmanac.officesPrefix")} ${status.label}. ${t("home.heroAlmanac.nextMeeting")} ${formatNyDateShort(meetingDate)} ${t("home.heroAlmanac.at")} ${formatNyTime(meetingDate)}.`}
-          >
+          <div className="rounded-sm border border-white/10 bg-brand-navy/60 px-4 py-3 backdrop-blur-md sm:px-6 sm:py-3.5">
             <div className="flex flex-col items-stretch gap-1.5 sm:flex-row sm:items-center sm:justify-center sm:gap-x-4 sm:gap-y-1 lg:justify-start">
               <div className="flex items-center justify-center gap-2 sm:justify-start">
                 <span
@@ -242,24 +238,28 @@ export function HeroBanner() {
                   {t("home.heroAlmanac.officesPrefix")} {status.label}.
                 </span>
               </div>
-              <span
+              <Link
+                to="/calendar"
                 suppressHydrationWarning
-                className="hidden font-body text-xs text-white/75 sm:inline sm:text-sm group-hover:text-brand-brass-light"
+                className="hidden font-body text-xs text-white/75 transition-colors hover:text-brand-brass-light sm:inline sm:text-sm"
+                aria-label={`${t("home.heroAlmanac.nextMeeting")}: ${formatNyDateShort(meetingDate)} ${t("home.heroAlmanac.at")} ${formatNyTime(meetingDate)}.`}
               >
                 {t("home.heroAlmanac.nextMeeting")}: {formatNyDateShort(meetingDate)}{" "}
                 {t("home.heroAlmanac.at")} {formatNyTime(meetingDate)}.
-              </span>
-              <span
+              </Link>
+              <Link
+                to="/calendar"
                 suppressHydrationWarning
-                className="text-center font-body text-xs text-white/70 sm:hidden"
+                className="text-center font-body text-xs text-white/70 transition-colors hover:text-brand-brass-light sm:hidden"
+                aria-label={`${t("home.heroAlmanac.nextMeeting")}: ${formatNyDateShort(meetingDate)}.`}
               >
                 {t("home.heroAlmanac.nextMeeting")}: {formatNyDateShort(meetingDate)}
-              </span>
+              </Link>
               <div className="flex justify-center sm:ml-auto lg:ml-3">
                 <WeatherBadge />
               </div>
             </div>
-          </Link>
+          </div>
         </div>
       </div>
 

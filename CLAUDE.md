@@ -56,7 +56,7 @@ See `/docs/` for complete architecture audit:
 ## Routes
 | Route | File | Purpose |
 |-------|------|---------|
-| `/` | `routes/index.tsx` | Homepage — 7 sections: HeroBanner (search + 5 task chips + 5 suggested-query chips + Open-Now line + static stats), SeasonalRibbon (date-aware, Oct 1 – Mar 1 only), EmergencyModule, QuickServices (6 cards), NextMeetingCard (slim navy banner), NewsSection (3 cards), CommunityMap, AboutSection. DepartmentCategories / AudiencePathways / PromisesSection were removed 2026-05-07 — verb nav + EmergencyModule already cover the work. |
+| `/` | `routes/index.tsx` | Homepage — HeroBanner (search + single almanac/weather bar), SeasonalRibbon (date-aware, Oct 1 – Mar 1 only), AudiencePathways, TodaySection, CommunityMap, StorySection, AboutSection. Duplicate status ribbon removed 2026-05-21 so weather/status appears once below the hero message. |
 | `/property-taxes` | `routes/property-taxes.tsx` | "Pay your property taxes" landing page with `ParcelLookup` typeahead, three-portal CTAs (TPAD/Trustee/GIS), FAQ + GovernmentService JSON-LD |
 | `/departments` | `routes/departments/index.tsx` | Department directory with category filter |
 | `/departments/$slug` | `routes/departments/$slug.tsx` | Individual department detail (25 departments) |
