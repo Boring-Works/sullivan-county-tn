@@ -14,6 +14,7 @@ The site has been through a **7-phase production-hardening pass** plus several f
 - **Main site:** Sullivan County's official civic portal for services, local government, records, meetings, notices, emergency information, and community resources.
 - **Primary homepage question:** "What do you need to do today?"
 - **Tourism bridge:** Where Tennessee Began remains a featured visitor/trip-planning bridge, not the primary government-site identity.
+- **Source of truth:** `docs/BRAND_POSITIONING.md`.
 
 ### Phase 1 — Cloudflare Workers, typed end-to-end
 - `src/server/env.ts` exports typed `getEnv()` / `getDB()` / `getKV()` helpers — all 10 prior `as Record<string, unknown>` cast sites refactored to typed access against `Cloudflare.Env`.

@@ -24,7 +24,7 @@ Score is 1-10. Target is 9.6 or higher per section.
 | Emergency strip | 9.7 | Mobile strip is shorter, keeps the essential emergency contacts visible, and reduces secondary-link competition. |
 | Community map | 9.6 | Section is shorter and still routes users to communities, commissioners, and schools. |
 | Story | 9.6 | History is now a compact trust-building bridge with fewer homepage timeline cards and less mobile scroll. |
-| Tourism app promo | 9.6 | Adds Where Tennessee Began promotion as a small homepage module with app screenshot, visitor framing, and two CTAs. |
+| Tourism bridge | 9.6 | Adds Where Tennessee Began as a secondary visitor/trip-planning bridge, not the primary government-site identity. |
 | About government | 9.7 | Closing section is tighter and more action-forward while keeping official trust signals. |
 
 ## Final Whole-Page Result
@@ -44,7 +44,7 @@ Score is 1-10. Target is 9.6 or higher per section.
 - Tightened the emergency strip for mobile urgency.
 - Reduced decorative transition space between emergency content and the community map.
 - Shortened community, story, tourism, and about sections while preserving links into deeper pages.
-- Added a compact Where Tennessee Began app promo to the homepage using the existing tourism app screenshot.
+- Added a compact Where Tennessee Began tourism bridge to the homepage using the existing tourism app screenshot and visitor-specific CTAs.
 
 ## Next Potential Gains
 

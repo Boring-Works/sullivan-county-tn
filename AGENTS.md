@@ -3,6 +3,8 @@
 Citizen services portal for Sullivan County, Tennessee.
 Brand: **Official services. Local government. Community information.** Tourism bridge: **Where Tennessee Began**.
 
+Brand source of truth: `docs/BRAND_POSITIONING.md`.
+
 ## Sanity Check (always run before pushing)
 ```
 pnpm exec biome check . && pnpm exec tsc --noEmit && pnpm exec vitest run && pnpm run build

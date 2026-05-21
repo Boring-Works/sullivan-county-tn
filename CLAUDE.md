@@ -6,6 +6,7 @@ Brand: **Official services. Local government. Community information.** Tourism b
 ## Audit Docs (May 2026)
 See `/docs/` for complete architecture audit:
 - [ARCHITECTURE.md](docs/ARCHITECTURE.md) — Full stack architecture
+- [BRAND_POSITIONING.md](docs/BRAND_POSITIONING.md) — Civic portal vs. tourism brand split
 - [CURRENT_STATE.md](docs/CURRENT_STATE.md) — Current project state
 - [COMPONENT_INVENTORY.md](docs/COMPONENT_INVENTORY.md) — All 50 components
 - [DEVELOPMENT_WORKFLOW.md](docs/DEVELOPMENT_WORKFLOW.md) — Dev workflow

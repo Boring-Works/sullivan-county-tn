@@ -1,7 +1,8 @@
 # Sullivan County Website — Heritage Content Layer Design
 
 **Date:** 2026-03-01
-**Brand Thesis:** Where Tennessee Began and Begins
+**Status:** Superseded for homepage positioning by `docs/BRAND_POSITIONING.md`; still useful for heritage/history route content.
+**Brand Thesis:** Heritage supports the civic portal. Where Tennessee Began is the tourism/heritage bridge, not the primary government-homepage identity.
 **Scope:** 20 new routes + 8 existing page updates
 **Source of Truth:** Fact-checked master reference document (3 phases of verification)
 
@@ -29,7 +30,7 @@ No unverified claims. No marketing superlatives. Factual, editorial, authoritati
 Long-form authority page. The SEO engine for "where did Tennessee start" and "Sullivan County history."
 
 **Content sections:**
-1. Hero with "Where Tennessee Began and Begins" tagline + 1790 | 2026 device
+1. Hero with "Where Tennessee Began" heritage framing + 1790 | 2026 device
 2. Pre-contact narrative — Cherokee homeland, Great Indian Warrior Path, Long Island as sacred ground
 3. European settlement — William Bean (1769), James Robertson, Watauga Association (1772)
 4. County formation — October 1779, named for General John Sullivan, NC General Assembly
@@ -152,7 +153,7 @@ Grid of community cards (like department cards) with population, incorporation d
 ## 3. Existing Page Updates
 
 ### Homepage (`/`)
-1. **HeroBanner**: Update population stat from 156,000 to 158,000+. Add "Where Tennessee Began and Begins" as secondary tagline (replace current italic subtitle). Change "Where Tennessee Began" button from external link to internal `/history`.
+1. **HeroBanner**: Keep the homepage service-first with "What do you need to do today?" and route heritage/tourism messaging below the civic task layer. Do not add the tourism tagline to the government hero.
 2. **AboutSection**: Enrich with heritage context. Add link to `/history`. Update population reference.
 3. **CommunityHighlights**: Replace 3 emoji cards with 4–5 internal-linking heritage/community cards (Rocky Mount, Kingsport, Bristol, Heritage Trail, BMS). Remove external-only links.
 4. **Add HeritageHighlight section**: New section between About and QuickServices showcasing the "Began and Begins" duality.

@@ -767,6 +767,8 @@ git commit -m "feat: add employers and education data files"
 
 ### Task 6: Build History Page Components
 
+**2026-05-21 positioning note:** this heritage implementation plan predates the civic portal/tourism brand split. Keep heritage framing on `/history` and visitor pages. Do not move the tourism/heritage tagline into the main government homepage hero; use `docs/BRAND_POSITIONING.md` as the current source of truth.
+
 **Files:**
 - Create: `src/components/history/HeritageHero.tsx`
 - Create: `src/components/history/HistoryNarrative.tsx`
@@ -790,7 +792,7 @@ interface HeritageHeroProps {
 export function HeritageHero({
 	title,
 	subtitle,
-	tagline = "Where Tennessee Began and Begins",
+	tagline = "Where Tennessee Began",
 	backgroundImage = "/images/hero/boone-lake-1920.jpg",
 	backgroundAlt = "Sullivan County, Tennessee landscape",
 }: HeritageHeroProps) {
@@ -1201,7 +1203,7 @@ export const Route = createFileRoute("/history/")({
 	component: HistoryPage,
 	head: () => ({
 		meta: seo({
-			title: "The Founding Story — Sullivan County: Where Tennessee Began and Begins",
+			title: "The Founding Story — Sullivan County: Where Tennessee Began",
 			description:
 				"Sullivan County is where Tennessee's government began. Explore the founding story from Cherokee homeland to Southwest Territory capital to modern Appalachian community.",
 			url: "/history",
@@ -1576,8 +1578,8 @@ git commit -m "feat: add /history/\$slug dynamic route for heritage site detail 
 
 **Step 1: Update HeroBanner**
 - Change `end={156000}` to `end={158000}` for Residents stat
-- Change the italic tagline from "Second oldest county..." to "Where Tennessee Began and Begins"
-- Change the "Where Tennessee Began" external link to internal `/history`
+- Keep the homepage hero service-first with "What do you need to do today?"
+- Keep Where Tennessee Began messaging below the civic task layer as heritage context or a tourism bridge
 
 **Step 2: Update AboutSection**
 - Update population from "over 156,000" to "over 158,000"

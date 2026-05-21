@@ -1,6 +1,7 @@
 # Homepage Redesign — 7-Phase Plan
 
-**Status:** Planned · not yet started.
+**Status:** Superseded by the shipped 2026-05-21 civic portal homepage.
+**Current source of truth:** `docs/BRAND_POSITIONING.md`.
 **Source of truth:** [`County_Government_Website_Blueprint_2026`](#source-of-truth) — 45+ authoritative sources, 20-county benchmark, P0/P1/P2/P3 priority matrix.
 **Validation:** the blueprint hybrid model (services-primary nav + audience-secondary pathways) is the canonical pattern shipped by the top-tier benchmark counties (Arlington 8.9, Chesterfield 8.9, Fairfax 8.6, Montgomery 8.2).
 **Total estimate:** ~25 hours across 7 phases, each independently shippable.
@@ -19,7 +20,7 @@ The current homepage has **31 interactive elements above the fold** (Desktop). P
 | Potential businesses ("should I expand here?") | Economic development pitch, top employers, workforce, sites | ❌ Not surfaced — `/economic-development` exists but homepage doesn't link to it |
 | Tourists / visitors | Heritage Trail, BMS, country music heritage, Boone Lake, parks, events | ❌ Buried under "About" |
 
-Plus a 6th cross-cutting job: **telling the story of Sullivan County** (heritage, identity, "Where Tennessee Began and Begins"). That's the connective tissue across all five.
+Plus a 6th cross-cutting job: **telling the story of Sullivan County** as civic trust and local context. Heritage supports the service layer; it is not the primary government-homepage identity.
 
 The site has the content. The homepage doesn't surface it.
 
@@ -45,7 +46,7 @@ The site has the content. The homepage doesn't surface it.
 
 Specific commitments:
 
-- **Heritage as design language, not a tab.** "Where Tennessee Began and Begins" is the spine of the homepage, not an 8-word tagline.
+- **Civic utility first, heritage second.** The homepage is Sullivan County's official services portal. Heritage and tourism earn their place after residents can find services, records, meetings, notices, and emergency information.
 - **Caslon + Outfit, civic restraint.** Heavy serif headlines, generous whitespace, real local photography. Brand-copper used sparingly for true hierarchy moments.
 - **Almanac voice.** Date, weather, sunrise, on-this-day-in-Sullivan-history — newspaper-style, not dashboard-style.
 - **Single focused message** in the hero. Not a carousel. (NN/g eye-tracking: users read carousels as ads.)
@@ -232,7 +233,7 @@ LATEST NEWS (3 cards, current NewsSection component)
 OUR STORY
 ─────────
 Eyebrow: Sullivan County · Tennessee's second-oldest county
-Headline: Where Tennessee Began and Begins
+Headline: Where Tennessee Began
 Body (~80 words): Founding date, named for John Sullivan, State of Franklin, King's Mountain, country music birthplace, today.
 
 TIMELINE PREVIEW (5 highlight events from data/timeline.ts)
