@@ -19,6 +19,7 @@ import { COMMISSION_REGULAR_SESSION_RULE } from "~/data/meetings";
 import { SUGGESTED_QUERIES } from "~/data/search-index";
 import { useOpenStatus } from "~/hooks/useOpenStatus";
 import { formatNyDateShort, formatNyTime, nextOccurrence } from "~/lib/recurrence";
+import type { PublicWeatherSnapshot } from "~/server/weather/refresh";
 
 const COUNTY_OFFICE_HOURS = "Monday-Friday, 8am-4:30pm";
 const PARALLAX_SPEED = 0.22;
@@ -64,7 +65,11 @@ function openSearch(query?: string) {
   );
 }
 
-export function HeroBanner() {
+export function HeroBanner({
+  weatherSnapshot,
+}: {
+  weatherSnapshot?: PublicWeatherSnapshot | null;
+}) {
   const heroRef = useRef<HTMLElement>(null);
   const rafRef = useRef<number>(0);
   const status = useOpenStatus(COUNTY_OFFICE_HOURS);
@@ -156,8 +161,8 @@ export function HeroBanner() {
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-5 px-4 pb-20 pt-20 sm:gap-8 sm:px-6 sm:pt-32 lg:min-h-[88vh] lg:grid-cols-[minmax(0,1fr)_420px] lg:px-8 lg:pb-44">
         <div className="max-w-4xl">
           <div className="mb-5 opacity-0 animate-fade-up" style={{ animationDelay: "0.08s" }}>
-            <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-brass-light backdrop-blur-md">
-              <span>{t("home.heroEyebrow")}</span>
+            <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-full border border-white/18 bg-white/12 px-4 py-2 font-body text-xs font-bold uppercase tracking-[0.16em] text-brand-brass-light backdrop-blur-md sm:text-sm">
+              <span className="text-white">{t("home.heroEyebrow")}</span>
               <span aria-hidden="true" className="size-1 rounded-full bg-brand-brass-light/70" />
               <span>{t("home.heroEyebrowEst")}</span>
             </span>
@@ -166,7 +171,7 @@ export function HeroBanner() {
           <h1
             id="hero-heading"
             className="max-w-3xl font-display font-bold leading-[0.98] tracking-tight text-white text-balance opacity-0 animate-fade-up"
-            style={{ animationDelay: "0.18s", fontSize: "clamp(3.25rem, 7vw, 6.75rem)" }}
+            style={{ animationDelay: "0.18s", fontSize: "clamp(2.55rem, 5.7vw, 5.75rem)" }}
           >
             {t("home.heroH1")}
           </h1>
@@ -352,12 +357,21 @@ export function HeroBanner() {
                   </span>
                   <Link
                     to="/weather"
-                    className="font-body text-xs font-semibold text-brand-brass-light hover:text-white"
+                    className="group inline-flex items-center gap-1 rounded-full bg-white/10 px-2 py-1 font-body text-xs font-bold text-brand-brass-light transition-colors hover:bg-white/15 hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-copper"
+                    aria-label="Open Sullivan County weather, alerts, and river conditions"
                   >
-                    {t("home.heroTodayPanel.forecast")}
+                    View local conditions
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="size-3 transition-transform group-hover:translate-x-0.5"
+                    />
                   </Link>
                 </div>
-                <WeatherBadge className="w-full justify-center border-white/15 bg-white/10" />
+                <WeatherBadge
+                  fetchOnMount={false}
+                  snapshot={weatherSnapshot}
+                  className="w-full justify-center border-white/15 bg-white/10 text-sm font-bold"
+                />
               </div>
             </div>
 

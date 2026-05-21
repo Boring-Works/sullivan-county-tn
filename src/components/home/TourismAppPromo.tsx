@@ -30,8 +30,8 @@ export function TourismAppPromo() {
                 Turn a county visit into a self-guided trail.
               </h2>
               <p className="mt-3 line-clamp-3 max-w-2xl font-body text-sm leading-relaxed text-brand-slate-light sm:text-base lg:line-clamp-none">
-                Use Where Tennessee Began to find today&apos;s best stop, follow heritage tours, and
-                build a trip around history, music, water, racing, and mountain views.
+                Use the Where Tennessee Began app to plan a self-guided trip through local history,
+                music, water, racing, and mountain views.
               </p>
             </div>
 

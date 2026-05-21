@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { NewsSection } from "~/components/home/NewsSection";
 import { QuickServices } from "~/components/home/QuickServices";
 import { TelLink } from "~/components/shared/TelLink";
+import { officialRoadLinks } from "~/data/official-links";
 
 /**
  * TodaySection — Phase 3 of the homepage redesign.
@@ -47,7 +48,7 @@ export function TodaySection() {
                 to="/forms"
                 className="inline-flex min-h-[44px] items-center gap-2 self-start rounded-sm border border-brand-copper/30 bg-white px-4 py-2.5 font-body text-sm font-semibold text-brand-copper transition-colors hover:border-brand-copper hover:bg-brand-parchment lg:self-auto"
               >
-                Start a form or report a problem
+                Start a form or report a concern
                 <ArrowRight aria-hidden="true" className="size-3.5" />
               </Link>
             </div>
@@ -70,17 +71,17 @@ export function TodaySection() {
           <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div className="max-w-2xl">
               <span className="inline-block font-body text-[11px] font-semibold tracking-[0.2em] uppercase text-brand-brass">
-                Public updates
+                Public notices
               </span>
               <h2
                 id="updates-heading"
                 className="mt-3 font-display text-2xl font-bold text-brand-navy text-balance sm:text-3xl"
               >
-                Latest county updates
+                Public notices and county updates
               </h2>
               <p className="mt-2 font-body text-sm leading-relaxed text-brand-slate-light sm:text-base">
-                Notices residents may need before they visit an office, attend a meeting, or plan
-                around a closure.
+                Closures, hearings, road work, meeting changes, and other notices residents may need
+                before they visit an office or make plans.
               </p>
             </div>
             <Link
@@ -149,13 +150,15 @@ export function TodaySection() {
                 </TelLink>
               </li>
               <li>
-                <Link
-                  to="/weather"
+                <a
+                  href={officialRoadLinks.smartway}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex min-h-[44px] items-center gap-1.5 font-body text-sm text-brand-cream/85 transition-colors hover:text-white"
                 >
                   <CloudSun aria-hidden="true" className="size-3.5 text-brand-copper-light" />
-                  <span>Weather alerts</span>
-                </Link>
+                  <span>Road conditions</span>
+                </a>
               </li>
             </ul>
 

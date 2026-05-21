@@ -24,8 +24,8 @@
   "home": {
     "heroEyebrow": "Sullivan County, Tennessee",
     "heroEyebrowEst": "Established 1779",
-    "heroH1": "What do you need to do today?",
-    "heroIntro": "Start with the service, office, form, or public record you need. We’ll route you to the right Sullivan County office.",
+    "heroH1": "How can we help today?",
+    "heroIntro": "Pay taxes, find county offices, submit forms, request records, check meetings, and get local alerts.",
     "heroSearchPrompt": "Search by task, office, or question",
     "heroSearchPlaceholder": "Try “pay taxes,” “building permit,” or “county clerk”",
     "heroSearchAria": "Search Sullivan County departments, services, and people",
@@ -50,7 +50,7 @@
     "heroAlso": "Also common",
     "heroTasks": {
       "taxes": {
-        "title": "Pay property taxes",
+        "title": "Pay taxes",
         "body": "Find your bill, payment options, and Trustee office help."
       },
       "departments": {
@@ -58,12 +58,12 @@
         "body": "Phone numbers, hours, locations, and department pages."
       },
       "forms": {
-        "title": "Apply or file",
-        "body": "Permits, public records requests, and county forms."
+        "title": "Forms & records",
+        "body": "Permits, public records, licenses, and county requests."
       },
       "meetings": {
-        "title": "Meetings & agendas",
-        "body": "Commission meetings, schedules, minutes, and livestreams."
+        "title": "Meetings",
+        "body": "Commission agendas, minutes, calendar, and public notices."
       },
       "report": {
         "title": "Report a problem",
@@ -81,7 +81,7 @@
       "heading": "County status",
       "offices": "County offices",
       "meeting": "Next public meeting",
-      "weather": "Weather & alerts",
+      "weather": "Weather, alerts & rivers",
       "forecast": "Forecast",
       "emergency": "Need emergency help?",
       "preparedness": "Preparedness"
@@ -96,7 +96,7 @@
     },
     "emergency": {
       "eyebrow": "Emergency",
-      "heading": "In an emergency",
+      "heading": "Life-threatening emergency? Call 911.",
       "body": "Save these numbers in your phone today.",
       "moreResources": "More resources",
       "lifeThreatening": "Life-threatening emergency",
@@ -107,8 +107,8 @@
       "emergencyMgmtSub": "Storms, road closures, evacuations"
     },
     "services": {
-      "heading": "Most-used services",
-      "description": "Pay taxes, apply for permits, register to vote, and more."
+      "heading": "Most-used county services",
+      "description": "Quick links for the things residents do most: pay, apply, find, request, and report."
     },
     "departments": {
       "heading": "Find your department",
@@ -134,8 +134,8 @@
       "watchLive": "Watch live"
     },
     "newsSection": {
-      "heading": "Latest updates",
-      "description": "County news, meeting notes, and public notices.",
+      "heading": "Public notices and county updates",
+      "description": "Closures, hearings, road work, meeting changes, and other notices residents may need before they visit an office or make plans.",
       "viewAll": "View All",
       "viewAllMobile": "View All News"
     },
@@ -146,8 +146,8 @@
     },
     "communityMap": {
       "eyebrow": "Where you live",
-      "heading": "The six communities of Sullivan County",
-      "description": "Tap a community to find its services, history, and contact info.",
+      "heading": "Find your place in Sullivan County",
+      "description": "Explore communities, county services, schools, and representation across Kingsport, Bristol, Blountville, Bluff City, Piney Flats, and Colonial Heights.",
       "svgAria": "Map of Sullivan County, Tennessee, showing six communities: Kingsport, Bristol, Blountville, Bluff City, Piney Flats, and Colonial Heights.",
       "viewCommunity": "View community",
       "boundarySource": "Boundary data: U.S. Census TIGER/Line. Pins approximate community centers."
@@ -167,19 +167,19 @@
     },
     "about": {
       "eyebrow": "Your County Government",
-      "headingPart1": "Serving Sullivan County",
-      "headingPart2": "Since 1779",
-      "body": "Tennessee's second-oldest county. In 1790, Governor William Blount made Rocky Mount the Southwest Territory's capital — the political seat from which Tennessee was born. Today we cover 430 square miles of the Appalachian Highlands and serve more than 158,000 residents.",
+      "headingPart1": "Your county",
+      "headingPart2": "government",
+      "body": "Sullivan County government serves residents across 430 square miles with elected offices, public records, courts, emergency services, roads, permits, and community resources.",
       "readFoundingStory": "Read our founding story",
       "contactUs": "Contact Us",
       "meetCommissioners": "Meet Your Commissioners"
     }
   },
   "storySection": {
-    "eyebrow": "Our Story · Tennessee's second-oldest county",
-    "heading": "Where Tennessee Began and Begins",
-    "body": "Tennessee began here. North Carolina established Sullivan County in 1779 — the second-oldest county in what would become Tennessee — and named it for Major General John Sullivan of the Continental Army. From the State of Franklin to the Overmountain Men's march to King's Mountain, the corner of the Appalachian Highlands set the foundations of the state. In 1927 the Bristol Sessions recorded what would later be called the Big Bang of country music. The story keeps writing itself.",
-    "timelineHeading": "Five moments in 246 years",
+    "eyebrow": "Established 1779 · Tennessee's second-oldest county",
+    "heading": "Where Tennessee began",
+    "body": "Established in 1779, Sullivan County helped shape the early government, records, roads, and communities of Tennessee. Explore the story behind the courthouse, towns, and public places residents still use today.",
+    "timelineHeading": "Three moments in 246 years",
     "peopleHeading": "Notable figures from Sullivan County",
     "linkFoundingStory": "Read the founding story",
     "linkTimeline": "See the full timeline",
@@ -187,14 +187,14 @@
   },
   "todaySection": {
     "eyebrow": "Today",
-    "heading": "Services and updates residents use most",
-    "intro": "The hero gets you started fast. This section gives you the next layer: popular services, public notices, and emergency contacts.",
+    "heading": "Start with a common task.",
+    "intro": "Pay taxes, find records, apply for permits, register to vote, or contact the right office.",
     "officesPrefix": "County offices",
     "meetingPrefix": "Next meeting:",
     "addToCalendar": "Add to calendar",
     "watchLive": "Watch live",
     "fullSchedule": "Full schedule",
-    "emergencyHeading": "In an emergency",
+    "emergencyHeading": "Life-threatening emergency? Call 911.",
     "lifeThreatening": "Life-threatening",
     "sheriff": "Sheriff",
     "ema": "Emergency Mgmt",

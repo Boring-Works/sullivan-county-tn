@@ -9,7 +9,7 @@ import {
   ExternalLink,
   Gauge,
   MapPin,
-  ShieldAlert,
+  Route as RouteIcon,
   Sun,
   Waves,
   Wind,
@@ -19,13 +19,15 @@ import { TelLink } from "~/components/shared/TelLink";
 import { Card, CardContent, CardHeader, CardTitle } from "~/components/ui/card";
 import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import { CopperWeathervane } from "~/components/weather/CopperWeathervane";
+import { officialLakeLinks, officialRoadLinks } from "~/data/official-links";
 import {
   formatRiverTrend,
   formatRiverValue,
   type RiverGauge,
   type RiverTrend,
 } from "~/lib/river-utils";
-import { formatPercent, formatWind, parseWindDegrees, parseWindSpeed } from "~/lib/weather-utils";
+import { deriveWeatherSituation, type WeatherSituation } from "~/lib/weather-situation";
+import { formatWind, parseWindDegrees, parseWindSpeed } from "~/lib/weather-utils";
 import { getCurrentWeather, getRecentObservations } from "~/server/public-weather";
 import { getRiverConditions } from "~/server/river-conditions";
 import type { PublicAlert } from "~/server/weather/refresh";
@@ -92,6 +94,7 @@ function WeatherPage() {
   const windMph = parseWindSpeed(snapshot.current.windSpeed);
   const windDirectionDegrees = parseWindDegrees(snapshot.current.windDirection);
   const hasAlerts = snapshot.alerts.length > 0;
+  const situation = deriveWeatherSituation(snapshot, riverConditions);
 
   return (
     <main id="main-content" className="pt-24 pb-14 bg-brand-cream">
@@ -114,32 +117,6 @@ function WeatherPage() {
           <p className="mt-2 font-body text-sm text-white/70" suppressHydrationWarning>
             Updated {formatRelative(snapshot.fetchedAt)} · NWS forecast plus USGS stream gauges
           </p>
-          <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <WeatherStatCard
-              icon={<ShieldAlert aria-hidden="true" className="size-4" />}
-              label="NWS alerts"
-              value={hasAlerts ? `${snapshot.alerts.length} active` : "None active"}
-              tone={snapshot.hasSevereAlert ? "danger" : hasAlerts ? "warn" : "safe"}
-            />
-            <WeatherStatCard
-              icon={<CloudRain aria-hidden="true" className="size-4" />}
-              label="Rain chance"
-              value={formatPercent(snapshot.today.precipChance)}
-              tone={(snapshot.today.precipChance ?? 0) >= 70 ? "warn" : "neutral"}
-            />
-            <WeatherStatCard
-              icon={<Wind aria-hidden="true" className="size-4" />}
-              label="Wind"
-              value={formatWind(snapshot.current.windSpeed, snapshot.current.windDirection)}
-              tone={windMph >= 25 ? "warn" : "neutral"}
-            />
-            <WeatherStatCard
-              icon={<Waves aria-hidden="true" className="size-4" />}
-              label="River gauges"
-              value={riverConditions.length > 0 ? `${riverConditions.length} live` : "Unavailable"}
-              tone={riverConditions.some((gauge) => gauge.trend === "rising") ? "warn" : "neutral"}
-            />
-          </div>
         </div>
       </div>
 
@@ -161,56 +138,10 @@ function WeatherPage() {
       )}
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+        <SituationSummarySection situation={situation} />
+
         {/* Active alerts */}
-        <section aria-labelledby="alerts-heading">
-          <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="font-body text-xs font-semibold uppercase tracking-[0.18em] text-brand-brass">
-                Safety first
-              </p>
-              <h2
-                id="alerts-heading"
-                className="mt-1 font-display text-2xl font-bold text-brand-navy"
-              >
-                Active alerts {hasAlerts ? `(${snapshot.alerts.length})` : ""}
-              </h2>
-            </div>
-            <a
-              href="https://alerts.weather.gov/search?zone=TNZ017"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 self-start font-body text-sm font-semibold text-brand-copper hover:text-brand-copper-light sm:self-auto"
-            >
-              Open NWS alert feed
-              <ExternalLink aria-hidden="true" className="size-3.5" />
-            </a>
-          </div>
-          {hasAlerts ? (
-            <div className="space-y-4">
-              {snapshot.alerts.map((alert) => (
-                <AlertCard key={alert.id} alert={alert} />
-              ))}
-            </div>
-          ) : (
-            <div className="rounded-sm border border-brand-sage/25 bg-brand-sage/5 p-5">
-              <div className="flex items-start gap-3">
-                <CheckCircle2
-                  aria-hidden="true"
-                  className="mt-0.5 size-5 shrink-0 text-brand-sage"
-                />
-                <div>
-                  <p className="font-display text-base font-bold text-brand-navy">
-                    No active National Weather Service alerts for Sullivan County.
-                  </p>
-                  <p className="mt-1 font-body text-sm leading-relaxed text-brand-slate-light">
-                    Conditions can change quickly in the mountains. Keep a way to receive warnings,
-                    especially during thunderstorms, winter weather, and overnight storms.
-                  </p>
-                </div>
-              </div>
-            </div>
-          )}
-        </section>
+        {hasAlerts && <ActiveAlertsSection alerts={snapshot.alerts} />}
 
         {/* Current conditions hero card */}
         <section
@@ -249,7 +180,7 @@ function WeatherPage() {
           {/* Side: copper weathervane + today high/low */}
           <div className="rounded-sm border border-brand-surface bg-white p-6 space-y-5">
             {/* Live weathervane — rotates with current wind direction */}
-            <div className="pt-2 pb-12">
+            <div className="hidden pt-2 pb-12 sm:block">
               <CopperWeathervane
                 windDirection={windDirectionDegrees}
                 windSpeed={windMph || undefined}
@@ -297,8 +228,6 @@ function WeatherPage() {
             )}
           </div>
         </section>
-
-        <RiverConditionsSection gauges={riverConditions} />
 
         {/* Hourly outlook */}
         {snapshot.hourly.length > 0 && (
@@ -382,6 +311,12 @@ function WeatherPage() {
           </section>
         )}
 
+        <RiverConditionsSection gauges={riverConditions} />
+
+        <LakeLevelsSection />
+
+        <RoadConditionsSection />
+
         {/* Attribution + emergency reminder */}
         <section className="rounded-sm border border-brand-surface bg-brand-parchment p-6">
           <p className="font-body text-sm text-brand-slate leading-relaxed">
@@ -430,6 +365,115 @@ function WeatherPage() {
   );
 }
 
+function ActiveAlertsSection({ alerts }: { alerts: PublicAlert[] }) {
+  return (
+    <section aria-labelledby="alerts-heading">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+        <div>
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.18em] text-brand-brass">
+            Safety first
+          </p>
+          <h2 id="alerts-heading" className="mt-1 font-display text-2xl font-bold text-brand-navy">
+            Active alerts ({alerts.length})
+          </h2>
+        </div>
+        <a
+          href="https://alerts.weather.gov/search?zone=TNZ017"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 self-start font-body text-sm font-semibold text-brand-copper hover:text-brand-copper-light sm:self-auto"
+        >
+          Open NWS alert feed
+          <ExternalLink aria-hidden="true" className="size-3.5" />
+        </a>
+      </div>
+      <div className="space-y-4">
+        {alerts.map((alert) => (
+          <AlertCard key={alert.id} alert={alert} />
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function SituationSummarySection({ situation }: { situation: WeatherSituation }) {
+  const toneClass = {
+    safe: {
+      shell: "border-brand-sage/25 bg-brand-sage/7",
+      icon: "bg-brand-sage text-white",
+      eyebrow: "text-brand-sage",
+    },
+    watch: {
+      shell: "border-brand-brass/30 bg-brand-brass/8",
+      icon: "bg-brand-brass text-white",
+      eyebrow: "text-brand-brass",
+    },
+    danger: {
+      shell: "border-brand-copper/35 bg-brand-copper/8",
+      icon: "bg-brand-copper text-white",
+      eyebrow: "text-brand-copper",
+    },
+  }[situation.tone];
+  const Icon = situation.tone === "safe" ? CheckCircle2 : AlertTriangle;
+
+  return (
+    <section
+      aria-labelledby="situation-heading"
+      className={`rounded-sm border p-5 shadow-sm sm:p-6 ${toneClass.shell}`}
+    >
+      <div className="grid grid-cols-1 gap-6 lg:grid-cols-[minmax(0,1.1fr)_minmax(320px,0.9fr)] lg:items-start">
+        <div className="flex items-start gap-4">
+          <div className={`rounded-full p-3 ${toneClass.icon}`}>
+            <Icon aria-hidden="true" className="size-5" />
+          </div>
+          <div>
+            <p
+              className={`font-body text-xs font-semibold uppercase tracking-[0.18em] ${toneClass.eyebrow}`}
+            >
+              Situation summary
+            </p>
+            <h2
+              id="situation-heading"
+              className="mt-1 font-display text-2xl font-bold text-brand-navy"
+            >
+              {situation.title}
+            </h2>
+            <p className="mt-2 max-w-3xl font-body text-sm leading-relaxed text-brand-slate">
+              {situation.summary}
+            </p>
+            <div className="mt-4 grid grid-cols-2 gap-2">
+              {situation.details.map((detail) => (
+                <div
+                  key={detail}
+                  className="rounded-sm border border-white/70 bg-white/70 px-3 py-2 font-body text-[11px] font-semibold text-brand-slate sm:text-xs"
+                >
+                  {detail}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className="rounded-sm border border-white/70 bg-white/75 p-4">
+          <p className="font-body text-xs font-semibold uppercase tracking-[0.16em] text-brand-stone">
+            What to do
+          </p>
+          <div className="mt-3 space-y-3">
+            {situation.guidance.map((item) => (
+              <div key={item.title}>
+                <h3 className="font-display text-base font-bold text-brand-navy">{item.title}</h3>
+                <p className="mt-1 font-body text-sm leading-relaxed text-brand-slate-light">
+                  {item.body}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function AlertCard({ alert }: { alert: PublicAlert }) {
   const isSevere = alert.severity === "Severe" || alert.severity === "Extreme";
   return (
@@ -467,35 +511,6 @@ function AlertCard({ alert }: { alert: PublicAlert }) {
           </p>
         </div>
       </div>
-    </div>
-  );
-}
-
-function WeatherStatCard({
-  icon,
-  label,
-  value,
-  tone,
-}: {
-  icon: ReactNode;
-  label: string;
-  value: string;
-  tone: "safe" | "neutral" | "warn" | "danger";
-}) {
-  const toneClass = {
-    safe: "border-brand-sage/30 bg-brand-sage/12 text-white/90",
-    neutral: "border-white/12 bg-white/8 text-brand-brass-light",
-    warn: "border-brand-brass-light/35 bg-brand-brass-light/12 text-brand-brass-light",
-    danger: "border-brand-copper-light/50 bg-brand-copper/25 text-white",
-  }[tone];
-
-  return (
-    <div className={`rounded-sm border px-4 py-3 ${toneClass}`}>
-      <div className="flex items-center gap-2 font-body text-[11px] font-semibold uppercase tracking-[0.16em]">
-        {icon}
-        <span>{label}</span>
-      </div>
-      <p className="mt-1 font-display text-xl font-bold text-white">{value}</p>
     </div>
   );
 }
@@ -543,6 +558,124 @@ function RiverConditionsSection({ gauges }: { gauges: RiverGauge[] }) {
           </p>
         </div>
       )}
+    </section>
+  );
+}
+
+function RoadConditionsSection() {
+  return (
+    <section aria-labelledby="road-conditions-heading">
+      <div className="rounded-sm border border-brand-surface bg-white p-5 sm:p-6">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+          <div className="max-w-3xl">
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.18em] text-brand-brass">
+              Roads and travel
+            </p>
+            <h2
+              id="road-conditions-heading"
+              className="mt-1 font-display text-2xl font-bold text-brand-navy"
+            >
+              Road conditions and traffic cameras
+            </h2>
+            <p className="mt-2 font-body text-sm leading-relaxed text-brand-slate-light">
+              During storms, crashes, or construction, check TDOT SmartWay for I-81, I-26,
+              incidents, road closures, and traffic cameras. TN 511 provides the same official road
+              information by phone or web.
+            </p>
+          </div>
+          <RouteIcon aria-hidden="true" className="hidden size-10 text-brand-copper sm:block" />
+        </div>
+
+        <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <a
+            href={officialRoadLinks.smartway}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-sm bg-brand-navy px-4 py-2.5 font-body text-sm font-bold text-white transition-colors hover:bg-brand-copper"
+          >
+            Open TDOT SmartWay
+            <ExternalLink aria-hidden="true" className="size-3.5" />
+          </a>
+          <a
+            href={officialRoadLinks.smartwayRegion1Cameras}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-sm border border-brand-navy/15 px-4 py-2.5 font-body text-sm font-bold text-brand-navy transition-colors hover:border-brand-copper hover:text-brand-copper"
+          >
+            View I-81 cameras
+            <ExternalLink aria-hidden="true" className="size-3.5" />
+          </a>
+          <a
+            href={officialRoadLinks.tn511}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-sm border border-brand-navy/15 px-4 py-2.5 font-body text-sm font-bold text-brand-navy transition-colors hover:border-brand-copper hover:text-brand-copper"
+          >
+            Open TN 511
+            <ExternalLink aria-hidden="true" className="size-3.5" />
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function LakeLevelsSection() {
+  const lakes = [
+    {
+      name: "Boone Lake",
+      body: "TVA lake elevation, operating guide, and recent level trend for boating and shoreline planning.",
+      href: officialLakeLinks.boone,
+    },
+    {
+      name: "South Holston Lake",
+      body: "TVA level information for the upper South Fork Holston recreation corridor.",
+      href: officialLakeLinks.southHolston,
+    },
+    {
+      name: "Fort Patrick Henry Lake",
+      body: "TVA lake level information for the Kingsport and Warriors' Path area.",
+      href: officialLakeLinks.fortPatrickHenry,
+    },
+  ];
+
+  return (
+    <section aria-labelledby="lake-levels-heading">
+      <div className="mb-4">
+        <p className="font-body text-xs font-semibold uppercase tracking-[0.18em] text-brand-brass">
+          TVA reservoirs
+        </p>
+        <h2
+          id="lake-levels-heading"
+          className="mt-1 font-display text-2xl font-bold text-brand-navy"
+        >
+          Lake levels
+        </h2>
+        <p className="mt-1 max-w-3xl font-body text-sm leading-relaxed text-brand-slate-light">
+          Official TVA lake pages are the best source for Boone, South Holston, and Fort Patrick
+          Henry lake elevations and operating information.
+        </p>
+      </div>
+      <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+        {lakes.map((lake) => (
+          <a
+            key={lake.name}
+            href={lake.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-sm border border-brand-surface bg-white p-5 transition-colors hover:border-brand-copper/40"
+          >
+            <h3 className="font-display text-lg font-bold text-brand-navy">{lake.name}</h3>
+            <p className="mt-2 font-body text-sm leading-relaxed text-brand-slate-light">
+              {lake.body}
+            </p>
+            <span className="mt-4 inline-flex items-center gap-1.5 font-body text-sm font-semibold text-brand-copper">
+              Open TVA lake page
+              <ExternalLink aria-hidden="true" className="size-3.5" />
+            </span>
+          </a>
+        ))}
+      </div>
     </section>
   );
 }

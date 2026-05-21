@@ -45,9 +45,12 @@ The site has been through a **7-phase production-hardening pass** plus several f
 - **NWS API integration** (api.weather.gov, no key, government data on a government site). Forecast office `MRX` (Morristown), gridpoint `126,82`, forecast zone `TNZ017`.
 - KV-cached snapshot with SWR-on-read pattern (10-min freshness; one user every 10 min pays the upstream round-trip; everyone else gets a 5 ms KV hit).
 - D1 archive in `weather_observations` for the 24-hour temperature trend chart on `/weather`.
-- `<WeatherBadge />` on the homepage hero almanac — auto-pulses copper when a Severe/Extreme NWS alert is active.
-- `/weather` route: current conditions hero, CopperWeathervane, severity-tiered alert cards, hourly outlook, day/night forecast, 24-hour temperature trend.
+- Homepage uses one shared client weather fetch for `<HomeWeatherAlertBanner />` and `<WeatherBadge />`, avoiding duplicate polling and duplicate stale-refresh pressure.
+- `<HomeWeatherAlertBanner />` appears only when active NWS alerts exist and uses live-region semantics for assistive technology.
+- `<WeatherBadge />` on the homepage hero almanac auto-pulses copper when a Severe/Extreme NWS alert is active.
+- `/weather` route: action-first situation summary, relevant NWS alert cards, current conditions hero, CopperWeathervane on tablet/desktop, hourly outlook, day/night forecast, 24-hour temperature trend.
 - **USGS river conditions** for Beaver Creek at Bristol, South Fork Holston near Damascus, and North Fork Holston near Gate City. Cards show flow, gauge height, trend, last observation time, and official USGS links.
+- **Official travel and lake links**: TDOT SmartWay, TN 511, and TVA lake-level pages are linked from `/weather`, `/transportation`, and `/visit`; the homepage emergency strip links to TDOT SmartWay for road conditions.
 
 ### Content freshness
 - **7 fresh news articles** dated April–May 2026, grounded in real-world facts: Memorial Day closures, Blountville Athletic Park grand opening (May 9), FY 26-27 budget hearing (May 21), April 16 Commission recap, SR 126 Memorial Boulevard project (8.3 mi, March 2026 start), TN burn-permit deadline (May 15), spring severe weather preparedness.
@@ -117,8 +120,8 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 | Area | Notable |
 |---|---|
 | Layout | `SiteNav` (verb-based mega-panels + category-aware active state + shadcn Sheet mobile drawer), `SiteFooter`, `AnnouncementBanner` (D1-wired, **live**), `SearchDialog` (Fuse.js inside shadcn CommandDialog, Cmd+K, lazy-loaded, supports prefilled initial query), `MobileBottomTabBar`, `LanguageToggle`, `NotFound` |
-| Home (mounted on /) | `HeroBanner` (task search, top tasks, status panel with `WeatherBadge`), `SeasonalRibbon`, `TodaySection`, `CommunityMap`, `StorySection`, `AboutSection` |
-| Weather | `WeatherBadge` (homepage status panel), `CopperWeathervane` (animated copper compass rose), live USGS river-condition cards on `/weather` |
+| Home (mounted on /) | `HomeWeatherAlertBanner` (active NWS alerts only), `HeroBanner` (task search, top tasks, status panel with `WeatherBadge`), `SeasonalRibbon`, `TodaySection`, `CommunityMap`, `StorySection`, `TourismAppPromo`, `AboutSection` |
+| Weather | `WeatherBadge` (homepage status panel), `CopperWeathervane` (animated copper compass rose), action-first situation summary, live USGS river-condition cards on `/weather` |
 | Departments | `DepartmentCard`, `DepartmentDetail`, `PrintableContactCard` |
 | Commissioners | `CommissionerGrid`, `CommissionerCard` |
 | Communities | `CommunityCard` |
@@ -132,9 +135,9 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 | Shared | `TelLink`, `OpenStatusPill`, `PageFeedback`, `OfflineBanner`, `ContactCard` (**Save contact + Share details**, no hardcoded site URL in vCard), `InstallPrompt`, `MountainDivider`, `CountySeal`, `VideoEmbed`, `DetailBreadcrumb` |
 | `ui/*` (shadcn) | 21 primitives (full inventory in COMPONENT_INVENTORY.md) |
 
-### Data (17 files)
+### Data (18 files)
 
-`departments.ts` (25, all with `lastUpdated`), `commissioners.ts` (24), `news.ts` (14 entries — 7 fresh April-May 2026 + 7 archive), `documents.ts` (115 files / 17 categories), `quick-services.ts` (6), `search-index.ts` (175+ items with citizen-language aliases), `heritage-sites.ts` (8), `timeline.ts` (48 events), `communities.ts` (6), `notable-people.ts` (7), `employers.ts`, `education.ts` (6), `form-definitions.ts` (4 types, with `lastUpdated`), `meeting-minutes.ts`, `meetings.ts` (recurrence rules), `holidays.ts` (13 county holidays), `nav-verbs.ts` (**5 verb model with category-filtered department links**).
+`departments.ts` (25, all with `lastUpdated`), `commissioners.ts` (24), `news.ts` (14 entries — 7 fresh April-May 2026 + 7 archive), `documents.ts` (115 files / 17 categories), `quick-services.ts` (6), `search-index.ts` (175+ items with citizen-language aliases), `heritage-sites.ts` (8), `timeline.ts` (48 events), `communities.ts` (6), `notable-people.ts` (7), `employers.ts`, `education.ts` (6), `form-definitions.ts` (4 types, with `lastUpdated`), `meeting-minutes.ts`, `meetings.ts` (recurrence rules), `holidays.ts` (13 county holidays), `nav-verbs.ts` (**5 verb model with category-filtered department links**), `official-links.ts` (TDOT/TN 511/TVA external links).
 
 ### Server functions (15 files)
 
@@ -176,7 +179,7 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 
 | Type | Files | Tests | Status |
 |---|---|---|---|
-| Unit (Vitest) | 15 | 91 | all passing |
+| Unit (Vitest) | 16 | 94 | all passing |
 | E2E (Playwright × desktop+tablet+mobile) | 6 specs | 117–270 cases (varies by spec) | 117/117 critical-paths + user-flows; 21/21 a11y; ParcelLookup test occasionally flakes when TPAD upstream is slow |
 
 ### Design system
@@ -193,6 +196,8 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 | Service Worker | `/sw.js` registered in production | live |
 | NWS API | Weather data source (free, no key) | live, called every ~10 min by SWR refresh |
 | USGS waterservices | River/stream gauge source (free, no key) | live on `/weather` |
+| TDOT SmartWay / TN 511 | Official road condition source | TDOT linked from homepage; TDOT and TN 511 linked from `/weather`, `/transportation` |
+| TVA lake levels | Official reservoir source | linked from `/weather`, `/visit` |
 | Wrangler 4.88+ | CLI | configured |
 | Biome 2.x | Lint + format | CLI/schema mismatch present in current env (`2.4.15` CLI vs `2.4.14` schema) |
 | TypeScript | Strict | clean |

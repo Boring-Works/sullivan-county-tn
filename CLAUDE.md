@@ -13,7 +13,7 @@ See `/docs/` for complete architecture audit:
 - [NEXT_IMPLEMENTATION_PLAN.md](docs/NEXT_IMPLEMENTATION_PLAN.md) — Future plan
 
 ## State (2026-05-21 — production-hardened, weather/river-live, PWA-ready)
-- **Tests:** 91 unit tests passing across 15 files; Playwright coverage includes desktop/tablet/mobile critical paths, accessibility scans, menu behavior, user flows, and admin auth flows.
+- **Tests:** 94 unit tests passing across 16 files; Playwright coverage includes desktop/tablet/mobile critical paths, accessibility scans, menu behavior, user flows, and admin auth flows.
 - **A11y:** WCAG AA oriented — kbd contrast fixed, brand-stable colors site-wide, scroll-reveal failsafe ensures all sections render even with reduced motion or no JS.
 - **Lint:** Biome check passes with 0 errors.
 - **Build:** Vite/TanStack Start production build passes locally.
@@ -24,7 +24,7 @@ See `/docs/` for complete architecture audit:
 - **Phase 3 (shadcn):** 21 primitives — `accordion, alert, badge, breadcrumb, button, card, command, dialog, dropdown-menu, form, input, label, scroll-area, select, separator, sheet, skeleton, sonner, table, tabs, textarea, tooltip`. Theme overrides map shadcn vars to brand-navy/copper/cream. Sharp 0.125rem radius. `<Button>` extended with `copper` and `navy` variants.
 - **Phase 4 (UI conversion):** Toaster + TooltipProvider in `__root.tsx`, Skeleton replaces "Loading..." text, **`/contact` + `/admin/login` + `/forms/$type` (all 4 form types) migrated to react-hook-form + shadcn `<Form>` + Sonner toasts**. `@tanstack/react-form` removed. `/property-taxes` FAQ → `<Accordion>`. `/weather` 7-day cards → `<Card>`, hourly → `<ScrollArea>`. **`<CopperWeathervane />`** lifted from tennessee-starts-here, themed for Sullivan brand.
 - **Phase 5 (PWA + offline):** `public/sw.js` (cache-first fonts, network-first nav with Navigation Preload + `/offline.html` fallback, image cache eviction, stale-while-revalidate). Pre-caches emergency-critical pages: `/`, `/property-taxes`, `/contact`, `/calendar`, `/weather`, `/departments/emergency-management`, `/departments/sheriff`. Branded `/offline.html` with 911/Sheriff/EMA tel: links. `<OfflineBanner />` listens to `navigator.onLine`. **2026 PWA manifest spec**: `id`, `scope`, `lang`, `display_override`, `launch_handler.client_mode`, `share_target`, `shortcuts` (Pay Taxes / Weather / Contact / Calendar), maskable icon.
-- **Weather + river subsystem (2026-05-21):** NWS API integration (api.weather.gov, no key — government data on a government site). MRX gridpoint 126,82, forecast zone TNZ017. KV-cached snapshot with 10-min SWR-on-read. D1 `weather_observations` archives every refresh. `/weather` route: current conditions, CopperWeathervane with 16-point compass labels, severity-tiered alerts, hourly outlook, day/night forecast, 24h trend chart, and live USGS river gauges for Beaver Creek, South Fork Holston, and North Fork Holston.
+- **Weather + river subsystem (2026-05-21):** NWS API integration (api.weather.gov, no key — government data on a government site). MRX gridpoint 126,82, forecast zone TNZ017. KV-cached snapshot with 10-min SWR-on-read. Homepage uses one shared client weather fetch for the alert banner and hero weather badge. D1 `weather_observations` archives every refresh. `/weather` route is action-first: situation summary, relevant NWS alerts, current conditions, 12-hour outlook, 7-day forecast, trend chart, USGS river gauges, TVA lake links, and TDOT/TN 511 road links.
 - **Content freshness:** 7 fresh news articles dated April–May 2026 (Memorial Day closures, Blountville Athletic Park grand opening, FY 26-27 budget hearing, Apr 16 Commission recap, SR 126 Memorial Boulevard project, May 15 burn permit deadline, severe weather prep). **Live D1-seeded AnnouncementBanner** showing Memorial Day closure on the homepage.
 - **Trust signals (2026-05-07):** `<DetailBreadcrumb>` mounted on `/departments/$slug`, `/news/$slug`, `/communities/$slug`, `/history/$slug`, `/forms/$type`. **"Last reviewed" stamps** at the bottom of every department detail page and form page.
 - **iOS / Android 2026 PWA standards:** `viewport-fit=cover` safe areas, dual `theme-color` (light + dark), full iOS PWA tag set, multiple `apple-touch-icon` sizes, `mask-icon`, `format-detection: telephone=no`, `msapplication-TileColor`, `color-scheme: light`.
@@ -56,7 +56,7 @@ See `/docs/` for complete architecture audit:
 ## Routes
 | Route | File | Purpose |
 |-------|------|---------|
-| `/` | `routes/index.tsx` | Homepage — citizen-first HeroBanner (task search, top tasks, single county-status panel), SeasonalRibbon (date-aware, Oct 1 – Mar 1 only), TodaySection, CommunityMap, StorySection, AboutSection. Duplicate status/weather overlays and old audience section removed 2026-05-21. |
+| `/` | `routes/index.tsx` | Homepage — active NWS alert banner when needed, citizen-first HeroBanner (task search, top tasks, single county-status panel), SeasonalRibbon (date-aware, Oct 1 – Mar 1 only), TodaySection, CommunityMap, StorySection, TourismAppPromo, AboutSection. Duplicate status/weather overlays and old audience section removed 2026-05-21. |
 | `/property-taxes` | `routes/property-taxes.tsx` | "Pay your property taxes" landing page with `ParcelLookup` typeahead, three-portal CTAs (TPAD/Trustee/GIS), FAQ + GovernmentService JSON-LD |
 | `/departments` | `routes/departments/index.tsx` | Department directory with category filter |
 | `/departments/$slug` | `routes/departments/$slug.tsx` | Individual department detail (25 departments) |
@@ -77,10 +77,10 @@ See `/docs/` for complete architecture audit:
 | `/about` | `routes/about.tsx` | County overview, demographics, Tri-Cities MSA context |
 | `/economic-development` | `routes/economic-development.tsx` | Top employers, sector breakdown, economic assets |
 | `/education` | `routes/education.tsx` | School systems, higher ed, educational attainment stats |
-| `/transportation` | `routes/transportation.tsx` | TRI airport, highways, transit + historical context |
+| `/transportation` | `routes/transportation.tsx` | TRI airport, highways, transit, official TDOT/TN 511 road resources + historical context |
 | `/people` | `routes/people.tsx` | Notable historical figures grid (7 people) |
-| `/visit` | `routes/visit.tsx` | Heritage Trail, parks, recreation, events, getting here |
-| `/weather` | `routes/weather.tsx` | NWS weather + USGS river conditions: alerts, current conditions, hourly outlook, day/night forecast, temperature trend, and live river gauges |
+| `/visit` | `routes/visit.tsx` | Heritage Trail, parks, recreation, events, TVA lake-level links, getting here |
+| `/weather` | `routes/weather.tsx` | NWS weather + USGS river conditions: action summary, alerts, current conditions, hourly outlook, day/night forecast, temperature trend, river gauges, TVA lake links, and TDOT/TN 511 road links |
 
 ## Data Files
 | File | Content |
@@ -102,6 +102,7 @@ See `/docs/` for complete architecture audit:
 | `data/site-config.ts` | Centralized SITE_URL, SITE_NAME, CURRENT_YEAR constants |
 | `data/nav-verbs.ts` | 5 verb-based primary nav definitions (Find/Pay/Apply/Report/About) — each verb maps to concrete citizen tasks with internal/external link tags |
 | `data/holidays.ts` | 13 county holidays computed annually (fixed dates + Easter via Computus + observed-on-nearest-weekday for fixed-date holidays falling on weekends) |
+| `data/official-links.ts` | Central official external links for TDOT SmartWay, TN 511, and TVA lake-level pages |
 
 ## Key Components
 | Component | Location | Purpose |

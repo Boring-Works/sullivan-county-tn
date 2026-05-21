@@ -16,11 +16,22 @@ import type { PublicWeatherSnapshot } from "~/server/weather/refresh";
  *   - When a Severe/Extreme NWS alert is active, the badge turns copper with
  *     a warning icon — citizens see weather-emergency context immediately.
  */
-export function WeatherBadge({ className }: { className?: string }) {
+export function WeatherBadge({
+  className,
+  fetchOnMount = true,
+  snapshot: controlledSnapshot,
+}: {
+  className?: string;
+  fetchOnMount?: boolean;
+  snapshot?: PublicWeatherSnapshot | null;
+}) {
   const [snapshot, setSnapshot] = useState<PublicWeatherSnapshot | null>(null);
   const [error, setError] = useState(false);
+  const shouldFetch = fetchOnMount && controlledSnapshot === undefined;
 
   useEffect(() => {
+    if (!shouldFetch) return;
+
     let cancelled = false;
 
     async function load() {
@@ -41,13 +52,16 @@ export function WeatherBadge({ className }: { className?: string }) {
       cancelled = true;
       window.clearInterval(intervalId);
     };
-  }, []);
+  }, [shouldFetch]);
+
+  const currentSnapshot = shouldFetch ? snapshot : (controlledSnapshot ?? null);
 
   // Don't render anything if we have no data and an error — avoids broken UI.
-  if (!snapshot && error) return null;
+  if (!currentSnapshot && error) return null;
+  if (!currentSnapshot && !shouldFetch && controlledSnapshot === null) return null;
 
-  const Icon = pickIcon(snapshot?.current.conditions);
-  const isSevere = snapshot?.hasSevereAlert === true;
+  const Icon = pickIcon(currentSnapshot?.current.conditions);
+  const isSevere = currentSnapshot?.hasSevereAlert === true;
 
   return (
     <Link
@@ -60,8 +74,8 @@ export function WeatherBadge({ className }: { className?: string }) {
         className ?? "",
       ].join(" ")}
       aria-label={
-        snapshot
-          ? `Current Sullivan County weather: ${snapshot.current.tempF}°F, ${snapshot.current.conditions}${
+        currentSnapshot
+          ? `Current Sullivan County weather: ${currentSnapshot.current.tempF}°F, ${currentSnapshot.current.conditions}${
               isSevere ? `, severe weather alert active` : ""
             }. View full forecast.`
           : "Loading current weather"
@@ -72,9 +86,9 @@ export function WeatherBadge({ className }: { className?: string }) {
       ) : (
         <Icon aria-hidden="true" className="size-4 shrink-0" />
       )}
-      {snapshot ? (
+      {currentSnapshot ? (
         <span suppressHydrationWarning>
-          {snapshot.current.tempF}°F · {snapshot.current.conditions}
+          {currentSnapshot.current.tempF}°F · {currentSnapshot.current.conditions}
         </span>
       ) : (
         <Skeleton className="h-3 w-32 bg-white/20" />

@@ -7,6 +7,7 @@ import { MountainDivider, MountainDividerInverted } from "~/components/shared/Mo
 import { PageFeedback } from "~/components/shared/PageFeedback";
 import { Button } from "~/components/ui/button";
 import { getTrailStops } from "~/data/heritage-sites";
+import { officialLakeLinks } from "~/data/official-links";
 import { useScrollReveal } from "~/hooks/useScrollReveal";
 import { seo, seoLinks } from "~/utils/seo";
 
@@ -134,6 +135,48 @@ function VisitPage() {
                 )}
               </div>
             ))}
+          </div>
+
+          <div data-reveal className="mt-8 rounded-sm border border-brand-brass/20 bg-white p-5">
+            <p className="font-body text-xs font-semibold uppercase tracking-[0.18em] text-brand-brass">
+              Lake planning
+            </p>
+            <h3 className="mt-2 font-display text-xl font-bold text-brand-navy">
+              Check official TVA lake levels
+            </h3>
+            <p className="mt-2 max-w-3xl font-body text-sm leading-relaxed text-brand-slate-light">
+              Before boating, fishing, or planning a lake trip, check TVA lake-level pages for
+              Boone, South Holston, and Fort Patrick Henry.
+            </p>
+            <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+              <a
+                href={officialLakeLinks.boone}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-sm bg-brand-navy px-4 py-2.5 font-body text-sm font-bold text-white transition-colors hover:bg-brand-copper"
+              >
+                Boone Lake
+                <ExternalLink aria-hidden="true" className="size-3.5" />
+              </a>
+              <a
+                href={officialLakeLinks.southHolston}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-sm border border-brand-navy/15 px-4 py-2.5 font-body text-sm font-bold text-brand-navy transition-colors hover:border-brand-copper hover:text-brand-copper"
+              >
+                South Holston Lake
+                <ExternalLink aria-hidden="true" className="size-3.5" />
+              </a>
+              <a
+                href={officialLakeLinks.fortPatrickHenry}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-[44px] items-center justify-center gap-1.5 rounded-sm border border-brand-navy/15 px-4 py-2.5 font-body text-sm font-bold text-brand-navy transition-colors hover:border-brand-copper hover:text-brand-copper"
+              >
+                Fort Patrick Henry Lake
+                <ExternalLink aria-hidden="true" className="size-3.5" />
+              </a>
+            </div>
           </div>
         </div>
       </section>
