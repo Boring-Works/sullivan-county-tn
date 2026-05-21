@@ -10,6 +10,8 @@
 
 The site has been through a **7-phase production-hardening pass** plus several follow-up audits. Everything below is shipped to production.
 
+**Latest verified production fix:** commit `5dc2b26` (`fix: keep search dialog visible on mobile`) is pushed to `main` and deployed to Cloudflare Workers version `cce0aafe-594e-4d41-a463-532ea046a9fe`. Live health returned `{"status":"ok"}` at `2026-05-21T22:42:55.707Z`.
+
 ### Brand architecture
 - **Main site:** Sullivan County's official civic portal for services, local government, records, meetings, notices, emergency information, and community resources.
 - **Primary homepage question:** "What do you need to do today?"
@@ -91,6 +93,15 @@ The site has been through a **7-phase production-hardening pass** plus several f
 - All routes have proper `seo()` + `seoLinks()` canonical
 - `StatusBadge` uses brand-aligned palette (sage = success, stone = neutral, blue/amber = informational/in-progress)
 
+### Search dialog mobile verification
+- Live regression found on mobile `390x844`: the shadcn/Radix dialog's vertical-centering transform placed `SearchDialog` above the viewport (`top: -145px`), hiding the input.
+- Fixed in `src/components/layout/SearchDialog.tsx` by overriding mobile vertical centering with `translate-y-0`, anchoring to `top-[calc(env(safe-area-inset-top)+1rem)]`, and constraining dialog/list height with dynamic viewport and safe-area calculations.
+- Live Playwright verification passed after deployment:
+- Mobile `390x844`: dialog `top: 16`, `bottom: 509`, input `top: 16.5`, fully visible.
+- Tablet `820x1180`: dialog `top: 141.59`, `bottom: 602.59`, fully visible.
+- Desktop `1440x1000`: dialog `top: 120`, `bottom: 581`, fully visible.
+- Verification screenshots were captured during the live pass.
+
 ### Scroll-reveal failsafe
 - Default state of `[data-reveal]` is now **visible** — `.js-reveal-armed` class on `<html>` opts INTO the hide-then-reveal effect.
 - 2.5 s failsafe timer in `useScrollReveal` force-reveals anything missed.
@@ -127,7 +138,7 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 
 | Area | Notable |
 |---|---|
-| Layout | `SiteNav` (verb-based mega-panels + category-aware active state + shadcn Sheet mobile drawer), `SiteFooter`, `AnnouncementBanner` (D1-wired, **live**), `SearchDialog` (Fuse.js inside shadcn CommandDialog, Cmd+K, lazy-loaded, supports prefilled initial query), `MobileBottomTabBar`, `LanguageToggle`, `NotFound` |
+| Layout | `SiteNav` (verb-based mega-panels + category-aware active state + shadcn Sheet mobile drawer), `SiteFooter`, `AnnouncementBanner` (D1-wired, **live**), `SearchDialog` (Fuse.js inside shadcn CommandDialog, Cmd+K, lazy-loaded, supports prefilled initial query, safe-area-aware on mobile), `MobileBottomTabBar`, `LanguageToggle`, `NotFound` |
 | Home (mounted on /) | `HomeWeatherAlertBanner` (active NWS alerts only), `HeroBanner` (task search, top tasks, status panel with `WeatherBadge`), `SeasonalRibbon`, `TodaySection`, `CommunityMap`, `StorySection`, `TourismAppPromo`, `AboutSection` |
 | Weather | `WeatherBadge` (homepage status panel), `CopperWeathervane` (animated copper compass rose), action-first situation summary, live USGS river-condition cards on `/weather` |
 | Departments | `DepartmentCard`, `DepartmentDetail`, `PrintableContactCard` |
@@ -257,7 +268,7 @@ TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single
 | Drizzle tables | 7 |
 | Drizzle-generated Zod schemas | 7 select + 7 insert + 1 ULID brand |
 | News articles | 14 (7 fresh + 7 archive) |
-| Unit tests | 91 |
+| Unit tests | 97 |
 | E2E tests | 117/117 critical-paths + user-flows × 3 viewports |
 | Build size | 749.92 KB worker entry |
 | Build time | ~3.7s |

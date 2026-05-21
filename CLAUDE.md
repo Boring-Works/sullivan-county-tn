@@ -14,12 +14,13 @@ See `/docs/` for complete architecture audit:
 - [GAP_ANALYSIS.md](docs/GAP_ANALYSIS.md) — Known gaps
 - [NEXT_IMPLEMENTATION_PLAN.md](docs/NEXT_IMPLEMENTATION_PLAN.md) — Future plan
 
-## State (2026-05-21 — production-hardened, weather/river-live, PWA-ready)
+## State (2026-05-21 — production-hardened, weather/river-live, PWA-ready, search mobile-verified)
 - **Tests:** 97 unit tests passing across 17 files; Playwright coverage includes desktop/tablet/mobile critical paths, accessibility scans, menu behavior, user flows, and admin auth flows.
 - **A11y:** WCAG AA oriented — kbd contrast fixed, brand-stable colors site-wide, skip-link focus fixed, scroll-reveal failsafe ensures all sections render even with reduced motion or no JS.
 - **Lint:** Biome check passes with 0 errors.
 - **Build:** Vite/TanStack Start production build passes locally.
 - **Live:** Cloudflare Workers deployment target is `sullivan-county-tn` at https://sullivan-county-tn.codyboring.workers.dev.
+- **Search-dialog fix deployment:** commit `5dc2b26` (`fix: keep search dialog visible on mobile`) deployed as Cloudflare version `cce0aafe-594e-4d41-a463-532ea046a9fe`; `/api/health` returned `{"status":"ok"}` at `2026-05-21T22:42:55.707Z`.
 - **Security:** Typed `Cloudflare.Env` end-to-end (no `as Record<string, unknown>` casts), auth gates + Zod validation + per-IP rate limit on every admin POST, ULIDs, XSS sanitization, timing-safe password compare, structured JSON logging, CSRF module defined (SameSite=Strict cookies + same-origin server fns provide primary defense)
 - **Phase 1 (typed env):** `src/server/env.ts` exports `getEnv()` / `getDB()` / `getKV()` against `Cloudflare.Env`. `ADMIN_PASSWORD` declared via interface merging. NWS fetch hardened with 5s `AbortController` timeout + `cf` cache hint + retry on 5xx.
 - **Phase 2 (Drizzle/Zod):** `drizzle-zod` installed, `createInsertSchema/createSelectSchema` per table, all indexes in `schema.ts`, ULID brand type at `src/lib/schemas/ids.ts`, `$inferSelect` types exported.
@@ -32,6 +33,7 @@ See `/docs/` for complete architecture audit:
 - **iOS / Android 2026 PWA standards:** `viewport-fit=cover` safe areas, dual `theme-color` (light + dark), full iOS PWA tag set, multiple `apple-touch-icon` sizes, `mask-icon`, `format-detection: telephone=no`, `msapplication-TileColor`, `color-scheme: light`, no manifest orientation lock.
 - **Code quality:** 0 TODO/FIXME/XXX, 0 `console.log`, 0 hand-written `any`, all `target=_blank` have `rel`, all `<input>` label-associated, `StatusBadge` brand-aligned palette.
 - **Earlier 2026-05-06/07 wins (preserved):** Hero search + 5 task chips + suggested-search pills, restrained EmergencyModule strip, Open-Now status pill (holiday-aware via Computus), Next-Meeting `.ics` export, online/in-person submission badges, vCard "Save Contact" exports, view transitions on dept list → detail, BreadcrumbList + Event + GovernmentService + FAQPage JSON-LD, Spanish locale populated, citizen-language search aliases, MobileBottomTabBar, ParcelLookup → TPAD typeahead, consolidated 5-verb primary nav (Find · Pay · Apply · Report · About), per-IP rate limit composite keys.
+- **Search dialog verification (2026-05-21):** Live Playwright verified `SearchDialog` opened fully within the viewport via `Meta+k` at 390×844, 820×1180, and 1440×1000. The mobile regression that put the dialog at `top: -145px` is fixed; live mobile bounds are `top: 16`, `bottom: 509`, with the input visible. Verification screenshots were captured during the live pass.
 
 ## Tech Stack
 - TanStack Start (full-stack React framework)
@@ -112,7 +114,7 @@ See `/docs/` for complete architecture audit:
 | SiteNav | `components/layout/SiteNav.tsx` | Glass-morphism nav with mega-menu (keyboard nav) + Cmd+K search (code-split) + mobile focus trap |
 | SiteFooter | `components/layout/SiteFooter.tsx` | Footer with mountain silhouette + heritage ornament |
 | AnnouncementBanner | `components/layout/AnnouncementBanner.tsx` | Dismissible banner (localStorage persistence) |
-| SearchDialog | `components/layout/SearchDialog.tsx` | Fuse.js fuzzy search modal (Cmd+K), ARIA combobox pattern, lazy-loaded |
+| SearchDialog | `components/layout/SearchDialog.tsx` | Fuse.js fuzzy search modal (Cmd+K), ARIA combobox pattern, lazy-loaded, safe-area-aware mobile positioning verified live |
 | NotFound | `components/layout/NotFound.tsx` | Custom 404 page with quick links + search hint |
 | HeroBanner | `components/home/HeroBanner.tsx` | Citizen-first hero with search trigger, top task cards, county-status panel, next meeting, and weather badge |
 | QuickServices | `components/home/QuickServices.tsx` | 8-card service grid with scroll reveals |
@@ -296,6 +298,7 @@ This is a county government website. The reference points are GOV.UK, NYC.gov, t
 | Duplicate `<main>` removal | Every route component renders its own `<main id="main-content">`; `__root.tsx` was wrapping `<Outlet />` in another one, producing nested `<main>` elements with duplicate IDs. Removed the wrapper; AdminLayout and `admin/login.tsx` now carry the id directly so the skip-link target works on admin routes too. | 2026-05-06 |
 | Missing PWA icons generated | `manifest.webmanifest` referenced `android-chrome-192x192.png` + `512x512.png` that didn't exist (404 in prod console). Generated both from `favicon.svg` via `rsvg-convert`. | 2026-05-06 |
 | SearchDialog a11y | Added visually-hidden `Dialog.Title` + `Dialog.Description` to satisfy Radix's "DialogContent requires a DialogTitle" requirement; was logging a console error every time the search dialog opened. | 2026-05-06 |
+| SearchDialog safe-area positioning | Mobile search dialog now overrides the centered Radix transform at small widths and anchors to `top: calc(env(safe-area-inset-top) + 1rem)` with dynamic viewport max-height. Live Playwright verified full visibility at mobile/tablet/desktop after deploying commit `5dc2b26` to Cloudflare version `cce0aafe-594e-4d41-a463-532ea046a9fe`. | 2026-05-21 |
 | Hero preload scoped to home route | `<link rel="preload" href="boone-lake-1920.webp">` lived in `__root.tsx` but the image only renders on `/`. Browser warned "preloaded but not used" on every other page. Moved preload into the home route's `head()` only. | 2026-05-06 |
 | Speculation rules removed | React `dangerouslySetInnerHTML` rewrites `<script>` elements during hydration; the browser treats this as `innerHTML` insertion and ignores speculation-rules sets, so the script was never prefetching. Removed; reinstate only as static HTML outside React's tree. | 2026-05-06 |
 | Property-tax landing page | Standalone `/property-taxes` route per blueprint Insight 11 (Property Tax-GIS-Mobile Convergence). Plain-language steps, 6-question FAQ accordion, "three offices three jobs" disambiguation, late-payment safety notice, FAQ + GovernmentService + BreadcrumbList JSON-LD. | 2026-05-06 |

@@ -96,6 +96,7 @@ The public site is in strong production shape. The remaining gaps are mostly adm
 | Admin submissions listing capped to reduce PII/read-size risk | 2026-05-21 |
 | Preview deploys disabled until isolated preview bindings exist | 2026-05-21 |
 | SearchDialog upgraded to shadcn Command while keeping Fuse.js aliases | 2026-05-21 |
+| SearchDialog mobile clipping fixed and live-verified at mobile/tablet/desktop sizes | 2026-05-21 |
 | Mobile drawer upgraded to shadcn Sheet, removing custom focus-trap code | 2026-05-21 |
 | Phase 1 typed Cloudflare env (`getEnv/getDB/getKV`) | 2026-05-07 |
 | Phase 2 drizzle-zod, schema indexes, ULID brand type | 2026-05-07 |

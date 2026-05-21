@@ -33,6 +33,7 @@ AI-generated audit synthesis. Review before using as formal compliance documenta
 - Made property-tax inline links visibly underlined by default, so they are distinguishable without relying on color alone.
 - Made shadcn scroll-area viewports keyboard focusable so horizontally scrollable forecast strips satisfy keyboard access checks.
 - Scoped the desktop hero image preload to desktop breakpoints so mobile does not preload an unused 1920px asset.
+- Fixed `SearchDialog` mobile viewport clipping by anchoring the command dialog to the safe-area-aware top edge and constraining its height with dynamic viewport units. Live Playwright verification confirmed the input and dialog are fully visible at 390×844, 820×1180, and 1440×1000.
 
 ## Automated Scan Result
 
@@ -44,6 +45,12 @@ After the fixes, local axe scans at a 390px mobile viewport reported zero violat
 - `/visit`
 - `/transportation`
 - `/contact`
+
+Live search-dialog geometry was also verified after deployment of commit `5dc2b26`:
+
+- Mobile `390x844`: dialog `top: 16`, `bottom: 509`, input visible.
+- Tablet `820x1180`: dialog `top: 141.59`, `bottom: 602.59`, input visible.
+- Desktop `1440x1000`: dialog `top: 120`, `bottom: 581`, input visible.
 
 ## Remaining Systematic Recommendations
 

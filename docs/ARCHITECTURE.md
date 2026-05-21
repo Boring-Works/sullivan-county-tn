@@ -17,7 +17,7 @@ The site has been through a 7-phase production-hardening pass. New subsystems / 
 - **Sonner toasts** — `<Toaster />` mounted in `__root.tsx`. All form submissions and admin mutations toast.
 - **PWA + offline (Phase 5)** — `public/sw.js` (cache-first fonts, network-first nav with Navigation Preload + `/offline.html` fallback, image cache eviction, stale-while-revalidate). `public/offline.html` branded with 911/Sheriff/EMA tel: links. `public/manifest.webmanifest` is the full **2026 spec** (`id`, `scope`, `lang`, `display_override`, `launch_handler`, `share_target`, `shortcuts`, maskable icon). `<OfflineBanner />` listens to `navigator.onLine`.
 - **Weather + river subsystem** — NWS API integration (api.weather.gov, no key) plus USGS stream gauges. MRX gridpoint 126,82, forecast zone TNZ017. KV-cached snapshot with SWR-on-read. D1 `weather_observations` archives every 10 min for the trend chart. `<WeatherBadge />` on the homepage status panel, `<CopperWeathervane />`, and river cards for Beaver Creek, South Fork Holston, and North Fork Holston.
-- **Search and mobile navigation upgrades** — `SearchDialog` uses shadcn `<CommandDialog>` with Fuse.js aliases. Mobile navigation uses shadcn `<Sheet>` instead of a custom focus trap.
+- **Search and mobile navigation upgrades** — `SearchDialog` uses shadcn `<CommandDialog>` with Fuse.js aliases and safe-area-aware mobile positioning. Mobile navigation uses shadcn `<Sheet>` instead of a custom focus trap.
 - **`<DetailBreadcrumb>`** + **`lastUpdated` stamps** on all 5 detail page types (`/departments/$slug`, `/news/$slug`, `/communities/$slug`, `/history/$slug`, `/forms/$type`).
 - **iOS / Android 2026 PWA standards** — multi-size apple-touch-icon, mask-icon for Safari pinned tab, `format-detection: telephone=no`, `msapplication-TileColor`, `color-scheme: light`.
 - **Scroll-reveal failsafe** — `useScrollReveal` adds `.js-reveal-armed` to `<html>` so `[data-reveal]` is visible by default. 2.5s failsafe force-reveals anything missed. `prefers-reduced-motion: reduce` honored.
@@ -101,6 +101,8 @@ Custom brand tokens are defined as CSS custom properties in `src/styles/app.css`
 Client-side fuzzy search via **Fuse.js v7** (`~5KB gzipped`) rendered inside shadcn `<CommandDialog>`. A unified search index (`data/search-index.ts`) combines all data sources (departments, news, commissioners, documents, heritage sites, communities, pages). The `SearchDialog` component is code-split and activated via `Cmd+K` / `Ctrl+K`. shadcn Command provides the keyboard model for arrow navigation, Enter selection, and Escape close.
 
 `SearchDialog` also supports prefilled opening state via `initialQuery` for cross-component entry points (hero/search chips/mobile quick actions).
+
+On mobile, `SearchDialog` intentionally does not use the default vertically centered Radix dialog transform. It anchors to the safe-area-aware top of the viewport and constrains both the dialog and command list with dynamic viewport units so the input remains visible when opened from the bottom tab bar, hero search, or `Cmd+K`/`Ctrl+K`. Live verification after commit `5dc2b26` confirmed full visibility at 390×844, 820×1180, and 1440×1000.
 
 ### Navigation state model
 

@@ -1,7 +1,7 @@
 # Component Inventory — Sullivan County TN
 
 **Platform:** Web-only (TanStack Start on Cloudflare Workers)
-**Refreshed:** 2026-05-21 (after homepage redesign, weather/river expansion, and review fixes)
+**Refreshed:** 2026-05-21 (after homepage redesign, weather/river expansion, review fixes, and live search-dialog verification)
 
 All components below are in active use. The site has **~60 components total**: site-specific components plus 21 shadcn primitives.
 
@@ -13,7 +13,7 @@ All components below are in active use. The site has **~60 components total**: s
 |-----------|------|---------|
 | `SiteNav` | `layout/SiteNav.tsx` | Verb-based primary nav (Pay · Apply · Report · Records · Meetings · Departments · About). Each verb opens a mega-panel of concrete tasks. Hover-open gated to fine pointers, click-outside closes, arrow-key navigation. Mobile uses shadcn `<Sheet>`. |
 | `SiteFooter` | `layout/SiteFooter.tsx` | Four-column footer with mountain SVG, county seal, links, copyright. |
-| `SearchDialog` | `layout/SearchDialog.tsx` | Fuse.js fuzzy search inside shadcn `<CommandDialog>` (Cmd+K). Citizen-language aliases, quick actions, suggested queries, and keyboard-native arrow/Enter/Escape behavior. Lazy-loaded. |
+| `SearchDialog` | `layout/SearchDialog.tsx` | Fuse.js fuzzy search inside shadcn `<CommandDialog>` (Cmd+K). Citizen-language aliases, quick actions, suggested queries, keyboard-native arrow/Enter/Escape behavior, and safe-area-aware mobile positioning. Lazy-loaded and live-verified at mobile/tablet/desktop widths. |
 | `AnnouncementBanner` | `layout/AnnouncementBanner.tsx` | Reads from D1 via `listPublicAnnouncements`. Sets `--banner-height` so SiteNav offsets correctly. localStorage dismissal. **Live row seeded** for Memorial Day. |
 | `LanguageToggle` | `layout/LanguageToggle.tsx` | EN/ES toggle, persists via cookie. |
 | `MobileBottomTabBar` | `layout/MobileBottomTabBar.tsx` | Three-action thumb-zone bar at <md: Pay · Search · Call. Hides on soft keyboard. |

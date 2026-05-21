@@ -114,6 +114,7 @@ Note: Drizzle dialect is `sqlite`. Migrations output to `src/db/migrations/`.
 - Base URL defaults to production; override with `BASE_URL` env var
 - Timeout: 30s per test, 1 retry
 - 260 local / 269 live total E2E cases across viewports (as of 2026-05-07 PM)
+- For viewport regressions in shared overlays like `SearchDialog`, verify live geometry directly at mobile `390x844`, tablet `820x1180`, and desktop `1440x1000`; assert dialog/input bounds stay within `window.innerWidth` and `window.innerHeight`.
 
 ### Accessibility
 
