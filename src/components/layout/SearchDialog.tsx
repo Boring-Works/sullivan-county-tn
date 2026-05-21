@@ -92,7 +92,7 @@ export function SearchDialog({ open, onOpenChange, initialQuery = "" }: SearchDi
       title="Search Sullivan County"
       description="Search across departments, services, news, commissioners, and documents."
       shouldFilter={false}
-      className="top-[12%] max-w-xl rounded-md border-brand-surface p-0 shadow-2xl shadow-brand-navy/10"
+      className="top-[calc(env(safe-area-inset-top)+1rem)] max-h-[calc(100dvh-env(safe-area-inset-top)-env(safe-area-inset-bottom)-2rem)] max-w-xl translate-y-0 overflow-hidden rounded-md border-brand-surface p-0 shadow-2xl shadow-brand-navy/10 sm:top-[12%]"
     >
       <CommandInput
         value={query}
@@ -101,7 +101,11 @@ export function SearchDialog({ open, onOpenChange, initialQuery = "" }: SearchDi
         aria-label="Search Sullivan County"
         autoFocus
       />
-      <CommandList className="max-h-[420px] p-2" aria-live="polite" aria-atomic="true">
+      <CommandList
+        className="max-h-[calc(100dvh-env(safe-area-inset-top)-env(safe-area-inset-bottom)-9rem)] p-2 sm:max-h-[420px]"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         {!query.trim() && (
           <>
             <CommandGroup heading="Quick actions">
