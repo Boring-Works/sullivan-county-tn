@@ -1,6 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { AboutSection } from "~/components/home/AboutSection";
-import { AudiencePathways } from "~/components/home/AudiencePathways";
 import { CommunityMap } from "~/components/home/CommunityMap";
 import { HeroBanner } from "~/components/home/HeroBanner";
 import { SeasonalRibbon } from "~/components/home/SeasonalRibbon";
@@ -43,7 +42,6 @@ function HomePage() {
       />
       <HeroBanner />
       <SeasonalRibbon />
-      <AudiencePathways />
       <TodaySection />
       <MountainDivider fill="var(--color-brand-parchment)" />
       <CommunityMap />

@@ -24,8 +24,10 @@
   "home": {
     "heroEyebrow": "Condado de Sullivan, Tennessee",
     "heroEyebrowEst": "Establecido en 1779",
-    "heroH1": "¿Cómo podemos ayudarle hoy?",
-    "heroSearchPlaceholder": "Buscar departamentos, servicios, personas…",
+    "heroH1": "¿Qué necesita hacer hoy?",
+    "heroIntro": "Empiece con el servicio, oficina, formulario o registro público que necesita. Le llevaremos a la oficina correcta del Condado de Sullivan.",
+    "heroSearchPrompt": "Busque por tarea, oficina o pregunta",
+    "heroSearchPlaceholder": "Intente “pagar impuestos”, “permiso de construcción” o “County Clerk”",
     "heroSearchAria": "Buscar departamentos, servicios y personas del Condado de Sullivan",
     "heroChips": {
       "payTaxes": "Pagar impuestos a la propiedad",
@@ -45,6 +47,41 @@
     },
     "heroToday": "Hoy",
     "topTasksLabel": "Tareas principales para residentes",
+    "heroAlso": "También común",
+    "heroTasks": {
+      "taxes": {
+        "title": "Pagar impuestos",
+        "body": "Encuentre su factura, opciones de pago y ayuda del Trustee."
+      },
+      "departments": {
+        "title": "Encontrar una oficina",
+        "body": "Teléfonos, horarios, ubicaciones y páginas de departamentos."
+      },
+      "forms": {
+        "title": "Solicitar o presentar",
+        "body": "Permisos, solicitudes de registros públicos y formularios del condado."
+      },
+      "meetings": {
+        "title": "Reuniones y agendas",
+        "body": "Reuniones de la Comisión, horarios, actas y transmisiones."
+      }
+    },
+    "heroSecondary": {
+      "contact": "Contáctenos",
+      "documents": "Documentos",
+      "commissioners": "Mis comisionados"
+    },
+    "heroTodayPanel": {
+      "label": "Estado del condado hoy",
+      "eyebrow": "Ahora",
+      "heading": "Estado del condado",
+      "offices": "Oficinas del condado",
+      "meeting": "Próxima reunión pública",
+      "weather": "Clima y alertas",
+      "forecast": "Pronóstico",
+      "emergency": "¿Necesita ayuda urgente?",
+      "preparedness": "Preparación"
+    },
     "heroSuggestionsLabel": "Intente",
     "opensInNewTab": "(se abre en una pestaña nueva)",
     "seasonal": {
@@ -146,7 +183,8 @@
   },
   "todaySection": {
     "eyebrow": "Hoy",
-    "heading": "Hoy en el Condado de Sullivan",
+    "heading": "Servicios y avisos que más usan los residentes",
+    "intro": "La portada le ayuda a empezar rápido. Esta sección muestra servicios populares, avisos públicos y contactos de emergencia.",
     "officesPrefix": "Oficinas del condado",
     "meetingPrefix": "Próxima reunión:",
     "addToCalendar": "Añadir al calendario",

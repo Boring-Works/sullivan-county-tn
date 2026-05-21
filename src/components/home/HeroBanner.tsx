@@ -1,16 +1,54 @@
 import { Link } from "@tanstack/react-router";
-import { Search } from "lucide-react";
+import {
+  ArrowRight,
+  Building2,
+  CalendarDays,
+  ClipboardCheck,
+  FileText,
+  Phone,
+  Receipt,
+  Search,
+  Siren,
+} from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import { MountainDivider } from "~/components/shared/MountainDivider";
 import { WeatherBadge } from "~/components/shared/WeatherBadge";
 import { COMMISSION_REGULAR_SESSION_RULE } from "~/data/meetings";
-import { getTodayInHistory } from "~/data/today-in-history";
 import { useOpenStatus } from "~/hooks/useOpenStatus";
 import { formatNyDateShort, formatNyTime, nextOccurrence } from "~/lib/recurrence";
 
 const COUNTY_OFFICE_HOURS = "Monday-Friday, 8am-4:30pm";
-const PARALLAX_SPEED = 0.35;
+const PARALLAX_SPEED = 0.22;
+
+const PRIMARY_TASKS = [
+  {
+    key: "taxes",
+    icon: Receipt,
+    to: "/property-taxes",
+  },
+  {
+    key: "departments",
+    icon: Building2,
+    to: "/departments",
+  },
+  {
+    key: "forms",
+    icon: FileText,
+    to: "/forms",
+  },
+  {
+    key: "meetings",
+    icon: CalendarDays,
+    to: "/calendar",
+  },
+] as const;
+
+const SECONDARY_LINKS = [
+  { key: "contact", to: "/contact" },
+  { key: "documents", to: "/documents" },
+  { key: "commissioners", to: "/commissioners" },
+] as const;
 
 function openSearch(query?: string) {
   if (typeof window === "undefined") return;
@@ -19,40 +57,12 @@ function openSearch(query?: string) {
   );
 }
 
-/**
- * HeroBanner — Phase 1 of the homepage redesign.
- *
- * Calm civic-newspaper masthead. One photo, one identity statement, one
- * search box, one quiet almanac line, one rotating today-in-history fact.
- *
- * What's intentionally NOT here (vs the prior iteration):
- *   - 5 task chips (citizens reach the same destinations via verb mega-nav)
- *   - 5 suggested-search pills (the search box does this work)
- *   - Identity stats (158k / 430 / 25) — moved to "Live in Sullivan" tile (Phase 2)
- *   - Loud almanac strip with multiple lines (now one line + a fact)
- *
- * What stays:
- *   - Boone Lake aerial photo (real local photography per blueprint S2.2.1)
- *   - Identity eyebrow ("Sullivan County, Tennessee · Established 1779")
- *   - Single H1 ("Where Tennessee Began and Begins")
- *   - Single center search box
- *   - Live weather pill (already-shipped <WeatherBadge>)
- *   - Open-Now + Next-Meeting consolidated into one quiet sentence
- *   - Mountain divider transition to cream
- *
- * Above-the-fold interactive count drops from 31 → ~7.
- */
 export function HeroBanner() {
   const heroRef = useRef<HTMLElement>(null);
   const rafRef = useRef<number>(0);
   const status = useOpenStatus(COUNTY_OFFICE_HOURS);
   const { t } = useTranslation();
-
-  // Computed once so the date renders during SSR. Stable across server/client
-  // because the meeting is always days+ in the future.
   const meetingDate = useMemo(() => nextOccurrence(COMMISSION_REGULAR_SESSION_RULE), []);
-  // Also stable: today's date doesn't change during a single render pass.
-  const todayFact = useMemo(() => getTodayInHistory(), []);
 
   useEffect(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
@@ -76,7 +86,7 @@ export function HeroBanner() {
     <section
       ref={heroRef}
       aria-labelledby="hero-heading"
-      className="relative min-h-[80vh] flex flex-col overflow-hidden bg-brand-navy"
+      className="relative isolate min-h-[88vh] overflow-hidden bg-brand-navy"
     >
       <picture>
         <source
@@ -113,12 +123,12 @@ export function HeroBanner() {
         />
         <img
           src="/images/hero/boone-lake-640.jpg"
-          alt="Aerial view of Boone Lake in Sullivan County, Tennessee — forested islands surrounded by blue water with Appalachian mountains in the background"
+          alt="Aerial view of Boone Lake in Sullivan County, Tennessee, with forested islands and Appalachian mountains"
           width={640}
           height={480}
           fetchPriority="high"
           decoding="sync"
-          className="absolute -inset-x-[15%] -top-[15%] -bottom-[15%] w-[130%] h-[130%] max-w-none object-cover"
+          className="absolute -inset-x-[12%] -top-[12%] -bottom-[12%] -z-20 h-[124%] w-[124%] max-w-none object-cover"
           style={{
             transform: "translate3d(0, calc(var(--scroll-y, 0px)), 0)",
             willChange: "transform",
@@ -126,146 +136,249 @@ export function HeroBanner() {
         />
       </picture>
 
-      {/* One cohesive treatment: diagonal masthead + soft inner-shadow vignette. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0"
+        className="absolute inset-0 -z-10"
         style={{
           background:
-            "linear-gradient(110deg, rgba(12,30,51,0.94) 0%, rgba(12,30,51,0.72) 38%, rgba(12,30,51,0.32) 70%, rgba(12,30,51,0) 100%), linear-gradient(to top, rgba(12,30,51,0.55) 0%, rgba(12,30,51,0) 55%)",
+            "radial-gradient(circle at 78% 24%, rgba(201,168,76,0.22), transparent 28%), linear-gradient(115deg, rgba(7,20,35,0.96) 0%, rgba(12,30,51,0.9) 40%, rgba(12,30,51,0.48) 74%, rgba(12,30,51,0.28) 100%), linear-gradient(to top, rgba(7,20,35,0.8), rgba(7,20,35,0.08) 45%)",
         }}
       />
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          boxShadow: "inset 0 0 180px 40px rgba(8,22,36,0.55)",
-        }}
-      />
-      <div aria-hidden="true" className="absolute inset-0 bg-topo-pattern opacity-30" />
+      <div aria-hidden="true" className="absolute inset-0 -z-10 bg-topo-pattern opacity-25" />
 
-      <div className="relative z-10 flex-1 flex items-center px-6 pt-24 pb-40 sm:px-8 sm:pb-48 lg:px-12">
-        <div className="mx-auto w-full max-w-7xl">
-          <div className="max-w-3xl">
-            {/* Identity eyebrow — stacks on mobile, inline with bullet on ≥sm. */}
-            <div className="mb-6 opacity-0 animate-fade-up" style={{ animationDelay: "0.1s" }}>
-              <span className="flex flex-col gap-1 font-body text-[11px] font-medium tracking-[0.18em] uppercase text-brand-brass-light sm:flex-row sm:items-center sm:gap-2">
-                <span>{t("home.heroEyebrow")}</span>
-                <span
-                  aria-hidden="true"
-                  className="hidden size-1 rounded-full bg-brand-brass-light/60 sm:inline-block"
-                />
-                <span>{t("home.heroEyebrowEst")}</span>
-              </span>
-            </div>
+      <div className="mx-auto grid min-h-[88vh] max-w-7xl grid-cols-1 items-center gap-6 px-4 pb-28 pt-24 sm:gap-8 sm:px-6 sm:pt-32 lg:grid-cols-[minmax(0,1fr)_420px] lg:px-8 lg:pb-44">
+        <div className="max-w-4xl">
+          <div className="mb-5 opacity-0 animate-fade-up" style={{ animationDelay: "0.08s" }}>
+            <span className="inline-flex flex-wrap items-center gap-x-2 gap-y-1 rounded-full border border-white/15 bg-white/10 px-3 py-1.5 font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-brass-light backdrop-blur-md">
+              <span>{t("home.heroEyebrow")}</span>
+              <span aria-hidden="true" className="size-1 rounded-full bg-brand-brass-light/70" />
+              <span>{t("home.heroEyebrowEst")}</span>
+            </span>
+          </div>
 
-            {/* Single focused message — Caslon serif, civic restraint.
-                text-wrap: balance prevents orphan words on the second line. */}
-            <h1
-              id="hero-heading"
-              className="font-display font-bold tracking-tight text-white leading-[1.02] text-balance opacity-0 animate-fade-up"
-              style={{
-                animationDelay: "0.2s",
-                fontSize: "clamp(3rem, 7vw, 6.5rem)",
-              }}
+          <h1
+            id="hero-heading"
+            className="max-w-3xl font-display font-bold leading-[0.98] tracking-tight text-white text-balance opacity-0 animate-fade-up"
+            style={{ animationDelay: "0.18s", fontSize: "clamp(3.25rem, 7vw, 6.75rem)" }}
+          >
+            {t("home.heroH1")}
+          </h1>
+          <p
+            className="mt-4 max-w-2xl font-body text-base leading-relaxed text-white/82 text-balance opacity-0 animate-fade-up sm:mt-5 sm:text-xl"
+            style={{ animationDelay: "0.28s" }}
+          >
+            {t("home.heroIntro")}
+          </p>
+
+          <div
+            className="mt-6 max-w-2xl opacity-0 animate-fade-up sm:mt-8"
+            style={{ animationDelay: "0.38s" }}
+          >
+            <button
+              type="button"
+              onClick={() => openSearch()}
+              className="group flex min-h-[58px] w-full items-center gap-3 rounded-sm border border-white/20 bg-white px-4 text-left shadow-2xl shadow-brand-navy-deep/25 transition-all hover:-translate-y-0.5 hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-copper sm:px-5"
+              aria-label={t("home.heroSearchAria")}
             >
-              {t("home.heroH1")}
-            </h1>
-
-            {/* Single search box — center search drives 2.1x the usage of top-left
-                placement per blueprint S2.1.3. mt-8 gives more breathing room
-                between H1 and search box vs the previous mt-7. */}
-            <div className="mt-8 opacity-0 animate-fade-up" style={{ animationDelay: "0.4s" }}>
-              <button
-                type="button"
-                onClick={() => openSearch()}
-                className="group flex w-full items-center gap-3 rounded-sm border border-white/15 bg-white px-4 py-3.5 text-left shadow-md transition-all hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-copper sm:px-5 sm:py-4 sm:max-w-xl"
-                aria-label={t("home.heroSearchAria")}
-              >
-                <Search aria-hidden="true" className="size-4 shrink-0 text-brand-stone sm:size-5" />
-                <span className="flex-1 font-body text-sm text-brand-stone sm:text-base">
+              <span className="flex size-10 shrink-0 items-center justify-center rounded-sm bg-brand-copper text-white">
+                <Search aria-hidden="true" className="size-5" />
+              </span>
+              <span className="flex-1">
+                <span className="block font-body text-base font-semibold text-brand-navy">
+                  {t("home.heroSearchPrompt")}
+                </span>
+                <span className="block font-body text-sm text-brand-stone">
                   {t("home.heroSearchPlaceholder")}
                 </span>
-                <kbd className="hidden sm:inline-flex items-center rounded border border-brand-surface bg-brand-parchment px-1.5 py-0.5 font-mono text-[10px] font-semibold text-brand-slate">
-                  &#8984; K
-                </kbd>
-              </button>
-            </div>
-
-            {/* Today-in-history line — newspaper voice, civic restraint.
-                line-clamp-2 on mobile keeps it under 3 lines; full text on ≥sm. */}
-            {todayFact && (
-              <p
-                className="mt-6 max-w-2xl font-body text-sm leading-relaxed text-white/80 italic line-clamp-2 sm:line-clamp-none sm:text-base opacity-0 animate-fade-up"
-                style={{ animationDelay: "0.65s" }}
-              >
-                <span className="not-italic font-display text-[10px] font-semibold tracking-[0.2em] uppercase text-brand-brass-light mr-2">
-                  {t("home.heroToday")}
-                </span>
-                {todayFact.text}
-              </p>
-            )}
+              </span>
+              <kbd className="hidden rounded border border-brand-surface bg-brand-parchment px-1.5 py-0.5 font-mono text-[10px] font-semibold text-brand-slate sm:inline-flex">
+                &#8984; K
+              </kbd>
+            </button>
           </div>
-        </div>
-      </div>
 
-      {/* Almanac strip — quiet info row. Stacks on mobile, inline on ≥sm.
-          Status dot: green = open, brass = closed-but-not-emergency, neutral = unknown.
-          Brass-on-closed reads "informational" rather than the previous gray
-          which read alert-like. */}
-      <div className="absolute bottom-[28px] sm:bottom-[40px] lg:bottom-[55px] left-0 right-0 z-30">
-        <div
-          className="mx-auto max-w-5xl px-4 sm:px-6 opacity-0 animate-fade-up"
-          style={{ animationDelay: "0.85s" }}
-        >
-          <div className="rounded-sm border border-white/10 bg-brand-navy/60 px-4 py-3 backdrop-blur-md sm:px-6 sm:py-3.5">
-            <div className="flex flex-col items-stretch gap-1.5 sm:flex-row sm:items-center sm:justify-center sm:gap-x-4 sm:gap-y-1 lg:justify-start">
-              <div className="flex items-center justify-center gap-2 sm:justify-start">
-                <span
-                  aria-hidden="true"
-                  className={`block size-2 shrink-0 rounded-full ${
-                    status.isOpen === true
-                      ? "bg-emerald-400 shadow-[0_0_8px_rgba(74,222,128,0.6)]"
-                      : status.isOpen === false
-                        ? "bg-brand-brass-light/85"
-                        : "bg-white/30"
-                  }`}
-                />
-                <span
-                  suppressHydrationWarning
-                  className="font-display text-sm font-bold text-white sm:text-base"
+          <div
+            className="mt-5 grid max-w-4xl grid-cols-2 gap-2.5 opacity-0 animate-fade-up sm:mt-7 sm:gap-3 xl:grid-cols-4"
+            style={{ animationDelay: "0.48s" }}
+            role="group"
+            aria-label={t("home.topTasksLabel")}
+          >
+            {PRIMARY_TASKS.map((task) => {
+              const Icon = task.icon;
+              return (
+                <Link
+                  key={task.key}
+                  to={task.to}
+                  className="group rounded-sm border border-white/14 bg-white/[0.13] p-3 text-white backdrop-blur-md transition-all hover:-translate-y-0.5 hover:border-brand-brass-light/60 hover:bg-white/[0.18] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-copper sm:p-4"
                 >
-                  {t("home.heroAlmanac.officesPrefix")} {status.label}.
-                </span>
+                  <span className="mb-3 flex items-center justify-between gap-3 sm:mb-4">
+                    <span className="flex size-9 items-center justify-center rounded-sm bg-white text-brand-navy sm:size-10">
+                      <Icon aria-hidden="true" className="size-4 sm:size-5" />
+                    </span>
+                    <ArrowRight
+                      aria-hidden="true"
+                      className="size-4 text-white/45 transition-transform group-hover:translate-x-1 group-hover:text-brand-brass-light"
+                    />
+                  </span>
+                  <span className="block font-display text-base font-bold leading-tight sm:text-lg">
+                    {t(`home.heroTasks.${task.key}.title`)}
+                  </span>
+                  <span className="mt-1.5 hidden font-body text-xs leading-relaxed text-white/72 sm:block">
+                    {t(`home.heroTasks.${task.key}.body`)}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+
+          <div
+            className="mt-4 flex flex-wrap items-center gap-2 opacity-0 animate-fade-up sm:mt-5"
+            style={{ animationDelay: "0.58s" }}
+          >
+            <span className="font-body text-xs font-semibold uppercase tracking-[0.16em] text-white/50">
+              {t("home.heroAlso")}
+            </span>
+            {SECONDARY_LINKS.map((link) => (
+              <Link
+                key={link.key}
+                to={link.to}
+                className="rounded-full border border-white/12 bg-white/8 px-3 py-1.5 font-body text-xs font-medium text-white/80 transition-colors hover:border-brand-brass-light/50 hover:text-brand-brass-light"
+              >
+                {t(`home.heroSecondary.${link.key}`)}
+              </Link>
+            ))}
+          </div>
+        </div>
+
+        <aside
+          aria-label={t("home.heroTodayPanel.label")}
+          className="opacity-0 animate-fade-up lg:justify-self-end"
+          style={{ animationDelay: "0.42s" }}
+        >
+          <div className="overflow-hidden rounded-sm border border-white/16 bg-brand-cream/95 shadow-2xl shadow-brand-navy-deep/30 backdrop-blur-xl">
+            <div className="border-b border-brand-surface bg-white px-5 py-4">
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="font-body text-[11px] font-semibold uppercase tracking-[0.18em] text-brand-brass">
+                    {t("home.heroTodayPanel.eyebrow")}
+                  </p>
+                  <h2 className="mt-1 font-display text-2xl font-bold text-brand-navy">
+                    {t("home.heroTodayPanel.heading")}
+                  </h2>
+                </div>
+                <ClipboardCheck aria-hidden="true" className="size-8 text-brand-copper" />
               </div>
+            </div>
+
+            <div className="space-y-1 p-3">
+              <StatusRow
+                tone={
+                  status.isOpen === true ? "open" : status.isOpen === false ? "closed" : "neutral"
+                }
+                label={t("home.heroTodayPanel.offices")}
+                value={`${status.label}.`}
+              />
               <Link
                 to="/calendar"
                 suppressHydrationWarning
-                className="hidden font-body text-xs text-white/75 transition-colors hover:text-brand-brass-light sm:inline sm:text-sm"
-                aria-label={`${t("home.heroAlmanac.nextMeeting")}: ${formatNyDateShort(meetingDate)} ${t("home.heroAlmanac.at")} ${formatNyTime(meetingDate)}.`}
+                className="group flex items-start gap-3 rounded-sm px-3 py-3 transition-colors hover:bg-brand-parchment focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-copper"
               >
-                {t("home.heroAlmanac.nextMeeting")}: {formatNyDateShort(meetingDate)}{" "}
-                {t("home.heroAlmanac.at")} {formatNyTime(meetingDate)}.
+                <span className="mt-1 flex size-2.5 shrink-0 rounded-full bg-brand-copper" />
+                <span className="min-w-0 flex-1">
+                  <span className="block font-body text-xs font-semibold uppercase tracking-[0.14em] text-brand-stone">
+                    {t("home.heroTodayPanel.meeting")}
+                  </span>
+                  <span className="mt-0.5 block font-display text-base font-bold leading-tight text-brand-navy">
+                    {formatNyDateShort(meetingDate)} {t("home.heroAlmanac.at")}{" "}
+                    {formatNyTime(meetingDate)}
+                  </span>
+                </span>
+                <ArrowRight
+                  aria-hidden="true"
+                  className="mt-1 size-4 shrink-0 text-brand-warm-gray transition-transform group-hover:translate-x-1 group-hover:text-brand-copper"
+                />
               </Link>
-              <Link
-                to="/calendar"
-                suppressHydrationWarning
-                className="text-center font-body text-xs text-white/70 transition-colors hover:text-brand-brass-light sm:hidden"
-                aria-label={`${t("home.heroAlmanac.nextMeeting")}: ${formatNyDateShort(meetingDate)}.`}
-              >
-                {t("home.heroAlmanac.nextMeeting")}: {formatNyDateShort(meetingDate)}
-              </Link>
-              <div className="flex justify-center sm:ml-auto lg:ml-3">
-                <WeatherBadge />
+              <div className="rounded-sm bg-brand-navy px-3 py-3">
+                <div className="mb-2 flex items-center justify-between gap-3">
+                  <span className="font-body text-xs font-semibold uppercase tracking-[0.14em] text-white/58">
+                    {t("home.heroTodayPanel.weather")}
+                  </span>
+                  <Link
+                    to="/weather"
+                    className="font-body text-xs font-semibold text-brand-brass-light hover:text-white"
+                  >
+                    {t("home.heroTodayPanel.forecast")}
+                  </Link>
+                </div>
+                <WeatherBadge className="w-full justify-center border-white/15 bg-white/10" />
+              </div>
+            </div>
+
+            <div className="border-t border-brand-surface bg-white px-5 py-4">
+              <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between lg:flex-col lg:items-stretch">
+                <div className="flex items-center gap-2 text-brand-safety">
+                  <Siren aria-hidden="true" className="size-4" />
+                  <span className="font-display text-sm font-bold">
+                    {t("home.heroTodayPanel.emergency")}
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <a
+                    href="tel:911"
+                    className="inline-flex items-center gap-1.5 rounded-sm bg-brand-safety px-3 py-2 font-body text-xs font-bold text-white hover:bg-brand-safety/90"
+                  >
+                    <Phone aria-hidden="true" className="size-3.5" />
+                    911
+                  </a>
+                  <Link
+                    to="/departments/$slug"
+                    params={{ slug: "emergency-management" }}
+                    className="inline-flex items-center gap-1.5 rounded-sm border border-brand-surface px-3 py-2 font-body text-xs font-semibold text-brand-slate hover:border-brand-copper hover:text-brand-copper"
+                  >
+                    {t("home.heroTodayPanel.preparedness")}
+                    <ArrowRight aria-hidden="true" className="size-3" />
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
-        </div>
+        </aside>
       </div>
 
       <div className="absolute bottom-0 left-0 right-0 z-20">
         <MountainDivider fill="var(--color-brand-cream)" />
       </div>
     </section>
+  );
+}
+
+function StatusRow({
+  tone,
+  label,
+  value,
+}: {
+  tone: "open" | "closed" | "neutral";
+  label: string;
+  value: string;
+}) {
+  const color =
+    tone === "open"
+      ? "bg-brand-sage shadow-[0_0_8px_rgba(61,107,86,0.45)]"
+      : tone === "closed"
+        ? "bg-brand-brass"
+        : "bg-brand-warm-gray/40";
+
+  return (
+    <div className="flex items-start gap-3 rounded-sm px-3 py-3">
+      <span aria-hidden="true" className={`mt-1 flex size-2.5 shrink-0 rounded-full ${color}`} />
+      <span suppressHydrationWarning>
+        <span className="block font-body text-xs font-semibold uppercase tracking-[0.14em] text-brand-stone">
+          {label}
+        </span>
+        <span className="mt-0.5 block font-display text-base font-bold leading-tight text-brand-navy">
+          {value}
+        </span>
+      </span>
+    </div>
   );
 }

@@ -24,8 +24,10 @@
   "home": {
     "heroEyebrow": "Sullivan County, Tennessee",
     "heroEyebrowEst": "Established 1779",
-    "heroH1": "How can we help today?",
-    "heroSearchPlaceholder": "Search departments, services, people…",
+    "heroH1": "What do you need to do today?",
+    "heroIntro": "Start with the service, office, form, or public record you need. We’ll route you to the right Sullivan County office.",
+    "heroSearchPrompt": "Search by task, office, or question",
+    "heroSearchPlaceholder": "Try “pay taxes,” “building permit,” or “county clerk”",
     "heroSearchAria": "Search Sullivan County departments, services, and people",
     "heroChips": {
       "payTaxes": "Pay property taxes",
@@ -45,6 +47,41 @@
     },
     "heroToday": "Today",
     "topTasksLabel": "Top citizen tasks",
+    "heroAlso": "Also common",
+    "heroTasks": {
+      "taxes": {
+        "title": "Pay property taxes",
+        "body": "Find your bill, payment options, and Trustee office help."
+      },
+      "departments": {
+        "title": "Find an office",
+        "body": "Phone numbers, hours, locations, and department pages."
+      },
+      "forms": {
+        "title": "Apply or file",
+        "body": "Permits, public records requests, and county forms."
+      },
+      "meetings": {
+        "title": "Meetings & agendas",
+        "body": "Commission meetings, schedules, minutes, and livestreams."
+      }
+    },
+    "heroSecondary": {
+      "contact": "Contact us",
+      "documents": "Documents",
+      "commissioners": "My commissioners"
+    },
+    "heroTodayPanel": {
+      "label": "County status today",
+      "eyebrow": "Right now",
+      "heading": "County status",
+      "offices": "County offices",
+      "meeting": "Next public meeting",
+      "weather": "Weather & alerts",
+      "forecast": "Forecast",
+      "emergency": "Need emergency help?",
+      "preparedness": "Preparedness"
+    },
     "heroSuggestionsLabel": "Try",
     "opensInNewTab": "(opens in a new tab)",
     "seasonal": {
@@ -146,7 +183,8 @@
   },
   "todaySection": {
     "eyebrow": "Today",
-    "heading": "Today in Sullivan County",
+    "heading": "Services and updates residents use most",
+    "intro": "The hero gets you started fast. This section gives you the next layer: popular services, public notices, and emergency contacts.",
     "officesPrefix": "County offices",
     "meetingPrefix": "Next meeting:",
     "addToCalendar": "Add to calendar",
