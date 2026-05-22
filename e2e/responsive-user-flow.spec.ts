@@ -6,9 +6,9 @@ test.describe("responsive core user flow", () => {
     await expect(page.locator('nav[aria-label="Main navigation"]')).toBeVisible();
     await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
-    const isDesktop = testInfo.project.name === "desktop";
+    const isDesktopNav = (page.viewportSize()?.width ?? 0) >= 1024;
 
-    if (isDesktop) {
+    if (isDesktopNav) {
       await expect(page.getByRole("link", { name: /County offices/i }).first()).toBeVisible();
       await page.goto("/calendar");
     } else {
@@ -25,7 +25,7 @@ test.describe("responsive core user flow", () => {
 
     // Verify command palette opens and quick actions are visible.
     await page.goto("/");
-    if (isDesktop) {
+    if (isDesktopNav) {
       await expect(page.getByRole("button", { name: /^Search$/ })).toBeVisible();
     } else {
       await expect(page.getByRole("button", { name: /Open menu/i })).toBeVisible();

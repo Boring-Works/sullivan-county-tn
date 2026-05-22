@@ -2,20 +2,17 @@ import { CreditCard, ExternalLink, Loader2, MapPin, Search } from "lucide-react"
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "~/components/ui/button";
+import { externalHandoffs } from "~/data/external-handoffs";
 import { lookupParcelSuggestions, type ParcelSuggestion } from "~/server/parcel-lookup";
 
-const TPAD_SEARCH_URL = "https://assessment.cot.tn.gov/TPAD/Search";
 const SULLIVAN_TPAD_CODE = "082";
-const TRUSTEE_PAY_URL = "https://sullivantntrustee.gov/property-tax/";
-const GIS_MAP_URL =
-  "https://sullcotngis.maps.arcgis.com/apps/mapviewer/index.html?webmap=2004721405af4dd0952a592b42e6f5b6";
 
 const DEBOUNCE_MS = 280;
 const MIN_QUERY_LENGTH = 3;
 
 function buildTpadUrl(query: string): string {
   const params = new URLSearchParams({ Jur: SULLIVAN_TPAD_CODE, Query: query });
-  return `${TPAD_SEARCH_URL}?${params.toString()}`;
+  return `${externalHandoffs.tpadAssessment.url}?${params.toString()}`;
 }
 
 export function ParcelLookup() {
@@ -27,10 +24,15 @@ export function ParcelLookup() {
   const [activeIndex, setActiveIndex] = useState(-1);
   const [open, setOpen] = useState(false);
   const [upstreamReachable, setUpstreamReachable] = useState(true);
+  const [hydrated, setHydrated] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const inputId = useId();
   const listboxId = useId();
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   // Debounce the query to avoid hammering the upstream
   useEffect(() => {
@@ -158,6 +160,7 @@ export function ParcelLookup() {
                 autoComplete="off"
                 autoCapitalize="words"
                 spellCheck={false}
+                disabled={!hydrated}
                 value={query}
                 placeholder={t("propertyTaxes.lookup.placeholder")}
                 onChange={(e) => {
@@ -172,7 +175,7 @@ export function ParcelLookup() {
                 aria-autocomplete="list"
                 aria-activedescendant={activeIndex >= 0 ? `${listboxId}-${activeIndex}` : undefined}
                 aria-busy={loading || undefined}
-                className="w-full rounded-sm border border-brand-surface bg-white py-3 pl-10 pr-12 font-body text-base text-brand-slate placeholder:text-brand-stone/70 focus:border-brand-copper focus:outline-none focus:ring-2 focus:ring-brand-copper/30 min-h-[44px]"
+                className="w-full rounded-sm border border-brand-surface bg-white py-3 pl-10 pr-12 font-body text-base text-brand-slate placeholder:text-brand-stone/70 focus:border-brand-copper focus:outline-none focus:ring-2 focus:ring-brand-copper/30 disabled:cursor-wait disabled:opacity-60 min-h-[44px]"
               />
               {loading && (
                 <Loader2
@@ -246,24 +249,26 @@ export function ParcelLookup() {
               variant="navy"
               size="lg"
               onClick={() => submit(query)}
-              disabled={query.trim().length < MIN_QUERY_LENGTH}
+              disabled={!hydrated || query.trim().length < MIN_QUERY_LENGTH}
               className="min-h-[44px]"
             >
               <Search aria-hidden="true" />
-              {suggestions.length > 0
-                ? t("propertyTaxes.lookup.viewAssessment")
-                : "Search state assessment site"}
+              {t("propertyTaxes.lookup.viewAssessment")}
               <ExternalLink aria-hidden="true" className="size-3.5 opacity-70" />
             </Button>
             <Button asChild variant="copper" size="lg" className="min-h-[44px]">
-              <a href={TRUSTEE_PAY_URL} target="_blank" rel="noopener noreferrer">
+              <a
+                href={externalHandoffs.trusteePayTaxes.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <CreditCard aria-hidden="true" />
                 {t("propertyTaxes.lookup.payNow")}
                 <ExternalLink aria-hidden="true" className="size-3.5 opacity-70" />
               </a>
             </Button>
             <Button asChild variant="outline" size="lg" className="min-h-[44px]">
-              <a href={GIS_MAP_URL} target="_blank" rel="noopener noreferrer">
+              <a href={externalHandoffs.gisMap.url} target="_blank" rel="noopener noreferrer">
                 <MapPin aria-hidden="true" />
                 {t("propertyTaxes.lookup.viewOnMap")}
                 <ExternalLink aria-hidden="true" className="size-3.5 opacity-70" />
@@ -271,7 +276,8 @@ export function ParcelLookup() {
             </Button>
           </div>
           <p className="mt-3 font-body text-[11px] leading-relaxed text-brand-stone">
-            {t("propertyTaxes.lookup.disclosure")}
+            {t("propertyTaxes.lookup.disclosure")} External property tools open official partner
+            systems in a new tab.
           </p>
         </div>
       </div>

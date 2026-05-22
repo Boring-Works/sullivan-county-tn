@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from "~/components/ui/select";
 import { Textarea } from "~/components/ui/textarea";
+import { createIdempotencyKey } from "~/lib/receipts";
 import { contactFormSchema } from "~/lib/schemas/contact";
 import { submitContactForm } from "~/server/contact";
 import { seo, seoLinks } from "~/utils/seo";
@@ -276,26 +277,43 @@ type ContactFormValues = {
   email: string;
   subject: string;
   message: string;
+  idempotencyKey: string;
   website?: string;
 };
 
 function ContactForm() {
   const { t } = useTranslation();
   const [submitted, setSubmitted] = useState(false);
+  const [receiptId, setReceiptId] = useState<string | null>(null);
 
   const form = useForm<ContactFormValues>({
     resolver: zodResolver(contactFormSchema),
-    defaultValues: { name: "", email: "", subject: "", message: "", website: "" },
+    defaultValues: {
+      name: "",
+      email: "",
+      subject: "",
+      message: "",
+      idempotencyKey: createIdempotencyKey("contact"),
+      website: "",
+    },
   });
 
   async function onSubmit(values: ContactFormValues) {
     try {
-      await submitContactForm({ data: values });
+      const result = await submitContactForm({ data: values });
+      setReceiptId(result.receiptId);
       setSubmitted(true);
       toast.success("Message sent", {
-        description: "A staff member will respond within 2 business days.",
+        description: `Receipt ${result.receiptId}. A staff member will respond within 2 business days.`,
       });
-      form.reset();
+      form.reset({
+        name: "",
+        email: "",
+        subject: "",
+        message: "",
+        idempotencyKey: createIdempotencyKey("contact"),
+        website: "",
+      });
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Something went wrong. Please try again.";
@@ -312,6 +330,11 @@ function ContactForm() {
           Thank you for contacting Sullivan County. A staff member will respond to your inquiry
           within 2 business days during regular office hours.
         </p>
+        {receiptId && (
+          <p className="mt-4 font-body text-sm font-semibold text-brand-navy">
+            Receipt ID: <span className="font-mono">{receiptId}</span>
+          </p>
+        )}
         <button
           type="button"
           onClick={() => setSubmitted(false)}
@@ -346,6 +369,7 @@ function ContactForm() {
               autoComplete="off"
             />
           </div>
+          <input type="hidden" {...form.register("idempotencyKey")} />
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
             <FormField
               control={form.control}

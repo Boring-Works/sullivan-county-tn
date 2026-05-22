@@ -166,7 +166,7 @@ export function TodaySection() {
               <Link
                 to="/departments/$slug"
                 params={{ slug: "sheriff" }}
-                className="inline-flex min-h-[44px] items-center gap-1.5 font-body text-xs font-medium text-brand-copper-light transition-colors hover:text-white"
+                className="inline-flex min-h-[44px] items-center gap-1.5 font-body text-xs font-medium text-brand-cream/85 transition-colors hover:text-white"
               >
                 Sheriff services
                 <ArrowRight aria-hidden="true" className="size-3" />
@@ -174,7 +174,7 @@ export function TodaySection() {
               <Link
                 to="/departments/$slug"
                 params={{ slug: "emergency-management" }}
-                className="inline-flex min-h-[44px] items-center gap-1.5 font-body text-xs font-medium text-brand-copper-light transition-colors hover:text-white"
+                className="inline-flex min-h-[44px] items-center gap-1.5 font-body text-xs font-medium text-brand-cream/85 transition-colors hover:text-white"
               >
                 {t("todaySection.preparednessLink")}
                 <ArrowRight aria-hidden="true" className="size-3" />

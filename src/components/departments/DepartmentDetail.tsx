@@ -18,6 +18,7 @@ import { TelLink } from "~/components/shared/TelLink";
 import { Badge } from "~/components/ui/badge";
 import type { Department, DepartmentCategory } from "~/data/departments";
 import { DEFAULT_LAST_UPDATED, DEPARTMENT_CATEGORIES } from "~/data/departments";
+import { type ExternalHandoffId, externalHandoffs } from "~/data/external-handoffs";
 
 const categoryBadgeColors: Record<DepartmentCategory, string> = {
   administrative: "bg-white/15 text-white/90 border border-white/20",
@@ -35,6 +36,102 @@ const categoryAccentColors: Record<DepartmentCategory, string> = {
   finance: "bg-brand-sage",
   operations: "bg-brand-brass",
   community: "bg-brand-community",
+};
+
+interface ServiceTask {
+  title: string;
+  steps: string[];
+  handoffId?: ExternalHandoffId;
+  note?: string;
+}
+
+const verifiedServiceTasks: Record<string, ServiceTask[]> = {
+  "county-clerk": [
+    {
+      title: "Renew vehicle tags",
+      steps: [
+        "Confirm the vehicle is registered in Sullivan County.",
+        "Use the Tennessee County Clerk renewal system or call the Clerk if the renewal is blocked.",
+        "Standard plate renewal is listed by the Clerk as $29 per year before processing fees.",
+      ],
+      handoffId: "countyClerkPlateRenewal",
+    },
+    {
+      title: "Get a marriage license",
+      steps: [
+        "Start the online application before visiting the Clerk.",
+        "Both applicants should appear in person unless an official exception applies.",
+        "Bring valid photo ID and Social Security number if one has been issued.",
+      ],
+      handoffId: "countyClerkMarriage",
+      note: "License fees and juvenile requirements should be confirmed with the Clerk before visiting.",
+    },
+  ],
+  trustee: [
+    {
+      title: "Pay property taxes",
+      steps: [
+        "Search by owner, parcel, or tax information in the Trustee portal.",
+        "Review the record and payment amount before submitting payment.",
+        "Contact the Trustee if the property is not available for online payment.",
+      ],
+      handoffId: "trusteePayTaxes",
+    },
+  ],
+  "planning-and-codes": [
+    {
+      title: "Check before starting a building project",
+      steps: [
+        "Check zoning and determine the permit type before work starts.",
+        "Building permits are commonly required for new homes, additions, garages, pools, decks, roofs, and remodeling.",
+        "For non-residential or multi-family work, prepare a site plan and check septic, sewer, stormwater, floodplain, driveway, and TDOT requirements.",
+      ],
+      note: "Electrical permits and inspections are handled through Tennessee CORE.",
+    },
+  ],
+  highway: [
+    {
+      title: "Report a county road issue",
+      steps: [
+        "Confirm the issue is on a county road, bridge, or drainage system.",
+        "Gather road name, nearest address or intersection, issue type, photos if available, and safety urgency.",
+        "Call the Highway Department at (423) 279-2820. Use emergency services for immediate hazards.",
+      ],
+    },
+  ],
+  "election-office": [
+    {
+      title: "Register or check voter registration",
+      steps: [
+        "Register or update voter information online through the Tennessee Secretary of State.",
+        "Registration must be completed or postmarked at least 30 days before Election Day.",
+        "Use voter lookup to confirm registration and polling information.",
+      ],
+      handoffId: "voterRegistration",
+      note: "Use the Tennessee voter lookup site to check current registration status.",
+    },
+  ],
+  "solid-waste": [
+    {
+      title: "Dispose of appliances, computers, or recycling",
+      steps: [
+        "Use the Kingsport or Bristol transfer station for old appliances and computers.",
+        "Accepted recycling examples include mixed paper, cardboard, aluminum cans, and tin cans.",
+        "Call Solid Waste before bringing unusual materials or large loads.",
+      ],
+      note: "Full accepted/prohibited material lists should be confirmed with Solid Waste.",
+    },
+  ],
+  sheriff: [
+    {
+      title: "Contact law enforcement",
+      steps: [
+        "Call 911 for emergencies.",
+        "For non-emergency Sheriff contact, call (423) 279-7500.",
+        "Be ready with incident type, location, involved people or vehicles, and whether immediate danger exists.",
+      ],
+    },
+  ],
 };
 
 function SectionHeading({ children }: { children: React.ReactNode }) {
@@ -55,6 +152,7 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
   const hasOffices = department.additionalOffices && department.additionalOffices.length > 0;
   const hasStaff = department.staff && department.staff.length > 0;
   const hasLinks = department.externalLinks && department.externalLinks.length > 0;
+  const serviceTasks = verifiedServiceTasks[department.slug] ?? [];
 
   return (
     <main id="main-content" className="dept-detail-main">
@@ -124,6 +222,45 @@ export function DepartmentDetail({ department }: DepartmentDetailProps) {
                   ))}
                 </ul>
               </section>
+
+              {serviceTasks.length > 0 && (
+                <section className="mt-10">
+                  <SectionHeading>Common tasks</SectionHeading>
+                  <div className="grid gap-4 lg:grid-cols-2">
+                    {serviceTasks.map((task) => (
+                      <article
+                        key={task.title}
+                        className="rounded-sm border border-brand-surface bg-white p-5 shadow-sm"
+                      >
+                        <h3 className="font-display text-base font-bold text-brand-navy">
+                          {task.title}
+                        </h3>
+                        <ol className="mt-3 list-decimal space-y-2 pl-5 font-body text-sm leading-relaxed text-brand-slate">
+                          {task.steps.map((step) => (
+                            <li key={step}>{step}</li>
+                          ))}
+                        </ol>
+                        {task.note ? (
+                          <p className="mt-3 font-body text-xs leading-relaxed text-brand-stone">
+                            {task.note}
+                          </p>
+                        ) : null}
+                        {task.handoffId ? (
+                          <a
+                            href={externalHandoffs[task.handoffId].url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-4 inline-flex items-center gap-1.5 font-body text-sm font-semibold text-brand-copper hover:underline"
+                          >
+                            {externalHandoffs[task.handoffId].label}
+                            <ExternalLink aria-hidden="true" className="size-3.5" />
+                          </a>
+                        ) : null}
+                      </article>
+                    ))}
+                  </div>
+                </section>
+              )}
 
               {/* Important Notes */}
               {department.importantNotes && department.importantNotes.length > 0 && (

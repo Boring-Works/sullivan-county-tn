@@ -83,7 +83,8 @@ test.describe("verb-nav mega panels (5-verb model)", () => {
 		await page.waitForTimeout(150);
 
 		const btn = page.locator("nav button", { hasText: /^Find$/ });
-		await btn.first().hover();
+		await expect(btn.first()).toBeVisible();
+		await btn.first().click();
 		const panel = page.locator("#verb-panel-find");
 		await expect(panel).toBeVisible({ timeout: 8000 });
 		// Group headings are rendered as 10px uppercase labels.

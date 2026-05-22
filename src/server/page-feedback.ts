@@ -4,6 +4,7 @@ import sanitizeHtml from "sanitize-html";
 import { ulid } from "ulidx";
 import { getDb } from "~/db";
 import { pageFeedback } from "~/db/schema";
+import { createReceiptId } from "~/lib/receipts";
 import { submitPageFeedbackSchema } from "~/lib/schemas/page-feedback";
 import { getEnv } from "~/server/env";
 import { requireAdmin } from "~/server/guard";
@@ -21,21 +22,35 @@ export const submitPageFeedback = createServerFn({ method: "POST" })
   .inputValidator(submitPageFeedbackSchema)
   .handler(async ({ data }) => {
     rateLimit("page-feedback", 30, 60_000);
+    const fallbackId = ulid();
+    const fallbackReceiptId = createReceiptId("FB", fallbackId);
     const d1 = getD1Optional();
     if (!d1) {
       // D1 unavailable in this environment — silently accept so dev/static doesn't break.
-      return { success: true };
+      return { success: true, id: fallbackId, receiptId: fallbackReceiptId };
     }
     const db = getDb(d1);
+    const existing = await db
+      .select({ id: pageFeedback.id, receiptId: pageFeedback.receiptId })
+      .from(pageFeedback)
+      .where(eq(pageFeedback.idempotencyKey, data.idempotencyKey))
+      .get();
+    if (existing?.receiptId)
+      return { success: true, id: existing.id, receiptId: existing.receiptId };
+
+    const id = ulid();
+    const receiptId = createReceiptId("FB", id);
     await db.insert(pageFeedback).values({
-      id: ulid(),
+      id,
       page: data.page.slice(0, 500),
       helpful: data.helpful,
       comment: data.comment ? sanitize(data.comment).slice(0, 1000) : null,
       userAgent: null,
+      idempotencyKey: data.idempotencyKey,
+      receiptId,
       createdAt: new Date().toISOString(),
     });
-    return { success: true };
+    return { success: true, id, receiptId };
   });
 
 export const listPageFeedback = createServerFn({ method: "GET" }).handler(async () => {

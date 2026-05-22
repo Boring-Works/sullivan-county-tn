@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { CheckCircle } from "lucide-react";
+import { useState } from "react";
 import type { Control, FieldPath, FieldValues } from "react-hook-form";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -35,6 +36,7 @@ import {
   getFormDefinition,
 } from "~/data/form-definitions";
 import { governmentServiceJsonLd, jsonLdString } from "~/lib/jsonld";
+import { createIdempotencyKey } from "~/lib/receipts";
 import { submitForm } from "~/server/forms";
 import { SITE_URL, seo, seoLinks } from "~/utils/seo";
 
@@ -90,6 +92,7 @@ const baseContactSchema = z.object({
   name: z.string().trim().min(1, "Full name is required").max(200),
   email: z.string().trim().email("Enter a valid email address"),
   phone: z.string().trim().max(40).optional().or(z.literal("")),
+  idempotencyKey: z.string().min(16),
   website: z.string().optional().or(z.literal("")), // honeypot
 });
 
@@ -138,26 +141,41 @@ function ActiveFormPage({ form, formType, navigate, t }: ActiveFormPageProps) {
       name: "",
       email: "",
       phone: "",
+      // Included in server validation, but not visible to citizens.
+      idempotencyKey: createIdempotencyKey(`form-${formType}`),
       website: "",
       fields: defaultFields,
-    },
+    } as Values,
   });
+
+  const [receiptId, setReceiptId] = useState<string | null>(null);
 
   async function onSubmit(values: Values) {
     try {
-      await submitForm({
+      const result = await submitForm({
         data: {
           formType,
           name: values.name,
           email: values.email,
           phone: values.phone || undefined,
           fields: values.fields as Record<string, string>,
+          idempotencyKey: values.idempotencyKey,
           honeypot: values.website,
         },
       });
-      toast.success(t("forms.submitted"), { description: t("forms.submittedDesc") });
+      setReceiptId(result.receiptId);
+      toast.success(t("forms.submitted"), {
+        description: `${t("forms.submittedDesc")} Receipt ${result.receiptId}.`,
+      });
       // Reset form and route to a clean state
-      rhf.reset();
+      rhf.reset({
+        name: "",
+        email: "",
+        phone: "",
+        idempotencyKey: createIdempotencyKey(`form-${formType}`),
+        website: "",
+        fields: defaultFields,
+      } as Values);
     } catch (err) {
       const message = err instanceof Error ? err.message : "Submission failed. Please try again.";
       toast.error("Couldn't submit", { description: message });
@@ -184,6 +202,11 @@ function ActiveFormPage({ form, formType, navigate, t }: ActiveFormPageProps) {
             Your request has been saved for county staff review. If the request is urgent or you do
             not receive follow-up, call the relevant county office directly.
           </p>
+          {receiptId && (
+            <p className="mb-6 font-body text-sm font-semibold text-brand-navy">
+              Receipt ID: <span className="font-mono">{receiptId}</span>
+            </p>
+          )}
           <Button variant="copper" onClick={() => navigate({ to: "/forms" })}>
             {t("forms.backToForms")}
           </Button>
@@ -235,6 +258,7 @@ function ActiveFormPage({ form, formType, navigate, t }: ActiveFormPageProps) {
               {...rhf.register("website")}
             />
           </div>
+          <input type="hidden" {...rhf.register("idempotencyKey" as FieldPath<Values>)} />
 
           <div className="rounded-sm border border-brand-copper/25 bg-brand-copper/5 p-5">
             <h2 className="font-display text-base font-bold text-brand-navy">Before you submit</h2>

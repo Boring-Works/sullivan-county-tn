@@ -20,6 +20,7 @@ const TYPE_LABELS: Record<SearchItem["type"], string> = {
   commissioner: "Commissioner",
   document: "Documents",
   page: "Page",
+  task: "Task",
 };
 
 const QUICK_ACTIONS = [
@@ -36,6 +37,7 @@ const TYPE_COLORS: Record<SearchItem["type"], string> = {
   commissioner: "bg-brand-sage/10 text-brand-sage",
   document: "bg-brand-stone/10 text-brand-stone",
   page: "bg-brand-brass/10 text-brand-brass",
+  task: "bg-brand-community/10 text-brand-community",
 };
 
 interface SearchDialogProps {
@@ -82,6 +84,10 @@ export function SearchDialog({ open, onOpenChange, initialQuery = "" }: SearchDi
 
   function navigateTo(to: string) {
     onOpenChange(false);
+    if (/^https?:\/\//.test(to) || /\.(pdf|doc|docx|tif|mp4)$/i.test(to)) {
+      window.open(to, "_blank", "noopener,noreferrer");
+      return;
+    }
     navigate({ to });
   }
 
@@ -176,6 +182,7 @@ export function SearchDialog({ open, onOpenChange, initialQuery = "" }: SearchDi
                     {result.item.description}
                   </p>
                 </div>
+                <CommandShortcut>{result.item.actionLabel ?? "Open"}</CommandShortcut>
               </CommandItem>
             ))}
           </CommandGroup>

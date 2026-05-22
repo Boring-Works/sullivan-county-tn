@@ -1,4 +1,4 @@
-import { index, integer, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { index, integer, sqliteTable, text, uniqueIndex } from "drizzle-orm/sqlite-core";
 
 // ── Form Submissions (F2) ────────────────────────────────────────
 export const formSubmissions = sqliteTable(
@@ -11,12 +11,16 @@ export const formSubmissions = sqliteTable(
     email: text("email").notNull(),
     phone: text("phone"),
     data: text("data").notNull(), // JSON blob of form-specific fields
+    idempotencyKey: text("idempotency_key"),
+    receiptId: text("receipt_id"),
     createdAt: text("created_at").notNull(),
     updatedAt: text("updated_at").notNull(),
   },
   (t) => [
     index("idx_form_submissions_status").on(t.status),
     index("idx_form_submissions_created_at").on(t.createdAt),
+    uniqueIndex("idx_form_submissions_idempotency_key").on(t.idempotencyKey),
+    uniqueIndex("idx_form_submissions_receipt_id").on(t.receiptId),
   ],
 );
 
@@ -106,11 +110,15 @@ export const pageFeedback = sqliteTable(
     helpful: integer("helpful", { mode: "boolean" }).notNull(),
     comment: text("comment"),
     userAgent: text("user_agent"),
+    idempotencyKey: text("idempotency_key"),
+    receiptId: text("receipt_id"),
     createdAt: text("created_at").notNull(),
   },
   (t) => [
     index("idx_page_feedback_page").on(t.page),
     index("idx_page_feedback_created_at").on(t.createdAt),
+    uniqueIndex("idx_page_feedback_idempotency_key").on(t.idempotencyKey),
+    uniqueIndex("idx_page_feedback_receipt_id").on(t.receiptId),
   ],
 );
 

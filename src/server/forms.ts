@@ -1,8 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
+import { eq } from "drizzle-orm";
 import { ulid } from "ulidx";
 import { getFormDefinition } from "~/data/form-definitions";
 import { getDb } from "~/db";
 import { formSubmissions } from "~/db/schema";
+import { createReceiptId } from "~/lib/receipts";
 import { submitFormSchema } from "~/lib/schemas/forms";
 import { getDB } from "~/server/env";
 import { rateLimit } from "~/server/rate-limit";
@@ -70,11 +72,20 @@ export const submitForm = createServerFn({ method: "POST" })
     validateFields(definition, data.fields);
 
     rateLimit("form-submit", 3, 60000);
+    const db = getDb(getDB());
+    const existing = await db
+      .select({ id: formSubmissions.id, receiptId: formSubmissions.receiptId })
+      .from(formSubmissions)
+      .where(eq(formSubmissions.idempotencyKey, data.idempotencyKey))
+      .get();
+    if (existing?.receiptId)
+      return { success: true, id: existing.id, receiptId: existing.receiptId };
+
     const id = ulid();
+    const receiptId = createReceiptId("FORM", id);
     const now = new Date().toISOString();
 
     try {
-      const db = getDb(getDB());
       await db.insert(formSubmissions).values({
         id,
         formType: data.formType,
@@ -83,6 +94,8 @@ export const submitForm = createServerFn({ method: "POST" })
         email: data.email,
         phone: data.phone ?? null,
         data: JSON.stringify(data.fields),
+        idempotencyKey: data.idempotencyKey,
+        receiptId,
         createdAt: now,
         updatedAt: now,
       });
@@ -95,5 +108,5 @@ export const submitForm = createServerFn({ method: "POST" })
       );
     }
 
-    return { success: true, id };
+    return { success: true, id, receiptId };
   });

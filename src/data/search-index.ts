@@ -5,14 +5,17 @@ import { documents } from "./documents";
 import { FORM_DEFINITIONS } from "./form-definitions";
 import { heritageSites } from "./heritage-sites";
 import { meetingMinutes } from "./meeting-minutes";
+import { NAV_VERBS } from "./nav-verbs";
 import { news } from "./news";
 
 export interface SearchItem {
-  type: "department" | "news" | "commissioner" | "document" | "page";
+  type: "department" | "news" | "commissioner" | "document" | "page" | "task";
   title: string;
   description: string;
   url: string;
   category?: string;
+  actionLabel?: string;
+  source?: "route" | "data" | "document" | "task";
   /**
    * Citizen-language aliases — terms people actually type that don't appear in
    * the official title or description. Indexed by Fuse.js so a search for
@@ -38,6 +41,14 @@ export const SUGGESTED_QUERIES = [
 ];
 
 const staticPages: SearchItem[] = [
+  {
+    type: "page",
+    title: "Sullivan County Government Home",
+    description:
+      "Start here to pay, apply, report, find records, contact offices, and get county help.",
+    url: "/",
+    aliases: ["home", "main", "how can sullivan county help me today"],
+  },
   {
     type: "page",
     title: "The Founding Story — Sullivan County History",
@@ -135,6 +146,14 @@ const staticPages: SearchItem[] = [
     description:
       "Archive of Sullivan County commission meetings, planning commission, and committee minutes.",
     url: "/minutes",
+  },
+  {
+    type: "page",
+    title: "County News and Announcements",
+    description:
+      "Official Sullivan County updates, closures, public notices, and county announcements.",
+    url: "/news",
+    aliases: ["announcements", "closures", "notices", "latest news"],
   },
   {
     type: "page",
@@ -337,6 +356,11 @@ const CITIZEN_LANGUAGE_ALIASES: Array<{
   },
 ];
 
+function labelFromKey(key: string): string {
+  const label = key.split(".").at(-1) ?? key;
+  return label.replace(/([A-Z])/g, " $1").replace(/^./, (char) => char.toUpperCase());
+}
+
 export function buildSearchIndex(): SearchItem[] {
   const items: SearchItem[] = [];
 
@@ -377,10 +401,34 @@ export function buildSearchIndex(): SearchItem[] {
     items.push({
       type: "document",
       title: doc.name,
-      description: `${doc.category} — ${doc.description}`,
-      url: "/documents",
+      description: `${doc.category} — ${doc.description} (${doc.type}, ${doc.size})`,
+      url: doc.href,
       category: doc.category,
+      actionLabel: "Open document",
+      source: "document",
     });
+  }
+
+  // Citizen task navigation
+  for (const verb of NAV_VERBS) {
+    const taskGroups = [...(verb.tasks ? [{ tasks: verb.tasks }] : []), ...(verb.groups ?? [])];
+    for (const group of taskGroups) {
+      for (const task of group.tasks) {
+        const title = labelFromKey(task.labelKey);
+        const url = "href" in task ? task.href : task.to;
+        const verbLabel = labelFromKey(verb.labelKey);
+        items.push({
+          type: "task",
+          title,
+          description: `${verbLabel} task for Sullivan County government services.`,
+          url,
+          category: verbLabel,
+          actionLabel: task.external ? "Open official site" : "Open task",
+          source: "task",
+          aliases: [verbLabel.toLowerCase(), title.toLowerCase()],
+        });
+      }
+    }
   }
 
   // Meeting Minutes (unique committees)
@@ -429,7 +477,7 @@ export function buildSearchIndex(): SearchItem[] {
   }
 
   // Static pages
-  items.push(...staticPages);
+  items.push(...staticPages.map((page) => ({ ...page, source: "route" as const })));
 
   // Apply citizen-language aliases. For each known url match, attach the
   // aliases so Fuse.js indexes them as searchable text.

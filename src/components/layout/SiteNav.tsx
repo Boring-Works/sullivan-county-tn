@@ -359,10 +359,11 @@ export function SiteNav() {
                           else panelButtonRefs.current.delete(verb.key);
                         }}
                         type="button"
+                        disabled={!hydrated}
                         className={cn(
-                          "relative flex items-center gap-1.5 px-3.5 py-2 font-body text-sm rounded-sm transition-all duration-200",
+                          "relative flex items-center gap-1.5 px-3.5 py-2 font-body text-sm rounded-sm transition-all duration-200 disabled:cursor-wait disabled:opacity-60",
                           verbActive ? "font-semibold" : "font-medium",
-                          solid ? "text-brand-slate" : "text-white/90",
+                          solid ? "text-brand-navy" : "text-white/90",
                           isOpen &&
                             (solid ? "bg-brand-surface text-brand-navy" : "bg-white/10 text-white"),
                           !isOpen && (solid ? "hover:text-brand-navy" : "hover:text-white"),
@@ -455,10 +456,11 @@ export function SiteNav() {
                 <button
                   type="button"
                   onClick={() => setSearchOpen(true)}
+                  disabled={!hydrated}
                   className={cn(
-                    "hidden lg:inline-flex items-center gap-2 rounded-sm px-3 py-1.5 font-body text-sm transition-all duration-200",
+                    "hidden lg:inline-flex items-center gap-2 rounded-sm px-3 py-1.5 font-body text-sm transition-all duration-200 disabled:cursor-wait disabled:opacity-60",
                     solid
-                      ? "text-brand-stone border border-brand-surface hover:border-brand-copper/30 hover:text-brand-navy"
+                      ? "text-brand-navy border border-brand-surface hover:border-brand-copper/30"
                       : "text-white/70 border border-white/20 hover:border-white/40 hover:text-white",
                   )}
                   aria-label="Search"
@@ -467,7 +469,7 @@ export function SiteNav() {
                   <kbd
                     className={cn(
                       "text-[10px] font-mono font-semibold",
-                      solid ? "text-brand-slate" : "text-white",
+                      solid ? "text-brand-navy" : "text-white",
                     )}
                   >
                     &#8984;K

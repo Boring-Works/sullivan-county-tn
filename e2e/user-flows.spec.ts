@@ -2,13 +2,13 @@ import { expect, test } from "@playwright/test";
 
 test.describe("user flows", () => {
   // ===== MEGA MENU (Phase 1 verb consolidation: 7→5; Departments folded into Find) =====
-  test("desktop mega-menu opens on hover and navigates to a department", async ({ page }) => {
+  test("desktop mega-menu opens and navigates to a department", async ({ page }) => {
     if (page.viewportSize()!.width < 1024) return;
     await page.goto("/");
 
     const findTrigger = page.locator("nav button", { hasText: /^Find$/ });
-    await findTrigger.first().hover();
-    await page.waitForTimeout(400);
+    await expect(findTrigger.first()).toBeVisible();
+    await findTrigger.first().click();
 
     // FIND panel groups: Records · Meetings & people · Departments
     const panel = page.locator("#verb-panel-find");
@@ -36,8 +36,8 @@ test.describe("user flows", () => {
     await page.goto("/");
 
     const findTrigger = page.locator("nav button", { hasText: /^Find$/ });
-    await findTrigger.first().hover();
-    await page.waitForTimeout(400);
+    await expect(findTrigger.first()).toBeVisible();
+    await findTrigger.first().click();
 
     const panel = page.locator("#verb-panel-find");
     await expect(panel).toBeVisible();
@@ -55,11 +55,11 @@ test.describe("user flows", () => {
     await hamburger.click();
 
     // Mobile drawer is a sibling dialog, not inside the main nav.
-    const drawer = page.locator('[role="dialog"][aria-label="Navigation menu"]');
+    const drawer = page.getByRole("dialog", { name: "Navigation menu" });
     await expect(drawer).toBeVisible();
     await expect(drawer).toContainText("Pay");
     await expect(drawer).toContainText("Apply");
-    await expect(drawer).toContainText("Departments");
+    await expect(drawer).toContainText("Report");
     await expect(drawer).toContainText("About");
   });
 
@@ -188,7 +188,7 @@ test.describe("user flows", () => {
   // ===== COMMUNITIES =====
   test("community cards link to detail pages", async ({ page }) => {
     await page.goto("/communities");
-    const kingsport = page.locator("a").filter({ hasText: "Kingsport" }).first();
+    const kingsport = page.getByRole("link", { name: /Kingsport/i }).first();
     if ((await kingsport.count()) > 0) {
       await kingsport.click();
       await expect(page).toHaveURL(/\/communities\/kingsport/);
@@ -221,9 +221,13 @@ test.describe("user flows", () => {
   // ===== RESPONSIVE BEHAVIOR =====
   test("no horizontal overflow on mobile", async ({ page }) => {
     if (page.viewportSize()!.width >= 640) return;
+    await page.setViewportSize({ width: 390, height: 844 });
     await page.goto("/");
     await page.waitForTimeout(500);
-    page.setViewportSize({ width: 390, height: 844 });
+    const hasHorizontalOverflow = await page.evaluate(
+      () => document.documentElement.scrollWidth > window.innerWidth,
+    );
+    expect(hasHorizontalOverflow).toBe(false);
   });
 
   // ===== EXTERNAL LINKS =====

@@ -1,7 +1,9 @@
+import { externalHandoffs } from "~/data/external-handoffs";
+
 export const officialRoadLinks = {
-  smartway: "https://smartway.tn.gov/traffic",
+  smartway: externalHandoffs.smartway.url,
   smartwayRegion1Cameras: "https://smartway.tn.gov/traffic/text/region/1/cameras/route/I-81",
-  tn511: "https://www.tn511.com/",
+  tn511: externalHandoffs.tn511.url,
 } as const;
 
 export const officialLakeLinks = {

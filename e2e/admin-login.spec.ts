@@ -3,7 +3,8 @@ import { expect, test } from "@playwright/test";
 // Tests that submit the admin password only run against the deployed worker
 // where ADMIN_PASSWORD = "sullivan-admin-2026". Local preview uses a separate
 // secret in .dev.vars so the password-submit tests would always fail there.
-const isLocal = (process.env.BASE_URL ?? "").startsWith("http://localhost");
+const baseUrl = process.env.BASE_URL ?? "http://127.0.0.1:4173";
+const isLocal = /^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(baseUrl);
 
 test.describe("admin auth", () => {
   test("login page loads", async ({ page, browserName }) => {
@@ -15,6 +16,7 @@ test.describe("admin auth", () => {
 
   test("wrong password shows error", async ({ page }) => {
     if (page.viewportSize()!.width < 1024) return;
+    test.skip(isLocal, "ADMIN_PASSWORD differs in local preview");
     await page.goto("/admin/login");
     await page.fill('input[type="password"]', "wrong-password-123");
     await page.click('button[type="submit"]');

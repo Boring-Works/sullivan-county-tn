@@ -3,12 +3,13 @@ import { Calendar, Clock, Download, ExternalLink, MapPin } from "lucide-react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import {
-  COMMISSION_REGULAR_SESSION_NAME,
-  COMMISSION_REGULAR_SESSION_RULE,
-  COURTHOUSE,
+  countyHolidays,
+  type RecurringMeeting,
+  recurringMeetings,
+  upcomingEvents,
 } from "~/data/meetings";
 import { eventJsonLd, jsonLdString } from "~/lib/jsonld";
-import { buildIcs, formatNyDateTime, nextOccurrence, type RecurrenceRule } from "~/lib/recurrence";
+import { buildIcs, formatNyDateTime, nextOccurrence } from "~/lib/recurrence";
 import { seo, seoLinks } from "~/utils/seo";
 
 export const Route = createFileRoute("/calendar")({
@@ -23,119 +24,6 @@ export const Route = createFileRoute("/calendar")({
     links: seoLinks("/calendar"),
   }),
 });
-
-interface RecurringMeeting {
-  name: string;
-  schedule: string;
-  time: string;
-  location: string;
-  notes?: string;
-  link?: string;
-  rule?: RecurrenceRule;
-}
-
-interface UpcomingEvent {
-  name: string;
-  startsAtLabel: string;
-  location?: string;
-  description: string;
-}
-
-const recurringMeetings: RecurringMeeting[] = [
-  {
-    name: COMMISSION_REGULAR_SESSION_NAME,
-    schedule: "3rd Thursday of each month",
-    time: "6:30 PM",
-    location: COURTHOUSE,
-    notes: "Streamed live on YouTube",
-    link: "https://www.youtube.com/@sullivancountycommission",
-    rule: COMMISSION_REGULAR_SESSION_RULE,
-  },
-  {
-    name: "County Commission Work Session",
-    schedule: "1st Thursday of each month",
-    time: "6:30 PM",
-    location: COURTHOUSE,
-    rule: { dayOfWeek: 4, nthOfMonth: 1, time: "18:30", durationMinutes: 120 },
-  },
-  {
-    name: "Budget Committee",
-    schedule: "As scheduled during budget season (May–June)",
-    time: "Varies",
-    location: COURTHOUSE,
-  },
-  {
-    name: "Beer Board",
-    schedule: "As needed",
-    time: "Varies",
-    location: COURTHOUSE,
-  },
-  {
-    name: "Planning Commission",
-    schedule: "2nd Tuesday of each month",
-    time: "6:00 PM",
-    location: COURTHOUSE,
-    rule: { dayOfWeek: 2, nthOfMonth: 2, time: "18:00", durationMinutes: 90 },
-  },
-  {
-    name: "Board of Zoning Appeals",
-    schedule: "4th Tuesday of each month (as needed)",
-    time: "6:00 PM",
-    location: COURTHOUSE,
-    rule: { dayOfWeek: 2, nthOfMonth: 4, time: "18:00", durationMinutes: 90 },
-  },
-];
-
-const countyHolidays = [
-  { name: "New Year's Day", date: "January 1" },
-  { name: "Martin Luther King Jr. Day", date: "3rd Monday in January" },
-  { name: "Presidents' Day", date: "3rd Monday in February" },
-  { name: "Good Friday", date: "Friday before Easter" },
-  { name: "Memorial Day", date: "Last Monday in May" },
-  { name: "Independence Day", date: "July 4" },
-  { name: "Labor Day", date: "1st Monday in September" },
-  { name: "Columbus Day", date: "2nd Monday in October" },
-  { name: "Veterans Day", date: "November 11" },
-  { name: "Thanksgiving", date: "4th Thursday & Friday in November" },
-  { name: "Christmas Eve & Day", date: "December 24–25" },
-];
-
-const upcomingEvents: UpcomingEvent[] = [
-  {
-    name: "Regular Session Sullivan County Board of Commissioners",
-    startsAtLabel: "May 21 @ 6:00 PM EDT",
-    location: COURTHOUSE,
-    description:
-      "The Board of Commissioners meets in regular session to consider county business, public items, and official actions. Residents are encouraged to attend and stay involved.",
-  },
-  {
-    name: "Memorial Day — Offices Closed",
-    startsAtLabel: "May 25 @ 8:00 AM EDT",
-    description:
-      "All Sullivan County government offices are closed in observance of Memorial Day. Emergency services remain available 24/7 throughout the holiday.",
-  },
-  {
-    name: "Board of Education Work Session @ Central Office",
-    startsAtLabel: "May 27 @ 4:30 PM EDT",
-    location: "Sullivan County Schools Central Office",
-    description:
-      "A focused work session for agenda preparation, planning, and policy discussion ahead of the evening board meeting.",
-  },
-  {
-    name: "Board of Education @ Central Office",
-    startsAtLabel: "May 27 @ 6:30 PM EDT",
-    location: "Sullivan County Schools Central Office",
-    description:
-      "Regular Board of Education meeting covering district operations, student-focused priorities, and public agenda items.",
-  },
-  {
-    name: "Military Park Committee @ Foxes Den Café",
-    startsAtLabel: "May 28 @ 6:00 PM EDT",
-    location: "Foxes Den Café",
-    description:
-      "Committee meeting to review Military Park initiatives, community partnerships, and upcoming heritage programming.",
-  },
-];
 
 function MeetingRow({ meeting }: { meeting: RecurringMeeting }) {
   // Computed once on initial render so it ships in SSR HTML (powers Event JSON-LD).
@@ -166,7 +54,10 @@ function MeetingRow({ meeting }: { meeting: RecurringMeeting }) {
   }
 
   return (
-    <div className="group rounded-sm border border-brand-surface bg-white p-5 hover:border-brand-copper/20 transition-colors">
+    <article
+      data-testid={`meeting-${meeting.name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+      className="group rounded-sm border border-brand-surface bg-white p-5 hover:border-brand-copper/20 transition-colors"
+    >
       {jsonLd && (
         <script
           type="application/ld+json"
@@ -211,21 +102,32 @@ function MeetingRow({ meeting }: { meeting: RecurringMeeting }) {
                 Add to calendar
               </a>
             )}
-            {meeting.link && (
-              <a
-                href={meeting.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 font-body text-xs font-medium text-brand-copper hover:text-brand-copper-light hover:underline"
-              >
-                <ExternalLink aria-hidden="true" className="size-3" />
-                Watch live on YouTube
-              </a>
+            {meeting.actions.map((action) =>
+              action.external ? (
+                <a
+                  key={`${meeting.name}-${action.label}`}
+                  href={action.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 font-body text-xs font-medium text-brand-copper hover:text-brand-copper-light hover:underline"
+                >
+                  <ExternalLink aria-hidden="true" className="size-3" />
+                  {action.label}
+                </a>
+              ) : (
+                <Link
+                  key={`${meeting.name}-${action.label}`}
+                  to={action.href}
+                  className="inline-flex items-center gap-1.5 font-body text-xs font-medium text-brand-copper hover:text-brand-copper-light hover:underline"
+                >
+                  {action.label}
+                </Link>
+              ),
             )}
           </div>
         </div>
       </div>
-    </div>
+    </article>
   );
 }
 

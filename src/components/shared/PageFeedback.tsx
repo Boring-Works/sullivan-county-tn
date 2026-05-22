@@ -3,6 +3,7 @@ import { Check, ThumbsDown, ThumbsUp } from "lucide-react";
 import { useState } from "react";
 import { Button } from "~/components/ui/button";
 import { Textarea } from "~/components/ui/textarea";
+import { createIdempotencyKey } from "~/lib/receipts";
 import { submitPageFeedback } from "~/server/page-feedback";
 
 type Phase = "ask" | "comment" | "thanks";
@@ -12,14 +13,18 @@ export function PageFeedback() {
   const [phase, setPhase] = useState<Phase>("ask");
   const [helpful, setHelpful] = useState<boolean | null>(null);
   const [comment, setComment] = useState("");
+  const [idempotencyKey, setIdempotencyKey] = useState(() => createIdempotencyKey("feedback"));
+  const [receiptId, setReceiptId] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   async function send(value: boolean, withComment?: string) {
     setSubmitting(true);
     try {
-      await submitPageFeedback({
-        data: { page: pathname, helpful: value, comment: withComment || undefined },
+      const result = await submitPageFeedback({
+        data: { page: pathname, helpful: value, idempotencyKey, comment: withComment || undefined },
       });
+      setReceiptId(result.receiptId);
+      setIdempotencyKey(createIdempotencyKey("feedback"));
       setPhase("thanks");
     } catch {
       // Silent fail — don't disrupt the citizen.
@@ -120,7 +125,10 @@ export function PageFeedback() {
       {phase === "thanks" && (
         <div className="flex items-center gap-3 font-body text-sm text-brand-slate">
           <Check aria-hidden="true" className="size-5 text-brand-sage" />
-          <span>Thanks for the feedback.</span>
+          <span>
+            Thanks for the feedback.
+            {receiptId ? <span className="ml-1 font-mono">Receipt {receiptId}</span> : null}
+          </span>
         </div>
       )}
     </section>
