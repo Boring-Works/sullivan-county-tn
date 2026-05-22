@@ -17,7 +17,7 @@ See `/docs/` for complete architecture audit:
 - [NEXT_IMPLEMENTATION_PLAN.md](docs/NEXT_IMPLEMENTATION_PLAN.md) — Future plan
 
 ## State (2026-05-21 - production-hardened, civic-service foundation deployed)
-- **Latest deployed baseline:** commit `cf976a3` (`fix: harden civic audit findings`) deployed as Cloudflare version `41f7f8aa-d70e-4cc9-9546-e386594d025c`; `/api/health` returned `{"status":"ok"}` at `2026-05-22T00:26:59.819Z`, 12/12 production route smoke checks returned 200, and targeted live Playwright civic checks passed 5/5.
+- **Latest deployed baseline:** deploy the current GitHub `main` tip with `pnpm run deploy`. The exact Cloudflare version ID is emitted by Wrangler at deploy time and recorded in the handoff/commit notes, not hardcoded here, so this file stays accurate after docs-only sync commits. Latest verification: `/api/health` returned `{"status":"ok"}`, 12/12 production route smoke checks returned 200, and targeted live Playwright civic checks passed 5/5.
 - **Tests:** Current audit pass: 106 unit tests passing across 21 files; full Playwright: 282 passed, 14 skipped, 1 flaky desktop mega-menu click test passed on retry. This audit pass adds a search-index regression test for task verb labels.
 - **A11y:** WCAG AA oriented — kbd contrast fixed, brand-stable colors site-wide, skip-link focus fixed, scroll-reveal failsafe ensures all sections render even with reduced motion or no JS.
 - **Lint:** Biome check passes with 0 errors.

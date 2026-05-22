@@ -9,13 +9,13 @@
 
 The app is a production Cloudflare Workers deployment of a TanStack Start civic services portal for Sullivan County, Tennessee. The current site is positioned as an official government-service portal first, with tourism and heritage content as a secondary bridge.
 
-Latest shipped baseline after this audit pass:
+Latest shipped baseline after this audit pass. Exact Git commit and Cloudflare version IDs are emitted by `git log -1` and `pnpm run deploy`; keep those in release handoff notes instead of hardcoding them here so docs-only sync commits do not immediately stale this file.
 
 | Item | Value |
 |---|---|
-| Commit | `cf976a3 fix: harden civic audit findings` |
-| Cloudflare version | `41f7f8aa-d70e-4cc9-9546-e386594d025c` |
-| Health check | `/api/health` returned `{"status":"ok"}` at `2026-05-22T00:26:59.819Z` |
+| GitHub state | Current `main` tip is the source of truth |
+| Cloudflare state | Current Worker version is emitted by Wrangler during deploy |
+| Health check | `/api/health` returned `{"status":"ok"}` in the latest production verification |
 | Production smoke | 12/12 major routes returned 200 |
 | Unit baseline | 106 tests across 21 files passed in this audit pass |
 | Full Playwright baseline | 282 passed, 14 skipped, 1 flaky passed on retry in this audit pass |
