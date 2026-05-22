@@ -1,10 +1,8 @@
 import { expect, test } from "@playwright/test";
 
-// Tests that submit the admin password only run against the deployed worker
-// where ADMIN_PASSWORD = "sullivan-admin-2026". Local preview uses a separate
-// secret in .dev.vars so the password-submit tests would always fail there.
 const baseUrl = process.env.BASE_URL ?? "http://127.0.0.1:4173";
 const isLocal = /^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(baseUrl);
+const adminPassword = process.env.E2E_ADMIN_PASSWORD;
 
 test.describe("admin auth", () => {
   test("login page loads", async ({ page, browserName }) => {
@@ -26,8 +24,9 @@ test.describe("admin auth", () => {
   test("correct password logs in", async ({ page }) => {
     if (page.viewportSize()!.width < 1024) return;
     test.skip(isLocal, "ADMIN_PASSWORD differs in local preview");
+    test.skip(!adminPassword, "E2E_ADMIN_PASSWORD is required for deployed admin login tests");
     await page.goto("/admin/login");
-    await page.fill('input[type="password"]', "sullivan-admin-2026");
+    await page.fill('input[type="password"]', adminPassword ?? "");
     await page.click('button[type="submit"]');
     await page.waitForURL("**/admin");
     await expect(page.locator("body")).toContainText("Dashboard");
@@ -42,10 +41,11 @@ test.describe("admin auth", () => {
 
 test.describe("admin CRUD", () => {
   test.skip(isLocal, "Admin CRUD requires deployed env (D1 admin_sessions + ADMIN_PASSWORD)");
+  test.skip(!adminPassword, "E2E_ADMIN_PASSWORD is required for deployed admin CRUD tests");
   test.beforeEach(async ({ page }) => {
     if (page.viewportSize()!.width < 1024) return;
     await page.goto("/admin/login");
-    await page.fill('input[type="password"]', "sullivan-admin-2026");
+    await page.fill('input[type="password"]', adminPassword ?? "");
     await page.click('button[type="submit"]');
     await page.waitForURL("**/admin");
   });

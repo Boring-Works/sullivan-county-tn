@@ -100,6 +100,14 @@ export const submitForm = createServerFn({ method: "POST" })
         updatedAt: now,
       });
     } catch {
+      const duplicate = await db
+        .select({ id: formSubmissions.id, receiptId: formSubmissions.receiptId })
+        .from(formSubmissions)
+        .where(eq(formSubmissions.idempotencyKey, data.idempotencyKey))
+        .get();
+      if (duplicate?.receiptId) {
+        return { success: true, id: duplicate.id, receiptId: duplicate.receiptId };
+      }
       console.error(
         JSON.stringify({ event: "form_submission_store_failed", reason: "D1 unavailable" }),
       );

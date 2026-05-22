@@ -20,12 +20,12 @@ export function ExternalHandoffLink({
   const handoff = externalHandoffs[handoffId];
   return (
     <a
+      {...props}
       href={handoff.url}
       target="_blank"
       rel="noopener noreferrer"
       aria-label={`${label ?? handoff.label}. ${handoff.handoffNote}`}
       className={cn("inline-flex items-center gap-1.5", className)}
-      {...props}
     >
       {children ?? label ?? handoff.label}
       <ExternalLink aria-hidden="true" className="size-3.5 shrink-0 opacity-70" />

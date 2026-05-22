@@ -2,12 +2,13 @@
 
 **Site:** https://sullivan-county-tn.codyboring.workers.dev  
 **Admin URL:** https://sullivan-county-tn.codyboring.workers.dev/admin/login
+**Prepared with AI assistance.**
 
 ## Production Password
 
 Do not store production admin passwords in this repository.
 
-The prior committed password was removed and the deployed `ADMIN_PASSWORD` secret was rotated on 2026-05-21. Ask the project owner to set a new known password through Cloudflare when admin access is needed.
+The prior committed password has been removed from source and deployed E2E tests now read `E2E_ADMIN_PASSWORD` from the environment. Ask the project owner to rotate or set `ADMIN_PASSWORD` through Cloudflare when admin access is needed.
 
 Set or rotate via: `pnpm exec wrangler secret put ADMIN_PASSWORD`
 
@@ -43,6 +44,7 @@ pnpm exec wrangler secret put ADMIN_PASSWORD
 ## Security Notes
 
 - Password is never stored in source code, `wrangler.jsonc`, or committed to git
+- Deployed admin E2E tests skip unless `E2E_ADMIN_PASSWORD` is set in the runner environment
 - Password comparison uses `crypto.subtle.timingSafeEqual()` with SHA-256 hashing
 - Sessions are ULID-based (time-sortable, unique)
 - Login is rate-limited: 5 attempts per 60 seconds

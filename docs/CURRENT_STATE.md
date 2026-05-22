@@ -1,277 +1,162 @@
-# Current State — Sullivan County TN Government Website
+# Current State - Sullivan County TN Government Website
 
 **Date:** 2026-05-21
 **Live:** https://sullivan-county-tn.codyboring.workers.dev
 **Repo:** https://github.com/Boring-Works/sullivan-county-tn
+**Prepared with AI assistance.**
 
----
+## Summary
 
-## What's been done
+The app is a production Cloudflare Workers deployment of a TanStack Start civic services portal for Sullivan County, Tennessee. The current site is positioned as an official government-service portal first, with tourism and heritage content as a secondary bridge.
 
-The site has been through a **7-phase production-hardening pass** plus several follow-up audits. Everything below is shipped to production.
+Latest shipped baseline before this audit pass:
 
-**Latest verified production fix:** commit `5dc2b26` (`fix: keep search dialog visible on mobile`) is pushed to `main` and deployed to Cloudflare Workers version `cce0aafe-594e-4d41-a463-532ea046a9fe`. Live health returned `{"status":"ok"}` at `2026-05-21T22:42:55.707Z`.
+| Item | Value |
+|---|---|
+| Commit | `de07dfb feat: strengthen civic service foundations` |
+| Cloudflare version | `4996f023-5fce-4b7e-9ad1-cab1f74f0de2` |
+| Health check | `/api/health` returned `{"status":"ok"}` |
+| Production smoke | 12/12 major routes returned 200 |
+| Unit baseline | 106 tests across 21 files passed in this audit pass |
+| Full Playwright baseline | 282 passed, 14 skipped, 1 flaky passed on retry in this audit pass |
 
-### Brand architecture
-- **Main site:** Sullivan County's official civic portal for services, local government, records, meetings, notices, emergency information, and community resources.
-- **Primary homepage question:** "What do you need to do today?"
-- **Tourism bridge:** Where Tennessee Began remains a featured visitor/trip-planning bridge, not the primary government-site identity.
-- **Source of truth:** `docs/BRAND_POSITIONING.md`.
+This audit pass updated code and docs after reviewing the app file-by-file. Local verification passed with Biome, TypeScript, Vitest, production build, diff whitespace checks, and the full Playwright suite.
 
-### Phase 1 — Cloudflare Workers, typed end-to-end
-- `src/server/env.ts` exports typed `getEnv()` / `getDB()` / `getKV()` helpers — all 10 prior `as Record<string, unknown>` cast sites refactored to typed access against `Cloudflare.Env`.
-- `ADMIN_PASSWORD` declared via interface merging in `env.ts` so secrets type alongside bindings.
-- NWS fetch hardened: 5 s `AbortController` timeout + `cf: { cacheTtl: 600, cacheEverything: true }` + single retry on 5xx with 250 ms backoff.
+## What Is Shipped
 
-### Phase 2 — Drizzle + Zod alignment
-- `drizzle-zod` installed; `createInsertSchema()` and `createSelectSchema()` exposed for every D1 table from `src/db/schema.ts`.
-- All indexes moved into `schema.ts` (idx_form_submissions_status, idx_news_articles_status/published_at, idx_weather_observations_observed_at, idx_page_feedback_page/created_at).
-- ULID brand type at `src/lib/schemas/ids.ts` (`z.string().regex(...).brand<"Ulid">()`).
-- `$inferSelect` / `$inferInsert` types exported per table.
+| Area | Current state |
+|---|---|
+| Framework | TanStack Start SSR app on Cloudflare Workers |
+| Styling | Tailwind CSS v4, brand tokens, shadcn/ui, Radix primitives |
+| Runtime data | D1 for admin/content/forms/feedback/weather observations, KV for contact submissions and weather snapshot |
+| Public services | Contact, public-records/forms, documents, property taxes, departments, meetings, news, weather, river gauges, communities, history, tourism bridge |
+| Admin | Password login, ULID D1 sessions, news/minutes/announcements/submissions CRUD |
+| Search | Fuse.js unified index, direct document results, direct task results, mobile safe-area dialog |
+| Receipts | Contact, structured forms, and page feedback return public receipt IDs |
+| Idempotency | Contact uses KV idempotency keys, forms and feedback use D1 idempotency columns with duplicate-key recovery |
+| External handoffs | Centralized registry plus reusable link component with enforced `target="_blank"` and `rel="noopener noreferrer"` |
+| Weather | NWS forecast/alerts through MRX gridpoint 126,82 plus USGS river gauges and TVA/TDOT links |
+| PWA | Manifest, service worker, offline fallback, safe-area tags, install affordances |
 
-### Phase 3 — shadcn/ui foundation
-- **21 primitives** installed: `accordion`, `alert`, `badge`, `breadcrumb`, `button`, `card`, `command`, `dialog`, `dropdown-menu`, `form`, `input`, `label`, `scroll-area`, `select`, `separator`, `sheet`, `skeleton`, `sonner`, `table`, `tabs`, `textarea`, `tooltip`.
-- Theme overrides in `app.css` map shadcn vars to brand-navy / brand-copper / brand-cream. Sharp `0.125rem` radius for civic restraint.
-- `<Button>` extended with brand variants — `copper`, `navy`, themed `link`.
-
-### Phase 4 — UI conversion
-- `<Toaster />` (Sonner) + `<TooltipProvider>` mounted in `__root.tsx`.
-- `<Skeleton />` replaces "Loading..." text site-wide.
-- **`/contact`, `/admin/login`, and `/forms/$type` (all 4 form types)** migrated to react-hook-form + shadcn `<Form>` + Zod resolvers. Sonner toast on submit. `@tanstack/react-form` removed (was unused).
-- `/property-taxes` FAQ converted to shadcn `<Accordion>`.
-- `/weather`: 7-day cards as `<Card>`; hourly strip as `<ScrollArea>`.
-- **CopperWeathervane** on `/weather` — animated copper compass rose rotating with live wind direction (lifted from tennessee-starts-here, themed for Sullivan brand).
-
-### Phase 5 — PWA + offline
-- `public/sw.js` adapted from `Boring-Works/where-tennessee-began`. Cache-first fonts, network-first navigation w/ Navigation Preload + `/offline.html` fallback, image cache with eviction cap, stale-while-revalidate everywhere else. **Pre-caches emergency-critical pages** (`/`, `/property-taxes`, `/contact`, `/calendar`, `/weather`, `/departments/emergency-management`, `/departments/sheriff`).
-- `public/offline.html` — branded fallback with 911/Sheriff/EMA `tel:` links.
-- `public/manifest.webmanifest` — full **2026 PWA spec**: `id`, `scope`, `lang`, `display_override`, `launch_handler`, `share_target`, **shortcuts** (Pay Taxes / Weather / Contact / Calendar), maskable icon variant, categories, and no orientation lock.
-- `<OfflineBanner />` listens to `navigator.onLine`, fixed top bar with brand-copper styling, safe-area-aware.
-- SW registered in `__root.tsx` behind `import.meta.env.PROD`.
-- `docs/ACCESSIBILITY_PWA_AUDIT.md` records the 2026 accessibility/PWA review, applied fixes, and remaining platform-grade recommendations.
-
-### Weather and river subsystem
-- **NWS API integration** (api.weather.gov, no key, government data on a government site). Forecast office `MRX` (Morristown), gridpoint `126,82`, forecast zone `TNZ017`.
-- KV-cached snapshot with SWR-on-read pattern (10-min freshness; one user every 10 min pays the upstream round-trip; everyone else gets a 5 ms KV hit).
-- D1 archive in `weather_observations` for the 24-hour temperature trend chart on `/weather`.
-- Homepage uses one shared client weather fetch for `<HomeWeatherAlertBanner />` and `<WeatherBadge />`, avoiding duplicate polling and duplicate stale-refresh pressure.
-- `<HomeWeatherAlertBanner />` appears only when active NWS alerts exist and uses live-region semantics for assistive technology.
-- `<WeatherBadge />` on the homepage hero almanac auto-pulses copper when a Severe/Extreme NWS alert is active.
-- `/weather` route: action-first situation summary, relevant NWS alert cards, current conditions hero, CopperWeathervane on tablet/desktop, hourly outlook, day/night forecast, 24-hour temperature trend.
-- **USGS river conditions** for Beaver Creek at Bristol, South Fork Holston near Damascus, and North Fork Holston near Gate City. Cards show flow, gauge height, trend, last observation time, and official USGS links.
-- **Official travel and lake links**: TDOT SmartWay, TN 511, and TVA lake-level pages are linked from `/weather`, `/transportation`, and `/visit`; the homepage emergency strip links to TDOT SmartWay for road conditions.
-
-### Content freshness
-- **7 fresh news articles** dated April–May 2026, grounded in real-world facts: Memorial Day closures, Blountville Athletic Park grand opening (May 9), FY 26-27 budget hearing (May 21), April 16 Commission recap, SR 126 Memorial Boulevard project (8.3 mi, March 2026 start), TN burn-permit deadline (May 15), spring severe weather preparedness.
-- **Live AnnouncementBanner** — seeded D1 row for the Memorial Day closure renders on the homepage.
-
-### Trust signals across detail pages
-- `<DetailBreadcrumb>` (shadcn Breadcrumb under the hood) mounted on `/departments/$slug`, `/news/$slug`, `/communities/$slug`, `/history/$slug`, `/forms/$type`. Visible nav pairs with the existing BreadcrumbList JSON-LD.
-- **"Last reviewed [date]" stamps** at the footer of every department detail page and every form page (`DEFAULT_LAST_UPDATED = "2026-05-07"` applied when not specified per-entity).
-
-### iOS / Android 2026 PWA standards
-- `viewport-fit=cover` for safe-area awareness.
-- Dual `theme-color` (light + dark scheme).
-- iOS PWA tags: `apple-mobile-web-app-capable`, `apple-mobile-web-app-status-bar-style: black-translucent`, `apple-mobile-web-app-title`.
-- Multiple `apple-touch-icon` sizes (180, 192, 512) so iOS picks the right one at any DPR.
-- `mask-icon` for Safari pinned tab + macOS dock.
-- `format-detection: telephone=no` (we use TelLink for explicit, branded `tel:` links).
-- `msapplication-TileColor` for Edge/Windows.
-- `color-scheme: light` hint for native form controls.
-- Manifest orientation lock removed to support portrait and landscape.
-
-### Code-quality audit pass
-- 0 TODO/FIXME/XXX comments
-- 0 `console.log` (structured logging only)
-- 0 hand-written `any` types
-- 0 `@ts-ignore` outside `routeTree.gen.ts`
-- All `<img>` have alt text
-- All icon-only `<button>` have aria-label or text
-- All `target="_blank"` anchors have `rel`
-- All `<input>` have label associations
-- All POST handlers either rate-limit OR require admin auth (both, in most cases)
-- All routes have proper `seo()` + `seoLinks()` canonical
-- `StatusBadge` uses brand-aligned palette (sage = success, stone = neutral, blue/amber = informational/in-progress)
-
-### Search dialog mobile verification
-- Live regression found on mobile `390x844`: the shadcn/Radix dialog's vertical-centering transform placed `SearchDialog` above the viewport (`top: -145px`), hiding the input.
-- Fixed in `src/components/layout/SearchDialog.tsx` by overriding mobile vertical centering with `translate-y-0`, anchoring to `top-[calc(env(safe-area-inset-top)+1rem)]`, and constraining dialog/list height with dynamic viewport and safe-area calculations.
-- Live Playwright verification passed after deployment:
-- Mobile `390x844`: dialog `top: 16`, `bottom: 509`, input `top: 16.5`, fully visible.
-- Tablet `820x1180`: dialog `top: 141.59`, `bottom: 602.59`, fully visible.
-- Desktop `1440x1000`: dialog `top: 120`, `bottom: 581`, fully visible.
-- Verification screenshots were captured during the live pass.
-
-### Scroll-reveal failsafe
-- Default state of `[data-reveal]` is now **visible** — `.js-reveal-armed` class on `<html>` opts INTO the hide-then-reveal effect.
-- 2.5 s failsafe timer in `useScrollReveal` force-reveals anything missed.
-- `prefers-reduced-motion: reduce` honored — content always visible for accessibility.
-
----
-
-## Project type
-
-TanStack Start v1.169 SSR web application deployed to Cloudflare Workers. Single-package repo. No mobile app.
-
----
-
-## What exists
-
-### Routes (41)
+## Routes
 
 | Area | Routes |
 |---|---|
-| Public landing | `index.tsx`, `property-taxes.tsx`, `weather.tsx`, `about.tsx`, `visit.tsx`, `economic-development.tsx`, `education.tsx`, `transportation.tsx`, `people.tsx`, `employee-services.tsx`, `ada-compliance.tsx`, `privacy-policy.tsx` |
-| Departments | `departments/index.tsx`, `departments/$slug.tsx` (25 depts) |
-| Commissioners | `commissioners.tsx` (24 across 11 districts) |
-| News | `news/index.tsx`, `news/$slug.tsx` (D1 + static merge) |
-| Documents | `documents.tsx` (115 files, 17 categories) |
-| Calendar | `calendar.tsx` (6 recurring meetings, .ics export) |
-| Contact | `contact.tsx` (form → KV) |
-| Forms | `forms/index.tsx`, `forms/$type.tsx` (4 form types, RHF + shadcn) |
-| Heritage | `history/index.tsx`, `history/timeline.tsx`, `history/$slug.tsx` (8 sites) |
-| Communities | `communities/index.tsx`, `communities/$slug.tsx` (6 communities) |
-| Admin | `admin/login.tsx`, `admin/index.tsx`, `admin/news/{index,new,$id}.tsx`, `admin/minutes/{index,new,$id}.tsx`, `admin/announcements.tsx`, `admin/submissions.tsx` |
-| API | `api/health.ts` |
+| Public landing | `/`, `/property-taxes`, `/weather`, `/about`, `/visit`, `/economic-development`, `/education`, `/transportation`, `/people`, `/employee-services`, `/ada-compliance`, `/privacy-policy` |
+| Departments | `/departments`, `/departments/$slug` for 25 departments |
+| Commissioners | `/commissioners` |
+| News | `/news`, `/news/$slug` |
+| Documents | `/documents` with 115 files across 17 categories |
+| Calendar | `/calendar` with recurring meetings and dated May 2026 civic highlights |
+| Contact | `/contact` with KV-backed receipt flow |
+| Forms | `/forms`, `/forms/$type` for 4 public form types |
+| Heritage | `/history`, `/history/timeline`, `/history/$slug` |
+| Communities | `/communities`, `/communities/$slug` |
+| Admin | `/admin/login`, `/admin`, `/admin/news/*`, `/admin/minutes/*`, `/admin/announcements`, `/admin/submissions` |
+| API | `/api/health` |
 
-### Components (~60 files)
+## Current Inventory
 
-| Area | Notable |
-|---|---|
-| Layout | `SiteNav` (verb-based mega-panels + category-aware active state + shadcn Sheet mobile drawer), `SiteFooter`, `AnnouncementBanner` (D1-wired, **live**), `SearchDialog` (Fuse.js inside shadcn CommandDialog, Cmd+K, lazy-loaded, supports prefilled initial query, safe-area-aware on mobile), `MobileBottomTabBar`, `LanguageToggle`, `NotFound` |
-| Home (mounted on /) | `HomeWeatherAlertBanner` (active NWS alerts only), `HeroBanner` (task search, top tasks, status panel with `WeatherBadge`), `SeasonalRibbon`, `TodaySection`, `CommunityMap`, `StorySection`, `TourismAppPromo`, `AboutSection` |
-| Weather | `WeatherBadge` (homepage status panel), `CopperWeathervane` (animated copper compass rose), action-first situation summary, live USGS river-condition cards on `/weather` |
-| Departments | `DepartmentCard`, `DepartmentDetail`, `PrintableContactCard` |
-| Commissioners | `CommissionerGrid`, `CommissionerCard` |
-| Communities | `CommunityCard` |
-| News | `NewsCard`, `NewsDetail` (renders `htmlContent` from D1 with `dangerouslySetInnerHTML` after sanitize-html) |
-| History | `HeritageHero`, `HistoryNarrative`, `HeritageSiteCard`, `VisitorInfoCard`, `TimelineSection` |
-| People | `PersonCard` |
-| Forms | `FormLayout` (legacy `FormField` retained but unused on `$type` route post-migration) |
-| Minutes | `MinutesList`, `MinutesFilter` |
-| Admin | `AdminLayout`, `StatusBadge` (brand-aligned palette) |
-| Property taxes | `ParcelLookup` (TPAD typeahead + 3 shadcn `<Button>` CTAs) |
-| Shared | `TelLink`, `OpenStatusPill`, `PageFeedback`, `OfflineBanner`, `ContactCard` (**Save contact + Share details**, no hardcoded site URL in vCard), `InstallPrompt`, `MountainDivider`, `CountySeal`, `VideoEmbed`, `DetailBreadcrumb` |
-| `ui/*` (shadcn) | 21 primitives (full inventory in COMPONENT_INVENTORY.md) |
-
-### Data (18 files)
-
-`departments.ts` (25, all with `lastUpdated`), `commissioners.ts` (24), `news.ts` (14 entries — 7 fresh April-May 2026 + 7 archive), `documents.ts` (115 files / 17 categories), `quick-services.ts` (6), `search-index.ts` (175+ items with citizen-language aliases), `heritage-sites.ts` (8), `timeline.ts` (48 events), `communities.ts` (6), `notable-people.ts` (7), `employers.ts`, `education.ts` (6), `form-definitions.ts` (4 types, with `lastUpdated`), `meeting-minutes.ts`, `meetings.ts` (recurrence rules), `holidays.ts` (13 county holidays), `nav-verbs.ts` (**5 verb model with category-filtered department links**), `official-links.ts` (TDOT/TN 511/TVA external links).
-
-### Server functions (15 files)
-
-| File | Purpose | Auth | Rate limit | Validation |
-|---|---|---|---|---|
-| `env.ts` | Typed `getEnv/getDB/getKV` helpers (no server fns) | — | — | — |
-| `auth.ts` | login / validateAdmin / logout | login: rate-limit | 5/60s/IP | Zod loginSchema |
-| `contact.ts` | submitContactForm → KV (90-day TTL) | — | 3/60s/IP | Zod contactFormSchema + honeypot |
-| `forms.ts` | submitForm → D1 | — | 3/60s/IP | Zod submitFormSchema |
-| `parcel-lookup.ts` | TPAD autocomplete proxy | — | 30/60s/IP | Zod parcelLookupSchema |
-| `page-feedback.ts` | submit / list / delete | list/delete: requireAdmin | 30/60s/IP | Zod schemas |
-| `public-announcements.ts` | listPublicAnnouncements (D1 read) | — | — | — |
-| `public-news.ts` | listPublicNews / getPublicNewsArticle (D1 read) | — | — | Zod slug schema |
-| `public-weather.ts` | getCurrentWeather (KV-cached SWR) / getRecentObservations (D1 trend) | — | — | — |
-| `river-conditions.ts` | getRiverConditions (USGS streamflow and gauge height) | — | — | — |
-| `weather/nws-client.ts` | NWS fetch wrapper (timeout, retry, edge cache) | — | — | — |
-| `weather/refresh.ts` | refreshWeather (KV write + D1 archive) | — | — | — |
-| `admin-news.ts` | News CRUD | requireAdmin everywhere | 30/60s on mutations | Zod schemas |
-| `admin-minutes.ts` | Minutes CRUD | requireAdmin | 30/60s | Zod |
-| `admin-announcements.ts` | Announcement CRUD | requireAdmin | 30/60s | Zod |
-| `admin-submissions.ts` | Status updates | requireAdmin | 30/60s (added in audit pass) | Zod |
-| `guard.ts` | `requireAdmin()` shared helper | — | — | — |
-| `csrf.ts` | Token issue + validate | — | — | defined; SameSite=Strict cookies primary defense |
-| `rate-limit.ts` | Per-IP composite key in-memory limiter | — | — | — |
-
-### Database (D1 — `sullivan-county-db`, 4 migrations applied to remote)
-
-| Table | Status | Indexes |
-|---|---|---|
-| `news_articles` | populated by admin CRUD; merged with static `news.ts` on read | status, published_at |
-| `meeting_minutes` | schema + admin UI ready | — |
-| `announcements` | **1 active row seeded** (Memorial Day notice, expires 2026-05-26) | — |
-| `form_submissions` | collects from `/forms/*` | status, created_at |
-| `admin_sessions` | ULID + 24h TTL, populated by login | — |
-| `page_feedback` | collects from `<PageFeedback />` widget; admin viewer pending | page, created_at |
-| `weather_observations` | written every 10 min by SWR refresh | observed_at |
-
-### Tests
-
-| Type | Files | Tests | Status |
-|---|---|---|---|
-| Unit (Vitest) | 17 | 97 | all passing |
-| E2E (Playwright × desktop+tablet+mobile) | 6 specs | 117–270 cases (varies by spec) | 117/117 critical-paths + user-flows; 21/21 a11y; ParcelLookup test occasionally flakes when TPAD upstream is slow |
-
-### Design system
-
-13 brand color tokens, 2 fonts (Libre Caslon Text + Outfit), mountain ridge dividers, scroll-reveal animations w/ failsafe, glass-morphism navigation, **21 shadcn primitives**, official Sullivan County seal (47KB SVG + raster fallbacks), i18n: en + es (machine-translated, needs native review).
-
-### Infrastructure
-
-| Service | Purpose | Status |
-|---|---|---|
-| Cloudflare Workers | Hosting | live |
-| D1 (`sullivan-county-db`) | Form submissions, news, minutes, announcements, sessions, feedback, weather observations | live, 4 migrations applied |
-| KV (`CONTACT_SUBMISSIONS`) | Contact form (90-day TTL) + weather snapshot (1-hour TTL) | live |
-| Service Worker | `/sw.js` registered in production | live |
-| NWS API | Weather data source (free, no key) | live, called every ~10 min by SWR refresh |
-| USGS waterservices | River/stream gauge source (free, no key) | live on `/weather` |
-| TDOT SmartWay / TN 511 | Official road condition source | TDOT linked from homepage; TDOT and TN 511 linked from `/weather`, `/transportation` |
-| TVA lake levels | Official reservoir source | linked from `/weather`, `/visit` |
-| Wrangler 4.88+ | CLI | configured |
-| Biome 2.x | Lint + format | CLI/schema mismatch present in current env (`2.4.15` CLI vs `2.4.14` schema) |
-| TypeScript | Strict | clean |
-| GitHub Actions | CI | configured |
-
-### Security
-
-| Feature | Status |
-|---|---|
-| Auth gates on all admin endpoints | yes |
-| Timing-safe SHA-256 password compare | yes |
-| ULID-based session IDs | yes |
-| Per-IP rate limit keys (composite `key:ip` via `getRequestIP()` + `cf-connecting-ip`) | yes |
-| Rate limit on every admin POST mutation | yes |
-| XSS sanitization (`sanitize-html` on stored content) | yes |
-| Structured JSON logging (no PII) | yes |
-| CSP via `_headers` | yes |
-| HSTS with preload, COEP, COOP | yes |
-| Honeypot spam protection | yes |
-| CSRF | module defined; SameSite=Strict cookies + same-origin server fns provide primary defense |
-| Typed env access (no `as Record<string, unknown>` casts) | yes |
-
----
-
-## What's mocked / missing
-
-| Area | Status | Notes |
-|---|---|---|
-| In-memory rate limit cross-isolate | ACCEPTABLE | Per-IP keys mean one user can't block another inside an isolate. Cross-isolate spillover is theoretically possible under heavy attack — for stricter enforcement, migrate to Durable Object atomic counters. Not pressing at current traffic. |
-| CSRF token integration | DEFERRED | `csrf.ts` defined but not invoked. SameSite=Strict + same-origin server fns prevent CSRF in modern browsers. Reinstate as defense-in-depth if/when adding cross-origin embeds. |
-| **CF Web Analytics token** | NOT CONFIGURED | Beacon block in `__root.tsx` shows literal `YOUR_TOKEN_HERE`. Requires CF dashboard access (5-minute task; user-action item). |
-| **Cron Trigger for weather** | NOT SHIPPED | SWR-on-read works fine. Custom worker entry to add `scheduled()` would remove the first-user refresh penalty. |
-| **Audit log table** | NOT SHIPPED | Designed but not implemented. ~1.5 hours of work — `0004_audit_log.sql` migration + `audit()` helper + `/admin/audit` viewer. |
-| **Admin overhaul** (Sidebar + DataTable + stat dashboard) | NOT SHIPPED | Largest visible improvement remaining. **`Kiranism/tanstack-start-dashboard`** (MIT, exact stack match) provides reusable DataTable composition + Sidebar to lift from. ~3-4 hours. |
-| `/admin/feedback` viewer UI | NOT SHIPPED | Server fns (`listPageFeedback`, `deletePageFeedback`) exist; ~30 min to build the route. |
-| Spanish translation review | NEEDED | `es.json` is machine-translated. Schedule native review before claiming bilingual support. |
-| Barry Hopper photo | NEEDED | One commissioner has no photo; `CommissionerCard` falls back to a User icon. Source the headshot. |
-
----
-
-## Key numbers (2026-05-21)
-
-| Metric | Value |
-|---|---|
-| Routes | 41 |
-| Components | ~60 (39 site + 21 shadcn primitives) |
-| Data files | 17 |
-| Server function files | 16 |
+| Metric | Current value |
+|---|---:|
+| Component files | 73 |
+| shadcn/ui component files | 22 |
+| Site-specific component files | 51 |
+| Data files | 22 |
+| D1 migrations | 5 |
 | Drizzle tables | 7 |
-| Drizzle-generated Zod schemas | 7 select + 7 insert + 1 ULID brand |
-| News articles | 14 (7 fresh + 7 archive) |
-| Unit tests | 97 |
-| E2E tests | 117/117 critical-paths + user-flows × 3 viewports |
-| Build size | 749.92 KB worker entry |
-| Build time | ~3.7s |
-| Lint | 0 errors |
-| Live HTTP smoke | 11/11 routes return 200 |
-| Migrations applied (D1 remote) | 4/4 (`0000_round_lady_deathstrike`, `0001_page_feedback`, `0002_announcement_severity`, `0003_weather_observations`) |
+| Public documents | 115 |
+| Document categories | 17 |
+| Departments | 25 |
+| Commissioners | 24 across 11 districts |
+| Communities | 6 |
+| Heritage sites | 8 |
+| Public form types | 4 |
+| News articles in static data | 14 |
+
+## D1 State
+
+Remote D1 database: `sullivan-county-db`.
+
+Applied migrations in repo order:
+
+| Migration | Purpose |
+|---|---|
+| `0000_round_lady_deathstrike.sql` | Initial content/admin/forms schema |
+| `0001_page_feedback.sql` | Page feedback table |
+| `0002_announcement_severity.sql` | Announcement severity support |
+| `0003_weather_observations.sql` | Weather observation archive |
+| `0004_receipts_idempotency.sql` | Receipt and idempotency columns for form submissions and feedback |
+
+Tables:
+
+| Table | Purpose |
+|---|---|
+| `news_articles` | CMS news articles |
+| `meeting_minutes` | Meeting-minute records |
+| `announcements` | Homepage/site notices |
+| `form_submissions` | Structured public form submissions, receipt IDs, idempotency keys |
+| `admin_sessions` | ULID admin sessions |
+| `page_feedback` | Page helpfulness feedback, receipt IDs, idempotency keys |
+| `weather_observations` | Weather snapshots for trend display |
+
+## KV State
+
+Namespace: `CONTACT_SUBMISSIONS`.
+
+| Key pattern | Purpose | TTL |
+|---|---|---:|
+| `submission:{ulid}` | Contact form submission payload with receipt ID | 90 days |
+| `contact:idempotency:{key}` | Contact submission duplicate protection | 90 days |
+| Weather snapshot keys | Current weather snapshot cache | implementation-defined cache window |
+
+## Security And Privacy
+
+| Control | Status |
+|---|---|
+| Admin auth gates | Active on admin endpoints through `requireAdmin()` |
+| Session IDs | ULIDs via `ulidx` |
+| Password comparison | SHA-256 timing-safe compare |
+| Admin password storage | Cloudflare secret only, not committed |
+| Deployed admin E2E password | Read from `E2E_ADMIN_PASSWORD`; tests skip if unset |
+| Public writes | Zod validation, rate limits, idempotency key, receipt ID |
+| Stored HTML | Sanitized with `sanitize-html` |
+| Logs | Structured JSON, no intentional PII logging |
+| CSRF | Module exists; SameSite=Strict same-origin server functions are current primary defense |
+| External links | Central handoff copy and enforced noopener/noreferrer for `ExternalHandoffLink` |
+
+## Known Caveats
+
+| Area | Status |
+|---|---|
+| Cloudflare Web Analytics | Not configured. `YOUR_TOKEN_HERE` remains a dashboard/user action item. |
+| Cross-isolate rate limits | In-memory per isolate. Durable Object counters are the stronger future option. |
+| CSRF token integration | Deferred unless cross-origin embeds or higher-risk public writes are added. |
+| Admin feedback viewer | Server functions exist; dedicated route is still pending. |
+| Audit log table | Not shipped. Add a migration and viewer if admin accountability becomes a priority. |
+| Spanish translation | Machine-translated and needs native review before marketing as bilingual. |
+| Commissioner photo | Barry Hopper still falls back to a generic icon. |
+| Calendar highlights | May 2026 items are static civic highlights, not an automated events feed. |
+| GitHub deploy | Workflow is guarded and skipped without `CLOUDFLARE_API_TOKEN`. |
+| Preview deploys | Intentionally disabled until preview D1/KV bindings are isolated. |
+
+## Verification Commands
+
+Use this sequence before committing or deploying:
+
+```sh
+pnpm exec biome check .
+pnpm exec tsc --noEmit
+pnpm exec vitest run
+pnpm run build
+git diff --check
+pnpm exec playwright test
+```
+
+Production verification after deploy:
+
+```sh
+/usr/bin/curl -fsS https://sullivan-county-tn.codyboring.workers.dev/api/health
+```
+
+Then smoke major public routes and verify receipt/idempotency, direct search, department task cards, calendar actions, and external handoff links.

@@ -1,9 +1,10 @@
 # Component Inventory — Sullivan County TN
 
 **Platform:** Web-only (TanStack Start on Cloudflare Workers)
-**Refreshed:** 2026-05-21 (after homepage redesign, weather/river expansion, review fixes, and live search-dialog verification)
+**Refreshed:** 2026-05-21 (after civic-service foundation audit)
+**Prepared with AI assistance.**
 
-All components below are in active use. The site has **~60 components total**: site-specific components plus 21 shadcn primitives.
+Current filesystem inventory: **73 component files**, including **51 site-specific components** and **22 shadcn/ui primitive files**.
 
 ---
 
@@ -11,9 +12,9 @@ All components below are in active use. The site has **~60 components total**: s
 
 | Component | File | Purpose |
 |-----------|------|---------|
-| `SiteNav` | `layout/SiteNav.tsx` | Verb-based primary nav (Pay · Apply · Report · Records · Meetings · Departments · About). Each verb opens a mega-panel of concrete tasks. Hover-open gated to fine pointers, click-outside closes, arrow-key navigation. Mobile uses shadcn `<Sheet>`. |
+| `SiteNav` | `layout/SiteNav.tsx` | Five-verb primary nav (Find · Pay · Apply · Report · About). Each verb opens a mega-panel of concrete tasks. Hover-open gated to fine pointers, click-outside closes, arrow-key navigation. Mobile uses shadcn `<Sheet>`. |
 | `SiteFooter` | `layout/SiteFooter.tsx` | Four-column footer with mountain SVG, county seal, links, copyright. |
-| `SearchDialog` | `layout/SearchDialog.tsx` | Fuse.js fuzzy search inside shadcn `<CommandDialog>` (Cmd+K). Citizen-language aliases, quick actions, suggested queries, keyboard-native arrow/Enter/Escape behavior, and safe-area-aware mobile positioning. Lazy-loaded and live-verified at mobile/tablet/desktop widths. |
+| `SearchDialog` | `layout/SearchDialog.tsx` | Fuse.js fuzzy search inside shadcn `<CommandDialog>` (Cmd+K). Citizen-language aliases, direct document results, direct task results, keyboard-native arrow/Enter/Escape behavior, and safe-area-aware mobile positioning. Lazy-loaded and live-verified at mobile/tablet/desktop widths. |
 | `AnnouncementBanner` | `layout/AnnouncementBanner.tsx` | Reads from D1 via `listPublicAnnouncements`. Sets `--banner-height` so SiteNav offsets correctly. localStorage dismissal. **Live row seeded** for Memorial Day. |
 | `LanguageToggle` | `layout/LanguageToggle.tsx` | EN/ES toggle, persists via cookie. |
 | `MobileBottomTabBar` | `layout/MobileBottomTabBar.tsx` | Three-action thumb-zone bar at <md: Pay · Search · Call. Hides on soft keyboard. |
@@ -142,7 +143,7 @@ Legacy unmounted homepage components that were no longer useful on `/` were remo
 |-----------|------|---------|
 | `TelLink` | `shared/TelLink.tsx` | Normalizes phone numbers to `tel:+1XXXXXXXXXX`. Used everywhere a phone number is rendered. |
 | `OpenStatusPill` | `shared/OpenStatusPill.tsx` | Live "Open until 4:30 PM" / "Closed · Holiday" pill via `useOpenStatus(hours)`. |
-| `PageFeedback` | `shared/PageFeedback.tsx` | "Was this page helpful?" widget. shadcn `<Button>` + `<Textarea>`. Mounted on dept detail / forms / contact / property-taxes. |
+| `PageFeedback` | `shared/PageFeedback.tsx` | "Was this page helpful?" widget with hidden idempotency key and public receipt ID. shadcn `<Button>` + `<Textarea>`. Mounted on dept detail / forms / contact / property-taxes. |
 | `OfflineBanner` | `shared/OfflineBanner.tsx` | `navigator.onLine` listener. Fixed top bar, brand-copper styling, safe-area-aware. |
 | `DetailBreadcrumb` | `shared/DetailBreadcrumb.tsx` | Wraps shadcn Breadcrumb with brand-themed `<Link>` items. Mounted on all 5 detail page types. |
 | `ContactCard` | `shared/ContactCard.tsx` | Reusable contact info card with vCard download. |
@@ -150,10 +151,11 @@ Legacy unmounted homepage components that were no longer useful on `/` were remo
 | `MountainDivider` | `shared/MountainDivider.tsx` | Three-layer parallax mountain ridge SVG dividers. |
 | `CountySeal` | `shared/CountySeal.tsx` | Official Sullivan County seal. SVG (47 KB) + raster fallbacks at 64/128/256/512px. |
 | `VideoEmbed` | `shared/VideoEmbed.tsx` | Privacy-enhanced YouTube (click-to-load, nocookie). |
+| `ExternalHandoffLink` | `shared/ExternalHandoffLink.tsx` | Reusable official external-system handoff link. Enforces new-tab noopener/noreferrer behavior and reads copy from `data/external-handoffs.ts`. |
 
 ---
 
-## shadcn/ui primitives (21)
+## shadcn/ui primitives (22 files)
 
 Installed via `pnpm dlx shadcn@latest add`. Theme overrides in `app.css` map shadcn vars to brand-navy / brand-copper / brand-cream with sharp 0.125rem radius.
 

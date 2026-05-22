@@ -38,6 +38,7 @@ export const submitContactForm = createServerFn({ method: "POST" })
         expirationTtl: 60 * 60 * 24 * 90,
       });
     } catch {
+      await kv.delete(`submission:${id}`).catch(() => undefined);
       console.error(
         JSON.stringify({ event: "contact_submission_store_failed", reason: "KV unavailable" }),
       );

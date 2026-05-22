@@ -1,5 +1,7 @@
 # Sullivan County TN — Development Workflow
 
+Prepared with AI assistance.
+
 ## Prerequisites
 
 - **Node.js 22+** (check: `node --version`)
@@ -23,10 +25,12 @@ cp .dev.vars.example .dev.vars
 |----------|-------|------------|
 | `ADMIN_PASSWORD` | Production secret | `pnpm exec wrangler secret put ADMIN_PASSWORD` |
 | `ADMIN_PASSWORD` | Local dev | Set in `.dev.vars` |
+| `E2E_ADMIN_PASSWORD` | Deployed E2E only | Set in shell/CI if running deployed admin login tests |
 
 - `.dev.vars` — local development variables (gitignored)
 - `.dev.vars.example` — template file (committed)
 - `wrangler secret put` — sets secrets on Cloudflare for production (never in `.dev.vars.example`)
+- Deployed admin Playwright tests skip password-submit and CRUD paths unless `E2E_ADMIN_PASSWORD` is set.
 
 ## Development Commands
 
@@ -182,7 +186,7 @@ pnpm exec playwright test --project=desktop tests/news.spec.ts
 | Router | TanStack Router (file-based) |
 | **Forms** | **react-hook-form + Zod resolvers + shadcn `<Form>`** |
 | Data fetching | TanStack Query |
-| Styling | Tailwind CSS v4 + **shadcn/ui (21 primitives)** + Radix UI |
+| Styling | Tailwind CSS v4 + **shadcn/ui (22 primitive files)** + Radix UI |
 | Toasts | **Sonner** (mounted in `__root.tsx`) |
 | Charts | recharts (used in `<CopperWeathervane />`-adjacent UI; shadcn `<Chart>` available) |
 | Animation | tw-animate-css + native `animation-timeline: view()` w/ JS fallback |

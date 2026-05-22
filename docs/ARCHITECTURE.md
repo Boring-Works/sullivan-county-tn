@@ -3,6 +3,7 @@
 > **Brand:** Official services. Local government. Community information. Tourism bridge: Where Tennessee Began.
 > **Stack:** TanStack Start + Cloudflare Workers + Tailwind CSS v4 + shadcn/ui
 > **Last updated:** 2026-05-21
+> **Prepared with AI assistance.**
 
 ---
 
@@ -12,12 +13,15 @@ The site has been through a 7-phase production-hardening pass. New subsystems / 
 
 - **`src/server/env.ts`** — typed `getEnv()` / `getDB()` / `getKV()` helpers against `Cloudflare.Env`. **All server functions consume these instead of casting `as Record<string, unknown>`.**
 - **`drizzle-zod`** — `createInsertSchema` / `createSelectSchema` derived per-table from `src/db/schema.ts`. Indexes now declared in `schema.ts` so `drizzle-kit generate` doesn't drift. ULID brand type at `src/lib/schemas/ids.ts`.
-- **shadcn/ui foundation** — 21 primitives installed via `npx shadcn@latest add`. Theme overrides in `app.css` map shadcn vars to brand tokens. `<Button>` extended with `copper` and `navy` brand variants for civic CTAs.
+- **shadcn/ui foundation** — 22 primitive files installed via `npx shadcn@latest add`. Theme overrides in `app.css` map shadcn vars to brand tokens. `<Button>` extended with `copper` and `navy` brand variants for civic CTAs.
 - **react-hook-form + Zod resolvers** — adopted on `/contact`, `/admin/login`, and **all 4 `/forms/$type` form types** (dynamic Zod schema built from `FormFieldDefinition[]` at render time). `@tanstack/react-form` removed.
 - **Sonner toasts** — `<Toaster />` mounted in `__root.tsx`. All form submissions and admin mutations toast.
 - **PWA + offline (Phase 5)** — `public/sw.js` (cache-first fonts, network-first nav with Navigation Preload + `/offline.html` fallback, image cache eviction, stale-while-revalidate). `public/offline.html` branded with 911/Sheriff/EMA tel: links. `public/manifest.webmanifest` is the full **2026 spec** (`id`, `scope`, `lang`, `display_override`, `launch_handler`, `share_target`, `shortcuts`, maskable icon). `<OfflineBanner />` listens to `navigator.onLine`.
 - **Weather + river subsystem** — NWS API integration (api.weather.gov, no key) plus USGS stream gauges. MRX gridpoint 126,82, forecast zone TNZ017. KV-cached snapshot with SWR-on-read. D1 `weather_observations` archives every 10 min for the trend chart. `<WeatherBadge />` on the homepage status panel, `<CopperWeathervane />`, and river cards for Beaver Creek, South Fork Holston, and North Fork Holston.
-- **Search and mobile navigation upgrades** — `SearchDialog` uses shadcn `<CommandDialog>` with Fuse.js aliases and safe-area-aware mobile positioning. Mobile navigation uses shadcn `<Sheet>` instead of a custom focus trap.
+- **Search and mobile navigation upgrades** — `SearchDialog` uses shadcn `<CommandDialog>` with Fuse.js aliases, direct document results, direct civic task results, and safe-area-aware mobile positioning. Mobile navigation uses shadcn `<Sheet>` instead of a custom focus trap.
+- **Receipt and idempotency layer** — Contact, structured forms, and page feedback use hidden idempotency keys and public receipt IDs. Contact stores submission records and duplicate markers in KV. Structured forms and page feedback use D1 receipt/idempotency columns from `0004_receipts_idempotency.sql` and recover duplicate-key races by returning the existing receipt.
+- **External handoff registry** — `src/data/external-handoffs.ts` centralizes official off-site systems and owner/context copy. `ExternalHandoffLink` enforces new-tab noopener/noreferrer behavior after props are spread.
+- **Calendar action model** — meeting cards expose add-to-calendar, live-stream, agenda/minutes, commissioner/contact, and context links. Static May 2026 items are labeled as dated civic highlights, not an automated upcoming-events feed.
 - **`<DetailBreadcrumb>`** + **`lastUpdated` stamps** on all 5 detail page types (`/departments/$slug`, `/news/$slug`, `/communities/$slug`, `/history/$slug`, `/forms/$type`).
 - **iOS / Android 2026 PWA standards** — multi-size apple-touch-icon, mask-icon for Safari pinned tab, `format-detection: telephone=no`, `msapplication-TileColor`, `color-scheme: light`.
 - **Scroll-reveal failsafe** — `useScrollReveal` adds `.js-reveal-armed` to `<html>` so `[data-reveal]` is visible by default. 2.5s failsafe force-reveals anything missed. `prefers-reduced-motion: reduce` honored.
@@ -136,8 +140,9 @@ All server functions use `createServerFn()` from TanStack Start with `.inputVali
 | `login` | `server/auth.ts` | POST | No | `loginSchema` | Admin login with ULID session |
 | `validateAdmin` | `server/auth.ts` | GET | No | -- | Session validation from cookie |
 | `logout` | `server/auth.ts` | POST | No | -- | Session deletion + cookie clear |
-| `submitContactForm` | `server/contact.ts` | POST | No | `contactFormSchema` | Contact form → KV store (90-day TTL) |
-| `submitForm` | `server/forms.ts` | POST | No | `submitFormSchema` | Structured form → D1 store |
+| `submitContactForm` | `server/contact.ts` | POST | No | `contactFormSchema` | Contact form -> KV store with 90-day TTL, receipt ID, and idempotency key |
+| `submitForm` | `server/forms.ts` | POST | No | `submitFormSchema` | Structured form -> D1 store with receipt ID and idempotency key |
+| `submitPageFeedback` | `server/page-feedback.ts` | POST | No | `submitPageFeedbackSchema` | Page helpfulness feedback -> D1 store with receipt ID and idempotency key |
 | `setCsrfCookie` | `server/csrf.ts` | -- | No | -- | Generates CSRF double-submit cookie |
 | `validateCsrf` | `server/csrf.ts` | -- | No | -- | Validates CSRF token against cookie |
 | `listNews` | `server/admin-news.ts` | GET | Yes | -- | List all news articles |
@@ -163,8 +168,9 @@ Located in `src/lib/schemas/`:
 | Schema File | Exports | Validates |
 |------------|---------|-----------|
 | `auth.ts` | `loginSchema` | Admin login password |
-| `contact.ts` | `contactFormSchema` | Contact form (name, email, subject, message, honeypot) |
-| `forms.ts` | `submitFormSchema` | Form submissions (formType, name, email, phone, fields, honeypot) |
+| `contact.ts` | `contactFormSchema` | Contact form (name, email, subject, message, honeypot, idempotencyKey) |
+| `forms.ts` | `submitFormSchema` | Form submissions (formType, name, email, phone, fields, honeypot, idempotencyKey) |
+| `page-feedback.ts` | `submitPageFeedbackSchema` | Page feedback (page, helpful, comment, idempotencyKey) |
 | `news.ts` | `createNewsArticleSchema`, `updateNewsArticleSchema`, `deleteNewsArticleSchema` | News article CRUD |
 | `minutes.ts` | `createMinutesEntrySchema`, `updateMinutesEntrySchema`, `deleteMinutesEntrySchema` | Meeting minutes CRUD |
 | `announcements.ts` | `createAnnouncementSchema`, `updateAnnouncementSchema`, `deleteAnnouncementSchema` | Announcement CRUD |
@@ -201,7 +207,7 @@ Log events use the pattern: `{ event, reason, id? }` -- never include names, ema
 
 ## Data Architecture
 
-### Static Data Files (15 files, ~4093 lines)
+### Static Data Files (22 files)
 
 All data is TypeScript with explicit types. Files are imported directly by route components:
 
@@ -212,7 +218,7 @@ All data is TypeScript with explicit types. Files are imported directly by route
 | `data/timeline.ts` | 432 | 48 timeline events (1761--2025) across 6 categories |
 | `data/heritage-sites.ts` | 226 | 8 heritage sites with NRHP/NHL info, coordinates, trail stops |
 | `data/commissioners.ts` | 223 | 24 commissioners across 11 districts |
-| `data/search-index.ts` | 235 | Unified Fuse.js search index (all data sources) |
+| `data/search-index.ts` | Dynamic | Unified Fuse.js search index with departments, news, commissioners, documents, direct document links, direct civic tasks, heritage sites, communities, and pages |
 | `data/form-definitions.ts` | 198 | 4 form types with field definitions and validation |
 | `data/meeting-minutes.ts` | 173 | Meeting minutes with committee, date, titles, PDF attachments |
 | `data/communities.ts` | 172 | 6 communities with population, type, landmarks, highlights |
@@ -222,6 +228,9 @@ All data is TypeScript with explicit types. Files are imported directly by route
 | `data/education.ts` | 58 | 6 school systems/institutions with types, enrollment |
 | `data/quick-services.ts` | 73 | 8 quick-access service links for homepage |
 | `data/site-config.ts` | 3 | `SITE_URL`, `SITE_NAME`, `CURRENT_YEAR` constants |
+| `data/external-handoffs.ts` | Dynamic | Official off-site systems, owners, and handoff notes |
+| `data/meetings.ts` | Dynamic | Recurring meeting schedules, action links, and dated civic highlights |
+| `data/nav-verbs.ts` | Dynamic | Five-verb citizen task navigation model |
 
 ### D1 Database (Drizzle ORM)
 
@@ -234,8 +243,10 @@ All data is TypeScript with explicit types. Files are imported directly by route
 | `news_articles` | Dynamic | CMS-managed news: id (ULID), title, slug (unique), author, summary, content (JSON), status (draft/published/archived), url, pdfUrl, publishedAt, timestamps |
 | `meeting_minutes` | Dynamic | Meeting records: id (ULID), committee, date (ISO 8601), title, summary, pdfUrl, status (draft/published/archived), timestamps |
 | `announcements` | Dynamic | Site announcements: id (ULID), title, body, linkUrl, active (boolean), startsAt, endsAt, timestamps |
-| `form_submissions` | Dynamic | Structured form data: id (ULID), formType (building-permit/code-complaint/public-records/general-feedback), status (new/reviewed/resolved), name, email, phone, data (JSON blob), timestamps |
+| `form_submissions` | Dynamic | Structured form data: id (ULID), formType (building-permit/code-complaint/public-records/general-feedback), status (new/reviewed/resolved), name, email, phone, data (JSON blob), idempotencyKey, receiptId, timestamps |
 | `admin_sessions` | Dynamic | Auth sessions: id (ULID), createdAt, expiresAt |
+| `page_feedback` | Dynamic | Page helpfulness feedback with idempotencyKey, receiptId, and createdAt |
+| `weather_observations` | Dynamic | Weather snapshots for trend display |
 
 **D1-specific patterns:** All IDs are ULID text strings (no auto-increment). All dates are ISO 8601 strings (no native DATE type). Boolean uses `integer({ mode: "boolean" })`. JSON stored as TEXT.
 
@@ -245,7 +256,8 @@ All data is TypeScript with explicit types. Files are imported directly by route
 
 | Key Pattern | Value | TTL |
 |------------|-------|-----|
-| `submission:{ulid}` | JSON `{ name, email, subject, message, submittedAt, id }` | 90 days |
+| `submission:{ulid}` | JSON `{ name, email, subject, message, submittedAt, id, receiptId }` | 90 days |
+| `contact:idempotency:{key}` | JSON `{ id, receiptId }` for duplicate contact submissions | 90 days |
 
 ### Pagination Pattern
 

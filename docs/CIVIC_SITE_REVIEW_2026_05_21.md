@@ -40,7 +40,7 @@ Risks/dependencies: Future idempotency-key work should add duplicate-submission 
 
 Priority: P0.
 
-Status: Implemented in this pass for contact and form storage failures.
+Status: Implemented. Contact, structured forms, and page feedback now return public receipt IDs and use idempotency keys. This audit pass also tightened duplicate-key recovery for D1 writes and cleanup behavior for KV contact writes.
 
 ### 2. Clarify Forms Before and After Submission
 
@@ -130,7 +130,7 @@ Risks/dependencies: Final `.gov` domain migration is the real trust fix.
 
 Priority: P1.
 
-Status: Partially improved in this pass for property lookup no-results. Broader standardization remains.
+Status: Implemented for the main official handoffs. `src/data/external-handoffs.ts` centralizes official systems and `ExternalHandoffLink` enforces safe external-link attributes after props are spread.
 
 ### 7. Improve Regression Coverage for Real Citizen Flows
 
@@ -154,11 +154,11 @@ Status: Manual Playwright verification completed in this pass. Automated coverag
 
 - Move production to an official `.gov` domain as soon as operationally possible.
 - Add most-requested documents and document date/department metadata.
-- Add per-meeting agenda, livestream, public-comment, and minutes actions to `/calendar`.
+- Continue expanding per-meeting agenda/livestream/minutes coverage as official sources change. The current calendar has action links and static May 2026 civic highlights are labeled as dated highlights.
 - Convert admin news forms to the shared react-hook-form + Zod + shadcn form pattern.
 - Decide whether to wire CSRF double-submit tokens or remove/document the unused CSRF module.
 - Add missing D1 indexes for active announcements and meeting minutes queries.
-- Centralize duplicated external URLs into `src/data/official-links.ts`.
+- Keep external URL ownership centralized in `src/data/official-links.ts` and `src/data/external-handoffs.ts`.
 
 ## Verification Notes
 
@@ -167,3 +167,5 @@ Status: Manual Playwright verification completed in this pass. Automated coverag
 - Contact page contains emergency guidance and clarifies the form is not for public records, emergencies, or legal filings.
 - Public records form contains the new “Before you submit” guidance.
 - Local TypeScript check passed after implementation.
+- Direct document and civic-task search results are covered by unit tests.
+- Deployed admin login tests no longer contain a hardcoded production password; `E2E_ADMIN_PASSWORD` is required for password-submit paths.

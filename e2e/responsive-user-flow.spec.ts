@@ -20,7 +20,7 @@ test.describe("responsive core user flow", () => {
 
     await expect(page).toHaveURL(/\/calendar/);
     await expect(page.getByRole("heading", { name: /Calendar/i })).toBeVisible();
-    await expect(page.getByRole("heading", { name: /Upcoming Events/i })).toBeVisible();
+    await expect(page.getByRole("heading", { name: /Dated civic highlights/i })).toBeVisible();
     await expect(page.getByText(/Regular Session Sullivan County Board of Commissioners/i)).toBeVisible();
 
     // Verify command palette opens and quick actions are visible.

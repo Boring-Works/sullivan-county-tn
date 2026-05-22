@@ -181,11 +181,14 @@ function CalendarPage() {
           </div>
         </section>
 
-        {/* Upcoming Events */}
+        {/* Dated civic highlights */}
         <section className="mb-14">
-          <h2 className="font-display text-xl font-bold text-brand-navy mb-6">Upcoming Events</h2>
+          <h2 className="font-display text-xl font-bold text-brand-navy mb-6">
+            Dated civic highlights
+          </h2>
           <p className="font-body text-sm text-brand-slate-light mb-5 max-w-2xl">
-            May 2026 highlights for county government and partner public meetings.
+            May 2026 county government and partner public-meeting highlights. Check each official
+            agenda source before attending.
           </p>
           <div className="space-y-3">
             {upcomingEvents.map((event) => (

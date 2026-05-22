@@ -1,6 +1,7 @@
 # Sullivan County TN — Gap Analysis
 
 **Refreshed:** 2026-05-21 after homepage redesign, weather/river expansion, security remediation, and docs review.
+**Prepared with AI assistance.**
 
 The public site is in strong production shape. The remaining gaps are mostly admin tooling, accountability, analytics, and operational maturity.
 
@@ -90,7 +91,7 @@ The public site is in strong production shape. The remaining gaps are mostly adm
 | Live USGS river conditions added to `/weather` | 2026-05-21 |
 | Weather forecast expanded to day/night periods and 24-hour trend | 2026-05-21 |
 | Wind handling fixed for calm/unknown direction and 16-point compass labels | 2026-05-21 |
-| Admin password removed from docs and Cloudflare secret rotated | 2026-05-21 |
+| Admin password removed from docs and deployed admin E2E changed to env-only password input | 2026-05-21 |
 | Admin login now fails closed if D1 session creation fails | 2026-05-21 |
 | Server-side dynamic form validation tightened against form definitions | 2026-05-21 |
 | Admin submissions listing capped to reduce PII/read-size risk | 2026-05-21 |
@@ -108,3 +109,6 @@ The public site is in strong production shape. The remaining gaps are mostly adm
 | Feedback widget backed by D1 | 2026-05-06 |
 | Admin login with ULID sessions and timing-safe password compare | 2026-05-06 |
 | Zod validation and sanitize-html on server writes | 2026-05-06 |
+| Receipt IDs and idempotency keys added to contact, public forms, and page feedback | 2026-05-21 |
+| Direct document/task search results added and task verb labels corrected | 2026-05-21 |
+| External handoff registry and hardened handoff link component added | 2026-05-21 |

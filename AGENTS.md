@@ -1,5 +1,7 @@
 # Sullivan County TN — Government Website
 
+Prepared with AI assistance.
+
 Citizen services portal for Sullivan County, Tennessee.
 Brand: **Official services. Local government. Community information.** Tourism bridge: **Where Tennessee Began**.
 
@@ -45,7 +47,7 @@ Cloudflare Workers (TanStack Start SSR). Config in wrangler.jsonc.
 - Cloudflare Workers + Vite Plugin
 - Tailwind CSS v4
 - Biome (lint + format)
-- **shadcn/ui (21 primitives)** + Radix UI
+- **shadcn/ui (22 primitive files)** + Radix UI
 - **Sonner** for toasts (mounted in `__root.tsx`)
 - TypeScript strict mode + **typed `Cloudflare.Env`** (no `as Record<string, unknown>` casts)
 - Drizzle ORM + **drizzle-zod** for derived schemas (D1)
@@ -95,10 +97,10 @@ Admin (auth-gated): `/admin/login`, `/admin`, `/admin/news{,/new,/$id}`, `/admin
 API: `/api/health`
 
 ## Primary nav (verb-based)
-Pay · Apply · Report · Records · Meetings · Departments · About — defined in `src/data/nav-verbs.ts`. Each verb opens a mega-panel of concrete tasks (GOV.UK / Cook County "I Want To" pattern). Departments verb keeps the existing 6-category mega-menu.
+Find · Pay · Apply · Report · About — defined in `src/data/nav-verbs.ts`. Each verb opens a mega-panel of concrete tasks (GOV.UK / Cook County "I Want To" pattern). Find includes records, meetings, documents, and department browsing.
 
-## Data Files (17)
-departments, commissioners, news, documents, quick-services, search-index, heritage-sites, timeline, communities, notable-people, employers, education, form-definitions, meeting-minutes, meetings, holidays, nav-verbs, site-config
+## Data Files (22)
+departments, commissioners, news, documents, quick-services, search-index, heritage-sites, timeline, communities, notable-people, employers, education, form-definitions, meeting-minutes, meetings, holidays, nav-verbs, official-links, external-handoffs, today-in-history, audience-pathways, site-config
 
 ## Server Functions (15 files)
 - **env** (typed getEnv / getDB / getKV — used by all of the below)
@@ -121,7 +123,7 @@ departments, commissioners, news, documents, quick-services, search-index, herit
 - rate-limit (per-IP composite-key in-memory limiter)
 
 ## Cloudflare Bindings
-- DB: D1 database (sullivan-county-db) — 4 migrations applied to remote
+- DB: D1 database (sullivan-county-db) — 5 migrations applied to remote
 - CONTACT_SUBMISSIONS: KV namespace (contact form 90-day TTL + weather snapshot 1-hour TTL)
 - ADMIN_PASSWORD: secret (set via `wrangler secret put`)
 

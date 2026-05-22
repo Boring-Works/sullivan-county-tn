@@ -361,6 +361,10 @@ function labelFromKey(key: string): string {
   return label.replace(/([A-Z])/g, " $1").replace(/^./, (char) => char.toUpperCase());
 }
 
+function verbLabelFromKey(key: string): string {
+  return key.replace(/^./, (char) => char.toUpperCase());
+}
+
 export function buildSearchIndex(): SearchItem[] {
   const items: SearchItem[] = [];
 
@@ -416,7 +420,7 @@ export function buildSearchIndex(): SearchItem[] {
       for (const task of group.tasks) {
         const title = labelFromKey(task.labelKey);
         const url = "href" in task ? task.href : task.to;
-        const verbLabel = labelFromKey(verb.labelKey);
+        const verbLabel = verbLabelFromKey(verb.key);
         items.push({
           type: "task",
           title,

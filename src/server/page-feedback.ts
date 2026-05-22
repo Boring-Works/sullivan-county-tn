@@ -40,16 +40,28 @@ export const submitPageFeedback = createServerFn({ method: "POST" })
 
     const id = ulid();
     const receiptId = createReceiptId("FB", id);
-    await db.insert(pageFeedback).values({
-      id,
-      page: data.page.slice(0, 500),
-      helpful: data.helpful,
-      comment: data.comment ? sanitize(data.comment).slice(0, 1000) : null,
-      userAgent: null,
-      idempotencyKey: data.idempotencyKey,
-      receiptId,
-      createdAt: new Date().toISOString(),
-    });
+    try {
+      await db.insert(pageFeedback).values({
+        id,
+        page: data.page.slice(0, 500),
+        helpful: data.helpful,
+        comment: data.comment ? sanitize(data.comment).slice(0, 1000) : null,
+        userAgent: null,
+        idempotencyKey: data.idempotencyKey,
+        receiptId,
+        createdAt: new Date().toISOString(),
+      });
+    } catch {
+      const duplicate = await db
+        .select({ id: pageFeedback.id, receiptId: pageFeedback.receiptId })
+        .from(pageFeedback)
+        .where(eq(pageFeedback.idempotencyKey, data.idempotencyKey))
+        .get();
+      if (duplicate?.receiptId) {
+        return { success: true, id: duplicate.id, receiptId: duplicate.receiptId };
+      }
+      throw new Error("We couldn't save your feedback. Please try again.");
+    }
     return { success: true, id, receiptId };
   });
 

@@ -3,8 +3,9 @@
 **Last refreshed:** 2026-05-21
 **Current state:** see [`CURRENT_STATE.md`](CURRENT_STATE.md)
 **Active gaps:** see [`GAP_ANALYSIS.md`](GAP_ANALYSIS.md)
+**Prepared with AI assistance.**
 
-The homepage redesign, duplicate status cleanup, live weather/river expansion, and security remediation are done. The best next work is admin tooling and operational maturity.
+The homepage redesign, duplicate status cleanup, live weather/river expansion, receipt/idempotency foundation, direct task/document search, verified department tasks, external handoffs, and security remediation are done. The best next work is admin tooling and operational maturity.
 
 ## P1 — Admin And Accountability
 
