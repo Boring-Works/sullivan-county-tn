@@ -5,6 +5,8 @@ Official government website for Sullivan County, Tennessee. A modern citizen ser
 ## Current State
 Active — Deployed on Cloudflare Workers. Features 42 live routes including property tax lookup, county departments, contact/forms workflows, admin tools, and a live weather plus river-conditions subsystem.
 
+Project closure handoff: [`docs/PROJECT_CLOSURE_2026_05_21.md`](docs/PROJECT_CLOSURE_2026_05_21.md)
+
 ## Tech Stack
 TypeScript, TanStack Start, Cloudflare D1, Cloudflare Workers
 

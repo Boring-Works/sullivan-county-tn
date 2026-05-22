@@ -15,6 +15,7 @@ See `/docs/` for complete architecture audit:
 - [DEVELOPMENT_WORKFLOW.md](docs/DEVELOPMENT_WORKFLOW.md) — Dev workflow
 - [GAP_ANALYSIS.md](docs/GAP_ANALYSIS.md) — Known gaps
 - [NEXT_IMPLEMENTATION_PLAN.md](docs/NEXT_IMPLEMENTATION_PLAN.md) — Future plan
+- [PROJECT_CLOSURE_2026_05_21.md](docs/PROJECT_CLOSURE_2026_05_21.md) — Closure handoff and reopen checklist
 
 ## State (2026-05-21 - production-hardened, civic-service foundation deployed)
 - **Latest deployed baseline:** deploy the current GitHub `main` tip with `pnpm run deploy`. The exact Cloudflare version ID is emitted by Wrangler at deploy time and recorded in the handoff/commit notes, not hardcoded here, so this file stays accurate after docs-only sync commits. Latest verification: `/api/health` returned `{"status":"ok"}`, 12/12 production route smoke checks returned 200, and targeted live Playwright civic checks passed 5/5.
