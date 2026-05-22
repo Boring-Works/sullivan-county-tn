@@ -133,7 +133,7 @@ Namespace: `CONTACT_SUBMISSIONS`.
 | Cloudflare Web Analytics | Not configured. `YOUR_TOKEN_HERE` remains a dashboard/user action item. |
 | Cross-isolate rate limits | In-memory per isolate. Durable Object counters are the stronger future option. |
 | CSRF token integration | Deferred unless cross-origin embeds or higher-risk public writes are added. |
-| Admin feedback viewer | Server functions exist; dedicated route is still pending. |
+| Admin feedback viewer | Shipped at `/admin/feedback` with all/helpful/problem filters and delete action. |
 | Audit log table | Not shipped. Add a migration and viewer if admin accountability becomes a priority. |
 | Spanish translation | Machine-translated and needs native review before marketing as bilingual. |
 | Commissioner photo | Barry Hopper still falls back to a generic icon. |

@@ -36,28 +36,16 @@ The homepage redesign, duplicate status cleanup, live weather/river expansion, r
 
 **Effort:** 1.5 to 2 hours.
 
-### 3. Feedback admin viewer
-**Why:** Page feedback is already collected but not surfaced.
-
-**What to build:**
-- `/admin/feedback.tsx` route.
-- Filters for helpful/problem feedback.
-- Page, comment, created date, and delete/archive action.
-
-**Done when:** Admin users can review page feedback without touching D1 directly.
-
-**Effort:** 30 to 60 minutes.
-
 ## P2 — Deployment And Observability
 
-### 4. Configure Cloudflare Web Analytics
+### 3. Configure Cloudflare Web Analytics
 **Why:** The site needs traffic visibility without adding third-party analytics.
 
 **What:** User action in Cloudflare dashboard, then wire the token into the app and redeploy.
 
 **Done when:** Cloudflare Web Analytics shows live traffic.
 
-### 5. Re-enable safe preview deploys
+### 4. Re-enable safe preview deploys
 **Why:** PR previews are useful, but not if they share production D1/KV.
 
 **What to build:**
@@ -68,7 +56,7 @@ The homepage redesign, duplicate status cleanup, live weather/river expansion, r
 
 **Done when:** Pull requests deploy to `sullivan-county-tn-preview` with isolated data stores.
 
-### 6. Scheduled weather refresh
+### 5. Scheduled weather refresh
 **Why:** SWR-on-read is good enough, but a scheduled refresh removes the first-user refresh cost.
 
 **What to build:**
@@ -80,10 +68,10 @@ The homepage redesign, duplicate status cleanup, live weather/river expansion, r
 
 ## P3 — UX And Quality Polish
 
-### 7. Native Spanish review
+### 6. Native Spanish review
 Have a native Spanish speaker review `es.json`, especially property tax, form, and legal/civic terms.
 
-### 8. Visual and performance regression coverage
+### 7. Visual and performance regression coverage
 Add Playwright screenshot snapshots and Lighthouse CI budgets after the current production baseline is accepted.
 
 ## P4 — Long Term

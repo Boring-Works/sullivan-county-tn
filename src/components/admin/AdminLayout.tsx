@@ -1,5 +1,5 @@
 import { Link, useNavigate, useRouterState } from "@tanstack/react-router";
-import { FileText, Home, Inbox, LogOut, Megaphone, Newspaper } from "lucide-react";
+import { FileText, Home, Inbox, LogOut, Megaphone, MessageSquare, Newspaper } from "lucide-react";
 import type { ReactNode } from "react";
 import { cn } from "~/lib/utils";
 import { logout } from "~/server/auth";
@@ -10,6 +10,7 @@ const ADMIN_NAV = [
   { label: "Minutes", href: "/admin/minutes", icon: FileText },
   { label: "Announcements", href: "/admin/announcements", icon: Megaphone },
   { label: "Submissions", href: "/admin/submissions", icon: Inbox },
+  { label: "Feedback", href: "/admin/feedback", icon: MessageSquare },
 ] as const;
 
 interface AdminLayoutProps {

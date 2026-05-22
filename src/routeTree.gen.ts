@@ -43,6 +43,7 @@ import { Route as CommunitiesSlugRouteImport } from './routes/communities/$slug'
 import { Route as ApiHealthRouteImport } from './routes/api/health'
 import { Route as AdminSubmissionsRouteImport } from './routes/admin/submissions'
 import { Route as AdminLoginRouteImport } from './routes/admin/login'
+import { Route as AdminFeedbackRouteImport } from './routes/admin/feedback'
 import { Route as AdminAnnouncementsRouteImport } from './routes/admin/announcements'
 import { Route as AdminNewsIndexRouteImport } from './routes/admin/news/index'
 import { Route as AdminMinutesIndexRouteImport } from './routes/admin/minutes/index'
@@ -221,6 +222,11 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/admin/login',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminFeedbackRoute = AdminFeedbackRouteImport.update({
+  id: '/admin/feedback',
+  path: '/admin/feedback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminAnnouncementsRoute = AdminAnnouncementsRouteImport.update({
   id: '/admin/announcements',
   path: '/admin/announcements',
@@ -278,6 +284,7 @@ export interface FileRoutesByFullPath {
   '/visit': typeof VisitRoute
   '/weather': typeof WeatherRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
+  '/admin/feedback': typeof AdminFeedbackRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/submissions': typeof AdminSubmissionsRoute
   '/api/health': typeof ApiHealthRoute
@@ -321,6 +328,7 @@ export interface FileRoutesByTo {
   '/visit': typeof VisitRoute
   '/weather': typeof WeatherRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
+  '/admin/feedback': typeof AdminFeedbackRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/submissions': typeof AdminSubmissionsRoute
   '/api/health': typeof ApiHealthRoute
@@ -365,6 +373,7 @@ export interface FileRoutesById {
   '/visit': typeof VisitRoute
   '/weather': typeof WeatherRoute
   '/admin/announcements': typeof AdminAnnouncementsRoute
+  '/admin/feedback': typeof AdminFeedbackRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/submissions': typeof AdminSubmissionsRoute
   '/api/health': typeof ApiHealthRoute
@@ -410,6 +419,7 @@ export interface FileRouteTypes {
     | '/visit'
     | '/weather'
     | '/admin/announcements'
+    | '/admin/feedback'
     | '/admin/login'
     | '/admin/submissions'
     | '/api/health'
@@ -453,6 +463,7 @@ export interface FileRouteTypes {
     | '/visit'
     | '/weather'
     | '/admin/announcements'
+    | '/admin/feedback'
     | '/admin/login'
     | '/admin/submissions'
     | '/api/health'
@@ -496,6 +507,7 @@ export interface FileRouteTypes {
     | '/visit'
     | '/weather'
     | '/admin/announcements'
+    | '/admin/feedback'
     | '/admin/login'
     | '/admin/submissions'
     | '/api/health'
@@ -540,6 +552,7 @@ export interface RootRouteChildren {
   VisitRoute: typeof VisitRoute
   WeatherRoute: typeof WeatherRoute
   AdminAnnouncementsRoute: typeof AdminAnnouncementsRoute
+  AdminFeedbackRoute: typeof AdminFeedbackRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminSubmissionsRoute: typeof AdminSubmissionsRoute
   ApiHealthRoute: typeof ApiHealthRoute
@@ -803,6 +816,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/feedback': {
+      id: '/admin/feedback'
+      path: '/admin/feedback'
+      fullPath: '/admin/feedback'
+      preLoaderRoute: typeof AdminFeedbackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/announcements': {
       id: '/admin/announcements'
       path: '/admin/announcements'
@@ -876,6 +896,7 @@ const rootRouteChildren: RootRouteChildren = {
   VisitRoute: VisitRoute,
   WeatherRoute: WeatherRoute,
   AdminAnnouncementsRoute: AdminAnnouncementsRoute,
+  AdminFeedbackRoute: AdminFeedbackRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminSubmissionsRoute: AdminSubmissionsRoute,
   ApiHealthRoute: ApiHealthRoute,

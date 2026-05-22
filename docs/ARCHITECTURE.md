@@ -368,7 +368,7 @@ Contact submissions are stored in KV with automatic expiration. No email service
 | `/people` | `routes/people.tsx` | Notable historical figures grid (7 people) |
 | `/visit` | `routes/visit.tsx` | Heritage Trail, parks, recreation, events, getting here |
 
-### Admin (10 routes)
+### Admin (11 routes)
 
 | Route | File | Purpose |
 |-------|------|---------|
@@ -382,6 +382,7 @@ Contact submissions are stored in KV with automatic expiration. No email service
 | `/admin/minutes/$id` | `routes/admin/minutes/$id.tsx` | Edit minutes entry form |
 | `/admin/submissions` | `routes/admin/submissions.tsx` | Form submission management |
 | `/admin/announcements` | `routes/admin/announcements.tsx` | Announcement CRUD (single-page) |
+| `/admin/feedback` | `routes/admin/feedback.tsx` | Page feedback review and deletion |
 
 ### Forms (2 routes)
 

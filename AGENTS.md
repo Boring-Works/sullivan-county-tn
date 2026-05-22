@@ -90,10 +90,10 @@ Cloudflare Workers (TanStack Start SSR). Config in wrangler.jsonc.
 - Hand-roll bg-brand-copper button classes (use `<Button variant="copper">`)
 - Add `target="_blank"` without `rel="noopener noreferrer"`
 
-## Routes (41 total)
+## Routes (42 total)
 Citizen-facing: `/`, `/property-taxes`, `/departments`, `/departments/$slug`, `/commissioners`, `/news`, `/news/$slug`, `/calendar`, `/contact`, `/documents`, `/forms`, `/forms/$type`, `/ada-compliance`, `/privacy-policy`, `/employee-services`
 Heritage / civic: `/history`, `/history/timeline`, `/history/$slug`, `/communities`, `/communities/$slug`, `/about`, `/economic-development`, `/education`, `/transportation`, `/people`, `/visit`
-Admin (auth-gated): `/admin/login`, `/admin`, `/admin/news{,/new,/$id}`, `/admin/minutes{,/new,/$id}`, `/admin/announcements`, `/admin/submissions`
+Admin (auth-gated): `/admin/login`, `/admin`, `/admin/news{,/new,/$id}`, `/admin/minutes{,/new,/$id}`, `/admin/announcements`, `/admin/submissions`, `/admin/feedback`
 API: `/api/health`
 
 ## Primary nav (verb-based)

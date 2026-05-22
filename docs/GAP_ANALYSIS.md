@@ -21,34 +21,28 @@ The public site is in strong production shape. The remaining gaps are mostly adm
 - **Fix:** Add `audit_log` D1 table, `audit()` helper, and `/admin/audit` viewer. Call the helper from every admin mutation.
 - **Effort:** 1.5 to 2 hours.
 
-#### 3. `/admin/feedback` viewer UI
-- **Status:** `submitPageFeedback`, `listPageFeedback`, and `deletePageFeedback` exist. The admin viewer route does not.
-- **Impact:** Citizen page feedback is collected but not easy to review.
-- **Fix:** Add `/admin/feedback` with filtering by helpful/problem pages and delete/archive actions.
-- **Effort:** 30 to 60 minutes.
-
 ### Medium Priority
 
-#### 4. CF Web Analytics token
+#### 3. CF Web Analytics token
 - **Status:** Web Analytics is not configured.
 - **Impact:** No first-party traffic metrics in Cloudflare.
 - **Fix:** User action: create a Web Analytics site in Cloudflare, add the token to the app, redeploy.
 - **Effort:** 5 minutes once dashboard access is available.
 
-#### 5. Isolated preview environment
+#### 4. Isolated preview environment
 - **Status:** Production deploy is configured. PR preview deploys are intentionally disabled because preview Workers could inherit production D1/KV bindings.
 - **Impact:** Safe preview deploys require separate data stores before re-enabling.
 - **Fix:** Create preview D1/KV resources, add explicit preview bindings in `wrangler.jsonc`, then re-enable preview deploys in GitHub Actions.
 - **Effort:** 30 to 60 minutes plus Cloudflare setup.
 
-#### 6. Scheduled weather refresh
+#### 5. Scheduled weather refresh
 - **Status:** SWR-on-read works and production weather is live.
 - **Impact:** The first visitor after the freshness window can pay the upstream NWS refresh cost.
 - **Fix:** Add a Worker `scheduled()` handler with a Cron Trigger. Keep SWR-on-read as fallback.
 - **Risk:** Do not add cron-triggered AI or expensive background jobs without budget alerts. This weather cron uses government APIs only.
 - **Effort:** 45 minutes.
 
-#### 7. Native Spanish review
+#### 6. Native Spanish review
 - **Status:** `es.json` is populated but machine-translated.
 - **Impact:** Tax, form, and civic terms should be reviewed before claiming polished bilingual support.
 - **Fix:** Have a native Spanish speaker review locale copy.
@@ -98,6 +92,7 @@ The public site is in strong production shape. The remaining gaps are mostly adm
 | Preview deploys disabled until isolated preview bindings exist | 2026-05-21 |
 | SearchDialog upgraded to shadcn Command while keeping Fuse.js aliases | 2026-05-21 |
 | SearchDialog mobile clipping fixed and live-verified at mobile/tablet/desktop sizes | 2026-05-21 |
+| `/admin/feedback` viewer for page feedback review and deletion | 2026-05-21 |
 | Mobile drawer upgraded to shadcn Sheet, removing custom focus-trap code | 2026-05-21 |
 | Phase 1 typed Cloudflare env (`getEnv/getDB/getKV`) | 2026-05-07 |
 | Phase 2 drizzle-zod, schema indexes, ULID brand type | 2026-05-07 |

@@ -89,6 +89,7 @@ See `/docs/` for complete architecture audit:
 | `/people` | `routes/people.tsx` | Notable historical figures grid (7 people) |
 | `/visit` | `routes/visit.tsx` | Heritage Trail, parks, recreation, events, TVA lake-level links, getting here |
 | `/weather` | `routes/weather.tsx` | NWS weather + USGS river conditions: action summary, alerts, current conditions, hourly outlook, day/night forecast, temperature trend, river gauges, TVA lake links, and TDOT/TN 511 road links |
+| `/admin/feedback` | `routes/admin/feedback.tsx` | Page feedback review, helpful/problem filtering, and delete action (auth-gated) |
 
 ## Data Files
 | File | Content |
@@ -116,15 +117,13 @@ See `/docs/` for complete architecture audit:
 ## Key Components
 | Component | Location | Purpose |
 |-----------|----------|---------|
-| SiteNav | `components/layout/SiteNav.tsx` | Glass-morphism nav with mega-menu (keyboard nav) + Cmd+K search (code-split) + mobile focus trap |
+| SiteNav | `components/layout/SiteNav.tsx` | Five-verb nav with mega-menu keyboard support, Cmd+K search trigger, and shadcn Sheet mobile drawer |
 | SiteFooter | `components/layout/SiteFooter.tsx` | Footer with mountain silhouette + heritage ornament |
 | AnnouncementBanner | `components/layout/AnnouncementBanner.tsx` | Dismissible banner (localStorage persistence) |
 | SearchDialog | `components/layout/SearchDialog.tsx` | Fuse.js fuzzy search modal (Cmd+K), ARIA combobox pattern, lazy-loaded, safe-area-aware mobile positioning verified live |
 | NotFound | `components/layout/NotFound.tsx` | Custom 404 page with quick links + search hint |
 | HeroBanner | `components/home/HeroBanner.tsx` | Citizen-first hero with search trigger, top task cards, county-status panel, next meeting, and weather badge |
-| QuickServices | `components/home/QuickServices.tsx` | 8-card service grid with scroll reveals |
-| DepartmentCategories | `components/home/DepartmentCategories.tsx` | 6 category cards with scroll reveals |
-| CommunityHighlights | `components/home/CommunityHighlights.tsx` | 3 tourism/regional attraction cards |
+| QuickServices | `components/home/QuickServices.tsx` | Service-card grid retained for supporting civic pages |
 | NewsSection | `components/home/NewsSection.tsx` | Editorial news layout with featured first item |
 | DepartmentDetail | `components/departments/DepartmentDetail.tsx` | Department page with category-tinted banner |
 | NewsDetail | `components/news/NewsDetail.tsx` | Article detail with header, body, PDF/source links |
@@ -248,7 +247,7 @@ This is a county government website. The reference points are GOV.UK, NYC.gov, t
 - **County seal (`src/components/shared/CountySeal.tsx`)** — sourced from sullivancountytn.gov's official artwork, traced via potrace into `public/images/seal/sullivan-seal.svg` (47KB, brand-navy tinted) plus rastered fallbacks at 64/128/256/512px. Wired into the footer mark, the AboutSection heading row, the hero corner watermark (`mix-blend-screen` at 8% opacity, `lg:` only), and the printable dept-detail card.
 - **`nextOccurrence(rule)`** computes the next concrete date for `{ dayOfWeek, nthOfMonth, time }` recurrence rules in America/New_York. `nthOfMonth` is `1 | 2 | 3 | 4 | "last"`. Used by `/calendar` and the homepage `NextMeetingCard`.
 - **`AnnouncementBanner`** reads from D1 via `listPublicAnnouncements` server function. Title prefix `[urgent]` upgrades severity. Banner sets `--banner-height` on the document root; `SiteNav` and `body` consume that var to offset themselves. Manage rows in `/admin/announcements`.
-- **`PageFeedback`** writes to the `page_feedback` D1 table via `submitPageFeedback` server function. Mounted on department detail, forms detail, and contact pages. Admin viewer is at `/admin/feedback` (future task — table populated even without UI).
+- **`PageFeedback`** writes to the `page_feedback` D1 table via `submitPageFeedback` server function. Mounted on department detail, forms detail, and contact pages. Admins review and delete entries at `/admin/feedback`.
 - **`TelLink`** normalizes phone numbers to `tel:+1XXXXXXXXXX` consistently. Use it everywhere a phone number is rendered; do not write raw `<a href="tel:...">` strings.
 - **`OpenStatusPill`** + **`SubmissionBadge`** + **vCard "Save Contact"** are the small civic-trust details — keep them on every department detail page going forward.
 

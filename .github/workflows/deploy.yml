@@ -31,6 +31,15 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Lint
+        run: pnpm exec biome check .
+
+      - name: Type check
+        run: pnpm exec tsc --noEmit
+
+      - name: Test
+        run: pnpm exec vitest run
+
       - name: Build
         run: pnpm run build
 
@@ -87,6 +96,15 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install
+
+      - name: Lint
+        run: pnpm exec biome check .
+
+      - name: Type check
+        run: pnpm exec tsc --noEmit
+
+      - name: Test
+        run: pnpm exec vitest run
 
       - name: Build
         run: pnpm run build

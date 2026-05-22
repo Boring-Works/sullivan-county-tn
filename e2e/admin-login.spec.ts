@@ -37,6 +37,12 @@ test.describe("admin auth", () => {
     await page.goto("/admin");
     await expect(page).toHaveURL(/\/admin\/login/);
   });
+
+  test("unauthenticated feedback access is blocked", async ({ page }) => {
+    if (page.viewportSize()!.width < 1024) return;
+    await page.goto("/admin/feedback");
+    await expect(page).toHaveURL(/\/admin\/login/);
+  });
 });
 
 test.describe("admin CRUD", () => {
@@ -60,5 +66,11 @@ test.describe("admin CRUD", () => {
     if (page.viewportSize()!.width < 1024) return;
     await page.goto("/admin/submissions");
     await expect(page.locator("h1, h2")).toContainText("Submissions");
+  });
+
+  test("feedback list loads", async ({ page }) => {
+    if (page.viewportSize()!.width < 1024) return;
+    await page.goto("/admin/feedback");
+    await expect(page.locator("h1, h2")).toContainText("Page Feedback");
   });
 });

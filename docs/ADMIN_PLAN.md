@@ -2,6 +2,8 @@
 
 **Goal:** Replace the bare-bones `/admin/*` with a shadcn `<Sidebar>` + DataTable + stat-tile dashboard + RHF forms admin experience.
 
+**Status update 2026-05-21:** `/admin/feedback` is now shipped as a lightweight viewer with all/helpful/problem filters and delete action. The broader admin overhaul remains useful for the dashboard, DataTables, audit log, and shadcn Sidebar work.
+
 **Reference:** `NEXT_IMPLEMENTATION_PLAN.md` lists this as **P1.1 — the highest-impact remaining work**.
 
 **Lift source:** [`Kiranism/tanstack-start-dashboard`](https://github.com/Kiranism/tanstack-start-dashboard) — MIT, exact stack match (TanStack Start + shadcn + Vite). Ports we'll lift verbatim:
@@ -21,7 +23,7 @@
 Every phase:
 1. Compiles clean (`tsc`)
 2. Builds clean
-3. 79/79 unit tests pass
+3. Current Vitest suite passes
 4. Independently deployable to production
 5. Smoke-tested before moving to next phase
 6. Gets its own git commit (so any phase can be reverted independently)
