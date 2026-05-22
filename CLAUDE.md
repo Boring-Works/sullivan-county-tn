@@ -17,13 +17,13 @@ See `/docs/` for complete architecture audit:
 - [NEXT_IMPLEMENTATION_PLAN.md](docs/NEXT_IMPLEMENTATION_PLAN.md) — Future plan
 
 ## State (2026-05-21 - production-hardened, civic-service foundation deployed)
-- **Latest deployed baseline:** commit `de07dfb` (`feat: strengthen civic service foundations`) deployed as Cloudflare version `4996f023-5fce-4b7e-9ad1-cab1f74f0de2`; `/api/health` returned `{"status":"ok"}` and 12/12 production route smoke checks returned 200.
+- **Latest deployed baseline:** commit `cf976a3` (`fix: harden civic audit findings`) deployed as Cloudflare version `41f7f8aa-d70e-4cc9-9546-e386594d025c`; `/api/health` returned `{"status":"ok"}` at `2026-05-22T00:26:59.819Z`, 12/12 production route smoke checks returned 200, and targeted live Playwright civic checks passed 5/5.
 - **Tests:** Current audit pass: 106 unit tests passing across 21 files; full Playwright: 282 passed, 14 skipped, 1 flaky desktop mega-menu click test passed on retry. This audit pass adds a search-index regression test for task verb labels.
 - **A11y:** WCAG AA oriented — kbd contrast fixed, brand-stable colors site-wide, skip-link focus fixed, scroll-reveal failsafe ensures all sections render even with reduced motion or no JS.
 - **Lint:** Biome check passes with 0 errors.
 - **Build:** Vite/TanStack Start production build passes locally.
 - **Live:** Cloudflare Workers deployment target is `sullivan-county-tn` at https://sullivan-county-tn.codyboring.workers.dev.
-- **Search-dialog fix deployment:** commit `5dc2b26` (`fix: keep search dialog visible on mobile`) deployed as Cloudflare version `cce0aafe-594e-4d41-a463-532ea046a9fe`; later superseded by the civic-foundation deployment above.
+- **Search-dialog fix deployment:** commit `5dc2b26` (`fix: keep search dialog visible on mobile`) deployed as Cloudflare version `cce0aafe-594e-4d41-a463-532ea046a9fe`; later superseded by the civic-foundation and audit-hardening deployments above.
 - **Security:** Typed `Cloudflare.Env` end-to-end (no `as Record<string, unknown>` casts), auth gates + Zod validation + per-IP rate limit on every admin POST, ULIDs, XSS sanitization, timing-safe password compare, structured JSON logging, CSRF module defined (SameSite=Strict cookies + same-origin server fns provide primary defense)
 - **Phase 1 (typed env):** `src/server/env.ts` exports `getEnv()` / `getDB()` / `getKV()` against `Cloudflare.Env`. `ADMIN_PASSWORD` declared via interface merging. NWS fetch hardened with 5s `AbortController` timeout + `cf` cache hint + retry on 5xx.
 - **Phase 2 (Drizzle/Zod):** `drizzle-zod` installed, `createInsertSchema/createSelectSchema` per table, all indexes in `schema.ts`, ULID brand type at `src/lib/schemas/ids.ts`, `$inferSelect` types exported.

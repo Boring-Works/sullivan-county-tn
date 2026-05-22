@@ -9,16 +9,17 @@
 
 The app is a production Cloudflare Workers deployment of a TanStack Start civic services portal for Sullivan County, Tennessee. The current site is positioned as an official government-service portal first, with tourism and heritage content as a secondary bridge.
 
-Latest shipped baseline before this audit pass:
+Latest shipped baseline after this audit pass:
 
 | Item | Value |
 |---|---|
-| Commit | `de07dfb feat: strengthen civic service foundations` |
-| Cloudflare version | `4996f023-5fce-4b7e-9ad1-cab1f74f0de2` |
-| Health check | `/api/health` returned `{"status":"ok"}` |
+| Commit | `cf976a3 fix: harden civic audit findings` |
+| Cloudflare version | `41f7f8aa-d70e-4cc9-9546-e386594d025c` |
+| Health check | `/api/health` returned `{"status":"ok"}` at `2026-05-22T00:26:59.819Z` |
 | Production smoke | 12/12 major routes returned 200 |
 | Unit baseline | 106 tests across 21 files passed in this audit pass |
 | Full Playwright baseline | 282 passed, 14 skipped, 1 flaky passed on retry in this audit pass |
+| Live targeted Playwright | 5/5 civic foundation and responsive-flow checks passed against production |
 
 This audit pass updated code and docs after reviewing the app file-by-file. Local verification passed with Biome, TypeScript, Vitest, production build, diff whitespace checks, and the full Playwright suite.
 
